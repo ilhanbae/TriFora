@@ -1,0 +1,4 @@
+Project Description
+A social media platform (technically, social-commerce platform) where students can buy & sell their short-lived furniture and connect with other like-minded students in the communities during their memorable academic years. - Neil
+
+There’s few existing platforms that achieve our goal, like Craigslist. But these lack user-interactions to be considered as a social media platform. You can also achieve the same goal through other major platforms Facebook Marketplace, SubReddit or Discord Channel. But they can get off-track. What if our platform is specialized in one goal or a theme, and has a functionality of being interactable and welcoming daily users? Perhaps a small community where members can share their desktop setups, decoration ideas? - Neil
