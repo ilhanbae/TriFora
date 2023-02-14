@@ -1,0 +1,20 @@
+Project Description
+Underachievers
+
+# Github Repo: 
+https://github.com/CSE370HCI/underachievers
+
+# Zenhub Board: https://app.zenhub.com/workspaces/underachievers-63e55353c6b6e7003307b69e/board
+
+# Alternate Dispute Resolution:
+* We should always carefully consider how each opinion can be a better option than others by weighing the pros and cons of each.
+* We will resolve conflicts via rock-paper-scissors; each opposing party will have a representative chosen randomly, and all members will be present during the session.
+
+# Expected Outcome:
+* A social media platform (technically, a social-commerce platform), where students can buy & sell their short-lived furniture and connect with other like-minded students in small communities to make their academic years memorable.
+
+# Expected Users:
+We expect the following types of users on our platform:
+* An incoming student who recently moved into a new place and is looking to buy used furniture from reliable sellers from university. 
+* A graduating student who’s looking to sell his or her furniture before leaving.
+* Current student who’s looking to connect with other students to share useful information.
