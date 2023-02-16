@@ -1,8 +1,8 @@
-Project Description
+Project Description and Team Contract
+
 Underachievers
 
-# Github Repo: 
-https://github.com/CSE370HCI/underachievers
+# Github Repo: https://github.com/CSE370HCI/underachievers
 
 # Zenhub Board: https://app.zenhub.com/workspaces/underachievers-63e55353c6b6e7003307b69e/board
 
@@ -11,10 +11,14 @@ https://github.com/CSE370HCI/underachievers
 * We will resolve conflicts via rock-paper-scissors; each opposing party will have a representative chosen randomly, and all members will be present during the session.
 
 # Expected Outcome:
-* A social media platform (technically, a social-commerce platform), where students can buy & sell their short-lived furniture and connect with other like-minded students in small communities to make their academic years memorable.
+* A social media platform that allows students to create different communities, share ideas and information, and connect with other like-minded students in small communities to make their academic years memorable.
 
 # Expected Users:
 We expect the following types of users on our platform:
+* A student who’s looking to connect with other like-minded students to share information and thoughts.
+* A student club or student organization president looking to host and attract students to upcoming events.
+* A student who’s looking for campus job opportunities or research projects that are currently available.
 * An incoming student who recently moved into a new place and is looking to buy used furniture from reliable sellers from university. 
-* A graduating student who’s looking to sell his or her furniture before leaving.
-* Current student who’s looking to connect with other students to share useful information.
+* A graduating student who’s looking to sell his or her furniture to other needed students before leaving university.
+* A student who’s looking for roommates and off-campus housing that are currently available.
+
