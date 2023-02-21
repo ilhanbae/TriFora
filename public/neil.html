@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Neil Bae's Profile</title>
+    <style>
+      /* Default */
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: Verdana, sans-serif;
+      }
+
+      /* Color Palettes */
+      :root {
+        --dracula-orchid: #2c3639;
+        --rocky-creek: #3f4e4f;
+        --solitary-state: #c2c8c6;
+        --mud-ball: #966644;
+        --sassafras-tea: #dcd7c9;
+        --white-chalk: #f6f5f1;
+      }
+
+      /* Typography */
+      h1 {
+        font-size: 3em;
+        color: var(--mud-ball);
+      }
+      h2 {
+        font-size: 1.5em;
+        color: var(--white-chalk);
+        margin-bottom: 10px;
+      }
+      p {
+        font-size: 1em;
+        color: var(--solitary-state);
+        margin-bottom: 30px;
+      }
+      .inline-link {
+        font-size: 1em;
+        color: var(--mud-ball);
+      }
+      .inline-alias {
+        font-size: 1em;
+        color: var(--sassafras-tea);
+      }
+
+      body {
+        width: 100vw;
+        height: 100vh;
+        display: grid;
+        place-items: center;
+        background-color: var(--rocky-creek);
+      }
+
+      main {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        background-color: var(--dracula-orchid);
+        padding: 2em;
+        gap: 10px;
+      }
+
+      .title {
+        text-align: center;
+      }
+
+      .profile {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .profile img {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        border: 3px solid var(--mud-ball);
+        object-fit: cover;
+        background-color: var(--rocky-creek);
+      }
+
+      .summary {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .contact {
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Responsive */
+      @media (min-width: 1024px) {
+        main {
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  
+  <body>
+    <main>
+      <div class="title">
+        <h1>Neil Bae</h1>
+      </div>
+      
+      <div class="profile">
+        <img src="https://ilhanbae.com/assets/images/illustrations/self-portrait.jpg" alt="Self portrait painted with oil pastel on canvas">
+      </div>
+
+      <div class="summary">
+        <h2>About Me</h2>
+        <p>
+          I'm currently a junior year student at the State University of New York at Buffalo pursuing a bachelor of science degree in Computer Scinece. I'm passionate about designing interactive tools that are reliable and fun for everyday use.
+        </p>
+        <p>
+          I have experience working with .NET Framework in the past, and I am excited to learn more about Frontend Development and Human-Computer-Interaction (HCI) principles using React.js.
+        </p>
+      </div>
+
+      <div class="contact">
+        <h2>Contact Info</h2>
+        <p>
+          You can see all my projects on <a class="inline-link" href="https://github.com/Northbase" target="_blank">Github</a> <span class="inline-alias">(northbase)</span> and my full work history at <a class="inline-link" href="https://www.linkedin.com/in/neilbae/" target="_blank">LinkedIn</a> <span class="inline-alias">(neilbae)</span>.
+        </p>
+        <p>
+          Feel free to contact me about anything. I can be reached via email: <a class="inline-link" href="mailto:neil.han.bae@gmail.com">ilhanbae@buffalo.edu</a>
+        </p>
+      </div>
+    </main>
+  </body>
+</html>
