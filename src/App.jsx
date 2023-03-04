@@ -33,8 +33,8 @@ function toggleModal(app) {
 // the App class defines the main rendering method and state information for the app
 class App extends React.Component {
 
-  // the app holds a few state items : whether or not the modal dialog is open, whether or not we need to refresh 
-  // the post list, and whether or not the login or logout actions have been triggered, which will change what the 
+  // the app holds a few state items : whether or not the modal dialog is open, whether or not we need to refresh
+  // the post list, and whether or not the login or logout actions have been triggered, which will change what the
   // user can see (many features are only available when you are logged in)
   constructor(props) {
     super(props);
@@ -49,8 +49,8 @@ class App extends React.Component {
     // we can create a reference to this and pass it down.
     this.mainContent = React.createRef();
 
-    // since we are passing the following methods to a child component, we need to 
-    // bind them, otherwise the value of "this" will mean the child, and not the app 
+    // since we are passing the following methods to a child component, we need to
+    // bind them, otherwise the value of "this" will mean the child, and not the app
     this.doRefreshPosts = this.doRefreshPosts.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
@@ -64,18 +64,18 @@ class App extends React.Component {
       logout: true,
       login: false
     });
-    
+
   }
-  
+
   // on login, update state and refresh the posts
   login = () => {
     this.setState({
       login: true,
       logout: false,
       refreshPosts:true
-    });  
+    });
   }
-  
+
 
   // doRefreshPosts is called after the user logs in, to display relevant posts.
   // there are probably more elegant ways to solve this problem, but this is... a way
@@ -88,110 +88,110 @@ class App extends React.Component {
 
   componentDidMount(){
     window.addEventListener('click', e => {console.log("TESTING EVENT LISTENER")});
-  
+
   }
 
   render() {
 
     return (
 
-      // the app is wrapped in a router component, that will render the
-      // appropriate content based on the URL path.  Since this is a
-      // single page app, it allows some degree of direct linking via the URL
-      // rather than by parameters.  Note that the "empty" route "/", which has
-      // the same effect as /posts, needs to go last, because it uses regular
-      // expressions, and would otherwise capture all the routes.  Ask me how I
-      // know this.
-      <Router basename={process.env.PUBLIC_URL}>
-      <div className="App">
-        <header className="App-header">
+        // the app is wrapped in a router component, that will render the
+        // appropriate content based on the URL path.  Since this is a
+        // single page app, it allows some degree of direct linking via the URL
+        // rather than by parameters.  Note that the "empty" route "/", which has
+        // the same effect as /posts, needs to go last, because it uses regular
+        // expressions, and would otherwise capture all the routes.  Ask me how I
+        // know this.
+        <Router basename={process.env.PUBLIC_URL}>
+          <div className="App">
+            <header className="App-header">
 
-          <Navbar toggleModal={e => toggleModal(this, e)} logout={this.logout}/>
+              <Navbar toggleModal={e => toggleModal(this, e)} logout={this.logout}/>
 
-          <div className="maincontent" id="mainContent">
-            <Routes>
-              <Route path="/settings" element={<Settings login={this.login}  />} />
-              <Route path="/friends" element={<Friends  login={this.login} />} />   
-              <Route path="/groups" element={<Groups  login={this.login} />} />     
-              <Route path="/posts" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} />} />
-              <Route path="/promise" element={<Promise />} />
-              <Route path="/" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} />} />
+              <div className="maincontent" id="mainContent">
+                <Routes>
+                  <Route path="/settings" element={<Settings login={this.login}  />} />
+                  <Route path="/friends" element={<Friends  login={this.login} />} />
+                  <Route path="/groups" element={<Groups  login={this.login} />} />
+                  <Route path="/posts" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} />} />
+                  <Route path="/promise" element={<Promise />} />
+                  <Route path="/" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} />} />
 
-            </Routes>
+                </Routes>
+              </div>
+            </header>
+
+            <Modal show={this.state.openModal} onClose={e => toggleModal(this, e)}>
+              This is a modal dialog!
+            </Modal>
           </div>
-        </header>
-
-        <Modal show={this.state.openModal} onClose={e => toggleModal(this, e)}>
-          This is a modal dialog!
-        </Modal>
-      </div>
-      </Router>
+        </Router>
     );
   }
 }
 
 const Settings = (props) => {
-   // if the user is not logged in, show the login form.  Otherwise, show the post form
-   if (!sessionStorage.getItem("token")){
+  // if the user is not logged in, show the login form.  Otherwise, show the post form
+  if (!sessionStorage.getItem("token")){
     console.log("LOGGED OUT");
     return(
-      <div>
-      <p>CSE 370 Social Media Test Harness</p>
-      <LoginForm login={props.login}  />
-      </div>
+        <div>
+          <p>CSE 370 Social Media Test Harness</p>
+          <LoginForm login={props.login}  />
+        </div>
     );
   }
   return (
-    <div className="settings">
-    <p>Settings</p>
-    <Profile userid={sessionStorage.getItem("user")} />
-  </div>
+      <div className="settings">
+        <p>Settings</p>
+        <Profile userid={sessionStorage.getItem("user")} />
+      </div>
   );
 }
 
 const Friends = (props) => {
-   // if the user is not logged in, show the login form.  Otherwise, show the post form
-   if (!sessionStorage.getItem("token")){
+  // if the user is not logged in, show the login form.  Otherwise, show the post form
+  if (!sessionStorage.getItem("token")){
     console.log("LOGGED OUT");
     return(
-      <div>
-      <p>CSE 370 Social Media Test Harness</p>
-      <LoginForm login={props.login}  />
-      </div>
+        <div>
+          <p>CSE 370 Social Media Test Harness</p>
+          <LoginForm login={props.login}  />
+        </div>
     );
   }
-   return (
-    <div>
-      <p>Friends</p>
+  return (
+      <div>
+        <p>Friends</p>
         <FriendForm userid={sessionStorage.getItem("user")} />
         <FriendList userid={sessionStorage.getItem("user")} />
-    </div>
-   );
+      </div>
+  );
 }
 
 const Groups = (props) => {
   // if the user is not logged in, show the login form.  Otherwise, show the post form
   if (!sessionStorage.getItem("token")){
-   console.log("LOGGED OUT");
-   return(
-     <div>
-     <p>CSE 370 Social Media Test Harness</p>
-     <LoginForm login={props.login}  />
-     </div>
-   );
- }
+    console.log("LOGGED OUT");
+    return(
+        <div>
+          <p>CSE 370 Social Media Test Harness</p>
+          <LoginForm login={props.login}  />
+        </div>
+    );
+  }
   return (
-   <div>
-     <p>Join a Group!</p>
-       <GroupList userid={sessionStorage.getItem("user")} />
-   </div>
+      <div>
+        <p>Join a Group!</p>
+        <GroupList userid={sessionStorage.getItem("user")} />
+      </div>
   );
 }
 
 const Posts = (props) => {
   console.log("RENDERING POSTS");
   console.log(typeof(props.doRefreshPosts));
-  
+
 
   console.log ("TEST COMPLETE");
 
@@ -199,18 +199,18 @@ const Posts = (props) => {
   if (!sessionStorage.getItem("token")){
     console.log("LOGGED OUT");
     return(
-      <div>
-      <p>CSE 370 Social Media Test Harness</p>
-      <LoginForm login={props.login}  />
-      </div>
+        <div>
+          <p>CSE 370 Social Media Test Harness</p>
+          <LoginForm login={props.login}  />
+        </div>
     );
   }else{
     console.log("LOGGED IN");
     return (
-      <div>
-      <p>CSE 370 Social Media Test Harness</p>
-      <PostForm refresh={props.apprefresh}/>
-    </div>
+        <div>
+          <p>CSE 370 Social Media Test Harness</p>
+          <PostForm refresh={props.apprefresh}/>
+        </div>
     );
   }
 }

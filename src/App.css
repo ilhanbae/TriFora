@@ -60,11 +60,11 @@
 }
 
 .autocomplete input {
-    width: calc(300px + 1rem);
+  width: calc(300px + 1rem);
 }
 
 .autocomplete{
-    min-height: 165px;
+  min-height: 165px;
 }
 
 .suggestions {
@@ -99,7 +99,7 @@
 }
 
 .profileform label{
-   display:block;
+  display:block;
 
 }
 
@@ -129,13 +129,13 @@
 }
 
 .comments{
-    background:white;
-    width:90%;
-    display:block;
-    border-radius: 20px;
-    padding:10px;
-    margin:10px;
-    color:black;
+  background:white;
+  width:90%;
+  display:block;
+  border-radius: 20px;
+  padding:10px;
+  margin:10px;
+  color:black;
 }
 
 .commentlist {
@@ -164,10 +164,10 @@
 }
 
 .posts{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .postbody{
@@ -211,10 +211,10 @@
 }
 
 .sidenav ul{
-   list-style-type: none;
-   padding:10px;
-   margin:0px;
-   margin-top: 40px;
+  list-style-type: none;
+  padding:10px;
+  margin:0px;
+  margin-top: 40px;
 }
 
 .sidenav-icon{
