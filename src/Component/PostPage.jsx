@@ -12,6 +12,7 @@ export default class PostPage extends React.Component {
         super()
         this.state = {
             join: "Join",
+            join_class: "join-button",
             upvote_num: 0,
             upvote_set: false,
             downvote_num: 0,
@@ -23,11 +24,13 @@ export default class PostPage extends React.Component {
         // console.log(this.state)
         if (this.state.join === 'Join') {
             this.setState({
-                join: "Joined"
+                join: "Joined",
+                join_class: "joined-button"
             })
         } else {
             this.setState({
-                join: "Join"
+                join: "Join",
+                join_class: "join-button"
             })
         }
     }
@@ -41,7 +44,7 @@ export default class PostPage extends React.Component {
                 upvote_num: this.state.upvote_num + 1,
                 upvote_set: true
             })
-            console.log(this.state.upvote_set)
+            //console.log(this.state.upvote_set)
         } else {
             this.setState({
                 upvote_num: this.state.upvote_num - 1,
@@ -98,7 +101,7 @@ export default class PostPage extends React.Component {
                             Since February 19, 2023
                         </div>
 
-                        <button className = 'join-button' onClick={() => this.joined()}>{this.state.join}</button>
+                        <button className = {this.state.join_class} onClick={() => this.joined()}>{this.state.join}</button>
 
                     </div>
 
