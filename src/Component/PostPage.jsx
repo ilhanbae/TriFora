@@ -13,6 +13,9 @@ export default class PostPage extends React.Component {
         this.state = {
             join: "Join",
             join_class: "join-button",
+            notification_text: "Notification ON",
+            notification_switch: "ON", 
+            notification_color_class: "green-button",
             upvote_num: 0,
             upvote_set: false,
             downvote_num: 0,
@@ -31,6 +34,22 @@ export default class PostPage extends React.Component {
             this.setState({
                 join: "Join",
                 join_class: "join-button"
+            })
+        }
+    }
+
+    notification_click(){
+        if (this.state.notification_switch === 'ON'){
+            this.setState({
+                notification_text: 'Notification OFF',
+                notification_switch: "OFF",
+                notification_color_class: "red-button"
+            })
+        } else {
+            this.setState({
+                notification_text: 'Notification ON',
+                notification_switch: 'ON',
+                notification_color_class: "green-button"
             })
         }
     }
@@ -89,9 +108,10 @@ export default class PostPage extends React.Component {
                             Since February 19, 2023
                         </div>
 
-                        <div className = 'notification'>
-    
-                        </div>
+                        <button className = 'notification' onClick={() => this.notification_click()}>
+                            <b className = 'notification_text'>{this.state.notification_text}</b>
+                            <div className = {this.state.notification_color_class}></div>
+                        </button>
 
                         <div className = 'member-info'>
                             Member
