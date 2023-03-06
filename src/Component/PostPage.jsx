@@ -8,6 +8,62 @@ import black_icon from "../assets/black-icon.jpeg"
 
 export default class PostPage extends React.Component {
 
+    constructor() {
+        super()
+        this.state = {
+            join: "Join",
+            upvote_num: 0,
+            upvote_set: false,
+            downvote_num: 0,
+            downvote_set: false
+        }
+    }
+
+    joined() {
+        // console.log(this.state)
+        if (this.state.join === 'Join') {
+            this.setState({
+                join: "Joined"
+            })
+        } else {
+            this.setState({
+                join: "Join"
+            })
+        }
+    }
+
+    upvote_click() {
+        //console.log(this.state)
+        //console.log("we're in upvotef")
+        //console.log(this.state.upvote_set)
+        if (this.state.upvote_set === false) {
+            this.setState({
+                upvote_num: this.state.upvote_num + 1,
+                upvote_set: true
+            })
+            console.log(this.state.upvote_set)
+        } else {
+            this.setState({
+                upvote_num: this.state.upvote_num - 1,
+                upvote_set: false
+            })
+        }
+    }
+
+    downvote_click() {
+        if (this.state.downvote_set === false){
+            this.setState({
+                downvote_num: this.state.downvote_num - 1,
+                downvote_set: true
+            })
+        } else {
+            this.setState({
+                downvote_num: this.state.downvote_num + 1,
+                downvote_set: false
+            })
+        }
+    }
+
     render() {
         return (
             <div className = 'post-page'>
@@ -42,9 +98,7 @@ export default class PostPage extends React.Component {
                             Since February 19, 2023
                         </div>
 
-                        <div className = 'join-button'>
-                            Join
-                        </div>
+                        <button className = 'join-button' onClick={() => this.joined()}>{this.state.join}</button>
 
                     </div>
 
@@ -98,11 +152,10 @@ export default class PostPage extends React.Component {
                         </div>
 
                         <div className = 'post-bar'>
-                            <input className = 'upvote-button-image' type='image' src={upvote} alt='upvote'/>
-                            <b className = 'upvote-number'>0</b>
-                            <input className = 'downvote-button-image' type='image' src={downvote} alt='downvote'/>
-                            <b className = 'downvote-number'>0</b>
-
+                            <input className = 'upvote-button-image' type='image' src={upvote} alt='upvote' onClick={() => this.upvote_click()}/>
+                            <b className = 'upvote-number'>{this.state.upvote_num}</b>
+                            <input className = 'downvote-button-image' type='image' src={downvote} alt='downvote' onClick={() => this.downvote_click()}/>
+                            <b className = 'downvote-number'>{this.state.downvote_num}</b>
                             <div className = 'post-delete'>
                                 <input className = 'post-delete-button' type='image' src={red_icon} alt='red_icon'/>
                                 <b className = 'post-delete-text'>Delete</b>
