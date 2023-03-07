@@ -107,7 +107,7 @@ class App extends React.Component {
       <div className="App">
         <header className="App-header">
 
-            <NavAchiever />
+                    <NavAchiever loggedIn={this.state.login}/>
           {/*<Navbar toggleModal={e => toggleModal(this, e)} logout={this.logout}/>*/}
 
           <div className="maincontent" id="mainContent">

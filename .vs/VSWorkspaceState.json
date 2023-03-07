@@ -1,10 +1,11 @@
 {
   "ExpandedNodes": [
     "",
+    "\\public",
     "\\src",
     "\\src\\assets",
     "\\src\\Component"
   ],
-  "SelectedNode": "\\src\\index.css",
+  "SelectedNode": "\\src\\Component\\Post.jsx",
   "PreviewInSolutionExplorer": false
 }
