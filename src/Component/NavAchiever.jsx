@@ -5,13 +5,6 @@ import groupIcon from "../assets/group.png";
 
 class NavAchiever extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            loggedIn: true,
-        }
-    }
-
     render() {
         return (
             <div id="headerNav" className="headerNav">
@@ -24,8 +17,9 @@ class NavAchiever extends React.Component {
                     </li>
                 </ul>
                 <ul id="rightItems">
-                    {!this.props.loggedIn &&
-                        /* if logged out show signup/login */
+                    {!sessionStorage.getItem("token") &&
+                        /*  Making use of the way the boilerplate code handled login seems to work
+                            if logged out show signup/login */
                         <>
                             <li id="sign up">
                                 <Link to="/signup"> Sign up </Link>
@@ -35,16 +29,13 @@ class NavAchiever extends React.Component {
                             </li>
                         </>
                     }
-                    {this.props.loggedIn &&
+                    {sessionStorage.getItem("token") &&
                         /* if logged in have a dropdown menu with the profile icon*/
-                        // <li id="logged">
-                        //     <Link to="/"> Logged in </Link>
-                        // </li>
 
                         <li className="pm admin">
                             <button
                                 className="profile-holder"
-                                onClick={e => this.props.logout(e)} //needs to be changed, just using for testing
+                                onClick={e => this.props.logout(e)} //needs to be changed, just using for testing login status
                             >
                                 <img
                                     src={groupIcon}
@@ -54,17 +45,6 @@ class NavAchiever extends React.Component {
                                 />
                             </button>
                         </li>
-
-                        // <li className="profile holder">
-                        //     <Link to="/groups">
-                        //         <img
-                        //             src={groupIcon}
-                        //             className="profile-icon"
-                        //             alt="profile"
-                        //             title="profile"
-                        //         />
-                        //     </Link>
-                        // </li>
                     }
                 </ul>
             </div>

@@ -13,12 +13,13 @@ import LoginForm from "./Component/LoginForm.jsx";
 import Profile from "./Component/Profile.jsx";
 import FriendForm from "./Component/FriendForm.jsx";
 import Modal from "./Component/Modal.jsx";
-/*import Navbar from "./Component/Navbar.jsx";*/
+// import Navbar from "./Component/Navbar.jsx";
 import Promise from "./Component/Promise.jsx";
 
 import {
   BrowserRouter as Router, Route, Routes
 } from 'react-router-dom';
+
 import NavAchiever from "./Component/NavAchiever";
 
 // toggleModal will both show and hide the modal dialog, depending on current state.  Note that the
@@ -107,8 +108,10 @@ class App extends React.Component {
       <div className="App">
         <header className="App-header">
 
-                    <NavAchiever loggedIn={this.state.login}/>
-          {/*<Navbar toggleModal={e => toggleModal(this, e)} logout={this.logout}/>*/}
+                    {/* <NavAchiever loggedIn={this.state.login}/> */}
+          {/* <Navbar toggleModal={e => toggleModal(this, e)} logout={this.logout}/> */}
+          <NavAchiever toggleModal={e => toggleModal(this, e)} logout={this.logout}/>
+          
 
           <div className="maincontent" id="mainContent">
             <Routes>
