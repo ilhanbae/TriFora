@@ -37,5 +37,9 @@
   width:40px;
   height:40px;
 
-  margin-bottom:15px;
+  margin-bottom:0;
+}
+
+.profile-holder {
+    margin-top: 1rem;
 }

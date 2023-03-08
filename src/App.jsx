@@ -105,31 +105,30 @@ class App extends React.Component {
       // expressions, and would otherwise capture all the routes.  Ask me how I
       // know this.
       <Router basename={process.env.PUBLIC_URL}>
-      <div className="App">
-        <header className="App-header">
+        <div className="App">
+          <header className="App-header">
 
-                    {/* <NavAchiever loggedIn={this.state.login}/> */}
-          {/* <Navbar toggleModal={e => toggleModal(this, e)} logout={this.logout}/> */}
-          <NavAchiever toggleModal={e => toggleModal(this, e)} logout={this.logout}/>
-          
+            {/* <Navbar toggleModal={e => toggleModal(this, e)} logout={this.logout}/> */}
+            <NavAchiever toggleModal={e => toggleModal(this, e)} logout={this.logout} />
 
-          <div className="maincontent" id="mainContent">
-            <Routes>
-              <Route path="/settings" element={<Settings login={this.login}  />} />
-              <Route path="/friends" element={<Friends  login={this.login} />} />   
-              <Route path="/groups" element={<Groups  login={this.login} />} />     
-              <Route path="/posts" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} />} />
-              <Route path="/promise" element={<Promise />} />
-              <Route path="/" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} />} />
 
-            </Routes>
-          </div>
-        </header>
+            <div className="maincontent" id="mainContent">
+              <Routes>
+                <Route path="/settings" element={<Settings login={this.login} />} />
+                <Route path="/friends" element={<Friends login={this.login} />} />
+                <Route path="/groups" element={<Groups login={this.login} />} />
+                <Route path="/posts" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} />} />
+                <Route path="/promise" element={<Promise />} />
+                <Route path="/" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} />} />
 
-        <Modal show={this.state.openModal} onClose={e => toggleModal(this, e)}>
-          This is a modal dialog!
-        </Modal>
-      </div>
+              </Routes>
+            </div>
+          </header>
+
+          <Modal show={this.state.openModal} onClose={e => toggleModal(this, e)}>
+            This is a modal dialog!
+          </Modal>
+        </div>
       </Router>
     );
   }
