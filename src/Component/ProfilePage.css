@@ -1,0 +1,520 @@
+.post-page{
+    position: relative;
+    width: 1440px;
+    height: 1024px;
+
+    background: #FEFEE2;
+}
+
+.top-navbar{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 1440px;
+    height: 54px;
+    left: 0px;
+    top: 0px;
+
+    background: #F3C26E;
+
+    border-bottom: 3px solid #3D211A;
+}
+
+.profile-title-bar{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 1440px;
+    height: 83px;
+    left: 0px;
+    top: 54px;
+
+    border: 2px solid #000000;
+}
+
+.profile-title{
+    position: absolute;
+    width: 405px;
+    height: 53px;
+    left: 550px;
+    top: 10px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 41px;
+    display: flex;
+    align-items: center;
+
+    color: #000000;
+}
+
+.edit-button{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 112px;
+    height: 42px;
+    left: 1145px;
+    top: 15px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 41px;
+    align-items: center;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.close-button{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 112px;
+    height: 42px;
+    left: 1280px;
+    top: 15px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 41px;
+    align-items: center;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.profile-info-bar{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 23px 98px 68px;
+    gap: 20px;
+    isolation: isolate;
+
+    position: absolute;
+    width: 1440px;
+    height: 243px;
+    left: 0px;
+    top: 135px;
+
+    border: 2px solid #000000;
+}
+
+.profile-avatar{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 213px;
+    height: 213px;
+    left: 92px;
+    top: 10px;
+
+    background: #FFFFFF;
+    border: 3px solid #000000;
+    border-radius: 50%;
+}
+
+.username{
+    position: absolute;
+    width: 210px;
+    height: 49px;
+    left: 322px;
+    top: 81px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 49px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #000000;
+
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    z-index: 1;
+}
+
+.user-joindata{
+    position: absolute;
+    width: 179px;
+    height: 19px;
+    left: 323px;
+    top: 139px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #616161;
+
+    flex: none;
+    order: 2;
+    flex-grow: 0;
+    z-index: 2;
+}
+
+.description{
+    position: absolute;
+    width: 376px;
+    height: 54px;
+    left: 881px;
+    top: 94px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 27px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #000000;
+
+    flex: none;
+    order: 3;
+    flex-grow: 0;
+    z-index: 3;
+}
+
+.favorite-communities-bar{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 1440px;
+    height: 243px;
+    left: 0px;
+    top: 378px;
+
+    border: 2px solid #000000;
+}
+
+.favorite-communities-title{
+    position: absolute;
+    width: 236px;
+    height: 27px;
+    left: 620px;
+    top: 10px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 27px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #000000;
+}
+
+.community-image-1{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    left: 407px;
+    top: 50px;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.community-title-1{
+    position: absolute;
+    width: 131px;
+    height: 32px;
+    left: 401px;
+    top: 190px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 22px;
+    align-items: center;
+    text-align: center;
+
+    color: #000000;
+}
+
+.community-image-2{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    left: 660px;
+    top: 50px;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.community-title-2{
+    position: absolute;
+    width: 131px;
+    height: 32px;
+    left: 654px;
+    top: 190px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 22px;
+    align-items: center;
+    text-align: center;
+
+    color: #000000;
+}
+
+.community-image-3{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    left: 903px;
+    top: 50px;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.community-title-3{
+    position: absolute;
+    width: 131px;
+    height: 32px;
+    left: 897px;
+    top: 190px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 22px;
+    align-items: center;
+    text-align: center;
+
+    color: #000000;
+}
+
+.my-friend-bar{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 1440px;
+    height: 403px;
+    left: 0px;
+    top: 621px;
+
+    border: 2px solid #000000;
+}
+
+.friend-num{
+    position: absolute;
+    width: 28px;
+    height: 20px;
+    left: 706px;
+    top: 5px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 27px;
+    align-items: center;
+    text-align: right;
+
+    color: #000000;
+}
+
+.friend-title{
+    position: absolute;
+    width: 121px;
+    height: 27px;
+    left: 659px;
+    top: 25px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 27px;
+    align-items: center;
+    text-align: center;
+
+    color: #000000;
+}
+
+.friend-card-1{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 241px;
+    height: 189px;
+    left: 60px;
+    top: 80px;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.friend-card-2{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 241px;
+    height: 189px;
+    left: 330px;
+    top: 80px;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.friend-card-3{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 241px;
+    height: 189px;
+    left: 600px;
+    top: 80px;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.friend-card-4{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 241px;
+    height: 189px;
+    left: 870px;
+    top: 80px;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.friend-card-5{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 241px;
+    height: 189px;
+    left: 1140px;
+    top: 80px;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.friend-avatar{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    left: 85px;
+    top: 5px;
+
+    background: #FFFFFF;
+    border: 2px solid #000000;
+    border-radius: 50%;
+}
+
+.friend-name{
+    position: absolute;
+    width: 130px;
+    height: 39px;
+    left: 55px;
+    top: 80px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 27px;
+    align-items: center;
+    text-align: center;
+
+    color: #000000;
+}
+
+.friend-remove{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 185px;
+    height: 41px;
+    left: 25px;
+    top: 125px;
+
+    background: #FF0000;
+    border: 2px solid #000000;
+    border-radius: 15px;
+}
+
+.remove-text{
+    position: absolute;
+    width: 99px;
+    height: 19px;
+    left: 10px;
+    top: 5px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 27px;
+    align-items: center;
+    text-align: center;
+
+    color: #000000;
+}
+
+.remove-icon{
+    position: absolute;
+    width: 30px;
+    height: 7px;
+    left: 130px;
+    top: 16px;
+
+    background: #000000;
+    border-radius: 10px;
+}
+
