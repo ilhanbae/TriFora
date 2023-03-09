@@ -6,6 +6,22 @@ import DropMenu from "./DropMenu";
 
 class NavAchiever extends React.Component {
 
+    constructor() {
+        super();
+        this.state = {
+            showDropMenu: false
+        };
+    }
+
+    // logoutClicked = () => {
+    //     { e => this.props.logout(e) };
+    //     this.menuSwitch();
+    // };
+
+    menuSwitch = () => {
+        this.setState(prevState => ({showDropMenu: !prevState.showDropMenu}));
+    };
+
     render() {
         return (
             <><div id="headerNav" className="headerNav">
@@ -32,10 +48,24 @@ class NavAchiever extends React.Component {
                     {sessionStorage.getItem("token") &&
                         /* if logged in have a dropdown menu with the profile icon*/
                         //needs to be changed, just using for testing login status
+                        //     <li className="pm admin">
+                        //     <button
+                        //         className="profile-holder"
+                        //         onClick={e => this.props.logout(e)}
+                        //     >
+                        //         <img
+                        //             src={groupIcon}
+                        //             className="profile-icon"
+                        //             alt="profile"
+                        //             title="profile"
+                        //         />
+                        //     </button>
+                        //     <DropMenu />
+                        // </li>
                         <li className="pm admin">
                             <button
                                 className="profile-holder"
-                                onClick={e => this.props.logout(e)}
+                                onClick={this.menuSwitch}
                             >
                                 <img
                                     src={groupIcon}
@@ -44,7 +74,26 @@ class NavAchiever extends React.Component {
                                     title="profile"
                                 />
                             </button>
-                            <DropMenu />
+                            {/* <DropMenu /> */}
+                            {/* {this.showDropMenu && */}
+                                <ul className={this.state.showDropMenu ? "showDrop" : "hideDrop"}>
+                                    <li>
+                                        <Link to="/profile" onClick={this.menuSwitch}> My Profile </Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/notifications" onClick={this.menuSwitch}> Notifications </Link>
+                                    </li>
+                                    <li>
+                                        <p onClick={e => {
+                                            /* this is the only way I could think to do this for logout */
+                                            this.props.logout(e);
+                                            this.menuSwitch();
+                                        }}>
+                                            Logout
+                                        </p>
+                                    </li>
+                                </ul>
+                            
                         </li>
                     }
                 </ul>
