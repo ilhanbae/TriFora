@@ -1,19 +1,15 @@
 import React, { Component } from "react";
-import "./Community.css";
+import "./CommunityPage.css";
 
 // Components placeholder
 // They'll be implemented as seperate component
 const Header = () => {
-  return (
-    <div className="header">Header</div>
-  );
+  return <div className="header">Header</div>;
 };
 
 const Footer = () => {
-  return (
-    <div className="footer">Footer</div>
-  )
-}
+  return <div className="footer">Footer</div>;
+};
 
 const Banner = () => {
   return (
@@ -35,11 +31,11 @@ const CommunityStats = () => {
   return (
     <div className="community-stats">
       <div className="community-stats-tab">
-        <p>3</p>
+        <span className="active-text">3</span>
         <span className="inactive-text">Posts</span>
       </div>
       <div className="community-stats-tab">
-        <p>38</p>
+        <span className="active-text">38</span>
         <span className="inactive-text">Members</span>
       </div>
     </div>
@@ -48,40 +44,31 @@ const CommunityStats = () => {
 
 const CreateSortBox = () => {
   return (
-    <div className="create-sort-box">
-      <div className="user-avatar"></div>
-      <div className="create-box">Create Post</div>
-      <div className="sort-button">Sort Posts</div>
+    <div className="create-sort-post-box">
+      <div className="sort-post-button">Sort Posts</div>
+      <div className="create-post-box">
+        <div className="create-post-placeholder inactive-text">
+          Tell us your story!
+        </div>
+        <div className="create-post-button">Create Post</div>
+      </div>
     </div>
   );
 };
 
-const SortOptionBox = () => {
-  return (
-    <div className="sort-option-box">
-    <div className="sort-option">
-      <p>Sort by Date</p>
-      <span className="inactive-text">Oldest to Newest</span>
-    </div>
-    <div className="sort-option">
-      <p>Sort by Vote</p>
-      <span className="inactive-text">Most to Least</span>
-    </div>
-    <div className="sort-option">
-      <p>Sort by Comment</p>
-      <span className="inactive-text">Most to Least</span>
-    </div>
-  </div>
-  )
-}
-
 const CommunityPost = () => {
-  return(
+  return (
     <div className="community-post">
-      <div className="post-upvote-btn">Upvote</div>
       <div className="post-thumbnail"></div>
+
       <div className="post-summary">
-        <h3>Welcome to Class of 2023, Please read our community guideline</h3>
+        <div className="post-id-title">
+          <span className="inactive-text">#001</span>
+          <h3 className="active-text">
+            Welcome to Class of 2023, Please read our community guideline
+          </h3>
+        </div>
+      
         <div className="post-author-date">
           <div className="post-author">
             <span className="inactive-text">Posted By</span>
@@ -93,7 +80,12 @@ const CommunityPost = () => {
           </div>
         </div>
       </div>
-      <div className="post-views-comments">
+      
+      <div className="post-stats">
+        <div className="post-reactions">
+          <span className="active-text">20</span>
+          <span className="inactive-text">Likes</span>
+        </div>
         <div className="post-views">
           <span className="active-text">100</span>
           <span className="inactive-text">Views</span>
@@ -103,38 +95,58 @@ const CommunityPost = () => {
           <span className="inactive-text">Comments</span>
         </div>
       </div>
+
+      <div className="post-action">
+        <span className="menu-icon"></span>
+      </div>
+    </div>
+  );
+};
+
+const Pagination = () => {
+  return (
+    <div className="pagination">
+      <div className="prev-button">Previous</div>
+      <div className="page-number">1</div>
+      <div className="next-button">Next</div>
     </div>
   )
 }
 
-export default class Community extends Component {
+export default class CommunityPage extends Component {
   render() {
     return (
-      <div className="community">
+      <div className="container">
         {/* Header */}
         <Header />
 
         {/* Banner */}
         <Banner />
 
-        {/* Main Container */}
-        <div className="main-container">
+        {/* Main section */}
+        <div className="main-section">
           {/* Community Stats */}
           <CommunityStats />
 
           {/* Create-Sort Box */}
           <CreateSortBox />
 
-          {/* Sort Option Box */}
-          <SortOptionBox />
-
           {/* Main Content */}
-          <div className="main-content">
+          <div className="posts-list">
             <CommunityPost />
             <CommunityPost />
             <CommunityPost />
             <CommunityPost />
-            </div>
+            <CommunityPost />
+            <CommunityPost />
+            <CommunityPost />
+            <CommunityPost />
+            <CommunityPost />
+            <CommunityPost />
+          </div>
+   
+          {/* Pagination */}
+          <Pagination />
         </div>
 
         {/* Footer */}
