@@ -1,0 +1,108 @@
+body {
+    background-color: #FEFEE2;
+}
+
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.inner {
+    max-width: 758px;
+    text-align: center;
+    padding: 27px 20px 37px;
+}
+
+/* Base Button Design */
+
+.base {
+    padding: 0 20px;
+    height: 35px;
+    border: none;
+    border-radius: 3px;
+    font-size: 25px;
+    background: #F3C26E;
+    color: #000000;
+    box-shadow: 0 4px 14px 0 rgb(0 0 0 / 13%);
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+.base:hover {
+    background: #F3C26E;
+    box-shadow: 0 6px 20px rgb(245 245 220 / 43%);
+}
+
+/* Submit Button */
+
+.base-reset-button {
+    margin-top: 5px;
+    position: relative;
+    padding: 0 125px;
+    border-radius: 10px;
+    height: 45px;
+    font-size: 16px;
+
+}
+
+.input1 {
+    text-align: center;
+    position: center;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input1-stuff {
+    border: 2px solid #000000;
+    border-radius: 10px;
+    display: block;
+    width: 400px;
+    height: 50px;
+    font-size: 15px;
+    background: none;
+}
+
+.forgottxt1 {
+    font-family: Montserrat-SemiBold;
+    font-size: 20px;
+    color: #000000;
+    line-height: 1.5;
+}
+
+.forgottxt2 {
+    font-family: Montserrat-SemiBold;
+    font-size: 16px;
+    color: #000000;
+    line-height: 1.5;
+
+}
+
+.form-class {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.centered {
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.centered-down {
+    /*height: 100vh;*/
+    padding-top: 10%;
+}
+
+.no-btn {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
