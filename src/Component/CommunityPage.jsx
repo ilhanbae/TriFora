@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import "./CommunityPage.css";
 
 // Components placeholder
@@ -21,7 +21,7 @@ const Banner = () => {
           <h2>Class of 2023</h2>
           <span className="inactive-text">Since February 19th, 2023</span>
         </div>
-        <div className="join-button">Join</div>
+        <button className="join-button">Join</button>
       </div>
     </div>
   );
@@ -42,21 +42,90 @@ const CommunityStats = () => {
   );
 };
 
-const CreateSortBox = () => {
+const CreateSortPostBox = () => {
+  const [isPostSortActive, setIsPostSortActive] = useState(false);
+  
+  // Toggles between post sort active and inactive 
+  const sortButtonToggleHandler = () => {
+    setIsPostSortActive(isPostSortActive ? false : true);
+  }
+  
   return (
     <div className="create-sort-post-box">
-      <div className="sort-post-button">Sort Posts</div>
+      <div className="sort-post">
+        <button className="sort-post-button" onClick={sortButtonToggleHandler}>Sort Posts</button>
+        <PostSortDropdown isActive={isPostSortActive}/>
+      </div>
       <div className="create-post-box">
         <div className="create-post-placeholder inactive-text">
           Tell us your story!
         </div>
-        <div className="create-post-button">Create Post</div>
+        <button className="create-post-button">Create Post</button>
       </div>
     </div>
   );
 };
 
+
+const PostSortDropdown = (props) => {
+  if (props.isActive) {
+    return (
+      <div className="posts-sort-dropdown">
+        <ul className="posts-sort-options-list">
+          <li className="posts-sort-option">
+            <span className="active-text">By Posted Date</span>
+            <span className="inactive-text">Oldest to Newest</span>
+          </li>
+          <li className="posts-sort-option">
+            <span className="active-text">By Likes</span>
+            <span className="inactive-text">Oldest to Newest</span>
+          </li>
+          <li className="posts-sort-option">
+            <span className="active-text">By Comments</span>
+            <span className="inactive-text">Oldest to Newest</span>
+          </li>
+        </ul>
+      </div>
+    )
+  }
+}
+
+
+const PostActionSidemenu = (props) => {
+  // 1. 'Delete' option should be only available for user's post or if the user is the community owner
+  // 2. The action sidemenu should close when user clicks anywhere outside
+  // - maybe use CSS pseudo focus-within?
+  if (props.isActive) {
+    return (
+      <div className="post-action-sidemenu">
+        <ul className="post-action-options-list">
+          <li className="post-action-option">
+            <span className="active-text">Pin to top</span>
+          </li>
+          <li className="post-action-option">
+            <span className="active-text">Hide</span>
+          </li>
+          <li className="post-action-option">
+            <span className="active-text">Report</span>
+          </li>
+          <li className="post-action-option">
+            <span className="active-text">Delete</span>
+          </li>
+        </ul>
+      </div>
+    )
+  }
+}
+
+
 const CommunityPost = () => {
+  const [isPostActionActive, setIsPostActionActive] = useState(false);
+
+  // Toggles between post action active and inactive 
+  const postActionButtonHandler = () => {
+    setIsPostActionActive(isPostActionActive ? false : true);
+  }
+
   return (
     <div className="community-post">
       <div className="post-thumbnail"></div>
@@ -97,18 +166,20 @@ const CommunityPost = () => {
       </div>
 
       <div className="post-action">
-        <span className="menu-icon"></span>
+        <span className="post-action-icon" onClick={postActionButtonHandler}>...</span>
+        <PostActionSidemenu isActive={isPostActionActive} />
       </div>
     </div>
+    
   );
 };
 
 const Pagination = () => {
   return (
     <div className="pagination">
-      <div className="prev-button">Previous</div>
+      <button className="prev-button">Previous</button>
       <div className="page-number">1</div>
-      <div className="next-button">Next</div>
+      <button className="next-button">Next</button>
     </div>
   )
 }
@@ -129,7 +200,7 @@ export default class CommunityPage extends Component {
           <CommunityStats />
 
           {/* Create-Sort Box */}
-          <CreateSortBox />
+          <CreateSortPostBox />
 
           {/* Main Content */}
           <div className="posts-list">
