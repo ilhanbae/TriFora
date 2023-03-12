@@ -30,6 +30,7 @@
 .header {
   position: sticky;
   top: 0;
+  z-index: 3;
 }
 
 /* Footer */
@@ -124,19 +125,26 @@
   border-radius: 10px;
   display: flex;
   align-items: center;
-  gap: 30px;
+  /* gap: 30px; */
 }
 .community-stats-tab {
-  margin: 10px;
+  padding: 10px;
+  width: 80px;
+  cursor: pointer;
+  /* border: 2px solid var(--bistre); */
+}
+.community-stats-tab:hover {
+  /* cursor: pointer; */
+  border-bottom: 2px solid var(--skobeloff);
 }
 
-/* Create-Sort Post Box*/
-.create-sort-post-box {
+/* Post Control tool */
+.post-control-tool {
   /* border: 2px solid var(--bistre); */
   border-radius: 10px;
   display: flex;
 }
-.sort-post {
+.sort-post-box {
   margin-right: auto;
 }
 .sort-post-button {
@@ -220,11 +228,13 @@
   width: 100%; 
 }
 .post-author-date {
+  /* border: 2px solid var(--bistre); */
   display: flex;
   flex-direction: row;
-  width: 210px;
+  width: fit-content;
   gap: 50px;
 }
+
 .post-stats {
   margin-left: auto;
   display: flex;
