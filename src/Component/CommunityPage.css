@@ -5,6 +5,7 @@
   --yellow-apricot: #f3c26e;
   --light-yellow: #fefee2;
   --skobeloff: #127475;
+  --red-orange: #ff4700;
 }
 
 /* Default */
@@ -235,12 +236,17 @@
   gap: 50px;
 }
 
-.post-stats {
+/* Post Labels */
+.post-labels {
   margin-left: auto;
+  /* border: 2px solid var(--bistre); */
+  position: relative;
+}
+.post-stat-labels {
   display: flex;
   gap: 10px;
 }
-.post-views {
+.post-stat-label {
   width: 90px;
   height: 90px;
   /* border: 2px solid var(--bistre); */
@@ -249,24 +255,37 @@
   place-items: center;
   align-content: center;
 }
-.post-reactions {
-  width: 90px;
-  height: 90px;
-  /* border: 2px solid var(--bistre); */
-  border-radius: 5px;
-  display: grid;
-  place-items: center;
-  align-content: center;
+.post-action-labels {
+  width: 100%;
+  position: absolute;
+  /* border: 1px solid var(--bistre); */
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
-.post-comments {
-  width: 90px;
-  height: 90px;
-  /* border: 2px solid var(--bistre); */
-  border-radius: 5px;
-  display: grid;
-  place-items: center;
-  align-content: center;
+.post-action-report-label {
+  margin-top: -5px;
+  padding: 5px;
+  border-radius: 0px 0px 5px 5px;
+  background-color: var(--bistre);
+  color: var(--light-yellow);
 }
+.post-action-hide-label {
+  margin-top: -5px;
+  padding: 5px;
+  border-radius: 0px 0px 5px 5px;
+  background-color: var(--french-bistre);
+  color: var(--light-yellow);
+}
+.post-action-pin-label {
+  margin-top: -5px;
+  padding: 5px;
+  border-radius: 0px 0px 5px 5px;
+  background-color: var(--skobeloff);
+  color: var(--light-yellow);
+}
+
+
 /* Post Action Sidemenu */
 .post-action-icon {
   cursor: pointer;
@@ -276,8 +295,6 @@
   background-color: var(--light-yellow);
   border: 2px solid var(--bistre);
   border-radius: 10px;
-  /* margin-left: 15px; */
-  /* margin-bottom: 130px; */
 }
 .post-action-options-list {
   list-style: none;
@@ -286,10 +303,45 @@
   border-radius: 5px;
   padding: 5px;
   cursor: pointer;
+  display: flex;
+  gap: 5px;
 }
 .post-action-option:hover {
   background-color: var(--yellow-apricot);
 }
+.post-action-pin-icon::before {
+  content: '';
+  display: block;
+  width: 15px;
+  height: 15px;
+  border-radius: 5px;
+  background-color: var(--skobeloff);
+}
+.post-action-hide-icon::before {
+  content: '';
+  display: block;
+  width: 15px;
+  height: 15px;
+  border-radius: 5px;
+  background-color: var(--french-bistre);
+}
+.post-action-report-icon::before {
+  content: '';
+  display: block;
+  width: 15px;
+  height: 15px;
+  border-radius: 5px;
+  background-color: var(--bistre);
+}
+.post-action-delete-icon::before {
+  content: '';
+  display: block;
+  width: 15px;
+  height: 15px;
+  border-radius: 5px;
+  background-color: var(--red-orange);
+}
+
 
 /* Pagination */
 .pagination {

@@ -1,7 +1,8 @@
 import React, { Component, useState, useEffect } from "react";
 import "./CommunityPage.css";
 
-/* This component will render the header contents. This includes, logo, navigation tabs, search box, and profile tab */
+/* This component will render the header contents. This includes, logo, navigation tabs, 
+search box, and profile tab */
 const Header = () => {
   return <div className="header">Header</div>;
 };
@@ -11,7 +12,8 @@ const Footer = () => {
   return <div className="footer">Footer</div>;
 };
 
-/* This component serves as container for banner contents. Inside the banner, there's community name, community background, community icon, and a join button*/
+/* This component serves as container for banner contents. Inside the banner, 
+there's community name, community background, community icon, and a join button*/
 const Banner = () => {
   return (
     <div className="banner">
@@ -28,7 +30,9 @@ const Banner = () => {
   );
 };
 
-/* This component serves as a container for community stats like the number of posts and number of members. Each stat also serves as a navigation tab between CommunityPostsList and CommunityMembersList */
+/* This component serves as a container for community stats like the number of posts 
+and number of members. Each stat also serves as a navigation tab between CommunityPostsList 
+and CommunityMembersList */
 const CommunityStats = (props) => {
   return (
     <div className="community-stats">
@@ -77,7 +81,8 @@ const PostControlTool = () => {
   );
 };
 
-/* This component will render a dropdown menu that lists options like By Posted Date, By Likes, and By Comments. This will be triggered when the user clicks on SortPosts button. */
+/* This component will render a dropdown menu that lists options like By Posted Date, 
+By Likes, and By Comments. This will be triggered when the user clicks on SortPosts button. */
 const PostSortDropdown = (props) => {
   if (props.isActive) {
     return (
@@ -101,42 +106,64 @@ const PostSortDropdown = (props) => {
   }
 };
 
-/* This component will render a post action sidemenu that lists options like pin to top, hide, report, and delete. This will be triggered when user clicks on CreatePost button. Note, delete option should be only available for user's own post or if the user is the admin of the community.*/
+/* This component will render a post action sidemenu that lists options like pin to top, 
+hide, report, and delete. This component will be triggered when the user clicks on 
+'...' icon on each post. */
 const PostActionSidemenu = (props) => {
   // Todo
-  // 1. 'Delete' option should be only available for user's post or if the user is the community owner
-  // 2. The action sidemenu should close when user clicks anywhere outside -> maybe use CSS pseudo focus-within?
+  // 1. Should know what kind of relationsip does user have with the post
+  // - 'Delete' option should be only available for user's post or if the user is the community owner/admin
+  // 2. The action sidemenu should close when user clicks anywhere outside
+  // -  maybe use CSS pseudo focus-within?
   const [isPinned, setIsPinned] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const [isReported, setIsReported] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
+
+  // These methods update the option labels and send the chosen action option to its parent component - CommunityPost.
+  const pinActionHandler = () => {
+    setIsPinned(isPinned ? false : true); // update the option status
+    props.postActionOptionsHandler("pin"); // tell CommunityPost component that 'pin' option was chosen
+  };
+  let pinOptionName = isPinned ? "Unpin" : "Pin to top"; // update the option label based on the status
+
+  const hideActionHandler = () => {
+    setIsHidden(isHidden ? false : true); // update the option status
+    props.postActionOptionsHandler("hide"); // tell CommunityPost component that 'hide' option was chosen
+  };
+  let hideOptionName = isHidden ? "Show" : "Hide"; // update the option label based on the status
+
+  const reportActionHandler = () => {
+    setIsReported(isReported ? false : true); // update the option status
+    props.postActionOptionsHandler("report"); // tell CommunityPost component that 'report' option was chosen
+  };
+  let reportOptionName = isReported ? "Reported" : "Report"; // update the option label as "reported"
+
+  const deleteActionHandler = () => {
+    setIsDeleted(isDeleted ? false : true); // update the option status
+    props.postActionOptionsHandler("delete"); // tell CommunityPost component that 'report' option was chosen
+  };
+  let deleteOptionName = isDeleted ? "Deleted" : "Delete"; // update the option label as "deleted"
 
   if (props.isActive) {
     return (
       <div className="post-action-sidemenu">
         <ul className="post-action-options-list">
-          <li
-            className="post-action-option"
-            onClick={() => props.postActionHandler("pin")}
-          >
-            <span className="active-text">Pin to top</span>
+          <li className="post-action-option" onClick={pinActionHandler}>
+            <span className="post-action-pin-icon"></span>
+            <span className="active-text">{pinOptionName}</span>
           </li>
-          <li
-            className="post-action-option"
-            onClick={() => props.postActionHandler("hide")}
-          >
-            <span className="active-text">Hide</span>
+          <li className="post-action-option" onClick={hideActionHandler}>
+            <span className="post-action-hide-icon"></span>
+            <span className="active-text">{hideOptionName}</span>
           </li>
-          <li
-            className="post-action-option"
-            onClick={() => props.postActionHandler("report")}
-          >
-            <span className="active-text">Report</span>
+          <li className="post-action-option" onClick={reportActionHandler}>
+            <span className="post-action-report-icon"></span>
+            <span className="active-text">{reportOptionName}</span>
           </li>
-          <li
-            className="post-action-option"
-            onClick={() => props.postActionHandler("delete")}
-          >
-            <span className="active-text">Delete</span>
+          <li className="post-action-option" onClick={deleteActionHandler}>
+            <span className="post-action-delete-icon"></span>
+            <span className="active-text">{deleteOptionName}</span>
           </li>
         </ul>
       </div>
@@ -153,19 +180,21 @@ const CommunityPost = (props) => {
 
   // This method toggles between post action active and inactive
   const postActionButtonHandler = () => {
-    // console.log(props.post.id)
     setIsPostActionActive(isPostActionActive ? false : true);
   };
 
   // This method handles post actions such as pinning, hiding, reporting, or deleting.
-  // It's passed on to its child component - postActionSidemenu, where the options are selected.
-  // It should call API to update each post, and refresh the post list.
+  // It's passed on to its child component - postActionSidemenu, where the action options are selected.
+  // Pin & Hide are user-specific actions, and they should persist to only user's post list.
+  // Report and Delete are global actions, and they should persist to all users' post lists.
+
+  // Note: It should call API to update each post, and refresh the post list.
   // Note: Should Pinning, hiding, or reporting considered as a reaction?
-  // Note: Should show a modal or toast to indiate that the post action has been selected
-  const postActionHandler = (option) => {
+  // Note: It should also display modal or toast to indiate that the post action has been selected
+  const postActionOptionsHandler = (option) => {
     switch (option) {
       case "pin":
-        console.log(option);
+        // console.log(option);
         setIsPostPinned(isPostPinned ? false : true);
         break;
       case "hide":
@@ -179,7 +208,7 @@ const CommunityPost = (props) => {
       case "delete":
         console.log(option);
         deletePost();
-        // should just call delete API, and update the post list 
+        // should just call delete API, and update the post list
         break;
       default:
         console.log(`Invalid Post Action: ${option}`);
@@ -190,10 +219,10 @@ const CommunityPost = (props) => {
   // Then, it calls refreshPosts method from prop to tell its parent component - CommunityPostList to refresh the post list.
   const deletePost = () => {
     // Should send DELETE request to the database.
-    // Should also call refreshPosts method from prop to tell its parent component - CommunityPostList 
+    // Should also call refreshPosts method from prop to tell its parent component - CommunityPostList
     // to refresh the post list.
     // props.refreshPosts();
-  }
+  };
 
   return (
     <div className="community-post" key={props.post.id}>
@@ -219,35 +248,60 @@ const CommunityPost = (props) => {
         </div>
       </div>
 
-      <div className="post-stats">
-        <div className="post-reactions">
-          <span className="active-text">20</span>
-          <span className="inactive-text">Likes</span>
+      <div className="post-labels">
+        {/* Post Action Labels */}
+        <div className="post-action-labels">
+          {isPostReported && (
+            <div className="post-action-report-label">
+              <span>Reported</span>
+            </div>
+          )}
+          {isPostHidden && (
+            <div className="post-action-hide-label">
+              <span>Hidden</span>
+            </div>
+          )}
+          {isPostPinned && (
+            <div className="post-action-pin-label">
+              <span>Pinned</span>
+            </div>
+          )}
         </div>
-        <div className="post-views">
-          <span className="active-text">100</span>
-          <span className="inactive-text">Views</span>
-        </div>
-        <div className="post-comments">
-          <span className="active-text">5</span>
-          <span className="inactive-text">Comments</span>
+
+        {/* Post Stats Labels */}
+        <div className="post-stat-labels">
+          <div className="post-stat-label">
+            <span className="active-text">20</span>
+            <span className="inactive-text">Likes</span>
+          </div>
+          <div className="post-stat-label">
+            <span className="active-text">100</span>
+            <span className="inactive-text">Views</span>
+          </div>
+          <div className="post-stat-label">
+            <span className="active-text">5</span>
+            <span className="inactive-text">Comments</span>
+          </div>
         </div>
       </div>
 
       <div className="post-action">
         <span className="post-action-icon" onClick={postActionButtonHandler}>
+          {/* This should be replaced with actual icon */}
           ...
         </span>
         <PostActionSidemenu
           isActive={isPostActionActive}
-          postActionHandler={postActionHandler}
+          postActionOptionsHandler={postActionOptionsHandler}
         />
       </div>
     </div>
   );
 };
 
-/* This component will render all the posts within a community. This list will update whenever user makes change to the post, this includes removing the post, pinning post, reporting the post, and hiding the post. */
+/* This component will render all the posts within a community. This list will update 
+whenever user makes change to the post, this includes removing the post, pinning post, 
+reporting the post, and hiding the post. */
 const CommunityPostList = (props) => {
   const [posts, setPosts] = useState([]);
   // const [refreshPosts, setRefreshPosts] = useState(false);
@@ -263,13 +317,13 @@ const CommunityPostList = (props) => {
   // useEffect(() => {
   //     loadPosts();
   //   }, [refreshPosts]);
-  
+
   // Refresh the posts when refreshPosts is triggered
   const refreshPosts = () => {
-    setIsLoaded(false); // switch back to unloaded state
     console.log("refreshing");
-    loadPosts();
-  }
+    setIsLoaded(false); // switch back to unloaded state
+    loadPosts(); // Fetch the posts again
+  };
 
   // Load posts from database with comments, reactions, views, etc.
   // Should be called whenever the post list needs to be updated, i.e. creating a post, deleting a post, and updating a post.
@@ -309,7 +363,11 @@ const CommunityPostList = (props) => {
       return (
         <div>
           {posts.map((post) => (
-            <CommunityPost key={post.id} post={post} refreshPosts={refreshPosts}/>
+            <CommunityPost
+              key={post.id}
+              post={post}
+              refreshPosts={refreshPosts}
+            />
           ))}
         </div>
       );
@@ -317,7 +375,8 @@ const CommunityPostList = (props) => {
   }
 };
 
-/* This component will render either the community posts list or community members list. The type of content to display is chosen by the community stats tab*/
+/* This component will render either the community posts list or community members list. 
+The type of content to display is chosen by the community stats tab*/
 const CommunityContentDisplay = (props) => {
   if (props.contentType === "posts") {
     return <CommunityPostList />;
@@ -326,7 +385,8 @@ const CommunityContentDisplay = (props) => {
   }
 };
 
-/* This component will render a pagination for communityPostList and CommunityMemberList. It contains previous button, next button, and current page indicatior. */
+/* This component will render a pagination for communityPostList and CommunityMemberList. 
+It contains previous button, next button, and current page indicatior. */
 const Pagination = () => {
   return (
     <div className="pagination">
@@ -337,7 +397,8 @@ const Pagination = () => {
   );
 };
 
-/* This component renders a single community page. Inside the community page, there are posts tab and members tab. */
+/* This component renders a single community page. Inside the community page, 
+there are posts tab and members tab. */
 export default function CommunityPage() {
   const [contentDisplayType, setContentDisplayType] = useState("posts");
 
