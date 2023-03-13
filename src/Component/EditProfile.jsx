@@ -5,7 +5,25 @@ import yellowbox from "../assets/yellowbox.jpg";
 import blackbox from "../assets/blackbox.png";
 
 class EditProfile extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+          imgdata: true
+        };
+      }
+
+    setimg = i => {
+        console.log(i.target.files);
+        console.log(i.target.files[0]);
+        
+        this.setState({
+            imgdata: URL.createObjectURL(i.target.files[0])
+        }) 
+    }
+
     render(){
+
         return(
             
             <form>
@@ -26,21 +44,21 @@ class EditProfile extends React.Component {
                    <input type="text" placeholder="Bio" className="bio" />
                 </label>
 
-                <label className="upload">
-                    Upload
-                    <input type='file' id='file-upload' className='empty'/>
-                </label>
+
+                <div>
+                <input type='file' id='file-upload' className='upload' onChange={this.setimg} />
+                </div> 
 
                 <button className="save">Save</button>
 
                 <button className="cancel">Cancel</button>
 
                 <button className="remove">Remove Account</button>
-                
-                <input className = 'pfp' type='image' src={harold} alt='filler'/>
+
+                <input className = 'pfp' type='image' src={this.state.imgdata} alt='default image'/>
 
                 <div className="choose">
-                    <h1>Choose Displayed Communities</h1>
+                <h1>Choose Displayed Communities</h1>
                 </div>
 
                 <input className = 'choosebox' type='image' src={yellowbox} alt='filler'/>
@@ -84,9 +102,9 @@ class EditProfile extends React.Component {
                 <div className="checkbox4"> 
                     <input type="checkbox" /> 
                 </div>
- 
-            </form>
-            
+
+                </form>
+
         )
     }
 }
