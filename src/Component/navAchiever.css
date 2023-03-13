@@ -44,7 +44,8 @@
 }
 
 .profile-holder {
-    margin-top: 1rem;
+    padding: 0;
+    /* border-width: 0; */
 }
 
 ul.hideDrop {
