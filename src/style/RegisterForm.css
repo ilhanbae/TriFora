@@ -17,12 +17,11 @@ body {
 }
 
 .pfp {
-    background-color: #F3C26E;
+    /*background-color: #F3C26E;*/
     width: 100px;
     height: 100px;
     display: inline-block;
     padding: 5px 10px;
-    /*background-color: #ccc;*/
     border: none;
     border-radius: 50%;
     font-size: 16px;
@@ -30,14 +29,19 @@ body {
     cursor: pointer;
 }
 
-.pfp::before {
-    color: #000000;
-    content: "Photo: ";
-    text-align: center;
-}
-
 .display {
     display: none;
+}
+
+.profile_image {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    left: 320px;
+    top: 140px;
+    border-radius: 50%;
+
+    background: #F3C26E;
 }
 
 .input {

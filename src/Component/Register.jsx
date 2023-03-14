@@ -1,5 +1,6 @@
 import React from 'react';
 import "../style/RegisterForm.css";
+import image_upload_icon from "../assets/image_upload_icon.jpeg"
 
 
 
@@ -12,7 +13,7 @@ export default class RegisterForm extends React.Component {
           confirm_password: "",
           phone: "",
           email: "",
-          image: "",
+          image: image_upload_icon,
           sessiontoken: ""
         };
     }
@@ -57,21 +58,22 @@ export default class RegisterForm extends React.Component {
         // Check if the password match with the confirm_password
         if (this.state.password !== this.state.confirm_password){
           alert("Password does not mathch with Confirm_password!");
+
+        // Check if the username length is correct
+        } else if (this.state.username.length < 3 || this.state.username.length > 20){
+          alert("Username must between 3 to 20 characters");
         
         // Check if the password length is correct
         } else if (this.state.password.length < 6 || this.state.password.length > 20){
           alert("Password must between 6 to 20 characters");
 
-        // Check if the username length is correct
-        } else if (this.state.username.length < 3 || this.state.username.length > 20){
-          alert("Username must between 3 to 20 characters");
+        // Check if the phone number length is correct
+        } else if (this.state.phone.length === 0){
+          alert("Phone can't be empty")
 
         // Check if the email length is correct
-        } else if (this.state.email.length == 0){
-          alert("email can't be empty")
-
-        } else if (this.state.phone.length == 0){
-          alert("phone can't be empty")
+        } else if (this.state.email.length === 0){
+          alert("Email can't be empty")
 
         } else {
           //keep the form from actually submitting
@@ -114,8 +116,8 @@ export default class RegisterForm extends React.Component {
                     <form>
                         <h3 className='h3-inner'>Create an Account</h3>
                         <label className='pfp'>
-                            <img src={this.state.image} />
                             <input type='file' className='display' onChange={this.upload_img}/>
+                            <img className='profile_image' src={this.state.image} />
                         </label>
                         <label className='input'>
                             <input type="text" placeholder="Username" className='input-stuff' onChange={this.usernameHandler}/>
