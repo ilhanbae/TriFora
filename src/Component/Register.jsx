@@ -12,6 +12,7 @@ export default class RegisterForm extends React.Component {
           confirm_password: "",
           phone: "",
           email: "",
+          image: "",
           sessiontoken: ""
         };
     }
@@ -46,33 +47,63 @@ export default class RegisterForm extends React.Component {
         });
       };
 
+    upload_img = event => {
+      this.setState({
+        image: URL.createObjectURL(event.target.files[0])
+      });
+    }
+
     submitHandler = event => {
-        //keep the form from actually submitting
-        event.preventDefault();
-    
-        //make the api call to the authentication page
-        fetch(process.env.REACT_APP_API_PATH+"/auth/signup", {
-          method: "post",
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            username: this.state.username,
-            password: this.state.password,
-            confirm_password: this.state.confirm_password,
-            phone: this.state.phone,
-            email: this.state.email,
-          })
-        })
-          .then(res => res.json())
-          .then(data => {
-            console.log(data);
+        // Check if the password match with the confirm_password
+        if (this.state.password !== this.state.confirm_password){
+          alert("Password does not mathch with Confirm_password!");
+        
+        // Check if the password length is correct
+        } else if (this.state.password.length < 6 || this.state.password.length > 20){
+          alert("Password must between 6 to 20 characters");
+
+        // Check if the username length is correct
+        } else if (this.state.username.length < 3 || this.state.username.length > 20){
+          alert("Username must between 3 to 20 characters");
+
+        // Check if the email length is correct
+        } else if (this.state.email.length == 0){
+          alert("email can't be empty")
+
+        } else if (this.state.phone.length == 0){
+          alert("phone can't be empty")
+
+        } else {
+          //keep the form from actually submitting
+          event.preventDefault();
+      
+          //make the api call to the authentication page
+          fetch(process.env.REACT_APP_API_PATH+"/auth/signup", {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json',
             },
-        error => {
-            alert("error!");
-          }
-        );
-      };
+            body: JSON.stringify({
+              email: this.state.email,
+              password: this.state.password,
+              attributes: {
+                username: this.state.username,
+                phone: this.state.phone,
+              }
+            })
+          })
+            .then(res => res.json())
+            .then(data => {
+              console.log(data);
+              },
+          error => {
+              alert("error!");
+            }
+          );
+        };
+
+      }
+
 
     render() {
         return (
@@ -83,7 +114,8 @@ export default class RegisterForm extends React.Component {
                     <form>
                         <h3 className='h3-inner'>Create an Account</h3>
                         <label className='pfp'>
-                            <input type='file' className='display'/>
+                            <img src={this.state.image} />
+                            <input type='file' className='display' onChange={this.upload_img}/>
                         </label>
                         <label className='input'>
                             <input type="text" placeholder="Username" className='input-stuff' onChange={this.usernameHandler}/>
