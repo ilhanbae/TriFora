@@ -8,7 +8,7 @@ export default class ForgotPass extends React.Component {
         return (
             <div>
                 <p className='forgottxt1 centered centered-down'> Forgot Password? </p>
-                <p className='forgottxt2 centered'> No worries, we will send you instructions </p>
+                <p className='forgottxt2 centered'> No worries, we will send you instructions to your email</p>
                 <div className='wrapper'>
                     <div className='inner'>
                         {/*&#8592;*/}
