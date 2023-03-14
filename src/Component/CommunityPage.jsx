@@ -1,4 +1,5 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import genericFetch from "../Helper/genericFetch";
 import "./CommunityPage.css";
 
 /* This component will render the header contents. This includes, logo, navigation tabs, 
@@ -206,9 +207,9 @@ const CommunityPost = (props) => {
         setIsPostReported(isPostReported ? false : true);
         break;
       case "delete":
+        // should just call delete API, and update the post list
         console.log(option);
         deletePost();
-        // should just call delete API, and update the post list
         break;
       default:
         console.log(`Invalid Post Action: ${option}`);
@@ -221,7 +222,7 @@ const CommunityPost = (props) => {
     // Should send DELETE request to the database.
     // Should also call refreshPosts method from prop to tell its parent component - CommunityPostList
     // to refresh the post list.
-    // props.refreshPosts();
+    props.refreshPosts();
   };
 
   return (
@@ -300,66 +301,48 @@ const CommunityPost = (props) => {
 };
 
 /* This component will render all the posts within a community. This list will update 
-whenever user makes change to the post, this includes removing the post, pinning post, 
-reporting the post, and hiding the post. */
+whenever user makes change to the post, this includes pinning the post, hiding the post, 
+reporting the post, and removing the post.*/
 const CommunityPostList = (props) => {
   const [posts, setPosts] = useState([]);
-  // const [refreshPosts, setRefreshPosts] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [errorResponse, setErrorResponse] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
-  // Fetch the posts when component is loaded
+  // Fetch the posts when the component is loaded
   useEffect(() => {
-    loadPosts();
+    let query = { sort: "newest", parentID: "" };
+    loadPosts(query);
   }, []);
 
-  // Refresh the posts when refreshPosts is triggered
-  // useEffect(() => {
-  //     loadPosts();
-  //   }, [refreshPosts]);
-
-  // Refresh the posts when refreshPosts is triggered
-  const refreshPosts = () => {
-    console.log("refreshing");
-    setIsLoaded(false); // switch back to unloaded state
-    loadPosts(); // Fetch the posts again
+  // This methods loads the posts using genericFetch.
+  // The endpoint is set to '/posts' by default, but the query can be passed in.
+  const loadPosts = async (query) => {
+    setIsLoaded(false);
+    let endpoint = "/posts";
+    const { data, errorMessage } = await genericFetch(endpoint, query);
+    console.log(data);
+    setPosts(data);
+    setErrorMessage(errorMessage);
+    setIsLoaded(true);
   };
 
-  // Load posts from database with comments, reactions, views, etc.
-  // Should be called whenever the post list needs to be updated, i.e. creating a post, deleting a post, and updating a post.
-  const loadPosts = async () => {
-    let sampleLoginToken =
-      "underachievers|-qQJ4JCVxvEbpHKyRUklJCqKZ5Gdm1evrekBkdvFjBw";
-    let headers = {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + sampleLoginToken,
-      // "Authorization": "Bearer " + sessionStorage.getItem("token"),
-    };
-    let params = new URLSearchParams({
-      sort: "newest",
-    });
-    let url = `${process.env.REACT_APP_API_PATH}/posts?${params}`;
-
-    try {
-      let response = await fetch(url, { headers });
-      let data = await response.json();
-      console.log(data[0]);
-      setPosts(data[0]);
-      setIsLoaded(true);
-    } catch (error) {
-      console.log(error);
-      setErrorResponse(error);
-      setIsLoaded(true);
-    }
+  // This method refresh the posts by sending the request to API again using genricFetch.
+  // It can be passed on to each CommunityPost component to handle changes,
+  // such as pinning, hiding, reporting, or deleting. It can also be passed on to Pagination
+  // component with skip and take query.
+  // Note: Should conside
+  const refreshPosts = (query) => {
+    console.log("refreshing posts");
+    loadPosts(query); // Fetch the posts again
   };
 
   // Render Component
-  if (errorResponse) {
-    return <div>Error: {errorResponse.message}</div>;
+  if (errorMessage) {
+    return <div>Error: {errorMessage}</div>;
   } else if (!isLoaded) {
     return <div>Loading...</div>;
   } else {
-    if (posts.length > 0) {
+    if (posts) {
       return (
         <div>
           {posts.map((post) => (
@@ -404,7 +387,7 @@ export default function CommunityPage() {
 
   // This method updates the current content display type as either posts or members.
   // It's passed on to its child component - CommunityStats, where the options are selected.
-  // Then the CommunityContentDisplay component renders based on the display type
+  // Then the CommunityContentDisplay component renders based on the display type (post list or members list)
   const postContentDisplayHandler = (type) => {
     setContentDisplayType(type);
   };
