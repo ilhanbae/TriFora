@@ -16,6 +16,10 @@ body {
     padding: 27px 20px 37px;
 }
 
+.password {
+    -webkit-text-security: square;
+}
+
 .pfp {
     /*background-color: #F3C26E;*/
     width: 100px;

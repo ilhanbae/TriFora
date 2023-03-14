@@ -57,7 +57,7 @@ export default class RegisterForm extends React.Component {
     submitHandler = event => {
         // Check if the password match with the confirm_password
         if (this.state.password !== this.state.confirm_password){
-          alert("Password does not mathch with Confirm_password!");
+          alert("Password does not match with Confirm_password!");
 
         // Check if the username length is correct
         } else if (this.state.username.length < 3 || this.state.username.length > 20){
@@ -117,16 +117,16 @@ export default class RegisterForm extends React.Component {
                         <h3 className='h3-inner'>Create an Account</h3>
                         <label className='pfp'>
                             <input type='file' className='display' onChange={this.upload_img}/>
-                            <img className='profile_image' src={this.state.image} />
+                            <img alt="" className='profile_image' src={this.state.image} />
                         </label>
                         <label className='input'>
                             <input type="text" placeholder="Username" className='input-stuff' onChange={this.usernameHandler}/>
                         </label>
                         <label className='input'>
-                            <input type="text" placeholder='Password' className='input-stuff' onChange={this.passwordHandler}/>
+                            <input type="text" placeholder='Password' className='input-stuff password' onChange={this.passwordHandler}/>
                         </label>
                         <label className='input'>
-                            <input type="text" placeholder='Confirm Password' className='input-stuff' onChange={this.confirm_passwordHandler}/>
+                            <input type="text" placeholder='Confirm Password' className='input-stuff password' onChange={this.confirm_passwordHandler}/>
                         </label>
                         <label className='input'>
                             <input type="text" placeholder='Phone Number' className='input-stuff' onChange={this.phoneHandler}/>
