@@ -1,15 +1,15 @@
-RegisterForm.cssbody {
+body {
     background-color: #FEFEE2;
 }
 
-.wrapper {
+.wrapper1 {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
 }
 
-.inner {
+.inner1 {
     max-width: 758px;
     text-align: center;
     padding: 27px 20px 37px;
@@ -32,11 +32,13 @@ RegisterForm.cssbody {
 .base:hover {
     background: #F3C26E;
     box-shadow: 0 6px 20px rgb(245 245 220 / 43%);
+    cursor: pointer;
 }
 
 /* Back Arrow */
 
 .base-back {
+    cursor: pointer;
     position: absolute;
     top: 1%;
     left: 1%;
@@ -68,11 +70,6 @@ RegisterForm.cssbody {
     height: 50px;
     font-size: 15px;
     background: none;
-}
-
-.input1-stuff:focus {
-    outline: none;
-    border-bottom: 2px solid #999999;
 }
 
 /* User */

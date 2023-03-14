@@ -6,12 +6,13 @@ import "../style/SignIn.css";
 export default class LoginForm extends React.Component {
     render() {
         return (
-            <div className='wrapper'>
-                <div className='inner'>
-
-                    <button className='base base-back'>&#8592;</button>
-
+            <div className='wrapper1'>
+                <div className='inner1'>
                     <form className='form-class'>
+                        <label>
+                            <button className='base base-back'>&#8592;</button>
+                        </label>
+
                         <label className='input1'>
                             <input type="text" placeholder="Username: " className='input1-stuff'/>
                         </label>
