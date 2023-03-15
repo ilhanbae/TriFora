@@ -122,6 +122,8 @@ class App extends React.Component {
 
             <div className="maincontent" id="mainContent">
               <Routes>
+                {/* The passMethod props are what will allow navbar style change aand should currently be attached to every route; only is not currently
+                as it was just being used for testing purposes but routes we use must have them. */}
                 <Route path="/settings" element={<Settings login={this.login} passMethod={this.navSwitch}/>} />
                 <Route path="/friends" element={<Friends login={this.login} />} />
                 <Route path="/groups" element={<Groups login={this.login} />} />
@@ -143,9 +145,11 @@ class App extends React.Component {
 }
 
 const Settings = (props) => {
+  /* if using functional components, the following use effect must exist for the navbar styling changes to occue (see figma 2 vs 3) */
   useEffect(() => {
     props.passMethod(3);
   }, []);
+  /* --see-above-comment-- */
 
    // if the user is not logged in, show the login form.  Otherwise, show the post form
    if (!sessionStorage.getItem("token")){
@@ -205,9 +209,11 @@ const Groups = (props) => {
 }
 
 const Posts = (props) => {
+  /* if using functional components, the following use effect must exist for the navbar styling changes to occue (see figma 2 vs 3) */
   useEffect(() => {
-    props.passMethod(2);
+    props.passMethod(3);
   }, []);
+  /* --see-above-comment-- */
 
   console.log("RENDERING POSTS");
   console.log(typeof(props.doRefreshPosts));
