@@ -25,51 +25,60 @@ export default class LoginForm extends React.Component {
 
     // when the user hits submit, process the login through the API
     submitHandler = event => {
-        //keep the form from actually submitting
-        event.preventDefault();
+        if (this.state.username.length === 0){
+            alert("Username can not be empty")
+        } else if (this.state.password.length === 0){
+            alert("Password can not be empty")
+        } else{
+            //keep the form from actually submitting
+            event.preventDefault();
 
-        //make the api call to the authentication page
-        fetch(process.env.REACT_APP_API_PATH+"/auth/login", {
-            method: "post",
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-            email: this.state.username,
-            password: this.state.password
-            })
-        })
-            .then(res => res.json())
-            .then(data => {console.log(data);})
-            .then(
-            result => {
-                console.log("Testing");
-                console.log(result);
-
-                if (result.userID) {
-                // set the auth token and user ID in the session state
-                sessionStorage.setItem("token", result.token);
-                sessionStorage.setItem("user", result.userID);
-    
-                this.setState({
-                    sessiontoken: result.token,
-                });
-    
-                } else {
-                // if the login failed, remove any infomation from the session state
-                sessionStorage.removeItem("token");
-                sessionStorage.removeItem("user");
-                this.setState({
-                    sessiontoken: "",
-                });
-                console.log("Login Failed!")
+            //make the api call to the authentication page
+            fetch(process.env.REACT_APP_API_PATH+"/auth/login", {
+                method: "post",
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                password: this.state.password,
+                attributes: {
+                    username: this.state.password
                 }
-            },
-            error => {
-                alert("error!");
-            }
-            );
+                })
+            })
+                .then(res => res.json())
+                .then(
+                result => {
+                    console.log("Testing");
+                    console.log(result);
+
+                    if (result.userID) {
+                    // if the login works, set the auth token and user ID in the session state
+                    sessionStorage.setItem("token", result.token);
+                    sessionStorage.setItem("user", result.userID);
+        
+                    this.setState({
+                        sessiontoken: result.token,
+                    });
+                    console.log(this.state.sessiontoken)
+                    console.log("Login Successful!")
+
+                    } else {
+                    // if the login failed, remove any infomation from the session state
+                    sessionStorage.removeItem("token");
+                    sessionStorage.removeItem("user");
+                    this.setState({
+                        sessiontoken: "",
+                    });
+                    console.log("Login Failed!")
+                    }
+                },
+                error => {
+                    alert("error!");
+                }
+                );
         }
+    }
 
     render() {
         return (
