@@ -4,7 +4,7 @@
   sibling components at a lower level.  It holds the basic structural components of navigation, content, and a modal dialog.
 */
 
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import PostForm from "./Component/PostForm.jsx";
 import FriendList from "./Component/FriendList.jsx";
@@ -44,7 +44,9 @@ class App extends React.Component {
       openModal: false,
       refreshPosts: false,
       logout: false,
-      login: false
+      login: false,
+      /* Since we have 2 NavBar style when logged in, default to one of them. See Figma for style 2 vs 3 */
+      navStyle: 2 
     };
 
     // in the event we need a handle back to the parent from a child component,
@@ -56,6 +58,12 @@ class App extends React.Component {
     this.doRefreshPosts = this.doRefreshPosts.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
+  }
+
+  navSwitch = (headerStyle) => {
+    if (headerStyle !== this.state.navStyle) {
+      this.setState({navStyle: headerStyle});
+    }
   }
 
   // on logout, pull the session token and user from session storage and update state
@@ -109,17 +117,17 @@ class App extends React.Component {
           <header className="App-header">
 
             {/* <Navbar toggleModal={e => toggleModal(this, e)} logout={this.logout}/> */}
-            <NavAchiever toggleModal={e => toggleModal(this, e)} logout={this.logout} />
+            <NavAchiever toggleModal={e => toggleModal(this, e)} logout={this.logout} navStyle={this.state.navStyle}/>
 
 
             <div className="maincontent" id="mainContent">
               <Routes>
-                <Route path="/settings" element={<Settings login={this.login} />} />
+                <Route path="/settings" element={<Settings login={this.login} passMethod={this.navSwitch}/>} />
                 <Route path="/friends" element={<Friends login={this.login} />} />
                 <Route path="/groups" element={<Groups login={this.login} />} />
-                <Route path="/posts" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} />} />
+                <Route path="/posts" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts}  passMethod={this.navSwitch}/>} />
                 <Route path="/promise" element={<Promise />} />
-                <Route path="/" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} />} />
+                <Route path="/" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts}  passMethod={this.navSwitch}/>} />
 
               </Routes>
             </div>
@@ -135,6 +143,10 @@ class App extends React.Component {
 }
 
 const Settings = (props) => {
+  useEffect(() => {
+    props.passMethod(3);
+  }, []);
+
    // if the user is not logged in, show the login form.  Otherwise, show the post form
    if (!sessionStorage.getItem("token")){
     console.log("LOGGED OUT");
@@ -193,6 +205,10 @@ const Groups = (props) => {
 }
 
 const Posts = (props) => {
+  useEffect(() => {
+    props.passMethod(2);
+  }, []);
+
   console.log("RENDERING POSTS");
   console.log(typeof(props.doRefreshPosts));
   
