@@ -40,10 +40,8 @@ export default class LoginForm extends React.Component {
                 'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                email: this.state.username,
                 password: this.state.password,
-                attributes: {
-                    username: this.state.password
-                }
                 })
             })
                 .then(res => res.json())
@@ -93,7 +91,7 @@ export default class LoginForm extends React.Component {
                             <input type="text" placeholder="Username: " className='input1-stuff' onChange={this.UsernameHandler}/>
                         </label>
                         <label className='input1'>
-                            <input type="text" placeholder="Password: " className='input1-stuff' onChange={this.PasswordHandler}/>
+                            <input type="password" placeholder="Password: " className='input1-stuff' onChange={this.PasswordHandler}/>
                         </label>
                         <label className='input1'>
                             <p className='txt1'><a href="#"> Forgot Password? </a></p>
