@@ -31,7 +31,7 @@ export default class ProfilePage extends React.Component {
           method: "get",
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + sessionStorage.getItem('user')
+            'Authorization': 'Bearer ' + sessionStorage.getItem('token')
           }
         })
           .then(res => res.json())
@@ -62,7 +62,7 @@ export default class ProfilePage extends React.Component {
 
     componentDidMount() {
         this.render_user();
-      }
+    }
 
     removeHandler_1() {
         this.setState({
