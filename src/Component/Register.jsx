@@ -13,7 +13,6 @@ export default class RegisterForm extends React.Component {
           confirm_password: "",
           phone: "",
           email: "",
-          image: image_upload_icon,
           sessiontoken: ""
         };
     }
@@ -91,6 +90,10 @@ export default class RegisterForm extends React.Component {
               password: this.state.password,
               attributes: {
                 username: this.state.username,
+                firstName: "",
+                lastName: "",
+                description: "",
+                profileImage: "",
                 phone: this.state.phone,
               }
             })
