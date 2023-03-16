@@ -5,15 +5,15 @@ export default class LoginForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: "",
+            email: "",
             password: "",
             sessiontoken: ""
         }
     }
 
-    UsernameHandler = event => {
+    EmailHandler = event => {
         this.setState({
-          username: event.target.value
+          email: event.target.value
         });
     };
 
@@ -25,7 +25,7 @@ export default class LoginForm extends React.Component {
 
     // when the user hits submit, process the login through the API
     submitHandler = event => {
-        if (this.state.username.length === 0){
+        if (this.state.email.length === 0){
             alert("Username can not be empty")
         } else if (this.state.password.length === 0){
             alert("Password can not be empty")
@@ -40,7 +40,7 @@ export default class LoginForm extends React.Component {
                 'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                email: this.state.username,
+                email: this.state.email,
                 password: this.state.password,
                 })
             })
@@ -88,7 +88,7 @@ export default class LoginForm extends React.Component {
                         </label>
 
                         <label className='input1'>
-                            <input type="text" placeholder="Username: " className='input1-stuff' onChange={this.UsernameHandler}/>
+                            <input type="text" placeholder="Email: " className='input1-stuff' onChange={this.EmailHandler}/>
                         </label>
                         <label className='input1'>
                             <input type="password" placeholder="Password: " className='input1-stuff' onChange={this.PasswordHandler}/>
