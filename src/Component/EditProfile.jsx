@@ -1,5 +1,5 @@
 import React from "react";
-import "./EditProfile.css";
+import "../style/EditProfile.css";
 import harold from "../assets/harold.jpg";
 import yellowbox from "../assets/yellowbox.jpg";
 import blackbox from "../assets/blackbox.png";
@@ -53,11 +53,11 @@ class EditProfile extends React.Component {
 
                 <button className="cancel">Cancel</button>
 
-                <button className="remove">Remove Account</button>
+                {/* <button className="remove">Remove Account</button> */}
 
                 <input className = 'pfp' type='image' src={this.state.imgdata} alt='default image'/>
 
-                <div className="choose">
+                {/* <div className="choose">
                 <h1>Choose Displayed Communities</h1>
                 </div>
 
@@ -101,7 +101,7 @@ class EditProfile extends React.Component {
 
                 <div className="checkbox4"> 
                     <input type="checkbox" /> 
-                </div>
+                </div> */}
 
                 </form>
 
