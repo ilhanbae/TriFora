@@ -46,7 +46,7 @@ class App extends React.Component {
       logout: false,
       login: false,
       /* Since we have 2 NavBar style when logged in, default to one of them. See Figma for style 2 vs 3 */
-      navStyle: 2 
+      navStyle: 2
     };
 
     // in the event we need a handle back to the parent from a child component,
@@ -62,43 +62,43 @@ class App extends React.Component {
 
   navSwitch = (headerStyle) => {
     if (headerStyle !== this.state.navStyle) {
-      this.setState({navStyle: headerStyle});
+      this.setState({ navStyle: headerStyle });
     }
   }
 
   // on logout, pull the session token and user from session storage and update state
-  logout = () =>{
+  logout = () => {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("user");
     this.setState({
       logout: true,
       login: false
     });
-    
+
   }
-  
+
   // on login, update state and refresh the posts
   login = () => {
     this.setState({
       login: true,
       logout: false,
-      refreshPosts:true
-    });  
+      refreshPosts: true
+    });
   }
-  
+
 
   // doRefreshPosts is called after the user logs in, to display relevant posts.
   // there are probably more elegant ways to solve this problem, but this is... a way
   doRefreshPosts = () => {
     console.log("CALLING DOREFRESHPOSTS IN APP");
     this.setState({
-      refreshPosts:true
+      refreshPosts: true
     });
   }
 
-  componentDidMount(){
-    window.addEventListener('click', e => {console.log("TESTING EVENT LISTENER")});
-  
+  componentDidMount() {
+    window.addEventListener('click', e => { console.log("TESTING EVENT LISTENER") });
+
   }
 
   render() {
@@ -117,19 +117,19 @@ class App extends React.Component {
           <header className="App-header">
 
             {/* <Navbar toggleModal={e => toggleModal(this, e)} logout={this.logout}/> */}
-            <NavAchiever toggleModal={e => toggleModal(this, e)} logout={this.logout} navStyle={this.state.navStyle}/>
+            <NavAchiever toggleModal={e => toggleModal(this, e)} logout={this.logout} navStyle={this.state.navStyle} />
 
 
             <div className="maincontent" id="mainContent">
               <Routes>
                 {/* The passMethod props are what will allow navbar style change aand should currently be attached to every route; only is not currently
                 as it was just being used for testing purposes but routes we use must have them. */}
-                <Route path="/settings" element={<Settings login={this.login} passMethod={this.navSwitch}/>} />
+                <Route path="/settings" element={<Settings login={this.login} passMethod={this.navSwitch} />} />
                 <Route path="/friends" element={<Friends login={this.login} />} />
                 <Route path="/groups" element={<Groups login={this.login} />} />
-                <Route path="/posts" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts}  passMethod={this.navSwitch}/>} />
+                <Route path="/posts" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} passMethod={this.navSwitch} />} />
                 <Route path="/promise" element={<Promise />} />
-                <Route path="/" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts}  passMethod={this.navSwitch}/>} />
+                <Route path="/" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} passMethod={this.navSwitch} />} />
 
               </Routes>
             </div>
@@ -151,92 +151,92 @@ const Settings = (props) => {
   }, []);
   /* --see-above-comment-- */
 
-   // if the user is not logged in, show the login form.  Otherwise, show the post form
-   if (!sessionStorage.getItem("token")){
+  // if the user is not logged in, show the login form.  Otherwise, show the post form
+  if (!sessionStorage.getItem("token")) {
     console.log("LOGGED OUT");
-    return(
+    return (
       <div>
-      <p>CSE 370 Social Media Test Harness</p>
-      <LoginForm login={props.login}  />
+        <p>CSE 370 Social Media Test Harness</p>
+        <LoginForm login={props.login} />
       </div>
     );
   }
   return (
     <div className="settings">
-    <p>Settings</p>
-    <Profile userid={sessionStorage.getItem("user")} />
-  </div>
+      <p>Settings</p>
+      <Profile userid={sessionStorage.getItem("user")} />
+    </div>
   );
 }
 
 const Friends = (props) => {
-   // if the user is not logged in, show the login form.  Otherwise, show the post form
-   if (!sessionStorage.getItem("token")){
+  // if the user is not logged in, show the login form.  Otherwise, show the post form
+  if (!sessionStorage.getItem("token")) {
     console.log("LOGGED OUT");
-    return(
+    return (
       <div>
-      <p>CSE 370 Social Media Test Harness</p>
-      <LoginForm login={props.login}  />
+        <p>CSE 370 Social Media Test Harness</p>
+        <LoginForm login={props.login} />
       </div>
     );
   }
-   return (
+  return (
     <div>
       <p>Friends</p>
-        <FriendForm userid={sessionStorage.getItem("user")} />
-        <FriendList userid={sessionStorage.getItem("user")} />
+      <FriendForm userid={sessionStorage.getItem("user")} />
+      <FriendList userid={sessionStorage.getItem("user")} />
     </div>
-   );
+  );
 }
 
 const Groups = (props) => {
   // if the user is not logged in, show the login form.  Otherwise, show the post form
-  if (!sessionStorage.getItem("token")){
-   console.log("LOGGED OUT");
-   return(
-     <div>
-     <p>CSE 370 Social Media Test Harness</p>
-     <LoginForm login={props.login}  />
-     </div>
-   );
- }
+  if (!sessionStorage.getItem("token")) {
+    console.log("LOGGED OUT");
+    return (
+      <div>
+        <p>CSE 370 Social Media Test Harness</p>
+        <LoginForm login={props.login} />
+      </div>
+    );
+  }
   return (
-   <div>
-     <p>Join a Group!</p>
-       <GroupList userid={sessionStorage.getItem("user")} />
-   </div>
+    <div>
+      <p>Join a Group!</p>
+      <GroupList userid={sessionStorage.getItem("user")} />
+    </div>
   );
 }
 
 const Posts = (props) => {
   /* if using functional components, the following use effect must exist for the navbar styling changes to occue (see figma 2 vs 3) */
   useEffect(() => {
-    props.passMethod(3);
+    props.passMethod(2);
   }, []);
   /* --see-above-comment-- */
 
   console.log("RENDERING POSTS");
-  console.log(typeof(props.doRefreshPosts));
-  
+  console.log(typeof (props.doRefreshPosts));
 
-  console.log ("TEST COMPLETE");
+
+  console.log("TEST COMPLETE");
 
   // if the user is not logged in, show the login form.  Otherwise, show the post form
-  if (!sessionStorage.getItem("token")){
+  if (!sessionStorage.getItem("token")) {
     console.log("LOGGED OUT");
-    return(
+    return (
       <div>
-      <p>CSE 370 Social Media Test Harness</p>
-      <LoginForm login={props.login}  />
+        <p>CSE 370 Social Media Test Harness</p>
+        <LoginForm login={props.login} />
       </div>
     );
-  }else{
+  } else {
     console.log("LOGGED IN");
     return (
       <div>
-      <p>CSE 370 Social Media Test Harness</p>
-      <PostForm refresh={props.apprefresh}/>
-    </div>
+        <p>CSE 370 Social Media Test Harness</p>
+        <PostForm refresh={props.apprefresh} />
+      </div>
     );
   }
 }

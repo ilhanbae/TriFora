@@ -2,7 +2,7 @@ import React from "react";
 import "./NavAchiever.css";
 import { Link } from "react-router-dom";
 import groupIcon from "../assets/group.png";
-import DropMenu from "./DropMenu";
+// import DropMenu from "./DropMenu";
 
 class NavAchiever extends React.Component {
 
@@ -28,26 +28,18 @@ class NavAchiever extends React.Component {
                         <Link to="/"> Logo </Link>
                     </li>
                     {/* About/browse link will be changing depending on page, see search bar comment in next div */}
-                    {this.props.navStyle === 2 ? (
-                        <li id="about us">
-                            <Link to="/about"> About us </Link>
-                        </li>
-                    ) : (
-                        /* browse may end up being a logged in only function? */
-                        <li id="browse">
-                            <Link to="/"> Browse </Link>
-                        </li>
-                    )}
+                        {/* this.props.navStyle === 2 ? (about page link will go here):(browse link will go here) */}
+                       { /* browse may end up being a logged in only function? this comment was a part of the above browse link */}
 
                 </ul>
-                {sessionStorage.getItem("token") &&
-                    /* The middle item search bar only occurs while logged in and only on certain pages. There will exist a state variable
-                    in the main app that needs to potentially be updated whenever a page loads */
-                    <div>
+                {/* {sessionStorage.getItem("token") && */}
+                    {/* The middle item search bar only occurs while logged in and only on certain pages. There will exist a state variable
+                    in the main app that needs to potentially be updated whenever a page loads */}
+                    {/* <div>
                         {this.props.navStyle === 3 &&
                             <input type="text" placeholder="search function" />}
                     </div>
-                }
+                } */}
                 {/* Items on the right side of the navbar are handled here, drop down included */}
                 <ul id="rightItems">
                     {!sessionStorage.getItem("token") &&
@@ -78,7 +70,7 @@ class NavAchiever extends React.Component {
                             {/* <DropMenu /> */}
                             {/* DropMenu could now likely be switch to being it's own component, though a way to logout would
                                     have to be passed through */}
-                            {/* the following line uses terinary statement to allow for the hiding/showing of the drop down via css */}
+                            {/* the following line uses ternary statement to allow for the hiding/showing of the drop down via css */}
                             <ul className={this.state.showDropMenu ? "showDrop" : "hideDrop"}>
                                 <li>
                                     <Link to="/profile" onClick={this.menuSwitch}> My Profile </Link>

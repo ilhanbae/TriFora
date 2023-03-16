@@ -36,6 +36,7 @@
 
 .logo {
     font-size: 4rem;
+    color: #3D211A;
 }
 
 .profile-icon{
@@ -55,17 +56,18 @@ ul.hideDrop {
 ul.showDrop {
     position: absolute;
     display: block;
-    background: #f3e45a;
+    background: #FEFEE2;
     right: 0;
 }
 
 ul.showDrop li {
     padding: 5px;
     margin: 0;
+    color: #8E6F52;
 }
 
 ul.showDrop li a:hover {
-    background: #ce7611;
+    background: #3D211A ;
 }
 
 .input {
