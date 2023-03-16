@@ -103,7 +103,7 @@ class EditProfile extends React.Component {
                     <input type="checkbox" /> 
                 </div> */}
 
-                </form>
+            </form>
 
         )
     }
