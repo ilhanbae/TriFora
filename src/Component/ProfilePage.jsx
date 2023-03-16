@@ -8,11 +8,12 @@ export default class ProfilePage extends React.Component {
         this.state = {
             email: "",
             username: "",
-            firstname: "",
-            lastname: "",
+            firstName: "",
+            lastName: "",
             description: "",
             profileImage: "",
-            phoneNumber: "",
+            phone: "",
+
             isRemoved_1: false,
             isRemoved_2: false,
             isRemoved_3: false,
@@ -22,16 +23,15 @@ export default class ProfilePage extends React.Component {
         };
     }
 
-    componentDidMount() {
+    render_user(){
         console.log("In profile");
-        console.log(this.props);
-    
+        console.log(sessionStorage)
         // fetch the user data, and extract out the attributes to load and display
-        fetch(process.env.REACT_APP_API_PATH+"/users/"+sessionStorage.getItem("user"), {
+        fetch(process.env.REACT_APP_API_PATH + "/users/" + sessionStorage.getItem('user'), {
           method: "get",
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+sessionStorage.getItem("token")
+            'Authorization': 'Bearer ' + sessionStorage.getItem('user')
           }
         })
           .then(res => res.json())
@@ -43,13 +43,13 @@ export default class ProfilePage extends React.Component {
                 this.setState({
                   // IMPORTANT!  You need to guard against any of these values being null.  If they are, it will
                   // try and make the form component uncontrolled, which plays havoc with react
-                  email: result.attributes.username || "",
+                  email: result.attributes.email || "",
                   username: result.attributes.username || "",
-                  firstname: result.attributes.firstName || "",
-                  lastname: result.attributes.lastName || "",
+                  firstName: result.attributes.firstName || "",
+                  lastName: result.attributes.lastName || "",
                   description: result.attributes.description || "",
                   profileImage: result.attributes.profileImage || "",
-                  phoneNumber: result.attributes.phoneNumber || "",
+                  phone: result.attributes.phone || "",
                 });
               }
               }
@@ -58,6 +58,10 @@ export default class ProfilePage extends React.Component {
               alert("error!");
             }
           );
+    }
+
+    componentDidMount() {
+        this.render_user();
       }
 
     removeHandler_1() {
@@ -205,7 +209,7 @@ export default class ProfilePage extends React.Component {
 
             <div className = 'profile-title-bar'> 
                 <div className = 'profile-title'>
-                    <b>Spiderman&prime;s Profile Page</b>
+                    <b>{this.state.username}&prime;s Profile Page</b>
                 </div>
                 <button className = 'edit-button'>Edit</button>
                 <button className = 'close-button'>Close</button>
@@ -213,15 +217,16 @@ export default class ProfilePage extends React.Component {
 
             <div className = 'profile-info-bar'>
                 <div className = 'profile-avatar'>
+                    <img alt="" className='profile_image' src={this.state.profileImage} />
                 </div>
                 <div className = 'username'>
-                    <b>Spiderman</b>
+                    <b>{this.state.username}</b>
                 </div>
                 <div className = 'user-joindata'>
-                    <b>Since February 19, 2023</b>
+                    {/* <b>Since February 19, 2023</b> */}
                 </div>
                 <div className = 'description'>
-                    <b>Hi, I’m Spiderman. I live my life with great responsibilities.</b>
+                    <b>{this.state.description}</b>
                 </div>
             </div>
 
