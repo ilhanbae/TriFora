@@ -6,6 +6,13 @@ export default class ProfilePage extends React.Component {
     constructor() {
         super();
         this.state = {
+            email: "",
+            username: "",
+            firstname: "",
+            lastname: "",
+            description: "",
+            profileImage: "",
+            phoneNumber: "",
             isRemoved_1: false,
             isRemoved_2: false,
             isRemoved_3: false,
@@ -14,6 +21,44 @@ export default class ProfilePage extends React.Component {
             current_friend_num: 5,
         };
     }
+
+    componentDidMount() {
+        console.log("In profile");
+        console.log(this.props);
+    
+        // fetch the user data, and extract out the attributes to load and display
+        fetch(process.env.REACT_APP_API_PATH+"/users/"+sessionStorage.getItem("user"), {
+          method: "get",
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+sessionStorage.getItem("token")
+          }
+        })
+          .then(res => res.json())
+          .then(
+            result => {
+              if (result) {
+                console.log(result);
+                if (result.attributes){
+                this.setState({
+                  // IMPORTANT!  You need to guard against any of these values being null.  If they are, it will
+                  // try and make the form component uncontrolled, which plays havoc with react
+                  email: result.attributes.username || "",
+                  username: result.attributes.username || "",
+                  firstname: result.attributes.firstName || "",
+                  lastname: result.attributes.lastName || "",
+                  description: result.attributes.description || "",
+                  profileImage: result.attributes.profileImage || "",
+                  phoneNumber: result.attributes.phoneNumber || "",
+                });
+              }
+              }
+            },
+            error => {
+              alert("error!");
+            }
+          );
+      }
 
     removeHandler_1() {
         this.setState({
@@ -180,6 +225,7 @@ export default class ProfilePage extends React.Component {
                 </div>
             </div>
 
+            {/*
             <div className = 'favorite-communities-bar'>
                 <div className = 'favorite-communities-title'>
                     <b>Favorite Communities</b>
@@ -219,7 +265,8 @@ export default class ProfilePage extends React.Component {
 
                 {friend5}
 
-            </div>
+            </div> 
+            */}
 
         </div>
         );
