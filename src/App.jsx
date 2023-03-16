@@ -9,7 +9,7 @@ import "./App.css";
 import PostForm from "./Component/PostForm.jsx";
 import FriendList from "./Component/FriendList.jsx";
 import GroupList from "./Component/GroupList.jsx";
-import LoginForm from "./Component/LoginForm.jsx";
+import LoginForm from "./Component/SignIn.jsx";
 import Profile from "./Component/Profile.jsx";
 import FriendForm from "./Component/FriendForm.jsx";
 import Modal from "./Component/Modal.jsx";
@@ -110,12 +110,14 @@ class App extends React.Component {
 
           <div className="maincontent" id="mainContent">
             <Routes>
+              <Route path="/login" element={<LoginForm login={this.login} /> } />
               <Route path="/settings" element={<Settings login={this.login}  />} />
               <Route path="/friends" element={<Friends  login={this.login} />} />   
               <Route path="/groups" element={<Groups  login={this.login} />} />     
               <Route path="/posts" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} />} />
               <Route path="/promise" element={<Promise />} />
               <Route path="/" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} />} />
+
 
             </Routes>
           </div>
