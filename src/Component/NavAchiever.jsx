@@ -75,9 +75,9 @@ class NavAchiever extends React.Component {
                                 <li>
                                     <Link to="/profile" onClick={this.menuSwitch}> My Profile </Link>
                                 </li>
-                                <li>
+                                {/* <li>
                                     <Link to="/notifications" onClick={this.menuSwitch}> Notifications </Link>
-                                </li>
+                                </li> */}
                                 <li>
                                     <Link to="/" onClick={e => {
                                         /* this is the only way I could think to do this for logout */
