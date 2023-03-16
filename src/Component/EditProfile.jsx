@@ -57,6 +57,7 @@ class EditProfile extends React.Component {
 
                 <input className = 'pfp' type='image' src={this.state.imgdata} alt='default image'/>
 
+                {/*
                 <div className="choose">
                 <h1>Choose Displayed Communities</h1>
                 </div>
@@ -102,8 +103,9 @@ class EditProfile extends React.Component {
                 <div className="checkbox4"> 
                     <input type="checkbox" /> 
                 </div>
+                */}
 
-                </form>
+            </form>
 
         )
     }
