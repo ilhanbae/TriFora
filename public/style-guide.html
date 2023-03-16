@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
   <link rel="stylesheet" href="../src/style/style-guide.css">
   <link href='https://fonts.googleapis.com/css?family=Alfa Slab One' rel='stylesheet'>
@@ -9,7 +9,7 @@
 
 <h1 class="alfa">Underachievers Style Guide</h1>
 
-<h2> Fonts </h2>
+<h2 style="font-weight: normal;"> Fonts </h2>
 <div class="font-wrapper">
   <div class="font-inner-wrapper">
     <p class="alfa">Titles, Headings: 36px</p>
@@ -37,17 +37,268 @@
   </div>
 </div>
 
-<h2> Layout and Navigation </h2>
+<h2 style="font-weight: normal;"> Layout and Navigation </h2>
 <div class="layoutWrapper">
   <div class="layoutWrapper-inner-left">
-    <p>[Name of] Layout</p>
+    <h3>Main Community Layout</h3>
+    <p>a. Header:</p>
+    <ul>
+      <li>Logo</li>
+      <li>Navigation Menu</li>
+    </ul>
+    <div class="mini-layout">
+      <div class="mini-nav">Nav</div>
+    </div>
   </div>
   <div class="layoutWrapper-inner-right">
-    <p>[Example]</p>
+  <textarea class="textarea" disabled="true">
+    * {
+      box-sizing: border-box;
+    }
+
+    .headerNav {
+      background-color: #F3C26E;
+      color: black;
+      display: flex;
+      justify-content: space-between;
+      /*padding: 1rem;*/
+      padding-inline: 3rem;
+      position: sticky;
+      top: 0;
+      right: 0;
+      left: 0;
+      align-items: center;
+    }
+
+    /* using a instead of Link seems to be correct */
+    .headerNav a {
+      color: inherit;
+      text-decoration: none;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .headerNav ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .logo {
+      font-size: 4rem;
+    }
+
+    .profile-icon{
+      width:40px;
+      height:40px;
+    }
+
+    .profile-holder {
+      padding: 0;
+    }
+
+    ul.hideDrop {
+      display: none;
+    }
+
+    ul.showDrop {
+      position: absolute;
+      display: block;
+      background: #f3e45a;
+      right: 0;
+    }
+
+    ul.showDrop li {
+      padding: 5px;
+      margin: 0;
+    }
+
+    ul.showDrop li a:hover {
+      background: #ce7611;
+    }
+
+    .input {
+      align-items: center;
+    }
+    </textarea>
+  </div>
+</div>
+<div class="layoutWrapper">
+  <div class="layoutWrapper-inner-left">
+    <p>b. Main Banner: Image</p>
+    <ul>
+      <li>Width: 100%</li>
+      <li>Height: 300px</li>
+    </ul>
+    <div class="mini-layout">
+      <div class="mini-nav">Nav</div>
+      <div class="mini-banner">Banner</div>
+    </div>
+  </div>
+  <div class="layoutWrapper-inner-right">
+  <textarea class="textarea" disabled="true">
+
+    const Banner = () => {
+    return (
+    <div className="banner">
+      <div className="banner-background">Banner background</div>
+      <div className="banner-content">
+        <div className="community-avatar"></div>
+        <div className="community-info">
+          <h2>Class of 2023</h2>
+          <span className="inactive-text">Since February 19th, 2023</span>
+        </div>
+        <button className="join-button">Join</button>
+      </div>
+    </div>
+    );
+    };
+
+    .banner {
+      width: 100%;
+      height: 300px;
+      display: flex;
+      flex-direction: column;
+    }
+    .banner-background {
+      width: 100%;
+      height: 350px;
+    }
+    .banner-content {
+      background-color: var(--yellow-apricot);
+      padding: 5px 0;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+    }
+    .banner-content .community-avatar {
+      margin-left: 100px;
+      margin-right: 10px;
+      width: 70px;
+      height: 70px;
+      border: 2px solid var(--bistre);
+      background-color: var(--french-bistre);
+      border-radius: 10px;
+    }
+    .banner-content .community-info {
+      width: 370px;
+    }
+    .banner-content .join-button {
+      margin-left: auto;
+      margin-right: 100px;
+      border: 2px solid var(--bistre);
+      background-color: var(--yellow-apricot);
+      border-radius: 10px;
+      padding: 10px;
+      cursor: pointer;
+    }
+    </textarea>
+  </div>
+</div>
+<div class="layoutWrapper">
+  <div class="layoutWrapper-inner-left">
+    <p>c. Main Content</p>
+    <ul>
+      <li>Montserrat: 14px</li>
+      <li>Background: #FEFEE2</li>
+      <li>Margin: 0 100px</li>
+      <li>Active Text: #3D211A</li>
+      <li>Inactive Text: #8E6F52</li>
+    </ul>
+    <div class="mini-layout">
+      <div class="mini-nav">Nav</div>
+      <div class="mini-banner">Banner</div>
+      <div class="mini-content-header">Content Name</div>
+      <div class="mini-content">Content</div>
+      <div class="mini-content">Content</div>
+    </div>
+  </div>
+  <div class="layoutWrapper-inner-right">
+  <textarea class="textarea" disabled="true">
+
+  <div className="main-section">
+     {/* Community Stats */}
+     <CommunityStats postContentDisplayHandler={postContentDisplayHandler} />
+
+     {/* Post Control Tool */}
+     <PostControlTool />
+
+     {/* Main Content Display */}
+     <CommunityContentDisplay contentType={contentDisplayType} />
+    ...
+  </div>
+
+  .main-section {
+    margin: 0 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  const CommunityStats = (props) => {
+    return (
+      <div className="community-stats">
+        <div
+          className="community-stats-tab"
+          onClick={() => props.postContentDisplayHandler("posts")}
+        >
+          <span className="active-text">3</span>
+          <span className="inactive-text">Posts</span>
+        </div>
+        <div
+          className="community-stats-tab"
+          onClick={() => props.postContentDisplayHandler("members")}
+        >
+          <span className="active-text">38</span>
+          <span className="inactive-text">Members</span>
+        </div>
+      </div>
+    );
+  };
+  .community-stats {
+    border: 2px solid var(--bistre);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    /* gap: 30px; */
+  }
+  .community-stats-tab {
+    padding: 10px;
+    width: 80px;
+    cursor: pointer;
+    /* border: 2px solid var(--bistre); */
+  }
+  .community-stats-tab:hover {
+    /* cursor: pointer; */
+    border-bottom: 2px solid var(--skobeloff);
+  }
+
+  const PostControlTool = () => {
+  const [isPostSortActive, setIsPostSortActive] = useState(false);
+
+  // Toggles between post sort active and inactive
+  const sortButtonToggleHandler = () => {
+    setIsPostSortActive(isPostSortActive ? false : true);
+  };
+
+  const CommunityContentDisplay = (props) => {
+    if (props.contentType === "posts") {
+      return <CommunityPostList />;
+    } else if (props.contentType === "members") {
+      return <div>members</div>;
+    }
+  };
+
+    </textarea>
   </div>
 </div>
 
-<h2> Components </h2>
+
+<h2 style="font-weight: normal;"> Components </h2>
 <div class="layoutWrapper">
   <div class="layoutWrapper-inner-left">
     <h3>Button </h3>
@@ -182,7 +433,7 @@
 </div>
 
 
-<h2 > Color Palette </h2>
+<h2 style="font-weight: normal;"> Color Palette </h2>
 <div class="palette-wrapper">
   <div class="palette-inner-wrapper">
     <div class="color-box color-1"></div>
@@ -272,7 +523,7 @@
   </div>
 </div>
 
-<h2>Size, Position & Interaction Guidelines for Popups & Modals:</h2>
+<h2 style="font-weight: normal;">Size, Position & Interaction Guidelines for Popups & Modals:</h2>
 
 <div class="modalWrapper">
   <div class="layoutWrapper-inner-left">
@@ -619,7 +870,7 @@
   </div>
 </div>
 
-<h2>Methods for Inline Help</h2>
+<h2 style="font-weight: normal;">Methods for Inline Help</h2>
 <div class="FeedbackWrapper">
   <div class="layoutWrapper-inner-left">
     <h3 class="montserrat-pos">Warning</h3>
