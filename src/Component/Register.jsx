@@ -49,6 +49,7 @@ export default class RegisterForm extends React.Component {
       };
 
     upload_img = event => {
+      console.log(URL.createObjectURL(event.target.files[0]))
       this.setState({
         image: URL.createObjectURL(event.target.files[0])
       });
@@ -97,6 +98,7 @@ export default class RegisterForm extends React.Component {
             .then(res => res.json())
             .then(data => {
               console.log(data);
+              console.log("Sign up Successful!")
               },
           error => {
               alert("error!");
@@ -115,12 +117,16 @@ export default class RegisterForm extends React.Component {
                     {/*<p>Back to Login</p>*/}
                     <form>
                         <h3 className='h3-inner'>Create an Account</h3>
+                        
+                        {/*
                         <label className='pfp'>
                             <input type='file' className='display' onChange={this.upload_img}/>
                             <img alt="" className='profile_image' src={this.state.image} />
                         </label>
+                        */}
+
                         <label className='input'>
-                            <input type="text" placeholder="Username" className='input-stuff' onChange={this.usernameHandler}/>
+                            <input type="text" placeholder='Email' className='input-stuff' onChange={this.emailHandler}/>
                         </label>
                         <label className='input'>
                             <input type="text" placeholder='Password' className='input-stuff password' onChange={this.passwordHandler}/>
@@ -129,10 +135,10 @@ export default class RegisterForm extends React.Component {
                             <input type="text" placeholder='Confirm Password' className='input-stuff password' onChange={this.confirm_passwordHandler}/>
                         </label>
                         <label className='input'>
-                            <input type="text" placeholder='Phone Number' className='input-stuff' onChange={this.phoneHandler}/>
+                            <input type="text" placeholder="Username" className='input-stuff' onChange={this.usernameHandler}/>
                         </label>
                         <label className='input'>
-                            <input type="text" placeholder='Email' className='input-stuff' onChange={this.emailHandler}/>
+                            <input type="text" placeholder='Phone Number' className='input-stuff' onChange={this.phoneHandler}/>
                         </label>
                         <label className='input'>
                             <button className='base base-submit' onClick={this.submitHandler}>Register</button>
