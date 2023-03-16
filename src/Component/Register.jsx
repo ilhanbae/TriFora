@@ -99,10 +99,31 @@ export default class RegisterForm extends React.Component {
             })
           })
             .then(res => res.json())
-            .then(data => {
-              console.log(data);
+            .then(result => {
+              console.log(result);
               console.log("Sign up Successful!")
-              },
+              
+              if (result.userID) {
+                // set the auth token and user ID in the session state
+                sessionStorage.setItem("token", result.token);
+                sessionStorage.setItem("user", result.userID);
+                console.log(sessionStorage);
+                
+                this.setState({
+                  sessiontoken: result.token,
+                  alanmessage: result.token
+                });
+    
+              } else {
+                // if the login failed, remove any infomation from the session state
+                sessionStorage.removeItem("token");
+                sessionStorage.removeItem("user");
+                this.setState({
+                  sessiontoken: "",
+                  alanmessage: result.message
+                });
+              }
+            },
           error => {
               alert("error!");
             }
