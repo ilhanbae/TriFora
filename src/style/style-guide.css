@@ -1,0 +1,373 @@
+/* Fonts */
+
+.font-wrapper {
+    position: relative;
+    margin: auto;
+    width: 100%;
+    overflow: hidden;
+}
+
+.font-inner-wrapper {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: none;
+    position: relative;
+    width: 50%;
+    float: left;
+    text-align: left;
+    padding-left: 3.125%;
+}
+
+.font-third-wrapper {
+    position: relative;
+    width: 50%;
+    height: 150px;
+    justify-content: center;
+    align-content: center;
+    float: left;
+    box-sizing: border-box;
+    border: none;
+
+}
+.extra-padding-left {
+    padding-left: 3.125%;
+}
+.extra-padding-right {
+    padding-right: 6.25%;
+}
+
+
+.alfa {
+    font-family: "Alfa Slab One";
+}
+
+.montserrat {
+    font-family: 'Montserrat';
+}
+.title {
+    font-size: 36px;
+    font-family: "Alfa Slab One";
+}
+.montserrat-reg, .alfa-reg {
+    font-weight: normal;
+    text-align: center;
+}
+.montserrat-bold, .alfa-bold{
+    padding-top: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+body {
+    font-family: "Montserrat", sans-serif;
+    font-size: 15px;
+    color: black;
+}
+
+h1, h2, h4, h5, h6 {
+    font-family: "Alfa Slab One";
+}
+h1 {
+    border-style: solid;
+    border-width: 0 0 2px 0;
+    border-image: linear-gradient(to right, black 2%, transparent 20%) 1;
+}
+
+h2 {
+    font-size: 25px;
+    border-style: solid;
+    border-width: 0 0 2px 0;
+    border-image: linear-gradient(to right, black 1%, transparent 10%) 1;
+}
+
+/* Layout & Navigation */
+
+.layoutWrapper{
+    position: relative;
+    margin: auto;
+    width: 100%;
+    overflow: hidden;
+}
+
+.textarea {
+    width: 100%;
+    height: 35vh;
+    resize: none;
+}
+
+.layoutWrapper-inner-left {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: none;
+    position: relative;
+    width: 25%;
+    float: left;
+    text-align: left;
+    margin-left: 3.125%;
+    padding-right: 3.125%;
+}
+.layoutWrapper-inner-right {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: none;
+    position: relative;
+    width: 68.825%;
+    float: left;
+    text-align: left;
+}
+
+.example1 {
+    padding: 0 20px;
+    height: 35px;
+    border: none;
+    border-radius: 3px;
+    font-size: 25px;
+    background: #F3C26E;
+    color: #000000;
+    box-shadow: 0 4px 14px 0 rgb(0 0 0 / 13%);
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+:root {
+    --french-bistre: #8e6f52;
+}
+
+.ui {
+    height: 50px;
+    width: 50px;
+}
+
+.ui-example {
+    border-radius: 10px;
+    border: 2px solid black;
+}
+
+.example2 {
+    /*color: var(--french-bistre);*/
+    color: var(--french-bistre);
+    opacity: 50%;
+}
+
+.example3 {
+    border-radius: 3px;
+    border: 2px solid var(--french-bistre);
+}
+
+.ModalExample {
+    display: none;
+    z-index: 1;
+    overflow: auto;
+    background-color: #FEFEE2;
+    position: absolute;
+    width: 50vh;
+    height: 35vh;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    border: 2px solid black;
+}
+.ModalExample-content {
+    background-color: black;
+    color: white;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    text-align: center;
+}
+.ModalExample-buttons {
+    text-align: center;
+    padding-top: 11.5vh;
+}
+
+.center {
+    padding-top: 5vh;
+    text-align: center;
+}
+
+.marg-left{
+    margin-left: 3vh;
+}
+.marg-right{
+    margin-right: 3vh;
+}
+
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    top: 0;
+    right: 1vh;
+    position: absolute;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Color Palette */
+
+.color-box {
+    margin: 0 auto;
+    /*align-content: ce;*/
+    width: 75%;
+    height: 100px;
+    border-radius: 1px;
+}
+
+.color-1 {
+    background-color: #3D211A
+}
+.color-2 {
+    background-color: #864522
+}
+.color-3 {
+    background-color: #C06A30
+}
+.color-4 {
+    background-color: #8E6F52
+}
+.color-5 {
+    background-color: #A07856
+}
+.color-6 {
+    background-color: #F3C26E
+}
+.color-7 {
+    background-color: #FEFEE2
+}
+.color-8 {
+    background-color: #127475
+}
+.color-9 {
+    background-color: #FF4700
+}
+.color-10{
+    background-color: #BED1D7;
+}
+
+
+.palette-wrapper {
+    position: relative;
+    margin: auto;
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+
+.palette-inner-wrapper {
+    position: relative;
+    width: 25%;
+    float: left;
+}
+
+.piwt-text {
+    text-align: left;
+    margin-left: 12.5%;
+    margin-right: 12.5%;
+    overflow: auto;
+}
+
+.bigspacegap {
+    line-height: 3.2;
+}
+
+.spacegap {
+    line-height: 0.8;
+}
+
+/* Size/Position/Interaction Guidelines for Popups/Modals */
+
+.modalWrapper {
+    position: relative;
+    margin: auto;
+    width: 100%;
+    overflow: hidden;
+}
+
+.montserrat-pos {
+    font-weight: bold;
+}
+
+/*Treatment of feedback (Success and Error)*/
+
+.FeedbackWrapper {
+    position: relative;
+    margin: auto;
+    width: 100%;
+    overflow: hidden;
+}
+
+.success {
+    position: absolute;
+    z-index: 1;
+    display: none;
+    width: 40vh;
+    height: 3em;
+    padding-bottom: .5vh;
+    background-color: #127475;
+    border-radius: 10px;
+    border: 2px solid black;
+    padding-left: 1vh;
+    bottom: 1vh;
+    left: 1vh;
+    position: fixed;
+
+}
+.left {
+    width: 85%;
+    float: left;
+}
+.right {
+    width: 10%;
+    float: left;
+    text-align: right;
+    padding-top: .5vh;
+    font-size: 30px;
+    cursor: pointer;
+
+}
+
+.failure {
+    position: absolute;
+    z-index: 1;
+    display: none;
+    width: 40vh;
+    height: 3em;
+    padding-bottom: .5vh;
+    background-color: #FF4700;
+    border-radius: 10px;
+    border: 2px solid black;
+    padding-left: 1vh;
+    bottom: 1vh;
+    left: 1vh;
+    position: fixed;
+}
+
+/*Methods for Inline Help*/
+
+.warning {
+    position: absolute;
+    z-index: 1;
+    display: none;
+    width: 40vh;
+    height: 3em;
+    padding-bottom: .5vh;
+    background-color: #BED1D7;
+    border-radius: 10px;
+    border: 2px solid black;
+    padding-left: 1vh;
+    bottom: 1vh;
+    left: 1vh;
+    position: fixed;
+}
