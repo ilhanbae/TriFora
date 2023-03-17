@@ -15,6 +15,7 @@ import FriendForm from "./Component/FriendForm.jsx";
 import Modal from "./Component/Modal.jsx";
 import Navbar from "./Component/Navbar.jsx";
 import Promise from "./Component/Promise.jsx";
+import ForgotPasswordPage from "./Component/ForgotPasswordPage";
 
 import {
   BrowserRouter as Router, Route, Routes
@@ -110,6 +111,7 @@ class App extends React.Component {
 
           <div className="maincontent" id="mainContent">
             <Routes>
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/settings" element={<Settings login={this.login}  />} />
               <Route path="/friends" element={<Friends  login={this.login} />} />   
               <Route path="/groups" element={<Groups  login={this.login} />} />     
