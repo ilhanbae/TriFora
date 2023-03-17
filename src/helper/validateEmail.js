@@ -4,8 +4,8 @@ major rules:
 1. Email address can't be empty
 2. Email address should contain username and domain name fields
 3. Each of the fields should only contain alphanumeric characters 
-Note: This validator is not eror-proof... */
-export default function checkValidEmail(email) {
+Note: This validator is not error-proof... */
+export default function validateEmail(email) {
   let isValid = false;
   let errorMessage = "";
   const alphanumeric_pattern = /^[0-9a-zA-Z]+$/

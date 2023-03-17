@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../style/ForgotPasswordPage.css";
-import checkValidEmail from "../helper/checkValidEmail";
+import validateEmail from "../helper/validateEmail";
 
 export default function ForgotPasswordPage(props) {
   const [isTokenRequestSuccess, setIsTokenRequestSuccess] = useState(false);
@@ -131,7 +131,7 @@ const TokenRequestForm = (props) => {
   // Handles form submission
   const formSubmitHandler = (e) => {
     e.preventDefault(); // prevent default form action
-    const [isValid, errorMessage] = checkValidEmail(email) // check if email is valid
+    const [isValid, errorMessage] = validateEmail(email) // check if email is valid
     // Check input errors
     if (!isValid) {
       alert(errorMessage)
