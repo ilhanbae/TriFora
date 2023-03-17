@@ -22,7 +22,6 @@ export default function ForgotPasswordPage(props) {
     // Perform POST Request
     const response = await fetch(requestUrl, { method, headers, body });
 
-    console.log(response);
     // On success response, udpate token request state
     if (response.status == "200") {
       setIsTokenRequestSuccess(true);
@@ -47,7 +46,6 @@ export default function ForgotPasswordPage(props) {
     // Perform POST request
     const response = await fetch(requestUrl, { method, headers, body });
 
-    console.log(response.status);
     // On success response, udpate token request state
     if (response.status == "200") {
       setIsResetRequestSuccess(true); // update reset request state
@@ -139,9 +137,6 @@ const TokenRequestForm = (props) => {
       alert(errorMessage)
     }
     else {
-      // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      // console.log(validator.isValidEmail(email));
-      console.log(isValid);
       setEmail(""); // clear the input text
       props.sendResetTokenRequest(email); // call POST API from ForgotPasswordPage
     }
