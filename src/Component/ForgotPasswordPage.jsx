@@ -90,7 +90,7 @@ const ResetPasswordView = (props) => {
 const ResetPasswordSuccessView = (props) => {
   return (
     <div className="container">
-      <Headline title="Password reset succssfully" subtitle="Log back to your account"/>
+      <Headline title="Password reset successfully" subtitle="Log back to your account"/>
       <BackToLogin />
     </div>
   )
