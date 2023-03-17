@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import "../style/ForgotPass.css";
+import "../style/ForgotPasswordPage.css";
 import checkValidEmail from "../helper/checkValidEmail";
 
 export default function ForgotPasswordPage(props) {
@@ -22,7 +22,7 @@ export default function ForgotPasswordPage(props) {
     // Perform POST Request
     const response = await fetch(requestUrl, { method, headers, body });
 
-    console.log(response.status);
+    console.log(response);
     // On success response, udpate token request state
     if (response.status == "200") {
       setIsTokenRequestSuccess(true);
@@ -46,7 +46,7 @@ export default function ForgotPasswordPage(props) {
 
     // Perform POST request
     const response = await fetch(requestUrl, { method, headers, body });
-    
+
     console.log(response.status);
     // On success response, udpate token request state
     if (response.status == "200") {
