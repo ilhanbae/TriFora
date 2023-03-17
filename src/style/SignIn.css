@@ -1,4 +1,4 @@
-body {
+.background {
     background-color: #FEFEE2;
 }
 
@@ -39,7 +39,7 @@ body {
 
 .base-back {
     cursor: pointer;
-    position: absolute;
+    position: fixed;
     top: 1%;
     left: 1%;
 }

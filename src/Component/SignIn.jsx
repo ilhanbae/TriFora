@@ -80,7 +80,7 @@ export default class LoginForm extends React.Component {
 
     render() {
         return (
-            <div className='wrapper1'>
+            <div className='wrapper1 background'>
                 <div className='inner1'>
                     <form className='form-class'>
                         <label>
