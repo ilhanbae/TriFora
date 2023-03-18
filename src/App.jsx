@@ -17,6 +17,7 @@ import Promise from "./Component/Promise.jsx";
 import Profile_Page from "./Component/ProfilePage.jsx";
 import RegisterForm from "./Component/Register";
 import LoginForm from "./Component/SignIn.jsx";
+import ForgotPasswordPage from "./Component/ForgotPasswordPage";
 
 import {
   BrowserRouter as Router, Route, Routes
@@ -112,6 +113,7 @@ class App extends React.Component {
 
           <div className="maincontent" id="mainContent">
             <Routes>
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/settings" element={<Settings login={this.login}  />} />
               <Route path="/friends" element={<Friends  login={this.login} />} />   
               <Route path="/groups" element={<Groups  login={this.login} />} />     
