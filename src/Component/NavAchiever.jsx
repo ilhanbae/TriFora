@@ -29,7 +29,7 @@ class NavAchiever extends React.Component {
                     <li className="logo">
                         {/* <Link to="/"> Logo </Link> */}
                         {/* Temporarily non clickable text since destination unknown */}
-                        <div> Logo </div>
+                        <div> Trifora </div>
                     </li>
 
                     {/* commented out as lacking functionality for now */}
@@ -71,8 +71,8 @@ class NavAchiever extends React.Component {
                                 src={groupIcon}
                                 className="profile-icon"
                                 // onClick={this.menuSwitch}
-                                alt="profile icon here"
-                                title="profile icon here" />
+                                alt="profile icon will go here"
+                                title="profile icon will go here" />
                             {/* Icon change based on menu state (starts false as menu is hidden) */}
                             {this.state.showDropMenu ? (
                                 <img
