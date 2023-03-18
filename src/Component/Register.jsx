@@ -15,6 +15,15 @@ export default class RegisterForm extends React.Component {
           sessiontoken: "",
           redirect: false,
         };
+        this.refreshPostsFromLogin = this.refreshPostsFromLogin.bind(this);
+    }
+
+    // once a user has successfully logged in, we want to refresh the post
+    // listing that is displayed.  To do that, we'll call the callback passed in
+    // from the parent.
+    refreshPostsFromLogin(){
+      console.log("CALLING LOGIN IN LOGINFORM");
+      this.props.login();
     }
 
     usernameHandler = event => {
@@ -122,6 +131,9 @@ export default class RegisterForm extends React.Component {
                   sessiontoken: result.token,
                   alanmessage: result.token
                 });
+
+                // call refresh on the posting list
+                this.refreshPostsFromLogin();
     
               } else {
                 // if the login failed, remove any infomation from the session state
@@ -175,11 +187,9 @@ export default class RegisterForm extends React.Component {
                         {/* <label className='input'>
                             <input type="text" placeholder='Phone Number' className='input-stuff' onChange={this.phoneHandler}/>
                         </label> */}
-                        <Link to='/login'>
-                          <label className='input'>
-                              <button className='base base-submit' onClick={this.submitHandler}>Register</button>
-                          </label>
-                        </Link>
+                        <label className='input'>
+                            <button className='base base-submit' onClick={this.submitHandler}>Register</button>
+                        </label>
 
                     </form>
                 </div>
