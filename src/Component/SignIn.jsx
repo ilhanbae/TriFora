@@ -1,7 +1,7 @@
 import React from 'react';
 import "../style/SignIn.css";
 import {
-    Link
+    Link, useNavigate
 } from 'react-router-dom';
 
 export default class LoginForm extends React.Component {
@@ -12,6 +12,12 @@ export default class LoginForm extends React.Component {
             password: "",
             sessiontoken: "",
         }
+        this.refreshPostsFromLogin = this.refreshPostsFromLogin.bind(this);
+    }
+
+    refreshPostsFromLogin(){
+        console.log("CALLING LOGIN IN LOGINFORM");
+        this.props.login();
     }
 
     EmailHandler = event => {
@@ -61,6 +67,8 @@ export default class LoginForm extends React.Component {
                     this.setState({
                         sessiontoken: result.token,
                     });
+                    // call refresh on the posting list
+                    this.refreshPostsFromLogin();
                     console.log(this.state.sessiontoken)
                     console.log("Login Successful!")
 
@@ -99,11 +107,15 @@ export default class LoginForm extends React.Component {
                             <input type="password" placeholder="Password: " className='input1-stuff' onChange={this.PasswordHandler}/>
                         </label>
                         <label className='input1'>
-                            <p className='txt1'><a href="#"> Forgot Password? </a></p>
-                            <p className='txt1'> New User? <a href="#"> Sign Up </a></p>
+                            <Link to="/forgot-password">
+                            <p className='txt1'> Forgot Password? </p>
+                            </Link>
+                            <Link to='/register'>
+                            <p className='txt1'> New User? Sign Up </p>
+                            </Link>
                         </label>
                     
-                        <Link to='/profile'>
+                        <Link to="/profile">
                             <label className='input1'>
                                 <button className='base base-submit1 txt1' onClick={this.submitHandler}>Sign In</button>
                             </label>

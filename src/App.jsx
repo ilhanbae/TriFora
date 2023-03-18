@@ -9,12 +9,12 @@ import "./App.css";
 import PostForm from "./Component/PostForm.jsx";
 import FriendList from "./Component/FriendList.jsx";
 import GroupList from "./Component/GroupList.jsx";
-import LoginForm from "./Component/SignIn.jsx";
 import Profile from "./Component/Profile.jsx";
 import FriendForm from "./Component/FriendForm.jsx";
 import Modal from "./Component/Modal.jsx";
 import Navbar from "./Component/Navbar.jsx";
 import Promise from "./Component/Promise.jsx";
+import LoginForm from "./Component/SignIn.jsx";
 
 import {
   BrowserRouter as Router, Route, Routes
@@ -110,7 +110,7 @@ class App extends React.Component {
 
           <div className="maincontent" id="mainContent">
             <Routes>
-              <Route path="/login" element={<LoginForm /> } />
+              <Route path="/login" element={<Login login={this.login}/> } />
               <Route path="/settings" element={<Settings login={this.login}  />} />
               <Route path="/friends" element={<Friends  login={this.login} />} />   
               <Route path="/groups" element={<Groups  login={this.login} />} />     
@@ -128,6 +128,23 @@ class App extends React.Component {
         </Modal>
       </div>
       </Router>
+    );
+  }
+}
+
+const Login = (props) => {
+  // if the user is not logged in, show the login form.  Otherwise, show the prfile form
+  if (!sessionStorage.getItem("token")){
+    console.log("LOGGED OUT");
+    return(
+      <div>
+      <LoginForm login={props.login}  />
+      </div>
+    );
+  } else {
+    console.log("Logged In");
+    return (
+      <Profile_Page/>
     );
   }
 }
