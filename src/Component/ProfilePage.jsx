@@ -1,5 +1,8 @@
 import React from "react";
 import "./ProfilePage.css";
+import {
+    Link
+ } from 'react-router-dom';
 
 export default class ProfilePage extends React.Component {
 
@@ -43,13 +46,13 @@ export default class ProfilePage extends React.Component {
                 this.setState({
                   // IMPORTANT!  You need to guard against any of these values being null.  If they are, it will
                   // try and make the form component uncontrolled, which plays havoc with react
-                  email: result.attributes.email || "",
-                  username: result.attributes.username || "",
-                  firstName: result.attributes.firstName || "",
-                  lastName: result.attributes.lastName || "",
-                  description: result.attributes.description || "",
-                  profileImage: result.attributes.profileImage || "",
-                  phone: result.attributes.phone || "",
+                  email: result.attributes.profile.email || "",
+                  username: result.attributes.profile.username || "",
+                  firstName: result.attributes.profile.firstName || "",
+                  lastName: result.attributes.profile.lastName || "",
+                  description: result.attributes.profile.description || "",
+                  profileImage: result.attributes.profile.profileImage || "",
+                  phone: result.attributes.profile.phone || "",
                 });
               }
               }
@@ -211,9 +214,11 @@ export default class ProfilePage extends React.Component {
                 <div className = 'profile-title'>
                     <b>{this.state.username}&prime;s Profile Page</b>
                 </div>
-                <button className = 'edit-button'>
-                    <b className = 'edit-button-text'>Edit</b>
-                </button>
+                <Link to="/edit-profile">
+                    <button className = 'edit-button'>
+                        <b className = 'edit-button-text'>Edit</b>
+                    </button>
+                </Link>
                 {/* <button className = 'close-button'>Close</button> */}
             </div>
 
