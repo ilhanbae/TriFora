@@ -9,14 +9,13 @@ import "./App.css";
 import PostForm from "./Component/PostForm.jsx";
 import FriendList from "./Component/FriendList.jsx";
 import GroupList from "./Component/GroupList.jsx";
-import LoginForm from "./Component/LoginForm.jsx";
 import Profile from "./Component/Profile.jsx";
 import FriendForm from "./Component/FriendForm.jsx";
 import Modal from "./Component/Modal.jsx";
 import Navbar from "./Component/Navbar.jsx";
 import Promise from "./Component/Promise.jsx";
 import RegisterForm from "./Component/Register";
-
+import LoginForm from "./Component/SignIn.jsx";
 
 import {
   BrowserRouter as Router, Route, Routes
@@ -110,19 +109,20 @@ class App extends React.Component {
 
               <Navbar toggleModal={e => toggleModal(this, e)} logout={this.logout}/>
 
-              <div className="maincontent" id="mainContent">
-                <Routes>
-                  <Route path="/register" element={<Signup login={this.login}  />} />
-                  <Route path="/settings" element={<Settings login={this.login}  />} />
-                  <Route path="/friends" element={<Friends  login={this.login} />} />
-                  <Route path="/groups" element={<Groups  login={this.login} />} />
-                  <Route path="/posts" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} />} />
-                  <Route path="/promise" element={<Promise />} />
-                  <Route path="/" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} />} />
+          <div className="maincontent" id="mainContent">
+            <Routes>
+              <Route path="/login" element={<Login login={this.login}/> } />
+              <Route path="/settings" element={<Settings login={this.login}  />} />
+              <Route path="/friends" element={<Friends  login={this.login} />} />   
+              <Route path="/groups" element={<Groups  login={this.login} />} />     
+              <Route path="/posts" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} />} />
+              <Route path="/promise" element={<Promise />} />
+              <Route path="/" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} />} />
 
-                </Routes>
-              </div>
-            </header>
+
+            </Routes>
+          </div>
+        </header>
 
             <Modal show={this.state.openModal} onClose={e => toggleModal(this, e)}>
               This is a modal dialog!
@@ -133,21 +133,19 @@ class App extends React.Component {
   }
 }
 
-const Signup = (props) => {
-  // if the user is not logged in, show the login form.  Otherwise, show the post form
-  if (props)
+const Login = (props) => {
+  // if the user is not logged in, show the login form.  Otherwise, show the prfile form
   if (!sessionStorage.getItem("token")){
     console.log("LOGGED OUT");
     return(
-        <div>
-          <RegisterForm login={props.login}  />
-        </div>
+      <div>
+      <LoginForm login={props.login}  />
+      </div>
     );
   } else {
-    return(
-      <div>
-        <LoginForm login={props.login}  />
-      </div>
+    console.log("Logged In");
+    return (
+      <Profile_Page/>
     );
   }
 }

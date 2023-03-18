@@ -1,0 +1,128 @@
+.background {
+    background-color: #FEFEE2;
+}
+
+.wrapper1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.inner1 {
+    max-width: 758px;
+    text-align: center;
+    padding: 27px 20px 37px;
+}
+
+/* Base Button Design */
+
+.base {
+    padding: 0 20px;
+    height: 35px;
+    border: none;
+    border-radius: 3px;
+    font-size: 25px;
+    background: #F3C26E;
+    color: #000000;
+    box-shadow: 0 4px 14px 0 rgb(0 0 0 / 13%);
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+.base:hover {
+    background: #F3C26E;
+    box-shadow: 0 6px 20px rgb(245 245 220 / 43%);
+    cursor: pointer;
+}
+
+/* Back Arrow */
+
+.base-back {
+    cursor: pointer;
+    position: fixed;
+    top: 1%;
+    left: 1%;
+}
+
+
+/* Submit Button */
+
+.base-submit1 {
+    position: relative;
+    padding: 0 25px;
+    height: 45px;
+    font-size: 16px;
+
+}
+
+.input1 {
+    text-align: center;
+    position: center;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input1-stuff {
+    border: 2px solid #000000;
+    border-radius: 10px;
+    display: block;
+    width: 400px;
+    height: 50px;
+    font-size: 15px;
+    background: none;
+}
+
+/* User */
+.userSpace {
+    padding-top: 31px;
+    padding-bottom: 9px;
+}
+
+/* Pass */
+.passSpace {
+    padding-top: 13px;
+    padding-bottom: 9px;
+}
+
+.txt1 {
+    font-family: Montserrat-SemiBold;
+    font-size: 16px;
+    color: #000000;
+    line-height: 1.5;
+}
+
+.txt2 {
+    font-family: Montserrat-SemiBold;
+    font-size: 14px;
+    color: #999999;
+    line-height: 1.5;
+    border-bottom: 1px solid #999999;
+    margin-left: 5px;
+}
+
+.form-class {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.submit-form {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    width: 100%;
+    height: 60px;
+    background-color: #333333;
+    border-radius: 10px;
+}
