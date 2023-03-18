@@ -63,19 +63,19 @@ class Navbar extends React.Component {
             />
           </button>
         </li>
-        <li className="pm admin">
-        <button
-            className="link-button"
-            onClick={e => this.props.logout(e)}
-          >
-            <img
-              src={exitIcon}
-              className="sidenav-icon"
-              alt="Logout"
-              title="Logout"
-            />
-          </button>
-        </li>
+          <li className="pm admin">
+            <button
+              className="link-button"
+              onClick={e => this.props.logout(e)}
+            >
+              <img
+                src={exitIcon}
+                className="sidenav-icon"
+                alt="Logout"
+                title="Logout"
+              />
+            </button>
+          </li>
         <li className="pm admin">
           <Link to="/groups">
             <img
