@@ -1,5 +1,5 @@
 import React from "react";
-import "./NavAchiever.css";
+import "../style/NavAchiever.css";
 import { Link } from "react-router-dom";
 import groupIcon from "../assets/group.png";
 import downIcon from "../assets/downIcon36.png";
