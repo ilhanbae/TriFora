@@ -124,6 +124,9 @@ class App extends React.Component {
               <Routes>
                 {/* The passMethod props are what will allow navbar style change aand should currently be attached to every route; only is not currently
                 as it was just being used for testing purposes but routes we use must have them. */}
+                <Route path="/login" element={<Login login={this.login} />} />
+                <Route path="/register" element={<Signup login={this.login} />} />
+                <Route path='/profile' element={<Profile_Page />} />
                 <Route path="/settings" element={<Settings login={this.login} passMethod={this.navSwitch} />} />
                 <Route path="/friends" element={<Friends login={this.login} />} />
                 <Route path="/groups" element={<Groups login={this.login} />} />
