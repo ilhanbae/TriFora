@@ -39,6 +39,16 @@
     color: #3D211A;
 }
 
+.nav_text {
+    color: #3D211A;
+    padding-top: 11%;
+    padding-bottom: 11%;
+}
+
+.nav_text:hover {
+    border-bottom: solid 3px #8E6F52;
+}
+
 .profile-icon{
   width:40px;
   height:40px;
