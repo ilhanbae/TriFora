@@ -98,7 +98,7 @@ body {
 .base-back {
     position: absolute;
     top: 1%;
-    left: 1%;
+    left: -10%;
 }
 
 
@@ -117,4 +117,9 @@ body {
     font-family: "Montserrat-Bold", sans-serif;
     text-align: center;
     color: #3D211A;
+}
+
+.login-link{
+    font-size: 1.5vw;
+
 }

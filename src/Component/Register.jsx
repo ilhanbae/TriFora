@@ -159,7 +159,9 @@ export default class RegisterForm extends React.Component {
             <div className='wrapper'>
                 <div className='inner'>
                   <Link to='/login'>
-                    <button className='base base-back'>&#8592;</button>
+                    <button className='base base-back'>
+                      <b className='login-link'>&#8592; Go to Login</b>
+                    </button>
                   </Link>
                     {/*<p>Back to Login</p>*/}
                     <form>
