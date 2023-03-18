@@ -61,19 +61,27 @@ export default class RegisterForm extends React.Component {
 
         // Check if the username length is correct
         } else if (this.state.username.length < 3 || this.state.username.length > 20){
-          alert("Username must between 3 to 20 characters");
+          alert("Username must between 3 to 20 characters!");
         
         // Check if the password length is correct
         } else if (this.state.password.length < 6 || this.state.password.length > 20){
-          alert("Password must between 6 to 20 characters");
+          alert("Password must between 6 to 20 characters!");
 
         // Check if the phone number length is correct
         } else if (this.state.phone.length === 0){
-          alert("Phone can't be empty")
+          alert("Phone number can't be empty!");
+
+        // Check if the phone number contains any letters
+        } else if (/[a-zA-Z]/g.test(this.state.phone) === true){
+          alert("Phone number can only contains digits!")
 
         // Check if the email length is correct
         } else if (this.state.email.length === 0){
-          alert("Email can't be empty")
+          alert("Email can't be empty!");
+        
+        // Check if the email contains @
+        } else if (this.state.email.includes("@") === false){
+          alert("Email must be incorrect format!");
 
         } else {
           //keep the form from actually submitting
