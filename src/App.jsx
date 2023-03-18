@@ -18,10 +18,12 @@ import Profile_Page from "./Component/ProfilePage.jsx";
 import RegisterForm from "./Component/Register";
 import LoginForm from "./Component/SignIn.jsx";
 import ForgotPasswordPage from "./Component/ForgotPasswordPage";
+import EditProfile from "./Component/EditProfile.jsx";
 
 import {
   BrowserRouter as Router, Route, Routes
 } from 'react-router-dom';
+// import EditProfile from "./Component/EditProfile";
 
 // toggleModal will both show and hide the modal dialog, depending on current state.  Note that the
 // contents of the modal dialog are set separately before calling toggle - this is just responsible
@@ -109,11 +111,12 @@ class App extends React.Component {
           <div className="App">
             <header className="App-header">
 
-              <Navbar toggleModal={e => toggleModal(this, e)} logout={this.logout}/>
+          {/* <Navbar toggleModal={e => toggleModal(this, e)} logout={this.logout}/> */}
 
           <div className="maincontent" id="mainContent">
             <Routes>
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/edit-profile" element={<EditProfile />} /> 
               <Route path="/settings" element={<Settings login={this.login}  />} />
               <Route path="/friends" element={<Friends  login={this.login} />} />   
               <Route path="/groups" element={<Groups  login={this.login} />} />     
