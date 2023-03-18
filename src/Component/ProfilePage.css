@@ -73,6 +73,11 @@
     border-radius: 10px;
 }
 
+.edit-button:hover {
+    background-color: #8E6F52; /* Green */
+    color: white;
+  }
+
 .edit-button-text{
     position: absolute;
     margin-left: auto;
