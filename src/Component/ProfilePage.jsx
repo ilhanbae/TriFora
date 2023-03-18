@@ -1,5 +1,5 @@
 import React from "react";
-import "./ProfilePage.css";
+import "../style/ProfilePage.css";
 import {
     Link
  } from 'react-router-dom';
