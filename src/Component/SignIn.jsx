@@ -94,11 +94,11 @@ export default class LoginForm extends React.Component {
             <div className='wrapper1 background'>
                 <div className='inner1'>
                     <form className='form-class'>
-                        <Link to='/register'>
+                        {/* <Link to='/register'>
                             <label>
                                 <button className='base base-back'>&#8592;</button>
                             </label>
-                        </Link>
+                        </Link> */}
 
                         <label className='input1'>
                             <input type="text" placeholder="Email: " className='input1-stuff' onChange={this.EmailHandler}/>
