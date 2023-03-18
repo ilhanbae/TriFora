@@ -1,7 +1,7 @@
-.post-page{
+.profile-page{
     position: relative;
-    width: 1440px;
-    height: 1024px;
+    width: auto;
+    height: auto;
 
     background: #FEFEE2;
 }
@@ -10,13 +10,15 @@
     box-sizing: border-box;
 
     position: absolute;
-    width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+
+    width: 100%;
     height: 54px;
-    left: 0px;
-    top: 0px;
+    left: 0%;
+    top: 0%;
 
     background: #F3C26E;
-
     border-bottom: 3px solid #3D211A;
 }
 
@@ -24,26 +26,30 @@
     box-sizing: border-box;
 
     position: absolute;
-    width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+
+    width: 100%;
     height: 83px;
-    left: 0px;
+    left: 0%;
     top: 54px;
 
+    background: #FEFEE2;
     border: 2px solid #000000;
 }
 
 .profile-title{
     position: absolute;
-    width: 405px;
-    height: 53px;
-    left: 550px;
-    top: 10px;
+    margin-left: auto;
+    margin-right: auto;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
-    font-size: 30px;
+    font-size: 2.5vw;
     line-height: 41px;
+    left: 40%;
+    top: 18%; 
     display: flex;
     align-items: center;
 
@@ -54,21 +60,28 @@
     box-sizing: border-box;
 
     position: absolute;
-    width: 112px;
-    height: 42px;
-    left: 1145px;
-    top: 15px;
+    margin-left: auto;
+    margin-right: auto;
 
-    font-family: 'Alfa Slab One';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 30px;
-    line-height: 41px;
-    align-items: center;
+    width: 7%;
+    height: 60%;
+    left: 80%;
+    top: 15%;
 
     background: #F3C26E;
     border: 2px solid #000000;
     border-radius: 10px;
+}
+
+.edit-button-text{
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+
+    left: 29%;
+    top: 21%;
+    font-size: 1.5vw;
+    font-weight: bold;
 }
 
 .close-button{
@@ -104,11 +117,12 @@
     isolation: isolate;
 
     position: absolute;
-    width: 1440px;
+    width: 100%;
     height: 243px;
-    left: 0px;
+    left: 0%;
     top: 135px;
 
+    background: #FEFEE2;
     border: 2px solid #000000;
 }
 
@@ -116,10 +130,10 @@
     box-sizing: border-box;
 
     position: absolute;
-    width: 213px;
-    height: 213px;
-    left: 92px;
-    top: 10px;
+    width: 15%;
+    height: 90%; 
+    left: 5%;
+    top: 6%;
 
     background: #FFFFFF;
     border: 3px solid #000000;
@@ -128,19 +142,21 @@
 
 .username{
     position: absolute;
-    width: 210px;
-    height: 49px;
-    left: 322px;
-    top: 81px;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
-    font-size: 36px;
+    font-size: 2.5vw;
     line-height: 49px;
     display: flex;
     align-items: center;
     text-align: center;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    left: 22%;
+    top: 35%;
 
     color: #000000;
 
@@ -150,23 +166,51 @@
     z-index: 1;
 }
 
-.user-joindata{
+.first-name{
     position: absolute;
-    width: 179px;
-    height: 19px;
-    left: 323px;
-    top: 139px;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 1.5vw;
     line-height: 19px;
     display: flex;
     align-items: center;
     text-align: center;
 
-    color: #616161;
+    margin-left: auto;
+    margin-right: auto;
+
+    left: 22%;
+    top: 60%;
+
+    color: #8E6F52;
+
+    flex: none;
+    order: 2;
+    flex-grow: 0;
+    z-index: 2;
+}
+
+.last-name{
+    position: absolute;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 1.5vw;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    left: 22%;
+    top: 75%;
+
+    color: #8E6F52;
 
     flex: none;
     order: 2;
@@ -176,19 +220,23 @@
 
 .description{
     position: absolute;
-    width: 376px;
-    height: 54px;
-    left: 881px;
-    top: 94px;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 1.5vw;
     line-height: 27px;
     display: flex;
     align-items: center;
     text-align: center;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    width: 30%;
+    height: 80%;
+    left: 60%;
+    top: 10%;
 
     color: #000000;
 

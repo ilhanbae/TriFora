@@ -202,7 +202,7 @@ export default class ProfilePage extends React.Component {
 
 
         return(
-        <div className = 'post-page'>
+        <div className = 'profile-page'>
 
             <div className = 'top-navbar'>
             </div>
@@ -211,8 +211,10 @@ export default class ProfilePage extends React.Component {
                 <div className = 'profile-title'>
                     <b>{this.state.username}&prime;s Profile Page</b>
                 </div>
-                <button className = 'edit-button'>Edit</button>
-                <button className = 'close-button'>Close</button>
+                <button className = 'edit-button'>
+                    <b className = 'edit-button-text'>Edit</b>
+                </button>
+                {/* <button className = 'close-button'>Close</button> */}
             </div>
 
             <div className = 'profile-info-bar'>
@@ -220,12 +222,17 @@ export default class ProfilePage extends React.Component {
                     <img alt="" className='profile_image' src={this.state.profileImage} />
                 </div>
                 <div className = 'username'>
+                    {/* <b>Spiderman</b> */}
                     <b>{this.state.username}</b>
                 </div>
-                <div className = 'user-joindata'>
-                    {/* <b>Since February 19, 2023</b> */}
+                <div className = 'first-name'>
+                    <b>First Name: {this.state.firstName}</b>
+                </div>
+                <div className = 'last-name'>
+                    <b>Last Name: {this.state.lastName}</b>
                 </div>
                 <div className = 'description'>
+                    {/* <b>Hi, I’m Spiderman. I live my life with great responsibilities.</b> */}
                     <b>{this.state.description}</b>
                 </div>
             </div>
