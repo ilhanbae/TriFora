@@ -49,7 +49,7 @@ export default function EditProfile() {
 const ProfileHeader = (prop) => {
   // Save button nav action
   const saveActionHandler = () => {
-    prop.userInfoFormSubmitHandler();
+    prop.userProfileFormSubmitHandler();
   };
 
   return (
@@ -73,13 +73,13 @@ const ProfileHeader = (prop) => {
 const ProfileMain = (prop) => {
   return (
     <div className="profile-main">
-      <UserInfoForm user={prop.user} />
+      <UserProfileForm user={prop.user} />
     </div>
   );
 };
 
 /* User Profile */
-const UserInfoForm = (prop) => {
+const UserProfileForm = (prop) => {
   const [avatarFile, setAvatarFile] = useState(null);
   const [avatarLink, setAvatarLink] = useState(prop.user.attributes.profile.profileImage);
   const [username, setUsername] = useState(prop.user.attributes.profile.username);
@@ -87,9 +87,22 @@ const UserInfoForm = (prop) => {
   const [lastname, setLastname] = useState(prop.user.attributes.profile.lastName);
   const [description, setDescription] = useState(prop.user.attributes.profile.description);
 
-  // Handles user info form submission
-  const userInfoFormSubmitHandler = async () => {
-    // Upload image to the server first, to get the image url for avatar
+  // Perform user profile form submission.
+  const userProfileFormSubmitHandler = async () => {
+    let serverAvaterLink = "";
+
+    // 1. Upload image to the server first, to get a static link for avatar
+    // console.log(serverAvaterLink)
+    serverAvaterLink = await uploadUserAvatar(serverAvaterLink)
+    
+    // 2. Update user profile using the based on the form data fields, including
+    // serverAvatarLink
+    // console.log(serverAvaterLink)
+    await updateUserProfile(serverAvaterLink)
+  };
+
+  // Upload user avatar to API server to retrieve a server link
+  const uploadUserAvatar = async (serverAvaterLink) => {
     const formDataParams = { // set up form data params for image upload
       uploaderID: prop.user.id,
       attributes: { type: "user-avatar" },
@@ -100,13 +113,17 @@ const UserInfoForm = (prop) => {
     // Check for upload file error
     if(uploadFileErrorMessage) {
       alert(uploadFileErrorMessage)
+      return serverAvaterLink
     } else {
       // console.log(uploadedServerAvatarFile, uploadFileErrorMessage);
-      const serverAvatarLink = `${process.env.REACT_APP_DOMAIN_PATH}${uploadedServerAvatarFile.path}`
-      setAvatarLink(serverAvatarLink); // format data as sever image link
+      serverAvaterLink = `${process.env.REACT_APP_DOMAIN_PATH}${uploadedServerAvatarFile.path}` // Format server link with app domain 
+      return serverAvaterLink
     }
+  }
 
-    // Update user based on the form data
+  // Update user profile based on the form data fields
+  const updateUserProfile = async (serverAvatarLink) => {
+    // console.log(serverAvatarLink);
     const endpoint = `/users/${sessionStorage.getItem("user")}`;
     const body = { // set up request body 
       email: prop.user.email,
@@ -116,27 +133,29 @@ const UserInfoForm = (prop) => {
           firstName: firstname,
           lastName: lastname,
           description: description,
-          profileImage: avatarLink,
+          profileImage: serverAvatarLink,
         },
       },
     };
     
     // Check for profile fields error
     const [isUserProfileFieldsValid, userProfileFieldsErrorMessage] = validateUserProfileFields(body);
-    console.log(isUserProfileFieldsValid, userProfileFieldsErrorMessage)
+    // console.log(isUserProfileFieldsValid, userProfileFieldsErrorMessage)
+    
     if(!isUserProfileFieldsValid) {
       alert(userProfileFieldsErrorMessage)
     } else {
       const { data: updatedUser, errorMessage: updateUserErrorMessage} = await genericPatch(endpoint, body);
       
-      console.log(updatedUser, updateUserErrorMessage);
+      // console.log(updatedUser, updateUserErrorMessage);
       if (updateUserErrorMessage) {
         alert(updateUserErrorMessage)
       } else {
         alert("Profile edit successfully")
       }
     }
-  };
+  }
+
 
   // Update profile avatar display on upload. The path for image is a blob url that 
   // is maintained internally by the browser.
@@ -153,8 +172,8 @@ const UserInfoForm = (prop) => {
         setAvatarFile(selectedFile);
         setAvatarLink(imageBlob);
       } else {
-        setAvatarLink("");
         alert(`${selectedFile.name} is not an image file. Please try again.`)
+        // setAvatarLink("");
       }
     } catch(error) {
       console.log(error);
@@ -186,13 +205,13 @@ const UserInfoForm = (prop) => {
       {/* Profile Header */}
       <ProfileHeader
         username={prop.user.attributes.profile.username}
-        userInfoFormSubmitHandler={userInfoFormSubmitHandler}
+        userProfileFormSubmitHandler={userProfileFormSubmitHandler}
       />
 
       {/* Main Form */}
       <form
         className="user-profile-form"
-        onSubmit={userInfoFormSubmitHandler}
+        onSubmit={userProfileFormSubmitHandler}
         autoComplete="off"
       >
         {/* User profile avatar field */}
