@@ -68,12 +68,12 @@ export default class RegisterForm extends React.Component {
           alert("Password must between 6 to 20 characters!");
 
         // Check if the phone number length is correct
-        } else if (this.state.phone.length === 0){
-          alert("Phone number can't be empty!");
+        //} else if (this.state.phone.length === 0){
+        //  alert("Phone number can't be empty!");
 
         // Check if the phone number contains any letters
-        } else if (/[a-zA-Z]/g.test(this.state.phone) === true){
-          alert("Phone number can only contains digits!")
+        //} else if (/[a-zA-Z]/g.test(this.state.phone) === true){
+        //  alert("Phone number can only contains digits!")
 
         // Check if the email length is correct
         } else if (this.state.email.length === 0){
@@ -102,7 +102,7 @@ export default class RegisterForm extends React.Component {
                 lastName: "",
                 description: "",
                 profileImage: "",
-                phone: this.state.phone,
+                phone: "",
               }
             })
           })
@@ -169,9 +169,9 @@ export default class RegisterForm extends React.Component {
                         <label className='input'>
                             <input type="text" placeholder="Username" className='input-stuff' onChange={this.usernameHandler}/>
                         </label>
-                        <label className='input'>
+                        {/* <label className='input'>
                             <input type="text" placeholder='Phone Number' className='input-stuff' onChange={this.phoneHandler}/>
-                        </label>
+                        </label> */}
                         <label className='input'>
                             <button className='base base-submit' onClick={this.submitHandler}>Register</button>
                         </label>
