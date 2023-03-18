@@ -110,7 +110,7 @@ class App extends React.Component {
 
           <div className="maincontent" id="mainContent">
             <Routes>
-              <Route path="/login" element={<LoginForm login={this.login} /> } />
+              <Route path="/login" element={<LoginForm /> } />
               <Route path="/settings" element={<Settings login={this.login}  />} />
               <Route path="/friends" element={<Friends  login={this.login} />} />   
               <Route path="/groups" element={<Groups  login={this.login} />} />     

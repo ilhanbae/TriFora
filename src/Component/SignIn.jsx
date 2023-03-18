@@ -1,5 +1,8 @@
 import React from 'react';
 import "../style/SignIn.css";
+import {
+    Link
+} from 'react-router-dom';
 
 export default class LoginForm extends React.Component {
     constructor(props) {
@@ -7,7 +10,7 @@ export default class LoginForm extends React.Component {
         this.state = {
             email: "",
             password: "",
-            sessiontoken: ""
+            sessiontoken: "",
         }
     }
 
@@ -26,7 +29,7 @@ export default class LoginForm extends React.Component {
     // when the user hits submit, process the login through the API
     submitHandler = event => {
         if (this.state.email.length === 0){
-            alert("Username can not be empty")
+            alert("Username can not be empty");
         } else if (this.state.password.length === 0){
             alert("Password can not be empty")
         } else{
@@ -83,9 +86,11 @@ export default class LoginForm extends React.Component {
             <div className='wrapper1 background'>
                 <div className='inner1'>
                     <form className='form-class'>
-                        <label>
-                            <button className='base base-back'>&#8592;</button>
-                        </label>
+                        <Link to='/register'>
+                            <label>
+                                <button className='base base-back'>&#8592;</button>
+                            </label>
+                        </Link>
 
                         <label className='input1'>
                             <input type="text" placeholder="Email: " className='input1-stuff' onChange={this.EmailHandler}/>
@@ -97,10 +102,13 @@ export default class LoginForm extends React.Component {
                             <p className='txt1'><a href="#"> Forgot Password? </a></p>
                             <p className='txt1'> New User? <a href="#"> Sign Up </a></p>
                         </label>
-                        <label className='input1'>
-                            <button className='base base-submit1 txt1' onClick={this.submitHandler}>Sign In</button>
-                        </label>
-
+                    
+                        <Link to='/profile'>
+                            <label className='input1'>
+                                <button className='base base-submit1 txt1' onClick={this.submitHandler}>Sign In</button>
+                            </label>
+                        </Link>
+                        
                     </form>
 
                 </div>
