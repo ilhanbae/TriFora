@@ -1,226 +1,266 @@
-import React from "react";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import "../style/EditProfile.css";
-import harold from "../assets/harold.jpg";
-import yellowbox from "../assets/yellowbox.jpg";
-import blackbox from "../assets/blackbox.png";
+import genericFetch from "../helper/genericFetch";
+import uploadFile from "../helper/uploadFile";
+import genericPatch from "../helper/genericPatch";
+import validateUserProfileFields from "../helper/validateUserProfileFields";
 
-class EditProfile extends React.Component {
+export default function EditProfile() {
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [isLoaded, setIsLoaded] = useState("false");
+  const [user, setUser] = useState(null);
 
-    constructor(props) {
-        super(props);
-        this.state = {
-          edit_username: "",
-          edit_firstname: "",
-          edit_lastname: "",
-          edit_bio: "",
-          edit_img: "",
-        };
-      }
+  // Load the current user instance when the component is loaded
+  useEffect(() => {
+    loadUser();
+  }, []);
 
-    get_user_data(){
-        console.log("In profile");
-        console.log(sessionStorage)
-        // fetch the user data, and extract out the attributes to load and display
-        fetch(process.env.REACT_APP_API_PATH + "/users/" + sessionStorage.getItem('user'), {
-          method: "get",
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-          }
-        })
-          .then(res => res.json())
-          .then(
-            result => {
-              if (result) {
-                console.log(result);
-                if (result.attributes){
-                this.setState({
-                  // IMPORTANT!  You need to guard against any of these values being null.  If they are, it will
-                  // try and make the form component uncontrolled, which plays havoc with react
-                  edit_username: result.attributes.username || "",
-                  edit_firstname: result.attributes.firstName || "",
-                  edit_lastname: result.attributes.lastName || "",
-                  edit_bio: result.attributes.description || "",
-                  edit_img: result.attributes.profileImage || "",
-                });
-              }
-              }
-            },
-            error => {
-              alert("error!");
-            }
-          );
+  // This methods loads the user data using genericFetch.
+  const loadUser = async () => {
+    setIsLoaded(false);
+    const query = {};
+    const endpoint = `/users/${sessionStorage.getItem("user")}`;
+    const { data, errorMessage } = await genericFetch(endpoint, query);
+    // console.log(data, errorMessage);
+
+    setUser(data);
+    setErrorMessage(errorMessage);
+    setIsLoaded(true);
+  };
+
+  if (errorMessage) {
+    return <div>Error: {errorMessage}</div>;
+  } else if (!isLoaded) {
+    return <div>Loading</div>;
+  } else {
+    if (user) {
+      return (
+        <div className="container">
+          {/* <ProfileHeader username={user.username} /> */}
+          <ProfileMain user={user} />
+        </div>
+      );
     }
-
-    componentDidMount() {
-        this.get_user_data();
-    }
-
-    setimg = event => {
-        console.log(event.target.files);
-        console.log(event.target.files[0]);
-        
-        this.setState({
-            edit_img: URL.createObjectURL(event.target.files[0])
-        }) 
-    }
-
-    usernameHandler = event => {
-        this.setState({
-            edit_username: event.target.value
-        });
-    }
-
-    firstNameHandler = event => {
-        this.setState({
-            edit_firstname: event.target.value
-        });
-    }
-
-    lastNameHandler = event => {
-        this.setState({
-            edit_lastname: event.target.value
-        });
-    }
-
-    bioHandler = event => {
-        this.setState({
-            edit_bio: event.target.value
-        });
-    }
-    
-    submitHandler = event => {
-        //keep the form from actually submitting
-        event.preventDefault();
-
-        //make the api call to the authentication page
-        fetch(process.env.REACT_APP_API_PATH+ "users" + sessionStorage.getItem('user'), {
-        method: "patch",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: this.state.username,
-          password: this.state.password
-        })
-      })
-        .then(res => res.json())
-        .then(
-          result => {
-            console.log("Testing");
-            if (result.userID) {
-  
-              // set the auth token and user ID in the session state
-              sessionStorage.setItem("token", result.token);
-              sessionStorage.setItem("user", result.userID);
-  
-              this.setState({
-                sessiontoken: result.token,
-                alanmessage: result.token
-              });
-  
-              // call refresh on the posting list
-              this.refreshPostsFromLogin();
-            } else {
-  
-              // if the login failed, remove any infomation from the session state
-              sessionStorage.removeItem("token");
-              sessionStorage.removeItem("user");
-              this.setState({
-                sessiontoken: "",
-                alanmessage: result.message
-              });
-            }
-          },
-          error => {
-            alert("error!");
-          }
-        );
-    }
-
-    render(){
-        return(
-            
-            <form>
-                <label classname = "textbox">
-                   <input type="text" placeholder="Username" className="user" onChange={this.usernameHandler}/>
-                </label>
-
-                <label classname = "textbox">
-                   <input type="text" placeholder="First" className="first" onChange={this.firstNameHandler}/>
-                </label>
-
-                <label classname = "textbox">
-                   <input type="text" placeholder="Last" className="last" onChange={this.lastNameHandler}/>
-                </label>
-
-                <label classname = "textbox">
-                   <input type="text" placeholder="Bio" className="bio" onChange={this.bioHandler}/>
-                </label>
-
-                <div>
-                <input type='file' id='file-upload' className='upload' onChange={this.setimg} />
-                </div> 
-
-                <button className="save" onClick={this.submitHandler}>Save</button>
-
-                <button className="cancel">Cancel</button>
-
-                {/* <button className="remove">Remove Account</button> */}
-
-                <input className = 'pfp' type='image' src={this.state.edit_img} alt='default image'/>
-
-                {/* <div className="choose">
-                <h1>Choose Displayed Communities</h1>
-                </div>
-
-                <input className = 'choosebox' type='image' src={yellowbox} alt='filler'/>
-
-                <input className = 'b1' type='image' src={blackbox} alt='filler'/>
-
-                <input className = 'b2' type='image' src={blackbox} alt='filler'/>
-
-                <input className = 'b3' type='image' src={blackbox} alt='filler'/>
-
-                <input className = 'b4' type='image' src={blackbox} alt='filler'/>
-
-                <div className="c1">
-                    <h1>Class of 2023</h1>
-                </div>
-
-                <div className="c2">
-                    <h1>DCEU</h1>
-                </div>
-
-                <div className="c3">
-                    <h1>Marvel CU</h1>
-                </div>
-
-                <div className="c4">
-                    <h1>CW</h1>
-                </div>
-
-                <div className="checkbox1"> 
-                    <input type="checkbox" /> 
-                </div>
-
-                <div className="checkbox2"> 
-                    <input type="checkbox" /> 
-                </div>
-
-                <div className="checkbox3"> 
-                    <input type="checkbox" /> 
-                </div>
-
-                <div className="checkbox4"> 
-                    <input type="checkbox" /> 
-                </div>
-                */}
-
-            </form>
-
-        )
-    }
+  }
 }
 
-export default EditProfile;
+/* Profile Header. */
+const ProfileHeader = (prop) => {
+  // Save button nav action
+  const saveActionHandler = () => {
+    prop.userInfoFormSubmitHandler();
+  };
+
+  return (
+    <div className="profile-header">
+      <div className="user-profile-headline">
+        <h1 className="active-text">{prop.username}'s Profile Page</h1>
+      </div>
+      <div className="page-nav-buttons">
+        <button className="button" onClick={saveActionHandler}>
+          Save
+        </button>
+        <Link to="/profile-page">
+          <button className="button">Close</button>
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+/* Profile Main */
+const ProfileMain = (prop) => {
+  return (
+    <div className="profile-main">
+      <UserInfoForm user={prop.user} />
+    </div>
+  );
+};
+
+/* User Profile */
+const UserInfoForm = (prop) => {
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarLink, setAvatarLink] = useState(prop.user.attributes.profile.profileImage);
+  const [username, setUsername] = useState(prop.user.attributes.profile.username);
+  const [firstname, setFirstname] = useState(prop.user.attributes.profile.firstName);
+  const [lastname, setLastname] = useState(prop.user.attributes.profile.lastName);
+  const [description, setDescription] = useState(prop.user.attributes.profile.description);
+
+  // Handles user info form submission
+  const userInfoFormSubmitHandler = async () => {
+    // Upload image to the server first, to get the image url for avatar
+    const formDataParams = { // set up form data params for image upload
+      uploaderID: prop.user.id,
+      attributes: { type: "user-avatar" },
+      file: avatarFile,
+    };
+    const { data: uploadedServerAvatarFile, errorMessage: uploadFileErrorMessage } = await uploadFile(formDataParams);
+    
+    // Check for upload file error
+    if(uploadFileErrorMessage) {
+      alert(uploadFileErrorMessage)
+    } else {
+      // console.log(uploadedServerAvatarFile, uploadFileErrorMessage);
+      const serverAvatarLink = `${process.env.REACT_APP_DOMAIN_PATH}${uploadedServerAvatarFile.path}`
+      setAvatarLink(serverAvatarLink); // format data as sever image link
+    }
+
+    // Update user based on the form data
+    const endpoint = `/users/${sessionStorage.getItem("user")}`;
+    const body = { // set up request body 
+      email: prop.user.email,
+      attributes: {
+        profile: {
+          username: username,
+          firstName: firstname,
+          lastName: lastname,
+          description: description,
+          profileImage: avatarLink,
+        },
+      },
+    };
+    
+    // Check for profile fields error
+    const [isUserProfileFieldsValid, userProfileFieldsErrorMessage] = validateUserProfileFields(body);
+    console.log(isUserProfileFieldsValid, userProfileFieldsErrorMessage)
+    if(!isUserProfileFieldsValid) {
+      alert(userProfileFieldsErrorMessage)
+    } else {
+      const { data: updatedUser, errorMessage: updateUserErrorMessage} = await genericPatch(endpoint, body);
+      
+      console.log(updatedUser, updateUserErrorMessage);
+      if (updateUserErrorMessage) {
+        alert(updateUserErrorMessage)
+      } else {
+        alert("Profile edit successfully")
+      }
+    }
+  };
+
+  // Update profile avatar display on upload. The path for image is a blob url that 
+  // is maintained internally by the browser.
+  // Note:
+  // - Should check if file is supported image file format
+  // - Should also check if the file does not exceed certain size 
+  const avatarSelectHandler = (e) => {
+    try {
+      const selectedFile = e.target.files[0];
+      const imageBlob = URL.createObjectURL(selectedFile);
+
+      // check if file is supported image file  format
+      if (selectedFile.type === "image/png" || selectedFile.type === "image/jpg" || selectedFile.type === "image/jpeg") {
+        setAvatarFile(selectedFile);
+        setAvatarLink(imageBlob);
+      } else {
+        setAvatarLink("");
+        alert(`${selectedFile.name} is not an image file. Please try again.`)
+      }
+    } catch(error) {
+      console.log(error);
+    }
+  };
+
+  // Update user name on input change
+  const usernameInputHandler = (e) => {
+    setUsername(e.target.value);
+  };
+
+  // Update first name on input change
+  const firstnameInputHandler = (e) => {
+    setFirstname(e.target.value);
+  };
+
+  // Update last name on input change
+  const lastnameInputHandler = (e) => {
+    setLastname(e.target.value);
+  };
+
+  // Update description on input change
+  const descriptionInputHandler = (e) => {
+    setDescription(e.target.value);
+  };
+
+  return (
+    <div>
+      {/* Profile Header */}
+      <ProfileHeader
+        username={prop.user.attributes.profile.username}
+        userInfoFormSubmitHandler={userInfoFormSubmitHandler}
+      />
+
+      {/* Main Form */}
+      <form
+        className="user-profile-form"
+        onSubmit={userInfoFormSubmitHandler}
+        autoComplete="off"
+      >
+        {/* User profile avatar field */}
+        <div className="user-profile-avatar">
+          <img className="profile-avatar" src={avatarLink} alt="" />
+          <input
+            id="profile-avatar-upload-input"
+            type="file"
+            onChange={avatarSelectHandler}
+          />
+          <label htmlFor="profile-avatar-upload-input" className="button bold">
+            Upload
+          </label>
+        </div>
+
+        {/* User basic info field */}
+        <div className="user-profile-basic-info">
+          {/* Username Input Field*/}
+          <label>
+            <span className="active-text bold">Username:</span>
+            <input
+              className="text-input"
+              type="text"
+              value={username}
+              // onChange={usernameInputHandler}
+              disabled
+            />
+          </label>
+          {/* Firstname Input Field*/}
+          <label>
+            <span className="active-text bold">First Name:</span>
+            <input
+              className="text-input"
+              type="text"
+              value={firstname}
+              onChange={firstnameInputHandler}
+            />
+          </label>
+          {/* Lastname Input Field*/}
+          <label>
+            <span className="active-text bold">Last Name:</span>
+            <input
+              className="text-input"
+              type="text"
+              value={lastname}
+              onChange={lastnameInputHandler}
+            />
+          </label>
+        </div>
+
+        {/* User detail info field*/}
+        <div className="user-profile-detail-info">
+          <label>
+            <span className="active-text bold">Description:</span>
+            <textarea
+              className="textarea-input"
+              type="text"
+              value={description}
+              onChange={descriptionInputHandler}
+            />
+          </label>
+        </div>
+
+        {/* User Profile Avatar */}
+        <div className="user-profile-avatar"></div>
+        {/* User Profile Identity  */}
+        <div className="usr-profile-identity">{prop.username}</div>
+      </form>
+    </div>
+  );
+};

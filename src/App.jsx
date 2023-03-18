@@ -108,11 +108,11 @@ class App extends React.Component {
       <div className="App">
         <header className="App-header">
 
-          <Navbar toggleModal={e => toggleModal(this, e)} logout={this.logout}/>
+          {/* <Navbar toggleModal={e => toggleModal(this, e)} logout={this.logout}/> */}
 
           <div className="maincontent" id="mainContent">
             <Routes>
-              <Route path="/editprofile" element={<EditProfile />} /> 
+              <Route path="/edit-profile" element={<EditProfile />} /> 
               <Route path="/settings" element={<Settings login={this.login}  />} />
               <Route path="/friends" element={<Friends  login={this.login} />} />   
               <Route path="/groups" element={<Groups  login={this.login} />} />     
