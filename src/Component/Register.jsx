@@ -1,8 +1,7 @@
 import React from 'react';
 import "../style/RegisterForm.css";
-import image_upload_icon from "../assets/image_upload_icon.jpeg"
-
-
+import image_upload_icon from "../assets/image_upload_icon.jpeg";
+import { Link, useNavigate} from "react-router-dom";
 
 export default class RegisterForm extends React.Component {
     constructor(props) {
@@ -13,7 +12,8 @@ export default class RegisterForm extends React.Component {
           confirm_password: "",
           phone: "",
           email: "",
-          sessiontoken: ""
+          sessiontoken: "",
+          redirect: false,
         };
     }
 
@@ -86,7 +86,6 @@ export default class RegisterForm extends React.Component {
         } else {
           //keep the form from actually submitting
           event.preventDefault();
-      
           //make the api call to the authentication page
           fetch(process.env.REACT_APP_API_PATH+"/auth/signup", {
             method: "POST",
@@ -97,13 +96,15 @@ export default class RegisterForm extends React.Component {
               email: this.state.email,
               password: this.state.password,
               attributes: {
-                username: this.state.username,
-                firstName: "",
-                lastName: "",
-                description: "",
-                profileImage: "",
-                phone: "",
-              }
+                profile: {
+                  username: this.state.username,
+                  firstName: "",
+                  lastName: "",
+                  description: "",
+                  profileImage: "",
+                  phone: ""
+                },
+              },
             })
           })
             .then(res => res.json())
@@ -145,7 +146,9 @@ export default class RegisterForm extends React.Component {
         return (
             <div className='wrapper'>
                 <div className='inner'>
+                  <Link to='/login'>
                     <button className='base base-back'>&#8592;</button>
+                  </Link>
                     {/*<p>Back to Login</p>*/}
                     <form>
                         <h3 className='h3-inner'>Create an Account</h3>
@@ -172,9 +175,12 @@ export default class RegisterForm extends React.Component {
                         {/* <label className='input'>
                             <input type="text" placeholder='Phone Number' className='input-stuff' onChange={this.phoneHandler}/>
                         </label> */}
-                        <label className='input'>
-                            <button className='base base-submit' onClick={this.submitHandler}>Register</button>
-                        </label>
+                        <Link to='/login'>
+                          <label className='input'>
+                              <button className='base base-submit' onClick={this.submitHandler}>Register</button>
+                          </label>
+                        </Link>
+
                     </form>
                 </div>
             </div>
