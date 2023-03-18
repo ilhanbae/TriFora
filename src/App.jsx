@@ -131,6 +131,9 @@ class App extends React.Component {
                 as it was just being used for testing purposes but routes we use must have them. */}
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/edit-profile" element={<EditProfile />} />
+                <Route path="/login" element={<Login login={this.login} />} />
+                <Route path="/register" element={<Signup login={this.login} />} />
+                <Route path='/profile' element={<Profile_Page />} />
                 <Route path="/settings" element={<Settings login={this.login} passMethod={this.navSwitch} />} />
                 <Route path="/friends" element={<Friends login={this.login} />} />
                 <Route path="/groups" element={<Groups login={this.login} />} />
