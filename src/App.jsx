@@ -121,7 +121,7 @@ class App extends React.Component {
         <div className="App">
           <header className="App-header">
 
-            {/* {/* <Navbar toggleModal={e => toggleModal(this, e)} logout={this.logout}/> */} */}
+            {/* <Navbar toggleModal={e => toggleModal(this, e)} logout={this.logout}/> */}
             <NavAchiever toggleModal={e => toggleModal(this, e)} logout={this.logout} navStyle={this.state.navStyle} />
 
 
