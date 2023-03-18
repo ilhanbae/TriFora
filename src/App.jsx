@@ -4,7 +4,7 @@
   sibling components at a lower level.  It holds the basic structural components of navigation, content, and a modal dialog.
 */
 
-import React from "react";
+import React, { Profiler } from "react";
 import "./App.css";
 import PostForm from "./Component/PostForm.jsx";
 import FriendList from "./Component/FriendList.jsx";
@@ -14,6 +14,7 @@ import FriendForm from "./Component/FriendForm.jsx";
 import Modal from "./Component/Modal.jsx";
 import Navbar from "./Component/Navbar.jsx";
 import Promise from "./Component/Promise.jsx";
+import Profile_Page from "./Component/ProfilePage.jsx";
 import RegisterForm from "./Component/Register";
 import LoginForm from "./Component/SignIn.jsx";
 
@@ -111,7 +112,6 @@ class App extends React.Component {
 
           <div className="maincontent" id="mainContent">
             <Routes>
-              <Route path="/login" element={<Login login={this.login}/> } />
               <Route path="/settings" element={<Settings login={this.login}  />} />
               <Route path="/friends" element={<Friends  login={this.login} />} />   
               <Route path="/groups" element={<Groups  login={this.login} />} />     
