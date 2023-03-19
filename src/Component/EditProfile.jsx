@@ -61,7 +61,7 @@ const ProfileHeader = (prop) => {
         <button className="button" onClick={saveActionHandler}>
           Save
         </button>
-        <Link to="/profile-page">
+        <Link to="/profile">
           <button className="button">Close</button>
         </Link>
       </div>
@@ -216,7 +216,7 @@ const UserProfileForm = (prop) => {
       >
         {/* User profile avatar field */}
         <div className="user-profile-avatar">
-          <img className="profile-avatar" src={avatarLink} alt="" />
+          <img className="profile-avatar-preview" src={avatarLink} alt="" />
           <input
             id="profile-avatar-upload-input"
             type="file"
@@ -236,8 +236,7 @@ const UserProfileForm = (prop) => {
               className="text-input"
               type="text"
               value={username}
-              // onChange={usernameInputHandler}
-              disabled
+              onChange={usernameInputHandler}
             />
           </label>
           {/* Firstname Input Field*/}
@@ -248,6 +247,7 @@ const UserProfileForm = (prop) => {
               type="text"
               value={firstname}
               onChange={firstnameInputHandler}
+              disabled
             />
           </label>
           {/* Lastname Input Field*/}
@@ -258,6 +258,7 @@ const UserProfileForm = (prop) => {
               type="text"
               value={lastname}
               onChange={lastnameInputHandler}
+              disabled
             />
           </label>
         </div>
