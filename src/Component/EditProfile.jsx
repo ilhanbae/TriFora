@@ -216,7 +216,7 @@ const UserProfileForm = (prop) => {
       >
         {/* User profile avatar field */}
         <div className="user-profile-avatar">
-          <img className="profile-avatar" src={avatarLink} alt="" />
+          <img className="profile-avatar-preview" src={avatarLink} alt="" />
           <input
             id="profile-avatar-upload-input"
             type="file"
