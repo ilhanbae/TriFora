@@ -25,7 +25,6 @@ import {
 } from 'react-router-dom';
 
 import NavAchiever from "./Component/NavAchiever";
-import RegisterForm from "./Component/Register";
 // import EditProfile from "./Component/EditProfile";
 
 // toggleModal will both show and hide the modal dialog, depending on current state.  Note that the
