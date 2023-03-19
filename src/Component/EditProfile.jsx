@@ -61,7 +61,7 @@ const ProfileHeader = (prop) => {
         <button className="button" onClick={saveActionHandler}>
           Save
         </button>
-        <Link to="/profile-page">
+        <Link to="/profile">
           <button className="button">Close</button>
         </Link>
       </div>
