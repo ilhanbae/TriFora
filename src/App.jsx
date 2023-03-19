@@ -25,6 +25,7 @@ import {
 } from 'react-router-dom';
 
 import NavAchiever from "./Component/NavAchiever";
+import RegisterForm from "./Component/Register";
 // import EditProfile from "./Component/EditProfile";
 
 // toggleModal will both show and hide the modal dialog, depending on current state.  Note that the
@@ -132,7 +133,7 @@ class App extends React.Component {
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/edit-profile" element={<EditProfile />} />
                 <Route path="/login" element={<Login login={this.login} />} />
-                <Route path="/register" element={<Signup login={this.login} />} />
+                <Route path="/register" element={<RegisterForm login={this.login} />} />
                 <Route path='/profile' element={<Profile_Page />} />
                 <Route path="/settings" element={<Settings login={this.login} passMethod={this.navSwitch} />} />
                 <Route path="/friends" element={<Friends login={this.login} />} />
