@@ -207,9 +207,6 @@ export default class ProfilePage extends React.Component {
         return(
         <div className = 'profile-page'>
 
-            <div className = 'top-navbar'>
-            </div>
-
             <div className = 'profile-title-bar'> 
                 <div className = 'profile-title'>
                     <b>{this.state.username}&prime;s Profile Page</b>
