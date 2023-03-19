@@ -144,7 +144,8 @@ const Login = (props) => {
   } else {
     console.log("Logged In");
     return (
-      <Profile_Page/>
+      // <Profile_Page/>
+      <Profile userid={sessionStorage.getItem("user")} />
     );
   }
 }
