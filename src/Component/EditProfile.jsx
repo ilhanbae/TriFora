@@ -236,8 +236,7 @@ const UserProfileForm = (prop) => {
               className="text-input"
               type="text"
               value={username}
-              // onChange={usernameInputHandler}
-              disabled
+              onChange={usernameInputHandler}
             />
           </label>
           {/* Firstname Input Field*/}
@@ -248,6 +247,7 @@ const UserProfileForm = (prop) => {
               type="text"
               value={firstname}
               onChange={firstnameInputHandler}
+              disabled
             />
           </label>
           {/* Lastname Input Field*/}
@@ -258,6 +258,7 @@ const UserProfileForm = (prop) => {
               type="text"
               value={lastname}
               onChange={lastnameInputHandler}
+              disabled
             />
           </label>
         </div>
