@@ -27,21 +27,6 @@
 }
 
 
-/* Header */
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 3;
-}
-
-/* Footer */
-.footer {
-  background-color: var(--yellow-apricot);
-  border-top: 2px solid var(--bistre);
-  width: 100%;
-  height: 54px;
-}
-
 /* Generic Buttons */
 .button {
   border: 2px solid var(--bistre);
@@ -50,11 +35,12 @@
   cursor: pointer;
 }
 
-/* Container */
-.container {
+/* Community Page */
+.community-page {
   background-color: var(--light-yellow);
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 /* Header */
@@ -65,21 +51,21 @@
   width: 100%;
 }
 
-/* Banner */
-.banner {
+/* Community Banner */
+.community-banner {
   /* border: 1px solid var(--bistre); */
   width: 100%;
   height: 300px;
   display: flex;
   flex-direction: column;
 }
-.banner-background {
+.community-banner-background {
   /* background-color: var(--bistre); */
   /* border: 1px solid var(--bistre); */
   width: 100%;
   height: 350px;
 }
-.banner-content {
+.community-banner-content {
   background-color: var(--yellow-apricot);
   /* border: 1px solid var(--bistre); */
   padding: 5px 0;
@@ -88,7 +74,7 @@
   align-items: center;
   flex-direction: row;
 }
-.banner-content .community-avatar {
+.community-banner-content .community-avatar {
   margin-left: 100px;
   margin-right: 10px;
   width: 70px;
@@ -97,11 +83,11 @@
   background-color: var(--french-bistre);
   border-radius: 10px;
 }
-.banner-content .community-info {
+.community-banner-content .community-info {
   /* border: 1px solid var(--bistre); */
   width: 370px;
 }
-.banner-content .join-button {
+.community-banner-content .join-button {
   margin-left: auto;
   margin-right: 100px;
   border: 2px solid var(--bistre);
@@ -340,6 +326,14 @@
   height: 15px;
   border-radius: 5px;
   background-color: var(--red-orange);
+}
+
+/* Community Member */
+.community-member {
+  border: 2px solid var(--bistre);
+  background-color: var(--yellow-apricot);
+  border-radius: 10px;
+  padding: 10px;
 }
 
 

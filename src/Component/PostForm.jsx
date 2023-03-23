@@ -43,6 +43,7 @@ export default class PostForm extends React.Component {
       .then(res => res.json())
       .then(
         result => {
+          console.log(result)
           this.setState({
             postmessage: result.Status
           });
@@ -86,6 +87,9 @@ export default class PostForm extends React.Component {
 
           <input type="submit" value="submit" />
           <br />
+          <label>
+            what
+          </label>
           {this.state.postmessage}
         </form>
         <PostingList ref={this.postListing} refresh={this.props.refresh} type="postlist" />

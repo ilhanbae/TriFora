@@ -1,10 +1,10 @@
-/* This method serves as a generic API GET handler; it takes in API endpoint 
-and params (query), and returns response data and error message. */
-export default async function genericFetch(endpoint, query) {
+/* This method serves as a generic API DELETE handler; it takes in API endpoint 
+, and returns response data and error message. */
+export default async function genericDelete(endpoint) {
   // Base API Variables
+  const method = "DELETE";
   const baseUrl = `${process.env.REACT_APP_API_PATH}`;
-  const queryParams = new URLSearchParams(query);
-  const requestUrl = `${baseUrl}${endpoint}?${queryParams}`; // Full request url
+  const requestUrl = `${baseUrl}${endpoint}`; // Full request url
   const headers = {
     "Content-Type": "application/json",
     "Authorization": "Bearer " + sessionStorage.getItem("token"),
@@ -15,10 +15,12 @@ export default async function genericFetch(endpoint, query) {
   let data = null;
   let errorMessage = null;
 
-  // Perform GET Request
+  // Perform DELETE Request
   try {
-    const response = await fetch(requestUrl, headers);
-
+    const response = await fetch(requestUrl, {
+      method:  method,
+      headers: headers
+    });
     if (!response.ok) {
       // Handles error response: either the query was bad or auth token was invalid
       // console.log(`Error response: ${response.status} ${response.statusText}`)
