@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import genericFetch from "../Helper/genericFetch";
-import genericDelete from "../Helper/genericDelete";
+import genericFetch from "../helper/genericFetch";
+import genericDelete from "../helper/genericDelete";
 import "../style/CommunityPage.css";
 
 /* This component renders a single community page. Inside the community page, 
