@@ -1,30 +1,19 @@
 /* Page Background color */
 .post-page{
-    background-color: #FEFEE2;
     position: relative;
-    width: 1440px;
-    height: 1115px;
-    overflow-y: scroll;
+    width: 100vw;
+    height: 100vh;
 }
 
-.top-navbar{
-    box-sizing: border-box;
-
-    position: absolute;
-    width: 1440px;
-    height: 54px;
-    left: 0px;
-    top: 0px;
-
-    background-color: #F3C26E;
-    border: 2px solid #000000;
+body {
+    background-color:  #FEFEE2;
 }
-
+  
 .community-bar{
     box-sizing: border-box;
 
     position: absolute;
-    width: 1440px;
+    width: 100%;
     height: 80px;
     left: 0px;
     top: 135px;
@@ -37,8 +26,9 @@
     box-sizing: border-box;
 
     position: absolute;
+    height: 65px;
+    width: 65px;
     left: 9.38%;
-    right: 85.76%;
     top: 6.25%;
     bottom: 6.25%;
 
@@ -50,7 +40,6 @@
 .community-name{
     position: absolute;
     left: 16.32%;
-    right: 59.86%;
     top: 20%;
     bottom: 38.75%;
 
@@ -58,7 +47,6 @@
     font-style: normal;
     font-weight: bold;
     font-size: 24px;
-    line-height: 33px;
 
     display: flex;
     align-items: center;
@@ -69,7 +57,6 @@
 .community-created{
     position: absolute;
     left: 16.32%;
-    right: 57.99%;
     top: 61.25%;
     bottom: 25%;
 
@@ -77,7 +64,6 @@
     font-style: normal;
     font-weight: bold;
     font-size: 12px;
-    line-height: 16px;
     display: flex;
     align-items: center;
 
@@ -87,7 +73,6 @@
 .member-info{
     position: absolute;
     left: 71.88%;
-    right: 17.18%;
     top: 18.75%;
     bottom: 40%;
 
@@ -95,7 +80,6 @@
     font-style: normal;
     font-weight: bold;
     font-size: 24px;
-    line-height: 33px;
     display: flex;
     align-items: center;
 
@@ -105,7 +89,6 @@
 .member-joindate{
     position: absolute;
     left: 71.88%;
-    right: 16.32%;
     top: 60%;
     bottom: 26.25%;
 
@@ -113,7 +96,6 @@
     font-style: normal;
     font-weight: bold;
     font-size: 12px;
-    line-height: 16px;
     display: flex;
     align-items: center;
 
@@ -131,9 +113,11 @@
     gap: 4px;
 
     position: absolute;
-    left: 44.44%;
+    height: 50px;
+    width: 160px;
+    left: 43%;
     right: 44.51%;
-    top: 25%;
+    top: 18%;
     bottom: 25%;
 
     background: #FEFEE2;
@@ -141,18 +125,25 @@
     border-radius: 10px;
 }
 
+.notification:hover{
+    background-color: #3D211A;
+}
+
+.notification:hover .notification_text{
+    color: white;
+}
+
 .notification_text{
     position: absolute;
     width: 100px;
     height: 40px;
     left: 5px;
-    top: 0px;
+    top: 10%;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
     font-size: 18px;
-    line-height: 16px;
     display: flex;
     align-items: center;
 
@@ -164,7 +155,7 @@
     width: 25px;
     height: 25px;
     left: 112px;
-    top: 2px;
+    top: 15%;
 
     background: #00FF00;
     border: 3px solid #000000;
@@ -176,7 +167,7 @@
     width: 25px;
     height: 25px;
     left: 112px;
-    top: 2px;
+    top: 15%;
 
     background: #FF0000;
     border: 3px solid #000000;
@@ -196,7 +187,7 @@
     position: absolute;
     width: 49px;
     height: 36px;
-    left: 1242px;
+    left: 85%;
     top: 25%;
 
     font-family: 'Alfa Slab One';
@@ -210,6 +201,11 @@
     background: #FEFEE2;
     border: 2px solid #8E6F52;
     border-radius: 10px;
+}
+
+.join-button:hover {
+    background-color: #3D211A;
+    color: white;
 }
 
 .joined-button{
@@ -225,7 +221,7 @@
     position: absolute;
     width: 49px;
     height: 36px;
-    left: 1242px;
+    left: 85%;
     top: 25%;
 
     font-family: 'Alfa Slab One';
@@ -241,11 +237,16 @@
     border-radius: 10px;
 }
 
+.joined-button:hover {
+    background-color: #3D211A;
+    color: white;
+}
+
 .back-button{
     position: absolute;
-    width: 55px;
-    height: 33px;
-    left: 43px;
+    width: 4vw;
+    height: 2.5vw;
+    left: 3%;
     top: 285px;
 
     background: #F3C26E;
@@ -253,44 +254,64 @@
 
 .back-button-image{
     position: absolute;
-    width: 31px;
-    height: 31px;
-    left: 10px;
-    top: 0px;
+    width: 2.1vw;
+    height: 2.1vw;
+    left: 22%;
+    top: 2.5%;
+}
+
+.postpage-content{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    position: absolute;
+    width: 100%;
+    height: 1000px;
+    left: 0%;
+    top: 30%;
 }
 
 .main-post{
-    position: absolute;
-    width: 1171px;
-    height: 540px;
-    left: 135px;
-    top: 270px;
+    box-sizing: border-box;
 
-    background-color: #FEFEE2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    position: relative;
+    width: 85%;
+    left: 2%;
+    top: 0%;
+
     border: 2px solid #000000;
     border-radius: 10px;
 }
 
 .post-header{
-    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
 
-    position: absolute;
-    left: 0.09%;
-    right: 0%;
-    top: 0%;
-    bottom: 90%;
+    margin: 10px;
+    margin-bottom: 5px;
+    padding: 10px;
+    width: 95%;
 
-    border-bottom: 2px solid #000000;
+    border: 2px solid #000000;
+    border-radius: 10px;
 }
 
 .post-avater{
-    box-sizing: border-box;
-
-    position: absolute;
-    left: 2.22%;
-    right: 93.51%;
-    top: 0.37%;
-    bottom: 0%;
+    position: relative;
+    width: 56px;
+    height: 56px;
+    margin-left: 20px;
 
     background: #FEFEE2;
     border: 3px solid #000000;
@@ -298,153 +319,157 @@
 }
 
 .post-by{
-    position: absolute;
-    width: 74px;
-    height: 19px;
-    left: 109px;
-    top: 7px;
+    box-sizing: border-box;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 18px;
     line-height: 19px;
-    display: flex;
-    align-items: center;
 
     color: #000000;
 }
 
 .post-username{
-    position: absolute;
-    width: 82px;
-    height: 19px;
-    left: 109px;
-    top: 28px;
+    margin: 10px;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 18px;
     line-height: 19px;
-    display: flex;
-    align-items: center;
 
     color: #127475;
 }
 
 .post-on{
-    position: absolute;
-    width: 76px;
-    height: 19px;
-    left: 259px;
-    top: 8px;
+    box-sizing: border-box;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 18px;
     line-height: 19px;
-    display: flex;
-    align-items: center;
 
     color: #000000;
 }
 
 .post-date{
-    position: absolute;
-    width: 134px;
-    height: 19px;
-    left: 259px;
-    top: 29px;
+    margin: 10px;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 18px;
     line-height: 19px;
-    display: flex;
-    align-items: center;
-
-    color: #000000;
-}
-
-.post-viewnumber{
-    position: absolute;
-    left: 88.56%;
-    right: 9.05%;
-    top: 20px;
-    bottom: 95%;
-
-    font-family: 'Alfa Slab One';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 19px;
-    display: flex;
-    align-items: center;
-    text-align: center;
 
     color: #000000;
 }
 
 .post-views{
-    position: absolute;
-    left: 88.13%;
-    right: 8.54%;
-    top: 35px;
-    bottom: 91.3%;
+    box-sizing: border-box;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: auto;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
-    font-size: 12px;
-    line-height: 16px;
-    display: flex;
-    align-items: center;
-    text-align: center;
+    font-size: 18px;
+    line-height: 19px;
 
-    color: #616161;
+    color: #000000;
+}
+
+.post-viewnumber{
+    margin: 10px;
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 19px;
+
+    color: #000000;
 }
 
 .post-title{
-    position: absolute;
-    width: 400px;
-    height: 27.5px;
-    left: 76px;
-    top: 67px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
 
+    margin: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 10px;
+    width: 95%;
+
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.post-id{
+    margin: 10px;
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
     font-size: 20px;
-    line-height: 27px;
 
-    display: flex;
-    align-items: center;
+    color: #000000;
+}
+
+.post-title-text{
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    margin: 10px;
 
     color: #000000;
 }
 
 .post-content{
-    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
 
-    position: absolute;
-    width: 1170px;
-    height: 432px;
-    left: 1px;
-    top: 108px;
-
-    border-top: 2px solid #000000;
+    margin: 10px;
+    margin-top: 5px;
+    padding: 10px;
+    width: 95%;
+    border: 2px solid #000000;
+    border-radius: 10px;
 }
 
 .post-content-text{
-    position: absolute;
-    width: 1030px;
-    height: 378px;
-    left: 70px;
-    top: 10px;
-
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
@@ -455,11 +480,15 @@
 }
 
 .post-bar{
-    position: absolute;
-    width: 1171px;
-    height: 84px;
-    left: 0px;
-    top: 534px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    position: relative;
+    width: 85%;
+    height: 10%;
+    left: 2%;
 }
 
 .upvote-button-image{
@@ -546,24 +575,20 @@
     padding: 0px;
     gap: 19px;
 
-    position: absolute;
-    width: 1171px;
-    height: 40px;
-    left: 136px;
-    top: 890px;
-
-    border: 1px solid #000000;
-    border-radius: 10px;
+    position: relative;
+    width: 85%;
+    height: 6%;
+    left: 2%;
 }
 
 .comment-inputbox{
     box-sizing: border-box;
 
     position: absolute;
-    left: 8.58%;
-    right: 8.58%;
+    left: 0%;
     top: 0%;
     bottom: 0%;
+    width: 100%;
 
     background: #FEFEE2;
     border: 2px solid #000000;
@@ -580,7 +605,7 @@
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 16px;
     display: flex;
     align-items: center;
@@ -600,8 +625,8 @@
 
     position: absolute;
     width: 52px;
-    height: 36px;
-    left: 1070px;
+    height: 98%;
+    left: 95.6%;
     top: 1px;
 
     background: #F3C26E;
@@ -610,67 +635,71 @@
     border-radius: 10px;
 }
 
+.send-button:hover {
+    background-color: #8E6F52;
+    color: white;
+}
+  
+
 input[type="submit"] {
     font-family: 'Alfa Slab One';
     font-style: normal;
-    font-size:15px;
+    font-size:16px;
     font-weight: bold;
 }
 
-.comment-list{
+.comment-section{
     box-sizing: border-box;
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    padding: 30px 0px;
-    gap: 10px;
+    justify-content: flex-start;
 
-    position: absolute;
-    width: 1171px;
-    height: 114px;
-    left: 135px;
-    top: 959px;
-
-    border: 1px solid #000000;
-    border-radius: 10px;
+    position: relative;
+    width: 80%;
+    height: 450px;
+    left: 2%;
+    margin-top: 30px;
 }
 
 .individual-comment{
-    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
 
-    position: absolute;
-    left: 0%;
-    right: 0%;
-    top: 25%;
-    bottom: 25%;
+    border-radius: 10px;
+    color: #000;
+    margin: 10px;
+    padding: 10px;
+    width: 100%;
 
-    border: 1px solid #000000;
+    border: 2px solid #000000;
 }
 
 .comment-user-info{
-    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
 
-    position: absolute;
+    position: relative;
+    border-radius: 10px;
+    color: #000;
+    margin: 10px;
+    padding: 10px;
+    width: 20%;
+    height: 80%;
     left: 0%;
-    right: 82.84%;
-    top: 0%;
-    bottom: 0%;
 
-    border: 1px solid #000000;
+    border: 2px solid #000000;
 }
 
 .comment-user-avater{
-    box-sizing: border-box;
-
-    position: absolute;
+    position: relative;
     width: 54px;
     height: 54px;
-    left: 10%;
-    right: 60%;
-    top: 0%;
-    bottom: 0%;
 
     background: #FEFEE2;
     border: 3px solid #000000;
@@ -678,16 +707,12 @@ input[type="submit"] {
 }
 
 .comment-user-username{
-    position: absolute;
-    left: 55%;
-    right: 90%;
-    top: 16.67%;
-    bottom: 53.7%;
+    position: relative;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 20px;
     line-height: 16px;
     display: flex;
     align-items: center;
@@ -697,73 +722,69 @@ input[type="submit"] {
 }
 
 .comment-user-date{
-    position: absolute;
-    width: 100px;
-    left: 45%;
-    right: 83.09%;
-    top: 59.26%;
-    bottom: 11.11%;
+    position: relative;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 16px;
     line-height: 16px;
     display: flex;
     align-items: center;
     text-align: center;
 
-    color: #616161;
+    color: #000000;
 }
 
 .comment-text{
-    box-sizing: border-box;
-
-    position: absolute;
-    left: 17.16%;
-    right: 17.08%;
-    top: 0%;
-    bottom: 0%;
+    position: relative;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 20px;
     line-height: 16px;
     display: flex;
     align-items: center;
 
-    color: #000000;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    width: 50%;
+    height: 80%;
+    left: 0%;
 
-    border: 1px solid #000000;
+    border: 2px solid #000000;
+    color: #000000;
 }
 
 .comment-interaction{
-    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
 
-    position: absolute;
-    left: 82.92%;
-    right: 0%;
-    top: 0%;
-    bottom: 0%;
+    position: relative;
+    border-radius: 10px;
+    color: #000;
+    margin: 10px;
+    padding: 10px;
+    width: 15%;
+    height: 80%;
+    left: 0%;
 
-    border: 1px solid #000000;
+    border: 2px solid #000000;
 }
 
 .comment-delete-button-image{
-    position: absolute;
+    position: relative;
     width: 31px;
     height: 31px;
-    left: 5px;
-    top: 10px;
 }
 
 .comment-delete-text{
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    left: 38px;
-    top: 18px;
+    position: relative;
+    top: -5%;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
@@ -772,19 +793,14 @@ input[type="submit"] {
 }
 
 .comment-edit-button-image{
-    position: absolute;
+    position: relative;
     width: 23px;
     height: 26px;
-    left: 125px;
-    top: 14px;
 }
 
 .comment-edit-text{
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    left: 155px;
-    top: 18px;
+    position: relative;
+    top: -5%;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
