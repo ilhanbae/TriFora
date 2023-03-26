@@ -25,6 +25,7 @@ import {
 } from 'react-router-dom';
 
 import NavAchiever from "./Component/NavAchiever";
+import CreatePost from "./Component/CreatePost";
 // import EditProfile from "./Component/EditProfile";
 
 // toggleModal will both show and hide the modal dialog, depending on current state.  Note that the
@@ -138,6 +139,7 @@ class App extends React.Component {
                 <Route path="/friends" element={<Friends login={this.login} />} />
                 <Route path="/groups" element={<Groups login={this.login} />} />
                 <Route path="/posts" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} passMethod={this.navSwitch} />} />
+                <Route path="/create-post" element={<CreatePost />} />
                 <Route path="/promise" element={<Promise />} />
                 <Route path="/" element={<Posts doRefreshPosts={this.doRefreshPosts} login={this.login} apprefresh={this.state.refreshPosts} passMethod={this.navSwitch} />} />
 
