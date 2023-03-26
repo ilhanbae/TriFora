@@ -203,45 +203,55 @@ export default class PostPage extends React.Component {
         console.log(this.state.post_id);
         console.log(this.state.comment_input);
 
-        //make the api call to post
-        fetch(process.env.REACT_APP_API_PATH+"/posts", {
-        method: "post",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+sessionStorage.getItem("token")
-        },
-        body: JSON.stringify({
-            authorID: sessionStorage.getItem("user"),
-            parentID: this.state.post_id,
-            content: this.state.comment_input,
-        })
-        })
-        .then(res => res.json())
-        .then(
-            result => {
-            console.log(result);
-            alert("Post was successful");
-            // once a post is complete, reload the feed
-            this.loadPost();
-            },
-            error => {
-            alert("error when lodding the post");
+        if (sessionStorage.getItem("token")){
+            //Check the length of the comment
+            if (this.state.comment_input.length === 0){
+                alert("Comment Can be empty!")
+            } else {
+                //make the api call to post
+                fetch(process.env.REACT_APP_API_PATH+"/posts", {
+                    method: "post",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                    },
+                    body: JSON.stringify({
+                        authorID: sessionStorage.getItem("user"),
+                        parentID: this.state.post_id,
+                        content: this.state.comment_input,
+                    })
+                    })
+                    .then(res => res.json())
+                    .then(
+                        result => {
+                        console.log(result);
+                        alert("Post was successful");
+                        // once a post is complete, reload the feed
+                        this.loadPost();
+                        },
+                        error => {
+                        alert("error when lodding the post");
+                        }
+                    );
             }
-        );
+        }
     }
 
     render() {
         return (
             <div className = 'post-page'>
 
+                <div className = 'community-background'></div>
                 <div className = 'community-bar'>
                     <div className = 'community-image'>
                     </div>
-                    <div className = 'community-name'>
-                        Class of 2023
-                    </div>
-                    <div className = 'community-created'>
-                        Since February 19, 2023
+                    <div className = 'community-info'>
+                        <div className = 'community-name'>
+                            Class of 2023
+                        </div>
+                        <div className = 'community-created'>
+                            Since February 19, 2023
+                        </div>
                     </div>
                     <Notification join={this.state.join} text={this.state.notification_text} color={this.state.notification_color_class} click={() => this.notification_click()}/>
                     <Member_info join={this.state.join} />
@@ -306,12 +316,10 @@ const Notification = (props) => {
         );
     } else {
         return (
-            <div>
-                <button className = 'notification' onClick={props.click}>
-                    <b className = 'notification_text'>{props.text}</b>
-                    <div className = {props.color}></div>
-                </button>
-            </div>
+            <button className = 'notification' onClick={props.click}>
+                <b className = 'notification_text'>{props.text}</b>
+                <div className = {props.color}></div>
+            </button>
         );
     }
 }
@@ -323,8 +331,8 @@ const Member_info = (props) => {
         );
     } else {
         return (
-            <div>
-                <div className = 'member-info'>
+            <div className='member-info'>
+                <div className = 'member-username'>
                     Member
                 </div>
                 <div className = 'member-joindate'>
@@ -349,8 +357,20 @@ const Post_bar = (props) => {
                 <input className = 'downvote-button-image' type='image' src={downvote} alt='downvote' onClick={() => this.downvote_click()}/>
                 <b className = 'downvote-number'>{this.state.downvote_num}</b>
                 */}
+                <div className = 'post-pin'>
+                    <button className = 'post-pin-button'></button>
+                    <b className = 'post-pin-text'>Pin</b>
+                </div> 
+                <div className = 'post-hide'>
+                    <button className = 'post-hide-button'></button>
+                    <b className = 'post-hide-text'>Hide</b>
+                </div> 
+                <div className = 'post-report'>
+                    <button className = 'post-report-button'></button>
+                    <b className = 'post-report-text'>Report</b>
+                </div> 
                 <div className = 'post-delete'>
-                    <input className = 'post-delete-button' type='image' src={red_icon} alt='red_icon'/>
+                    <button className = 'post-delete-button'></button>
                     <b className = 'post-delete-text'>Delete</b>
                 </div>
             </div>
@@ -365,12 +385,10 @@ const Comment_input = (props) => {
         );
     } else {
         return(
-            <div className = 'send-comment'>
-                <form onSubmit={props.submit}>
-                    <input className='comment-inputbox' type='text' id='comment' name='comment' placeholder='Write Comment' onChange={props.comment_input}></input>
-                    <input className='send-button' type='submit' value='Send'></input>
-                </form>
-            </div>
+            <form className = 'send-comment' onSubmit={props.submit}>
+                <input className='comment-inputbox' type='text' id='comment' name='comment' placeholder='Write Comment' onChange={props.comment_input}></input>
+                <input className='send-button' type='submit' value='Send'></input>
+            </form>
         );
     }
 }
