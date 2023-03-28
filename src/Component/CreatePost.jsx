@@ -32,12 +32,13 @@ export default class CreatePost extends React.Component {
                 },
                 body: JSON.stringify({
                     authorID: sessionStorage.getItem("user"),
+                    recipientGroupID: 25, // 25 is a placeholder for now until we know how our communities are working
                     content: this.state.postTitle,
                     attributes: {
-                        // if (this.state.postContent.length > 0) {
-                        //     postDescription: this.state.postContent
-                        // }
-                        postDescription: this.state.postContent
+                        public: true, // all post are public for now?
+                        // this is just going to have to store an empty string and be tested for post page side I think
+                        postDescription: this.state.postContent,
+                        
                     }
                 })
             })
