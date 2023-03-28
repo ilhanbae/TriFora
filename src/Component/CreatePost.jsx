@@ -1,4 +1,6 @@
 import React from "react";
+import "../style/CreatePost.css";
+import imageUpload from "../assets/image_upload_icon.jpeg";
 
 export default class CreatePost extends React.Component {
 
@@ -77,6 +79,9 @@ export default class CreatePost extends React.Component {
         }
         return (
             <div>
+                <div className="return-button">
+                    <p>return to community will go here</p>
+                </div>
                 <form onSubmit={this.submitHandler}>
                     <label>
                         Post Title:
@@ -91,6 +96,20 @@ export default class CreatePost extends React.Component {
                         <textarea rows="10" cols="70" onChange={this.myContentChangeHandler} />
                     </label>
                     <br />
+
+                    <div>
+                        <label>
+                            Images:
+                            <br />
+                            <input type="file"/>
+                            <img src={imageUpload}/>
+                        </label>
+                        <label>
+                            Tags:
+                            <br />
+                            <textarea rows="5" cols="30" />
+                        </label>
+                    </div>
 
                     <input type="submit" value="Post" />
                     <br />
