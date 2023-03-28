@@ -10,11 +10,14 @@ export default class CommentList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          
+            comment_list: this.props.comment_list,
         };
       }
 
     render() {
+        //console.log("comment array in CommentList");
+        //console.log(this.props.comment_list);
+
         return(
             <div className = 'comment-section'>
                 {this.props.comment_list.map(post => (

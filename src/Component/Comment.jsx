@@ -93,6 +93,8 @@ export default class Comment extends React.Component {
     }
 
     render() {
+        //console.log("Each comment in Comment");
+        //console.log(this.props.post.content);
         return (
             <div className = 'individual-comment'>
                 <div className = 'comment-user-info'>
@@ -106,7 +108,7 @@ export default class Comment extends React.Component {
                     </div>
                 </div>
 
-                <Comment_text edit_comment={this.state.edit_comment} comment_content={this.state.comment_content} edit_comment_handler={e => this.Edit_Comment_Handler(e)} submit={this.Edit_Comment_SubmitHandler}/>
+                <Comment_text edit_comment={this.state.edit_comment} comment_content={this.props.post.content} edit_comment_handler={e => this.Edit_Comment_Handler(e)} submit={this.Edit_Comment_SubmitHandler}/>
                 {/* <div className = 'comment-text'>
                     {this.state.comment_content}
                 </div> */}
@@ -143,7 +145,7 @@ const Comment_interaction = (props) => {
 }
 
 const Comment_text = (props) => {
-    // If edit_comment is false, show comment content
+    // If edit_comment is false, hide edit comment inputbox
     if (!props.edit_comment){
         return (
             <div className = 'comment-text'>

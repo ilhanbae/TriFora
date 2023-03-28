@@ -3,8 +3,6 @@ import "./PostPage.css";
 import back from "../assets/back-button.jpeg";
 import upvote from "../assets/upvote.jpeg";
 import downvote from "../assets/downvote.jpeg";
-import red_icon from "../assets/red-icon.jpeg";
-import black_icon from "../assets/black-icon.jpeg"
 import CommentList from "./CommentList";
 import Convert_time from "../Helper/Convert_time";
 
@@ -112,13 +110,14 @@ export default class PostPage extends React.Component {
 
     loadPost() {
         // set the auth token and user ID in the session state
-        sessionStorage.setItem("token", "underachievers|s8YFPQ9DIodgJ0DFj9gqDlzHXpqgb_4rIEeuFwkv8Ow");
+        sessionStorage.setItem("token", "underachievers|EiT5KthEmXfHEJAYCMv7l-qBVEVobZbhX6f5uqtp0p0");
         sessionStorage.setItem("user", "165");
+
         // if the user is not logged in, we don't want to try loading post, because it will just error out. 
-        // get a single post using postID 
         if (sessionStorage.getItem("token")){
+
+            // get a single post using postID 
             let url = process.env.REACT_APP_API_PATH+"/posts/106";
-            
             fetch(url, {
             method: "get",
             headers: {
@@ -155,10 +154,11 @@ export default class PostPage extends React.Component {
             alert("Not Logged In");
         }
 
-        // Get all the comments related to the post
+        // Check if the session token exist
         if (sessionStorage.getItem("token")){
+
+            // Get all the comments related to the post
             let url = process.env.REACT_APP_API_PATH+"/posts?parentID=106";
-            
             fetch(url, {
             method: "get",
             headers: {
@@ -224,16 +224,19 @@ export default class PostPage extends React.Component {
                     .then(res => res.json())
                     .then(
                         result => {
-                        console.log(result);
-                        alert("Post was successful");
-                        // once a post is complete, reload the feed
-                        this.loadPost();
+                            console.log(result);
+                            // once a edit is complete, reload the all comments
+                            this.loadPost();
+                            alert("Post was successful");
                         },
                         error => {
-                        alert("error when lodding the post");
+                            alert("error when lodding the post");
                         }
                     );
             }
+        } else {
+            //If user is not logged in, show error message
+            alert("Not Logged In");
         }
     }
 
