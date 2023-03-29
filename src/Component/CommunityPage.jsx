@@ -37,7 +37,7 @@ export default function CommunityPage(props) {
   Note, currently the only attributes the community page maintains is its banner design.
   Perhaps, this can be called when the community admin/mod wishes to change the style of the community. */
   const refreshCommunityDetails = () => {
-    console.log("refreshing community details");
+    // console.log("refreshing community details");
     loadCommunityDetails(); // Fetch the community details again
   };
 
@@ -87,7 +87,6 @@ const CommunityContentDisplay = (props) => {
   const [communityPostCounts, setCommunityPostCounts] = useState(0);
   const [communityMemberCounts, setCommunityMemberCounts] = useState(0);
 
-
   // This method updates the current content display type as either posts or members.
   // It's passed on to its child component - CommunityStats, where the options are selected.
   // Then the CommunityContentDisplay component renders based on the display type (post list or members list)
@@ -108,7 +107,7 @@ const CommunityContentDisplay = (props) => {
   }
 
   return (
-    <div>
+    <div className="community-content-display">
       {/* Community Stats */}
       <CommunityStats
         postContentDisplayHandler={postContentDisplayHandler}
@@ -117,10 +116,10 @@ const CommunityContentDisplay = (props) => {
       />
 
       {/* Commmunity Posts List */}
-      {contentDisplayType === "posts" && <CommunityPostList communityId={props.communityId} updateCommunityPostCounts={updateCommunityPostCounts} />}
+      {contentDisplayType === "posts" && <CommunityPostsList communityId={props.communityId} updateCommunityPostCounts={updateCommunityPostCounts} updateCommunityMemberCounts={updateCommunityMemberCounts} />}
 
       {/* Comunity Members List */}
-      {contentDisplayType === "members" && <CommunityMembersList communityId={props.communityId} updateCommunityMemberCounts={updateCommunityMemberCounts} />}
+      {contentDisplayType === "members" && <CommunityMembersList communityId={props.communityId}  updateCommunityPostCounts={updateCommunityPostCounts} updateCommunityMemberCounts={updateCommunityMemberCounts} />}
     </div>
   )
 };
@@ -151,18 +150,32 @@ const CommunityStats = (props) => {
 
 /* [TODO] This component will render all the posts within a community. This list will update 
 whenever user makes change to the post, this includes pinning the post, hiding the post, 
-reporting the post, and removing the post.*/
-const CommunityPostList = (props) => {
+reporting the post, and removing the post. This component also include post control tool 
+and pagination */
+const CommunityPostsList = (props) => {
   const [posts, setPosts] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  // Fetch the posts when the component is loaded
+  // Fetch both posts and members when the component is loaded.
   useEffect(() => {
     loadPosts();
+    loadMembers();
   }, []);
 
-  // This methods loads the community posts using genericFetch.
+  // This methods loads the community members using genericFetch & update the community members count stat
+  const loadMembers = async () => {
+    setIsLoaded(false);
+    let endpoint = `/group-members`;
+    let query = {groupID: props.communityId};
+    const { data, errorMessage } = await genericFetch(endpoint, query);
+    // console.log(data, errorMessage)
+    if (data) {
+      props.updateCommunityMemberCounts(data[1])
+    }
+  };
+
+  // This methods loads the community posts using genericFetch & update the community posts count stat
   const loadPosts = async () => {
     setIsLoaded(false);
     let endpoint = "/posts";
@@ -183,7 +196,7 @@ const CommunityPostList = (props) => {
   // such as pinning, hiding, reporting, or deleting. It can also be passed on to Pagination
   // component with skip and take query.
   const refreshPosts = () => {
-    console.log("refreshing posts");
+    // console.log("refreshing posts");
     loadPosts(); // Fetch the posts again
   };
 
@@ -199,13 +212,15 @@ const CommunityPostList = (props) => {
           {/* Post Control Tool */}
           <PostControlTool />
           {/* Posts */}
-          {posts.map((post) => (
-            <CommunityPost
-              key={post.id}
-              post={post}
-              refreshPosts={refreshPosts}
-            />
-          ))}
+          <div className="community-post-list">
+            {posts.map((post) => (
+              <CommunityPost
+                key={post.id}
+                post={post}
+                refreshPosts={refreshPosts}
+              />
+            ))}
+          </div>
           {/* Pagination */}
           <Pagination />
         </div>
@@ -228,12 +243,10 @@ const CommunityPost = (props) => {
 
   // This method handles post actions such as pinning, hiding, reporting, or deleting.
   // It's passed on to its child component - postActionSidemenu, where the action options are selected.
-  // Pin & Hide are user-specific actions, and they should persist to only user's post list.
-  // Report and Delete are global actions, and they should persist to all users' post lists.
 
-  // Note: It should call API to update each post, and refresh the post list.
-  // Note: Should Pinning, hiding, or reporting considered as a reaction?
-  // Note: It should also display modal or toast to indiate that the post action has been selected
+  // TODO: It should call API to update each post, and refresh the post list.
+  // TODO: Should Pinning, hiding, or reporting considered as a reaction?
+  // TODO: It should also display modal or toast to indiate that the post action has been selected
   const postActionOptionsHandler = (option) => {
     switch (option) {
       case "pin":
@@ -241,16 +254,15 @@ const CommunityPost = (props) => {
         setIsPostPinned(isPostPinned ? false : true);
         break;
       case "hide":
-        console.log(option);
+        // console.log(option);
         setIsPostHidden(isPostHidden ? false : true);
         break;
       case "report":
-        console.log(option);
+        // console.log(option);
         setIsPostReported(isPostReported ? false : true);
         break;
       case "delete":
-        // should just call delete API, and update the post list
-        console.log(option);
+        // console.log(option);
         deletePost();
         break;
       default:
@@ -258,12 +270,15 @@ const CommunityPost = (props) => {
     }
   };
 
-  // This method handles delete post action.
+  // This method handles delete post action. It should check if current user has the 
   const deletePost = async () => {
     // Send DELETE request to the database.
-    const {data, errorMessage} = await genericDelete(`/posts/${props.post.id}`)
+    const {data, errorMessage} = await genericDelete(`/posts/${props.post.id}`);
     // console.log(data, errorMessage)
-    // Call refreshPosts method tell its parent component - CommunityPostList to refrsh the post list
+    if (errorMessage) {
+      alert(errorMessage)
+    }
+    // Call refreshPosts method tell its parent component - CommunityPostList to refresh the post list
     props.refreshPosts();
   };
 
@@ -274,7 +289,7 @@ const CommunityPost = (props) => {
       <div className="post-summary">
         <div className="post-id-title">
           <span className="inactive-text">{props.post.id}</span>
-          <h3 className="active-text">{props.post.content}</h3>
+          <h4 className="active-text">{props.post.attributes.title}</h4>
         </div>
 
         <div className="post-author-date">
@@ -391,10 +406,15 @@ const PostSortDropdown = (props) => {
 };
 
 /* [TODO] This component will render a post action sidemenu that lists options like pin to top, 
-hide, report, and delete. This component will be triggered when the user clicks on 
-'...' icon on each post. */
+hide, report, and delete. This component will be triggered when the user clicks on '...' icon on each post. 
+Some of these post action options should be user-specific. For example, "Delete" option should only available 
+to posts that belongs to the user or to all posts if the user's a admin or a mod.
+
+* Pin & Hide are user-specific actions, and they should persist to only user's post list.
+* Report & Delete are global actions, and they should persist to all users' post lists.
+*/
 const PostActionSidemenu = (props) => {
-  // Todo
+  // TODOs
   // 1. Should know what kind of relationsip does user have with the post
   // - 'Delete' option should be only available for user's post or if the user is the community owner/admin
   // 2. The action sidemenu should close when user clicks anywhere outside
@@ -409,25 +429,25 @@ const PostActionSidemenu = (props) => {
     setIsPinned(isPinned ? false : true); // update the option status
     props.postActionOptionsHandler("pin"); // tell CommunityPost component that 'pin' option was chosen
   };
-  let pinOptionName = isPinned ? "Unpin" : "Pin to top"; // update the option label based on the status
+  let pinOptionName = isPinned ? "Unpin" : "Pin to top"; // update the pin option label based on the state
 
   const hideActionHandler = () => {
     setIsHidden(isHidden ? false : true); // update the option status
     props.postActionOptionsHandler("hide"); // tell CommunityPost component that 'hide' option was chosen
   };
-  let hideOptionName = isHidden ? "Show" : "Hide"; // update the option label based on the status
+  let hideOptionName = isHidden ? "Show" : "Hide"; // update the hide option label based on the state
 
   const reportActionHandler = () => {
     setIsReported(isReported ? false : true); // update the option status
     props.postActionOptionsHandler("report"); // tell CommunityPost component that 'report' option was chosen
   };
-  let reportOptionName = isReported ? "Reported" : "Report"; // update the option label as "reported"
+  let reportOptionName = isReported ? "Reported" : "Report"; // update the report option label based on the state
 
   const deleteActionHandler = () => {
     setIsDeleted(isDeleted ? false : true); // update the option status
     props.postActionOptionsHandler("delete"); // tell CommunityPost component that 'report' option was chosen
   };
-  let deleteOptionName = isDeleted ? "Deleted" : "Delete"; // update the option label as "deleted"
+  let deleteOptionName = isDeleted ? "Delete" : "Delete"; // delete option label should remain the same
 
   if (props.isActive) {
     return (
@@ -455,18 +475,31 @@ const PostActionSidemenu = (props) => {
   }
 };
 
-/* [TODO] This component will render all members within a community. */
+/* [TODO] This component will render all members within a community. This component also include member control tool and pagination */
 const CommunityMembersList = (props) => {
   const [members, setMembers] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   
-  // Fetch the members when the component is loaded
+  // Fetch both posts and members when the component is loaded.
   useEffect(() => {
     loadMembers();
+    loadPosts();
   }, []);
 
-  // This methods loads the community members using genericFetch.
+  // This methods loads the community posts using genericFetch & update the community posts count stat
+  const loadPosts = async () => {
+    setIsLoaded(false);
+    let endpoint = "/posts";
+    let query = { sort: "newest", parentID: "", recipientGroupID: props.communityId };
+    const { data, errorMessage } = await genericFetch(endpoint, query);
+    // console.log(data, errorMessage)
+    if (data) {
+      props.updateCommunityPostCounts(data[1])
+    }
+  };
+
+  // This methods loads the community members using genericFetch & update the community members count stat
   const loadMembers = async () => {
     setIsLoaded(false);
     let endpoint = `/group-members`;
@@ -484,7 +517,7 @@ const CommunityMembersList = (props) => {
 
   // This method refresh the members by sending the request to API again using genricFetch.
   const refreshMembers = () => {
-    console.log("refreshing members");
+    // console.log("refreshing members");
     loadMembers(); // Fetch the members again
   };
   

@@ -27,8 +27,8 @@ export default async function genericDelete(endpoint) {
       errorMessage = response.statusText;
     } else {
       // Handles ok response: both request endpoint & query were good
-      // console.log("Ok response")
-      data = await response.json();
+      // console.log("Ok response");
+      // data = await response.json();
     }
   } catch (error) {
     // Handles invalid request: the API endpoint doens't exist

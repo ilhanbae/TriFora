@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Montserrat&display=swap');
+
 /* Color Palettes */
 :root {
   --bistre: #3d211a;
@@ -13,10 +15,18 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-size: 12px;
 }
 
 /* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Alfa Slab One', cursive;
+  letter-spacing: 0.5px;
+}
+span, body {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+}
 .inactive-text {
   display: block;
   color: var(--french-bistre);
@@ -25,7 +35,6 @@
   display: block;
   color: var(--bistre);
 }
-
 
 /* Generic Buttons */
 .button {
@@ -41,14 +50,6 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-}
-
-/* Header */
-.header {
-  background-color: var(--yellow-apricot);
-  border-bottom: 2px solid var(--bistre);
-  height: 54px;
-  width: 100%;
 }
 
 /* Community Banner */
@@ -106,6 +107,19 @@
   /* overflow: hidden; */
 }
 
+/* Community Content Display */
+.community-content-display {
+  display: flex;
+  flex-direction: column;
+  /* gap: 30px; */
+}
+
+/* Content List */
+.content-list-container {
+  display: flex;
+  flex-direction: column;
+}
+
 /* Community Stat */
 .community-stats {
   border: 2px solid var(--bistre);
@@ -130,6 +144,7 @@
   /* border: 2px solid var(--bistre); */
   border-radius: 10px;
   display: flex;
+  margin: 10px 0;
 }
 .sort-post-box {
   margin-right: auto;
@@ -172,15 +187,16 @@
   padding: 10px;
 }
 .create-post-button {
-  border: 2px solid var(--bistre);
+  border: none;
+  outline: 2px solid var(--bistre);
   background-color: var(--yellow-apricot);
   border-radius: 10px;
   padding: 10px;
   cursor: pointer;
 }
 
-/* Posts List */
-.posts-list {
+/* Community Post List */
+.community-post-list {
   background-color: var(--light-yellow);
   display: flex;
   flex-direction: column;

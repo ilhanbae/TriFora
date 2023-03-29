@@ -19,8 +19,7 @@ export default function App() {
   }
 
   // On login, update user's logged in status. This can be called from any components 
-  // that is linked in to the login page - it has a redirection to login page, has login 
-  // page as a child, etc.
+  // that is somewhat linked in to the login page, i.e. it has a navigation tab/button to login page.
   const login = () => {
     setIsLoggedIn(true);
   }
