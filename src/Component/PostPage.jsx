@@ -110,7 +110,7 @@ export default class PostPage extends React.Component {
 
     loadPost() {
         // set the auth token and user ID in the session state
-        sessionStorage.setItem("token", "underachievers|EiT5KthEmXfHEJAYCMv7l-qBVEVobZbhX6f5uqtp0p0");
+        sessionStorage.setItem("token", "underachievers|y6bTcl59YaqtcqH3IEaqXcZBVpLJWsw7m8b4StcaFkQ");
         sessionStorage.setItem("user", "165");
 
         // if the user is not logged in, we don't want to try loading post, because it will just error out. 
@@ -244,30 +244,31 @@ export default class PostPage extends React.Component {
         return (
             <div className = 'post-page'>
 
-                <div className = 'community-background'></div>
-                <div className = 'community-bar'>
-                    <div className = 'community-image'>
-                    </div>
-                    <div className = 'community-info'>
-                        <div className = 'community-name'>
-                            Class of 2023
-                        </div>
-                        <div className = 'community-created'>
-                            Since February 19, 2023
-                        </div>
-                    </div>
-                    <Notification join={this.state.join} text={this.state.notification_text} color={this.state.notification_color_class} click={() => this.notification_click()}/>
-                    <Member_info join={this.state.join} />
-                    <button className = {this.state.join_class} onClick={() => this.joined()}>{this.state.join}</button>
-                </div>
-
-                <form action="/previous_page">
-                    <button className = 'back-button'>
-                        <img className = 'back-button-image' src={back} alt='back'/>
-                    </button>
-                </form>
-
                 <div className = 'postpage-content'>
+                    <div className = 'community-background'></div>
+                    <div className = 'community-bar'>
+                        <div className = 'community-image'>
+                        </div>
+                        <div className = 'community-info'>
+                            <div className = 'community-name'>
+                                Class of 2023
+                            </div>
+                            <div className = 'community-created'>
+                                Since February 19, 2023
+                            </div>
+                        </div>
+                        <Notification join={this.state.join} text={this.state.notification_text} color={this.state.notification_color_class} click={() => this.notification_click()}/>
+                        <Member_info join={this.state.join} />
+                        <button className = {this.state.join_class} onClick={() => this.joined()}>{this.state.join}</button>
+                    </div>
+
+                    <form action="/previous_page">
+                        <button className = 'back-button'>
+                            <img className = 'back-button-image' src={back} alt='back'/>
+                        </button>
+                    </form>
+
+                {/*</div><div className = 'postpage-content'>*/}
                     <div className = 'main-post'>
                         <div className = 'post-header'>
                             <div className = 'post-avater'>
@@ -354,12 +355,11 @@ const Post_bar = (props) => {
     } else {
         return(
             <div className = 'post-bar'>
-                <input className = 'upvote-button-image' type='image' src={upvote} alt='upvote' onClick={props.click}/>
-                <b className = 'upvote-number'>{props.upvote}</b>
-                {/*
-                <input className = 'downvote-button-image' type='image' src={downvote} alt='downvote' onClick={() => this.downvote_click()}/>
-                <b className = 'downvote-number'>{this.state.downvote_num}</b>
-                */}
+                <div className = 'upvote'>
+                    <input className = 'upvote-button-image' type='image' src={upvote} alt='upvote' onClick={props.click}/>
+                    <b className = 'upvote-number'>{props.upvote}</b>
+                </div>
+            
                 <div className = 'post-pin'>
                     <button className = 'post-pin-button'></button>
                     <b className = 'post-pin-text'>Pin</b>
