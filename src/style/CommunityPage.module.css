@@ -1,32 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Montserrat&display=swap');
-
-/* Color Palettes */
-:root {
-  --bistre: #3d211a;
-  --french-bistre: #8e6f52;
-  --yellow-apricot: #f3c26e;
-  --light-yellow: #fefee2;
-  --skobeloff: #127475;
-  --red-orange: #ff4700;
-}
-
-/* Default */
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Alfa Slab One', cursive;
-  letter-spacing: 0.5px;
-}
-span, body {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 12px;
-  font-weight: bold;
-}
 .inactive-text {
   display: block;
   color: var(--french-bistre);
@@ -131,11 +103,12 @@ span, body {
 .community-stats-tab {
   padding: 10px;
   width: 80px;
+  height: 100%;
   cursor: pointer;
+  border: 2px solid transparent;
   /* border: 2px solid var(--bistre); */
 }
 .community-stats-tab:hover {
-  /* cursor: pointer; */
   border-bottom: 2px solid var(--skobeloff);
 }
 

@@ -4,6 +4,8 @@ components at a lower level. */
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CommunityPage from "./Component/CommunityPage";
+import "./App.css";
+
 
 export default function App() {
   // The app component maintains whether or not the login or logout actions were triggerd.

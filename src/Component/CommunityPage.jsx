@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import genericFetch from "../helper/genericFetch";
 import genericDelete from "../helper/genericDelete";
-import "../style/CommunityPage.css";
+import style from "../style/CommunityPage.module.css";
 
 /* This component renders a single community page. Inside the community page, 
 there are posts tab and members tab. */
@@ -48,12 +48,12 @@ export default function CommunityPage(props) {
     return <div>Loading...</div>;
   } else {
     return (
-      <div className="community-page">
+      <div className={style['community-page']}>
         {/* Banner */}
         <CommunityBanner communityDetails={communityDetails}/>
 
         {/* Main section */}
-        <div className="main-section">
+        <div className={style['main-section']}>
           {/* Main Content Display */}
           <CommunityContentDisplay communityId={communityId} />
         </div>
@@ -66,15 +66,15 @@ export default function CommunityPage(props) {
 there's community name, community background, community icon, and a join button*/
 const CommunityBanner = (props) => {
   return (
-    <div className="community-banner">
-      <div className="community-banner-background">Banner background</div>
-      <div className="community-banner-content">
-        <div className="community-avatar"></div>
-        <div className="community-info">
+    <div className={style['community-banner']}>
+      <div className={style['community-banner-background']}>Banner background</div>
+      <div className={style['community-banner-content']}>
+        <div className={style['community-avatar']}></div>
+        <div className={style['community-info']}>
           <h2>{props.communityDetails.name}</h2>
-          <span className="inactive-text">Since February 19th, 2023</span>
+          <span className={style['inactive-text']}>Since February 19th, 2023</span>
         </div>
-        <button className="join-button">Join</button>
+        <button className={style['join-button']}>Join</button>
       </div>
     </div>
   );
@@ -107,7 +107,7 @@ const CommunityContentDisplay = (props) => {
   }
 
   return (
-    <div className="community-content-display">
+    <div className={style['community-content-display']}>
       {/* Community Stats */}
       <CommunityStats
         postContentDisplayHandler={postContentDisplayHandler}
@@ -129,20 +129,20 @@ and number of members. Each stat also serves as a navigation tab between Communi
 and CommunityMembersList */
 const CommunityStats = (props) => {
   return (
-    <div className="community-stats">
+    <div className={style['community-stats']}>
       <div
-        className="community-stats-tab"
+        className={style['community-stats-tab']}
         onClick={() => props.postContentDisplayHandler("posts")}
       >
-        <span className="active-text">{props.communityPostCounts}</span>
-        <span className="inactive-text">Posts</span>
+        <span className={style['active-text']}>{props.communityPostCounts}</span>
+        <span className={style['inactive-text']}>Posts</span>
       </div>
       <div
-        className="community-stats-tab"
+        className={style['community-stats-tab']}
         onClick={() => props.postContentDisplayHandler("members")}
       >
-        <span className="active-text">{props.communityMemberCounts}</span>
-        <span className="inactive-text">Members</span>
+        <span className={style['active-text']}>{props.communityMemberCounts}</span>
+        <span className={style['inactive-text']}>Members</span>
       </div>
     </div>
   );
@@ -212,7 +212,7 @@ const CommunityPostsList = (props) => {
           {/* Post Control Tool */}
           <PostControlTool />
           {/* Posts */}
-          <div className="community-post-list">
+          <div className={style['community-post-list']}>
             {posts.map((post) => (
               <CommunityPost
                 key={post.id}
@@ -283,64 +283,64 @@ const CommunityPost = (props) => {
   };
 
   return (
-    <div className="community-post" key={props.post.id}>
-      <div className="post-thumbnail"></div>
+    <div className={style['community-post']} key={props.post.id}>
+      <div className={style['post-thumbnail']}></div>
 
-      <div className="post-summary">
-        <div className="post-id-title">
-          <span className="inactive-text">{props.post.id}</span>
-          <h4 className="active-text">{props.post.attributes.title}</h4>
+      <div className={style['post-summary']}>
+        <div className={style['post-id-title']}>
+          <span className={style['inactive-text']}>{props.post.id}</span>
+          <h5 className={style['active-text']}>{props.post.attributes.title}</h5>
         </div>
 
-        <div className="post-author-date">
-          <div className="post-author">
-            <span className="inactive-text">Posted By</span>
-            <span className="active-text">
+        <div className={style['post-author-date']}>
+          <div className={style['post-author']}>
+            <span className={style['inactive-text']}>Posted By</span>
+            <span className={style['active-text']}>
               {props.post.author.attributes.profile.username}
             </span>
           </div>
-          <div className="post-date">
-            <span className="inactive-text">Posted On</span>
-            <span className="active-text">{props.post.created}</span>
+          <div className={style['post-date']}>
+            <span className={style['inactive-text']}>Posted On</span>
+            <span className={style['active-text']}>{props.post.created}</span>
           </div>
         </div>
       </div>
 
-      <div className="post-labels">
+      <div className={style['post-labels']}>
         {/* Post Action Labels */}
-        <div className="post-action-labels">
+        <div className={style['post-action-labels']}>
           {isPostReported && (
-            <div className="post-action-report-label">
+            <div className={style['post-action-report-label']}>
               <span>Reported</span>
             </div>
           )}
           {isPostHidden && (
-            <div className="post-action-hide-label">
+            <div className={style['post-action-hide-label']}>
               <span>Hidden</span>
             </div>
           )}
           {isPostPinned && (
-            <div className="post-action-pin-label">
+            <div className={style['post-action-pin-label']}>
               <span>Pinned</span>
             </div>
           )}
         </div>
 
         {/* Post Stats Labels */}
-        <div className="post-stat-labels">
-          <div className="post-stat-label">
-            <span className="active-text">{props.post.reactions.length}</span>
-            <span className="inactive-text">Likes</span>
+        <div className={style['post-stat-labels']}>
+          <div className={style['post-stat-label']}>
+            <span className={style['active-text']}>{props.post.reactions.length}</span>
+            <span className={style['inactive-text']}>Likes</span>
           </div>
-          <div className="post-stat-label">
-            <span className="active-text">{props.post._count.children}</span>
-            <span className="inactive-text">Comments</span>
+          <div className={style['post-stat-label']}>
+            <span className={style['active-text']}>{props.post._count.children}</span>
+            <span className={style['inactive-text']}>Comments</span>
           </div>
         </div>
       </div>
 
-      <div className="post-action">
-        <span className="post-action-icon" onClick={postActionButtonHandler}>
+      <div className={style['post-action']}>
+        <span className={style['post-action-icon']} onClick={postActionButtonHandler}>
           {/* This should be replaced with actual icon */}
           ...
         </span>
@@ -363,18 +363,18 @@ const PostControlTool = () => {
   };
 
   return (
-    <div className="post-control-tool">
-      <div className="sort-post-box">
-        <button className="sort-post-button" onClick={sortButtonToggleHandler}>
+    <div className={style['post-control-tool']}>
+      <div className={style['sort-post-box']}>
+        <button className={style['sort-post-button']} onClick={sortButtonToggleHandler}>
           Sort Posts
         </button>
         <PostSortDropdown isActive={isPostSortActive} />
       </div>
-      <div className="create-post-box">
-        <div className="create-post-placeholder inactive-text">
+      <div className={style['create-post-box']}>
+        <div className={`${style['create-post-placeholder']} ${style['inactive-text']}`}>
           Tell us your story!
         </div>
-        <button className="create-post-button">Create Post</button>
+        <button className={style['create-post-button']}>Create Post</button>
       </div>
     </div>
   );
@@ -385,19 +385,19 @@ By Likes, and By Comments. This will be triggered when the user clicks on SortPo
 const PostSortDropdown = (props) => {
   if (props.isActive) {
     return (
-      <div className="posts-sort-dropdown">
-        <ul className="posts-sort-options-list">
-          <li className="posts-sort-option">
-            <span className="active-text">By Posted Date</span>
-            <span className="inactive-text">Newest to Oldest</span>
+      <div className={style['posts-sort-dropdown']}>
+        <ul className={style['posts-sort-options-list']}>
+          <li className={style['posts-sort-option']}>
+            <span className={style['active-text']}>By Posted Date</span>
+            <span className={style['inactive-text']}>Newest to Oldest</span>
           </li>
-          <li className="posts-sort-option">
-            <span className="active-text">By Likes</span>
-            <span className="inactive-text">Most to Least</span>
+          <li className={style['posts-sort-option']}>
+            <span className={style['active-text']}>By Likes</span>
+            <span className={style['inactive-text']}>Most to Least</span>
           </li>
-          <li className="posts-sort-option">
-            <span className="active-text">By Comments</span>
-            <span className="inactive-text">Most to Least</span>
+          <li className={style['posts-sort-option']}>
+            <span className={style['active-text']}>By Comments</span>
+            <span className={style['inactive-text']}>Most to Least</span>
           </li>
         </ul>
       </div>
@@ -451,23 +451,23 @@ const PostActionSidemenu = (props) => {
 
   if (props.isActive) {
     return (
-      <div className="post-action-sidemenu">
-        <ul className="post-action-options-list">
-          <li className="post-action-option" onClick={pinActionHandler}>
-            <span className="post-action-pin-icon"></span>
-            <span className="active-text">{pinOptionName}</span>
+      <div className={style['post-action-sidemenu']}>
+        <ul className={style['post-action-options-list']}>
+          <li className={style['post-action-option']} onClick={pinActionHandler}>
+            <span className={style['post-action-pin-icon']}></span>
+            <span className={style['active-text']}>{pinOptionName}</span>
           </li>
-          <li className="post-action-option" onClick={hideActionHandler}>
-            <span className="post-action-hide-icon"></span>
-            <span className="active-text">{hideOptionName}</span>
+          <li className={style['post-action-option']} onClick={hideActionHandler}>
+            <span className={style['post-action-hide-icon']}></span>
+            <span className={style['active-text']}>{hideOptionName}</span>
           </li>
-          <li className="post-action-option" onClick={reportActionHandler}>
-            <span className="post-action-report-icon"></span>
-            <span className="active-text">{reportOptionName}</span>
+          <li className={style['post-action-option']} onClick={reportActionHandler}>
+            <span className={style['post-action-report-icon']}></span>
+            <span className={style['active-text']}>{reportOptionName}</span>
           </li>
-          <li className="post-action-option" onClick={deleteActionHandler}>
-            <span className="post-action-delete-icon"></span>
-            <span className="active-text">{deleteOptionName}</span>
+          <li className={style['post-action-option']} onClick={deleteActionHandler}>
+            <span className={style['post-action-delete-icon']}></span>
+            <span className={style['active-text']}>{deleteOptionName}</span>
           </li>
         </ul>
       </div>
@@ -552,15 +552,15 @@ const CommunityMembersList = (props) => {
 username, role, etc. */
 const CommunityMember = (props) => {
   return (
-    <div className="community-member">
-      <span className="inactive-text">Community Member Id</span>
-      <span className="active-text">{props.member.id}</span>
+    <div className={style['community-member']}>
+      <span className={style['inactive-text']}>Community Member Id</span>
+      <span className={style['active-text']}>{props.member.id}</span>
 
-      <span className="inactive-text">Name</span>
-      <span className="active-text">{props.member.user.attributes.profile.username}</span>
+      <span className={style['inactive-text']}>Name</span>
+      <span className={style['active-text']}>{props.member.user.attributes.profile.username}</span>
 
-      <span className="inactive-text">Role</span>
-      <span className="active-text">{props.member.attributes.role}</span>
+      <span className={style['inactive-text']}>Role</span>
+      <span className={style['active-text']}>{props.member.attributes.role}</span>
     </div>
   )
 }
@@ -569,10 +569,10 @@ const CommunityMember = (props) => {
 It contains previous button, next button, and current page indicatior. */
 const Pagination = (props) => {
   return (
-    <div className="pagination">
-      <button className="prev-button">Previous</button>
-      <div className="page-number">1</div>
-      <button className="next-button">Next</button>
+    <div className={style['pagination']}>
+      <button className={style['prev-button']}>Previous</button>
+      <div className={style['page-number']}>1</div>
+      <button className={style['next-button']}>Next</button>
     </div>
   );
 };

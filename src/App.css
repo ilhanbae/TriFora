@@ -1,16 +1,63 @@
+/* This is the base styling rules for our app. It includes color variables, default element styles, typography
+rules (font size, font-family), etc. Think of these as a default styling rules for all of our components,
+and any component-specific styling may overide these rules using unique classnames. */
+
+/* Import Fonts (Alfa Slab One & Montserrat) */
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Montserrat&display=swap');
+
 /* Color Palettes */
 :root {
-  --bistre: #3d211a;
-  --french-bistre: #8e6f52;
-  --yellow-apricot: #f3c26e;
-  --light-yellow: #fefee2;
-  --skobeloff: #127475;
-  --red-orange: #ff4700;
+  --bistre: #3d211a; /* Plain & Active Text */
+  --french-bistre: #8e6f52; /* Meta & Inactive Text */
+  --yellow-apricot: #f3c26e; /* Brand Color */
+  --light-yellow: #fefee2; /* Background Color */
+  --skobeloff: #127475; /* Success Color */
+  --red-orange: #ff4700; /* Error Color */
+  --light-periwinkle: #bed1d7 /* Info Color*/
 }
 
-/* Default */
+/* Default element styles */
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+}
+a {
+  text-decoration: none; /* Remove underlines on hyperlinks */
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Alfa Slab One', cursive;
+  letter-spacing: 0.1px;
+  font-weight: 300;
+}
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+}
+
+/* Relative Font Size using Root Font Size (REM). On most browsers, 
+the default root font size is 16px. But depending on the user, the 
+root font size may vary. */
+h1 {
+  font-size: 1.625rem; /* 26px (when root font size is 16px) */
+}
+h2 {
+  font-size: 1.5rem; /* 24px (when root font size is 16px) */
+}
+h3 {
+  font-size: 1.313rem; /* 21px (when root font size is 16px) */
+}
+h4 {
+  font-size: 1.125rem; /* 18px (when root font size is 16px) */
+}
+h5 {
+  font-size: 0.938rem; /* 15px (when root font size is 16px) */
+}
+h6 {
+  font-size: 0.75rem; /* 12px (when root font size is 16px) */
+}
+body {
+  font-size: 0.75rem; /* 12px (when root font size is 16px) */
 }
