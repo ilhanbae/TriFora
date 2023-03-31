@@ -28,7 +28,7 @@ export default class PostPage extends React.Component {
             username: "",
             post_date: "",
             views: "",
-            post_id: "",
+            post_id: "159",
             title: "",
             content: "",
             likes: "",
@@ -110,14 +110,14 @@ export default class PostPage extends React.Component {
 
     loadPost() {
         // set the auth token and user ID in the session state
-        sessionStorage.setItem("token", "underachievers|y6bTcl59YaqtcqH3IEaqXcZBVpLJWsw7m8b4StcaFkQ");
+        sessionStorage.setItem("token", "underachievers|ycQ1xFkk9QXiINjkQ3xzxnfDw8BHILy3JYVaRzhMkT0");
         sessionStorage.setItem("user", "165");
 
         // if the user is not logged in, we don't want to try loading post, because it will just error out. 
         if (sessionStorage.getItem("token")){
 
             // get a single post using postID 
-            let url = process.env.REACT_APP_API_PATH+"/posts/106";
+            let url = process.env.REACT_APP_API_PATH+"/posts/" + this.state.post_id;
             fetch(url, {
             method: "get",
             headers: {
@@ -145,7 +145,7 @@ export default class PostPage extends React.Component {
                 }
                 },
                 error => {
-                    alert("error");
+                    alert("ERROR loading Posts");
                     console.log("ERROR loading Posts")
                 }
             );
@@ -158,7 +158,7 @@ export default class PostPage extends React.Component {
         if (sessionStorage.getItem("token")){
 
             // Get all the comments related to the post
-            let url = process.env.REACT_APP_API_PATH+"/posts?parentID=106";
+            let url = process.env.REACT_APP_API_PATH+"/posts?parentID=" + this.state.post_id;
             fetch(url, {
             method: "get",
             headers: {
@@ -180,8 +180,8 @@ export default class PostPage extends React.Component {
                 }
                 },
                 error => {
-                    alert("error");
-                    console.log("ERROR loading Posts")
+                    alert("ERROR loading comments");
+                    console.log("ERROR loading comments")
                 }
             );
         }else{
@@ -203,6 +203,7 @@ export default class PostPage extends React.Component {
         console.log(this.state.post_id);
         console.log(this.state.comment_input);
 
+        // if the user is logged in, post the comment
         if (sessionStorage.getItem("token")){
             //Check the length of the comment
             if (this.state.comment_input.length === 0){
@@ -230,11 +231,41 @@ export default class PostPage extends React.Component {
                             alert("Post was successful");
                         },
                         error => {
-                            alert("error when lodding the post");
+                            alert("ERROR when submit comment");
                         }
                     );
             }
         } else {
+            //If user is not logged in, show error message
+            alert("Not Logged In");
+        }
+    }
+
+    DeletePostHandler = event => {
+        // if the user is logged in, delete the post
+        if (sessionStorage.getItem("token")){
+            // delete a single post using postID 
+            let url = process.env.REACT_APP_API_PATH+"/posts/" + this.state.post_id;
+            fetch(url, {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                },
+            })
+            .then(
+                result => {
+                    alert("Delete Successfully");
+                    console.log("Delete Successfully");
+                },
+                error => {
+                    alert("ERROR when deleting post");
+                    console.log(error);
+                    console.log("ERROR when deleting post");
+                }
+            );
+
+        }else{
             //If user is not logged in, show error message
             alert("Not Logged In");
         }
@@ -303,7 +334,7 @@ export default class PostPage extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <Post_bar join={this.state.join} click={() => this.upvote_click()} upvote={this.state.upvote_num} />
+                    <Post_bar join={this.state.join} click={() => this.upvote_click()} upvote={this.state.upvote_num} delete_post={this.DeletePostHandler}/>
                     <Comment_input join={this.state.join} comment_input={this.CommentHandler} submit={this.CommentSumbitHandler}/>
                     <CommentList join={this.state.join} comment_list={this.state.comments} loadPost={this.loadPost}/>
                 </div>
@@ -373,7 +404,7 @@ const Post_bar = (props) => {
                     <b className = 'post-report-text'>Report</b>
                 </div> 
                 <div className = 'post-delete'>
-                    <button className = 'post-delete-button'></button>
+                    <button className = 'post-delete-button' onClick={props.delete_post}></button>
                     <b className = 'post-delete-text'>Delete</b>
                 </div>
             </div>

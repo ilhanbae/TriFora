@@ -84,3 +84,6 @@ const LoginOrProfile = (props) => {
     );
   }
 }
+
+// export the app for use in index.js
+export default App;
