@@ -1,5 +1,5 @@
 import React from "react";
-import "./PostPage.css";
+import PostPageCSS from "../style/PostPage.module.css";
 import red_icon from "../assets/red-icon.jpeg";
 import black_icon from "../assets/black-icon.jpeg";
 import Convert_time from "../Helper/Convert_time";
@@ -96,14 +96,14 @@ export default class Comment extends React.Component {
         //console.log("Each comment in Comment");
         //console.log(this.props.post.content);
         return (
-            <div className = 'individual-comment'>
-                <div className = 'comment-user-info'>
-                    <div className = 'comment-user-avater'>
+            <div className = {PostPageCSS['individual-comment']}>
+                <div className = {PostPageCSS['comment-user-info']}>
+                    <div className = {PostPageCSS['comment-user-avater']}>
                     </div>
-                    <div className = 'comment-user-username'>
+                    <div className = {PostPageCSS['comment-user-username']}>
                         {this.state.comment_username}
                     </div>
-                    <div className = 'comment-user-date'>
+                    <div className = {PostPageCSS['comment-user-date']}>
                         {this.state.comment_date}
                     </div>
                 </div>
@@ -130,14 +130,14 @@ const Comment_interaction = (props) => {
         );
     } else {
         return(
-            <div className = 'comment-interaction'>
-                <div className = 'comment-delete'>
-                    <button className = 'comment-delete-button' onClick={props.delete}></button>
-                    <b className = 'comment-delete-text'>Delete</b>
+            <div className = {PostPageCSS['comment-interaction']}>
+                <div className = {PostPageCSS['comment-delete']}>
+                    <button className = {PostPageCSS['comment-delete-button']} onClick={props.delete}></button>
+                    <b className = {PostPageCSS['comment-delete-text']}>Delete</b>
                 </div>
-                <div className = 'comment-edit'>
-                    <button className = 'comment-edit-button' onClick={props.edit}></button>
-                    <b className = 'comment-edit-text'>Edit</b>
+                <div className = {PostPageCSS['comment-edit']}>
+                    <button className = {PostPageCSS['comment-edit-button']} onClick={props.edit}></button>
+                    <b className = {PostPageCSS['comment-edit-text']}>Edit</b>
                 </div>
             </div>
         );
@@ -148,7 +148,7 @@ const Comment_text = (props) => {
     // If edit_comment is false, hide edit comment inputbox
     if (!props.edit_comment){
         return (
-            <div className = 'comment-text'>
+            <div className = {PostPageCSS['comment-text']}>
                 {props.comment_content}
             </div>
         );
@@ -156,10 +156,10 @@ const Comment_text = (props) => {
     // if edit_comment is true, show edit comment inputbox
     }else{
         return (
-            <div className = 'comment-text' onSubmit={props.submit}>
-                <form className = "edit-form">
-                    <input className='edit-inputbox' type='text' id='comment' name='comment' placeholder='Edit Comment' onChange={props.edit_comment_handler}></input>
-                    <input className='edit-button' type='submit' value='Edit'></input>
+            <div className = {PostPageCSS['comment-text']} onSubmit={props.submit}>
+                <form className = {PostPageCSS["edit-form"]}>
+                    <input className= {PostPageCSS['edit-inputbox']} type='text' id='comment' name='comment' placeholder='Edit Comment' onChange={props.edit_comment_handler}></input>
+                    <input className= {PostPageCSS['edit-button']} type='submit' value='Edit'></input>
                 </form>
             </div>
         );

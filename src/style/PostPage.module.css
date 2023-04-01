@@ -656,9 +656,16 @@ body {
     height: 100%;
     width: 95%;
 
-    background: #FEFEE2;
+    background: #F3C26E;
     border: 2px solid #000000;
     border-radius: 5px;
+}
+
+.comment-inputbox::placeholder{
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
 }
 
 .write-comment-text{
@@ -917,9 +924,16 @@ input[type="submit"] {
     width: 85%;
     margin: 5px;
 
-    background: #FEFEE2;
+    background: #F3C26E;
     border: 2px solid #000000;
     border-radius: 5px;
+}
+
+.edit-inputbox::placeholder{
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
 }
 
 .edit-button{

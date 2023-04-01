@@ -1,5 +1,5 @@
 import React from "react";
-import "./PostPage.css";
+import PostPageCSS from "../style/PostPage.module.css";
 import red_icon from "../assets/red-icon.jpeg";
 import black_icon from "../assets/black-icon.jpeg";
 import Comment from "./Comment";
@@ -19,7 +19,7 @@ export default class CommentList extends React.Component {
         //console.log(this.props.comment_list);
 
         return(
-            <div className = 'comment-section'>
+            <div className = {PostPageCSS['comment-section']}>
                 {this.props.comment_list.map(post => (
                     <Comment join={this.props.join} key={post.id} post={post} loadPost={this.props.loadPost}/>
                 ))}

@@ -1,5 +1,5 @@
 import React from "react";
-import "./PostPage.css";
+import PostPageCSS from "../style/PostPage.module.css";
 import back from "../assets/back-button.jpeg";
 import upvote from "../assets/upvote.jpeg";
 import downvote from "../assets/downvote.jpeg";
@@ -14,7 +14,6 @@ export default class PostPage extends React.Component {
         this.state = {
             // Render buttons states
             join: "Join",
-            join_class: "join-button",
             notification_text: "Notification ON",
             notification_switch: "ON", 
             notification_color_class: "green-button",
@@ -45,12 +44,10 @@ export default class PostPage extends React.Component {
         if (this.state.join === 'Join') {
             this.setState({
                 join: "Joined",
-                join_class: "joined-button"
             })
         } else {
             this.setState({
                 join: "Join",
-                join_class: "join-button"
             })
         }
     }
@@ -110,7 +107,7 @@ export default class PostPage extends React.Component {
 
     loadPost() {
         // set the auth token and user ID in the session state
-        sessionStorage.setItem("token", "underachievers|ycQ1xFkk9QXiINjkQ3xzxnfDw8BHILy3JYVaRzhMkT0");
+        sessionStorage.setItem("token", "underachievers|sfcS9pGf9wdSr1Z4accUvxhNvVyTggJyMWnAl1ZcPQ0");
         sessionStorage.setItem("user", "165");
 
         // if the user is not logged in, we don't want to try loading post, because it will just error out. 
@@ -273,63 +270,64 @@ export default class PostPage extends React.Component {
 
     render() {
         return (
-            <div className = 'post-page'>
+            <div className = {PostPageCSS['post-page']}>
 
-                <div className = 'postpage-content'>
-                    <div className = 'community-background'></div>
-                    <div className = 'community-bar'>
-                        <div className = 'community-image'>
+                <div className = {PostPageCSS['postpage-content']}>
+                    <div className = {PostPageCSS['community-background']}></div>
+                    <div className = {PostPageCSS['community-bar']}>
+                        <div className = {PostPageCSS['community-image']}>
                         </div>
-                        <div className = 'community-info'>
-                            <div className = 'community-name'>
+                        <div className = {PostPageCSS['community-info']}>
+                            <div className = {PostPageCSS['community-name']}>
                                 Class of 2023
                             </div>
-                            <div className = 'community-created'>
+                            <div className = {PostPageCSS['community-created']}>
                                 Since February 19, 2023
                             </div>
                         </div>
                         <Notification join={this.state.join} text={this.state.notification_text} color={this.state.notification_color_class} click={() => this.notification_click()}/>
                         <Member_info join={this.state.join} />
-                        <button className = {this.state.join_class} onClick={() => this.joined()}>{this.state.join}</button>
+                        <Join_button join={this.state.join} click={() => this.joined()} />
+                        {/* <button className = {this.state.join_class} onClick={() => this.joined()}>{this.state.join}</button> */}
                     </div>
 
                     <form action="/previous_page">
-                        <button className = 'back-button'>
-                            <img className = 'back-button-image' src={back} alt='back'/>
+                        <button className = {PostPageCSS['back-button']}>
+                            <img className = {PostPageCSS['back-button-image']} src={back} alt='back'/>
                         </button>
                     </form>
 
                 {/*</div><div className = 'postpage-content'>*/}
-                    <div className = 'main-post'>
-                        <div className = 'post-header'>
-                            <div className = 'post-avater'>
-                                <img alt="" className='profile_image' src={this.state.profileimage} />
+                    <div className = {PostPageCSS['main-post']}>
+                        <div className = {PostPageCSS['post-header']}>
+                            <div className = {PostPageCSS['post-avater']}>
+                                <img alt="" className={PostPageCSS['profile_image']} src={this.state.profileimage} />
                             </div>
-                            <div className = 'post-by'>
+                            <div className = {PostPageCSS['post-by']}>
                                 Posted By
-                                <div className = 'post-username'>
+                                <div className = {PostPageCSS['post-username']}>
                                     {this.state.username}
                                 </div>
                             </div>
-                            <div className = 'post-on'>
+                            <div className = {PostPageCSS['post-on']}>
                                 Posted On
-                                <div className = 'post-date'>
+                                <div className = {PostPageCSS['post-date']}>
                                     {this.state.post_date}
                                 </div>
                             </div>
-                            <div className = 'post-views'>
+                            <div className = {PostPageCSS['post-views']}>
                                 Views
-                                <div className = 'post-viewnumber'>
+                                <div className = {PostPageCSS['post-viewnumber']}>
                                     100
                                 </div>
                             </div>
                         </div>
-                        <div className = 'post-title'>
-                            <b className = 'post-id'> #{this.state.post_id} </b>
-                            <b className = 'post-title-text'>How to survive on Campus?</b>
+                        <div className = {PostPageCSS['post-title']}>
+                            <b className = {PostPageCSS['post-id']}> #{this.state.post_id} </b>
+                            <b className = {PostPageCSS['post-title-text']}>How to survive on Campus?</b>
                         </div>
-                        <div className = 'post-content'>
-                            <div className = 'post-content-text'>
+                        <div className = {PostPageCSS['post-content']}>
+                            <div className = {PostPageCSS['post-content-text']}>
                                 {this.state.content}
                             </div>
                         </div>
@@ -351,9 +349,9 @@ const Notification = (props) => {
         );
     } else {
         return (
-            <button className = 'notification' onClick={props.click}>
-                <b className = 'notification_text'>{props.text}</b>
-                <div className = {props.color}></div>
+            <button className = {PostPageCSS['notification']} onClick={props.click}>
+                <b className = {PostPageCSS['notification_text']}>{props.text}</b>
+                <div className = {PostPageCSS[props.color]}></div>
             </button>
         );
     }
@@ -366,14 +364,26 @@ const Member_info = (props) => {
         );
     } else {
         return (
-            <div className='member-info'>
-                <div className = 'member-username'>
+            <div className={PostPageCSS['member-info']}>
+                <div className = {PostPageCSS['member-username']}>
                     Member
                 </div>
-                <div className = 'member-joindate'>
+                <div className = {PostPageCSS['member-joindate']}>
                     Since February 19, 2023
                 </div>
             </div>
+        );
+    }
+}
+
+const Join_button = (props) => {
+    if (props.join === 'Join'){
+        return(
+            <button className = {PostPageCSS["join-button"]} onClick={props.click}>{props.join}</button>
+        );
+    }else{
+        return(
+            <button className = {PostPageCSS["joined-button"]} onClick={props.click}>{props.join}</button>
         );
     }
 }
@@ -385,27 +395,27 @@ const Post_bar = (props) => {
         );
     } else {
         return(
-            <div className = 'post-bar'>
-                <div className = 'upvote'>
-                    <input className = 'upvote-button-image' type='image' src={upvote} alt='upvote' onClick={props.click}/>
-                    <b className = 'upvote-number'>{props.upvote}</b>
+            <div className = {PostPageCSS['post-bar']}>
+                <div className = {PostPageCSS['upvote']}>
+                    <input className = {PostPageCSS['upvote-button-image']} type='image' src={upvote} alt='upvote' onClick={props.click}/>
+                    <b className = {PostPageCSS['upvote-number']}>{props.upvote}</b>
                 </div>
             
-                <div className = 'post-pin'>
-                    <button className = 'post-pin-button'></button>
-                    <b className = 'post-pin-text'>Pin</b>
+                <div className = {PostPageCSS['post-pin']}>
+                    <button className = {PostPageCSS['post-pin-button']}></button>
+                    <b className = {PostPageCSS['post-pin-text']}>Pin</b>
                 </div> 
-                <div className = 'post-hide'>
-                    <button className = 'post-hide-button'></button>
-                    <b className = 'post-hide-text'>Hide</b>
+                <div className = {PostPageCSS['post-hide']}>
+                    <button className = {PostPageCSS['post-hide-button']}></button>
+                    <b className = {PostPageCSS['post-hide-text']}>Hide</b>
                 </div> 
-                <div className = 'post-report'>
-                    <button className = 'post-report-button'></button>
-                    <b className = 'post-report-text'>Report</b>
+                <div className = {PostPageCSS['post-report']}>
+                    <button className = {PostPageCSS['post-report-button']}></button>
+                    <b className = {PostPageCSS['post-report-text']}>Report</b>
                 </div> 
-                <div className = 'post-delete'>
-                    <button className = 'post-delete-button' onClick={props.delete_post}></button>
-                    <b className = 'post-delete-text'>Delete</b>
+                <div className = {PostPageCSS['post-delete']}>
+                    <button className = {PostPageCSS['post-delete-button']} onClick={props.delete_post}></button>
+                    <b className = {PostPageCSS['post-delete-text']}>Delete</b>
                 </div>
             </div>
         );
@@ -419,9 +429,9 @@ const Comment_input = (props) => {
         );
     } else {
         return(
-            <form className = 'send-comment' onSubmit={props.submit}>
-                <input className='comment-inputbox' type='text' id='comment' name='comment' placeholder='Write Comment' onChange={props.comment_input}></input>
-                <input className='send-button' type='submit' value='Send'></input>
+            <form className = {PostPageCSS['send-comment']} onSubmit={props.submit}>
+                <input className= {PostPageCSS['comment-inputbox']} type='text' id='comment' name='comment' placeholder='Write Comment' onChange={props.comment_input}></input>
+                <input className= {PostPageCSS['send-button']} type='submit' value='Send'></input>
             </form>
         );
     }
