@@ -1,0 +1,415 @@
+.profile_page{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100vw;
+    height: 100vh;
+
+    background: #FEFEE2;
+}
+
+/* profile title bar */
+.profile_title_bar{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    padding-left: 40%;
+
+    border: 2px solid #000000;
+}
+
+.profile_title{
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    margin: 10px;
+    display: flex;
+
+    color: #000000;
+}
+
+.edit_button{
+    box-sizing: border-box;
+
+    margin: 10px;
+    margin-left: auto;
+
+    width: 60px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.edit_button:hover {
+    background-color: #3D211A;
+    color: white;
+}
+
+.addfriend_button{
+    box-sizing: border-box;
+
+    margin: 10px;
+    margin-left: auto;
+
+    width: 150px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+
+    background: #00FF00;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.addfriend_button:hover {
+    background-color: #3D211A;
+    color: white;
+}
+
+.removefriend_button{
+    box-sizing: border-box;
+
+    margin: 10px;
+    margin-left: auto;
+
+    width: 150px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+
+    background: #FF0000;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.removefriend_button:hover {
+    background-color: #3D211A;
+    color: white;
+}
+
+.close_button{
+    box-sizing: border-box;
+
+    margin: 10px;
+    margin-right: 75px; 
+
+    width: 60px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.close_button:hover {
+    background-color: #3D211A;
+    color: white;
+}
+
+/* Profile Info */
+.profile_info_bar{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    height: 30%;
+    top: 0%;
+
+    border: 2px solid #000000;
+    border-top: 1px solid #000000;
+}
+
+.profile_avatar{
+    box-sizing: border-box;
+
+    width: 15vw;
+    height: 15vw;
+    margin: 20px;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 50%;
+}
+
+.user_info{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.username{
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 36px;
+    margin: 10px;
+
+    color: #000000;
+}
+
+.first_name{
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+
+    color: #8E6F52;
+}
+
+.last_name{
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+
+    color: #8E6F52;
+}
+
+.description{
+    box-sizing: border-box;
+
+    width: 30%;
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 10px;
+    margin-left: auto;
+    margin-right: 60px;
+
+    color:#000000;
+}
+
+/* Favorite Communities */
+.favorite_communities_bar{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    top: 0%;
+
+    border: 2px solid #000000;
+    border-top: 1px solid #000000;
+}
+
+.favorite_communities_title_bar{
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+}
+
+.favorite_communities_title{
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 10px;
+
+    color: #000000;
+}
+
+.communities_bar{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+}
+
+.community{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+}
+
+.community_image{
+    box-sizing: border-box;
+    width: 8vw;
+    height: 8vw;
+    margin: 10px;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.community_title{
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 10px;;
+    color: #000000;
+}
+
+/* Friends */
+.my_friend_bar{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    top: 0%;
+
+    border: 2px solid #000000;
+    border-top: 1px solid #000000;
+}
+
+.friend_title_bar{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+}
+
+.friend_title{
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+
+    color: #000000;
+}
+
+.friend_num{
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+
+    color: #000000;
+}
+
+.friend_card_bar{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
+}
+
+.friend_card{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 15vw;
+    height: 14vw;
+    margin: 20px;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.friend_avatar{
+    box-sizing: border-box;
+    width: 6vw;
+    height: 6vw;
+    margin: 10px;
+
+    background: #FFFFFF;
+    border: 2px solid #000000;
+    border-radius: 50%;
+}
+
+.friend_name{
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
+
+    color: #000000;
+}
+
+.friend_remove{
+    box-sizing: border-box;
+
+    width: 5vw;
+    height: 3vw;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 1.1vw;
+    margin: 10px;
+
+    color: #000000;
+
+    background: #FF0000;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.friend_remove:hover{
+    background-color: #3D211A;
+    color: white;
+}
+
