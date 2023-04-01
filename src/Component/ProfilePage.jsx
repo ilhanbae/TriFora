@@ -1,5 +1,5 @@
 import React from "react";
-import "../style/ProfilePage.css";
+import ProfilePageCSS from "../style/ProfilePage.module.css";
 import {
     Link
  } from 'react-router-dom';
@@ -67,220 +67,123 @@ export default class ProfilePage extends React.Component {
         this.render_user();
     }
 
-    removeHandler_1() {
-        this.setState({
-            isRemoved_1: true,
-            current_friend_num: this.state.current_friend_num - 1
-        });
-    } 
-
-    removeHandler_2() {
-        this.setState({
-            isRemoved_2: true,
-            current_friend_num: this.state.current_friend_num - 1
-        });
-    } 
-
-    removeHandler_3() {
-        this.setState({
-            isRemoved_3: true,
-            current_friend_num: this.state.current_friend_num - 1
-        });
-    } 
-
-    removeHandler_4() {
-        this.setState({
-            isRemoved_4: true,
-            current_friend_num: this.state.current_friend_num - 1
-        });
-    } 
-
-    removeHandler_5() {
-        this.setState({
-            isRemoved_5: true,
-            current_friend_num: this.state.current_friend_num - 1
-        });
-    } 
-
     render() {
-        let friend1;
-        if (this.state.isRemoved_1 === true){
-            friend1= <div></div>;
-        } else {
-            friend1 = <div className = 'friend-card-1'>
-                        <div className = 'friend-avatar'>
-                        </div>
-                        <div className = 'friend-name'>
-                            <b>Doc Ock</b>
-                        </div>
-                        <button className = 'friend-remove' onClick={() => this.removeHandler_1()}>
-                            <div className = 'remove-text'>
-                                <b>Remove</b>
-                            </div>
-                            <div className = 'remove-icon'>
-                            </div>
-                        </button>
-                      </div>;
-        }
-
-        let friend2;
-        if (this.state.isRemoved_2 === true){
-            friend2= <div></div>;
-        } else {
-            friend2 = <div className = 'friend-card-2'>
-                        <div className = 'friend-avatar'>
-                        </div>
-                        <div className = 'friend-name'>
-                            <b>Doc Ock</b>
-                        </div>
-                        <button className = 'friend-remove' onClick={() => this.removeHandler_2()}>
-                            <div className = 'remove-text'>
-                                <b>Remove</b>
-                            </div>
-                            <div className = 'remove-icon'>
-                            </div>
-                        </button>
-                      </div>;
-        }
-
-        let friend3;
-        if (this.state.isRemoved_3 === true){
-            friend3= <div></div>;
-        } else {
-            friend3 = <div className = 'friend-card-3'>
-                        <div className = 'friend-avatar'>
-                        </div>
-                        <div className = 'friend-name'>
-                            <b>Doc Ock</b>
-                        </div>
-                        <button className = 'friend-remove' onClick={() => this.removeHandler_3()}>
-                            <div className = 'remove-text'>
-                                <b>Remove</b>
-                            </div>
-                            <div className = 'remove-icon'>
-                            </div>
-                        </button>
-                      </div>;
-        }
-
-        let friend4;
-        if (this.state.isRemoved_4 === true){
-            friend4= <div></div>;
-        } else {
-            friend4 = <div className = 'friend-card-4'>
-                        <div className = 'friend-avatar'>
-                        </div>
-                        <div className = 'friend-name'>
-                            <b>Doc Ock</b>
-                        </div>
-                        <button className = 'friend-remove' onClick={() => this.removeHandler_4()}>
-                            <div className = 'remove-text'>
-                                <b>Remove</b>
-                            </div>
-                            <div className = 'remove-icon'>
-                            </div>
-                        </button>
-                      </div>;
-        }
-
-        let friend5;
-        if (this.state.isRemoved_5 === true){
-            friend5= <div></div>;
-        } else {
-            friend5 = <div className = 'friend-card-5'>
-                        <div className = 'friend-avatar'>
-                        </div>
-                        <div className = 'friend-name'>
-                            <b>Doc Ock</b>
-                        </div>
-                        <button className = 'friend-remove' onClick={() => this.removeHandler_5()}>
-                            <div className = 'remove-text'>
-                                <b>Remove</b>
-                            </div>
-                            <div className = 'remove-icon'>
-                            </div>
-                        </button>
-                      </div>;
-        }
-
-
         return(
-        <div className = 'profile-page'>
+        <div className = {ProfilePageCSS.profile_page}>
 
-            <div className = 'profile-title-bar'> 
-                <div className = 'profile-title'>
-                    <b>{this.state.username}&prime;s Profile Page</b>
+            <div className = {ProfilePageCSS.profile_title_bar}> 
+                <div className = {ProfilePageCSS.profile_title}>
+                    {this.state.username}&prime;s Profile Page
                 </div>
-                <Link to="/edit-profile">
-                    <button className = 'edit-button'>
-                        <b className = 'edit-button-text'>Edit</b>
-                    </button>
+                <Link to="/edit-profile" className = {ProfilePageCSS.edit_button}>
+                    Edit
                 </Link>
-                {/* <button className = 'close-button'>Close</button> */}
+
+                {/* <button className= {ProfilePageCSS.addfriend_button}>Add Friend</button> */}
+
+                {/* <button className= {ProfilePageCSS.removefriend_button}>Remove Friend</button> */}
+
+                <Link to='/' className = {ProfilePageCSS.close_button}>
+                    Close
+                </Link>
             </div>
 
-            <div className = 'profile-info-bar'>
-                <div className = 'profile-avatar'>
-                    <img alt="" className='profile_image' src={this.state.profileImage} />
+            <div className ={ProfilePageCSS.profile_info_bar}>
+                <div className = {ProfilePageCSS.profile_avatar}>
+                    <img alt="" className={ProfilePageCSS.profile_image} src={this.state.profileImage} />
                 </div>
-                <div className = 'username'>
-                    {/* <b>Spiderman</b> */}
-                    <b>{this.state.username}</b>
+                <div className = {ProfilePageCSS.user_info}>
+                    <div className = {ProfilePageCSS.username}>
+                        {this.state.username}
+                    </div>
+                    <div className = {ProfilePageCSS.first_name}>
+                        First Name: {this.state.firstName}
+                    </div>
+                    <div className = {ProfilePageCSS.last_name}>
+                        Last Name: {this.state.lastName}
+                    </div>
                 </div>
-                <div className = 'first-name'>
-                    <b>First Name: {this.state.firstName}</b>
-                </div>
-                <div className = 'last-name'>
-                    <b>Last Name: {this.state.lastName}</b>
-                </div>
-                <div className = 'description'>
-                    {/* <b>Hi, I’m Spiderman. I live my life with great responsibilities.</b> */}
-                    <b>{this.state.description}</b>
-                </div>
-            </div>
-
-            {/*
-            <div className = 'favorite-communities-bar'>
-                <div className = 'favorite-communities-title'>
-                    <b>Favorite Communities</b>
-                </div>
-                <div className = 'community-image-1'>
-                </div>
-                <div className = 'community-title-1'>
-                    <b>Marvel CU</b>
-                </div>
-                <div className = 'community-image-2'>
-                </div>
-                <div className = 'community-title-2'>
-                    <b>Class of 2023</b>
-                </div>
-                <div className = 'community-image-3'>
-                </div>
-                <div className = 'community-title-3'>
-                    <b>DCEU</b>
+                <div className = {ProfilePageCSS.description}>
+                    {/* Hi, I’m Spiderman. I live my life with great responsibilities. */}
+                    {this.state.description}
                 </div>
             </div>
 
-            <div className = 'my-friend-bar'>
-                <div className = 'friend-num'>
-                    <b>&#40;{this.state.current_friend_num}&#41;</b>
+            <div className = {ProfilePageCSS.favorite_communities_bar}>
+                <div className = {ProfilePageCSS.favorite_communities_title_bar}>
+                    <div className = {ProfilePageCSS.favorite_communities_title}>Favorite Communities</div>
                 </div>
-                <div className = 'friend-title'>
-                    <b>My Friends</b>
+                <div className = {ProfilePageCSS.communities_bar}>
+                    <div className = {ProfilePageCSS.community}>
+                        <div className = {ProfilePageCSS.community_image}>
+                        </div>
+                        <div className = {ProfilePageCSS.community_title}>
+                            Class of 2023
+                        </div>
+                    </div>
+                    <div className = {ProfilePageCSS.community}>
+                        <div className = {ProfilePageCSS.community_image}>
+                        </div>
+                        <div className = {ProfilePageCSS.community_title}>
+                            Class of 2023
+                        </div>
+                    </div>
+                    <div className = {ProfilePageCSS.community}>
+                        <div className = {ProfilePageCSS.community_image}>
+                        </div>
+                        <div className = {ProfilePageCSS.community_title}>
+                            Class of 2023
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className = {ProfilePageCSS.my_friend_bar}>
+                <div className = {ProfilePageCSS.friend_title_bar}>
+                    <div className = {ProfilePageCSS.friend_title}>
+                        My Friends
+                    </div>
+                    <div className = {ProfilePageCSS.friend_num}>
+                        &#40;{this.state.current_friend_num}&#41;
+                    </div>
                 </div>
 
-                {friend1}
-                
-                {friend2}
+                <div className = {ProfilePageCSS.friend_card_bar}>
+                    <div className = {ProfilePageCSS.friend_card}>
+                        <div className = {ProfilePageCSS.friend_avatar}>
+                        </div>
+                        <div className = {ProfilePageCSS.friend_name}>
+                            Doc Ock
+                        </div>
+                        <button className = {ProfilePageCSS.friend_remove} onClick={() => this.removeHandler_1()}>
+                                Remove
+                        </button>
+                    </div>
 
-                {friend3}
+                    <div className = {ProfilePageCSS.friend_card}>
+                        <div className = {ProfilePageCSS.friend_avatar}>
+                        </div>
+                        <div className = {ProfilePageCSS.friend_name}>
+                            Doc Ock
+                        </div>
+                        <button className = {ProfilePageCSS.friend_remove} onClick={() => this.removeHandler_1()}>
+                                Remove
+                        </button>
+                    </div>
 
-                {friend4}
-
-                {friend5}
+                    <div className = {ProfilePageCSS.friend_card}>
+                        <div className = {ProfilePageCSS.friend_avatar}>
+                        </div>
+                        <div className = {ProfilePageCSS.friend_name}>
+                            Doc Ock
+                        </div>
+                        <button className = {ProfilePageCSS.friend_remove} onClick={() => this.removeHandler_1()}>
+                                Remove
+                        </button>
+                    </div>
+                </div>
 
             </div> 
-            */}
 
         </div>
         );
