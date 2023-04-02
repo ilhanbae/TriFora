@@ -1,0 +1,1011 @@
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="style-guide.css">
+  <link href='https://fonts.googleapis.com/css?family=Alfa Slab One' rel='stylesheet'>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+  <title></title>
+</head>
+<body>
+
+<h1 class="alfa">Underachievers Style Guide</h1>
+
+<h2 style="font-weight: normal;"> Fonts </h2>
+<div class="font-wrapper">
+  <div class="font-inner-wrapper">
+    <p class="alfa">Titles, Headings: 36px</p>
+    <p class="alfa" style="font-size: 30px">Alfa Slab One</p>
+    <div class="font-third-wrapper">
+      <p class="alfa alfa-reg" >A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</p>
+      <p class="alfa alfa-bold">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</p>
+    </div>
+    <div class="font-third-wrapper">
+      <p class="alfa alfa-reg" >(Regular)</p>
+      <p class="alfa alfa-bold bigspacegap " >(Bold)</p>
+    </div>
+  </div>
+  <div class="font-inner-wrapper">
+    <p class="montserrat">Body Text, Buttons: 14px</p>
+    <p class="montserrat" style="font-size: 31.2px">Montserrat</p>
+    <div class="font-third-wrapper">
+      <p class="montserrat-reg" >A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</p>
+      <p class="montserrat-bold">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</p>
+    </div>
+    <div class="font-third-wrapper">
+      <p class="montserrat-reg">(Regular)</p>
+      <p class="montserrat-bold bigspacegap">(Bold)</p>
+    </div>
+  </div>
+</div>
+
+<h2 style="font-weight: normal;"> Layout and Navigation </h2>
+<div class="layoutWrapper">
+  <div class="layoutWrapper-inner-left">
+    <h3>Main Community Layout</h3>
+    <p>a. Header:</p>
+    <ul>
+      <li>Logo</li>
+      <li>Navigation Menu</li>
+    </ul>
+    <div class="mini-layout">
+      <div class="mini-nav">Nav</div>
+    </div>
+  </div>
+  <div class="layoutWrapper-inner-right">
+  <textarea class="textarea" disabled="true">
+    * {
+      box-sizing: border-box;
+    }
+
+    .headerNav {
+      background-color: #F3C26E;
+      color: black;
+      display: flex;
+      justify-content: space-between;
+      /*padding: 1rem;*/
+      padding-inline: 3rem;
+      position: sticky;
+      top: 0;
+      right: 0;
+      left: 0;
+      align-items: center;
+    }
+
+    /* using a instead of Link seems to be correct */
+    .headerNav a {
+      color: inherit;
+      text-decoration: none;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .headerNav ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .logo {
+      font-size: 4rem;
+    }
+
+    .profile-icon{
+      width:40px;
+      height:40px;
+    }
+
+    .profile-holder {
+      padding: 0;
+    }
+
+    ul.hideDrop {
+      display: none;
+    }
+
+    ul.showDrop {
+      position: absolute;
+      display: block;
+      background: #f3e45a;
+      right: 0;
+    }
+
+    ul.showDrop li {
+      padding: 5px;
+      margin: 0;
+    }
+
+    ul.showDrop li a:hover {
+      background: #ce7611;
+    }
+
+    .input {
+      align-items: center;
+    }
+    </textarea>
+  </div>
+</div>
+<div class="layoutWrapper">
+  <div class="layoutWrapper-inner-left">
+    <p>b. Main Banner: Image</p>
+    <ul>
+      <li>Width: 100%</li>
+      <li>Height: 300px</li>
+    </ul>
+    <div class="mini-layout">
+      <div class="mini-nav">Nav</div>
+      <div class="mini-banner">Banner</div>
+    </div>
+  </div>
+  <div class="layoutWrapper-inner-right">
+  <textarea class="textarea" disabled="true">
+
+    const Banner = () => {
+    return (
+    <div className="banner">
+      <div className="banner-background">Banner background</div>
+      <div className="banner-content">
+        <div className="community-avatar"></div>
+        <div className="community-info">
+          <h2>Class of 2023</h2>
+          <span className="inactive-text">Since February 19th, 2023</span>
+        </div>
+        <button className="join-button">Join</button>
+      </div>
+    </div>
+    );
+    };
+
+    .banner {
+      width: 100%;
+      height: 300px;
+      display: flex;
+      flex-direction: column;
+    }
+    .banner-background {
+      width: 100%;
+      height: 350px;
+    }
+    .banner-content {
+      background-color: var(--yellow-apricot);
+      padding: 5px 0;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+    }
+    .banner-content .community-avatar {
+      margin-left: 100px;
+      margin-right: 10px;
+      width: 70px;
+      height: 70px;
+      border: 2px solid var(--bistre);
+      background-color: var(--french-bistre);
+      border-radius: 10px;
+    }
+    .banner-content .community-info {
+      width: 370px;
+    }
+    .banner-content .join-button {
+      margin-left: auto;
+      margin-right: 100px;
+      border: 2px solid var(--bistre);
+      background-color: var(--yellow-apricot);
+      border-radius: 10px;
+      padding: 10px;
+      cursor: pointer;
+    }
+    </textarea>
+  </div>
+</div>
+<div class="layoutWrapper">
+  <div class="layoutWrapper-inner-left">
+    <p>c. Main Content</p>
+    <ul>
+      <li>Montserrat: 14px</li>
+      <li>Background: #FEFEE2</li>
+      <li>Margin: 0 100px</li>
+      <li>Active Text: #3D211A</li>
+      <li>Inactive Text: #8E6F52</li>
+    </ul>
+    <div class="mini-layout">
+      <div class="mini-nav">Nav</div>
+      <div class="mini-banner">Banner</div>
+      <div class="mini-content-header">Content Name</div>
+      <div class="mini-content">Content</div>
+      <div class="mini-content">Content</div>
+    </div>
+  </div>
+  <div class="layoutWrapper-inner-right">
+  <textarea class="textarea" disabled="true">
+
+  <div className="main-section">
+     {/* Community Stats */}
+     <CommunityStats postContentDisplayHandler={postContentDisplayHandler} />
+
+     {/* Post Control Tool */}
+     <PostControlTool />
+
+     {/* Main Content Display */}
+     <CommunityContentDisplay contentType={contentDisplayType} />
+    ...
+  </div>
+
+  .main-section {
+    margin: 0 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  const CommunityStats = (props) => {
+    return (
+      <div className="community-stats">
+        <div
+          className="community-stats-tab"
+          onClick={() => props.postContentDisplayHandler("posts")}
+        >
+          <span className="active-text">3</span>
+          <span className="inactive-text">Posts</span>
+        </div>
+        <div
+          className="community-stats-tab"
+          onClick={() => props.postContentDisplayHandler("members")}
+        >
+          <span className="active-text">38</span>
+          <span className="inactive-text">Members</span>
+        </div>
+      </div>
+    );
+  };
+  .community-stats {
+    border: 2px solid var(--bistre);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    /* gap: 30px; */
+  }
+  .community-stats-tab {
+    padding: 10px;
+    width: 80px;
+    cursor: pointer;
+    /* border: 2px solid var(--bistre); */
+  }
+  .community-stats-tab:hover {
+    /* cursor: pointer; */
+    border-bottom: 2px solid var(--skobeloff);
+  }
+
+  const PostControlTool = () => {
+  const [isPostSortActive, setIsPostSortActive] = useState(false);
+
+  // Toggles between post sort active and inactive
+  const sortButtonToggleHandler = () => {
+    setIsPostSortActive(isPostSortActive ? false : true);
+  };
+
+  const CommunityContentDisplay = (props) => {
+    if (props.contentType === "posts") {
+      return <CommunityPostList />;
+    } else if (props.contentType === "members") {
+      return <div>members</div>;
+    }
+  };
+
+    </textarea>
+  </div>
+</div>
+
+
+<h2 style="font-weight: normal;"> Components </h2>
+<div class="layoutWrapper">
+  <div class="layoutWrapper-inner-left">
+    <h3>Button </h3>
+    <button class="example1">&#8592;</button>
+    <button class="example1">&#x2192;</button>
+    <p>Buttons are used to go back and forth between pages on various features</p>
+  </div>
+  <div class="layoutWrapper-inner-right">
+        <textarea class="textarea" disabled="disabled">
+
+    <button class="base">
+        &#8592;
+    </button>
+
+    .base {
+    padding: 0 20px;
+    height: 35px;
+    border: none;
+    border-radius: 3px;
+    font-size: 25px;
+    background: #F3C26E;
+    color: #000000;
+    box-shadow: 0 4px 14px 0 rgb(0 0 0 / 13%);
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    }
+        </textarea>
+  </div>
+</div>
+<div class="layoutWrapper">
+  <div class="layoutWrapper-inner-left">
+    <h3>Navigation Bar</h3>
+    <p>Designed to make the process of switching between pages as smooth and simple as possible</p>
+  </div>
+  <div class="layoutWrapper-inner-right">
+        <textarea class="textarea" disabled="true">
+    * {
+        box-sizing: border-box;
+    }
+
+    .headerNav {
+        background-color: #F3C26E;
+        color: black;
+        display: flex;
+        justify-content: space-between;
+        /*padding: 1rem;*/
+        padding-inline: 3rem;
+        position: sticky;
+        top: 0;
+        right: 0;
+        left: 0;
+        align-items: center;
+    }
+
+    /* using a instead of Link seems to be correct */
+    .headerNav a {
+        color: inherit;
+        text-decoration: none;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .headerNav ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        display: flex;
+        gap: 2rem;
+    }
+
+    .logo {
+        font-size: 4rem;
+    }
+
+    .profile-icon{
+      width:40px;
+      height:40px;
+    }
+
+    .profile-holder {
+        padding: 0;
+        /* border-width: 0; */
+    }
+
+    ul.hideDrop {
+        display: none;
+    }
+
+    ul.showDrop {
+        position: absolute;
+        display: block;
+        background: #f3e45a;
+        right: 0;
+    }
+
+    ul.showDrop li {
+        padding: 5px;
+        margin: 0;
+    }
+
+    ul.showDrop li a:hover {
+        background: #ce7611;
+    }
+
+    .input {
+        align-items: center;
+    }
+        </textarea>
+  </div>
+</div>
+<div class="layoutWrapper">
+  <div class="layoutWrapper-inner-left">
+    <h3>Inactive Options</h3>
+    <p class="montserrat example2"> 100 likes </p>
+    <p class="montserrat example2"> 1000 comments </p>
+    <p>Uninteractable items such as total interactions</p>
+  </div>
+  <div class="layoutWrapper-inner-right">
+        <textarea class="textarea" disabled="true">
+
+    :root {
+        --french-bistre: #8e6f52;
+    }
+
+    .inactive-text {
+    color: var(--french-bistre);
+    opacity: 50%;
+    }
+        </textarea>
+  </div>
+</div>
+
+
+<h2 style="font-weight: normal;"> Color Palette </h2>
+<div class="palette-wrapper">
+  <div class="palette-inner-wrapper">
+    <div class="color-box color-1"></div>
+    <div class="piwt-text spacegap">
+      <p>Hex: #3D211A</p>
+      <p>RGB: (61, 33, 26)</p>
+    </div>
+    <p class="piwt-text">Plain & Active Text</p>
+  </div>
+  <div class="palette-inner-wrapper">
+    <div class="color-box color-2"></div>
+    <div class="piwt-text spacegap">
+      <p>Hex: #864522</p>
+      <p>RGB: (134, 69, 34)</p>
+    </div>
+    <p class="piwt-text">Not Used Yet</p>
+  </div>
+  <div class="palette-inner-wrapper">
+    <div class="color-box color-3"></div>
+    <div class="piwt-text spacegap">
+      <p>Hex: #C06A30</p>
+      <p>RGB: (192, 106, 48)</p>
+    </div>
+    <p class="piwt-text">Not Used Yet</p>
+  </div>
+  <div class="palette-inner-wrapper">
+    <div class="color-box color-4"></div>
+    <div class="piwt-text spacegap">
+      <p>Hex: #8E6F52</p>
+      <p>RGB: (142, 111, 82)</p>
+    </div>
+    <p class="piwt-text">Meta Text & Inactive Components</p>
+  </div>
+</div>
+
+<div class="palette-wrapper">
+  <div class="palette-inner-wrapper">
+    <div class="color-box color-5"></div>
+    <div class="piwt-text spacegap">
+      <p>Hex: #A07856</p>
+      <p>RGB: (160, 120, 86)</p>
+    </div>
+    <p class="piwt-text">Inactive Text</p>
+  </div>
+  <div class="palette-inner-wrapper">
+    <div class="color-box color-6"></div>
+    <div class="piwt-text spacegap">
+      <p>Hex: #F3C26E</p>
+      <p>RGB: (243, 194, 110)</p>
+    </div>
+    <p class="piwt-text">Brand Color & Interactive Components</p>
+  </div>
+  <div class="palette-inner-wrapper">
+    <div class="color-box color-7"></div>
+    <div class="piwt-text spacegap">
+      <p>Hex: #FEFEE2</p>
+      <p>RGB: (254, 254, 226)</p>
+    </div>
+    <p class="piwt-text">Background Color</p>
+  </div>
+  <div class="palette-inner-wrapper">
+    <div class="color-box color-8"></div>
+    <div class="piwt-text spacegap">
+      <p>Hex: #127475</p>
+      <p>RGB: (18, 116, 117)</p>
+    </div>
+    <p class="piwt-text">Success Response</p>
+  </div>
+</div>
+
+<div class="palette-wrapper">
+  <div class="palette-inner-wrapper">
+    <div class="color-box color-9"></div>
+    <div class="piwt-text spacegap">
+      <p>Hex: #FF4700</p>
+      <p>RGB: (255, 71, 0)</p>
+    </div>
+    <p class="piwt-text">Error Response</p>
+  </div>
+  <div class="palette-inner-wrapper">
+    <div class="color-box color-10"></div>
+    <div class="piwt-text spacegap">
+      <p>Hex: #BED1D7</p>
+      <p>RGB: (190,209,215)</p>
+    </div>
+    <p class="piwt-text">Warnings & Inline Help</p>
+  </div>
+</div>
+
+<h2 style="font-weight: normal;">Size, Position & Interaction Guidelines for Popups & Modals:</h2>
+
+<div class="modalWrapper">
+  <div class="layoutWrapper-inner-left">
+    <h3 class="montserrat-pos">Popups and Modals</h3>
+    <p>All of the following UI elements should have a border and curved edges: </p>
+    <div class="ui ui-example"></div>
+  </div>
+  <div class="layoutWrapper-inner-right">
+        <textarea class="textarea" disabled="true">
+
+    .ui-elements {
+        border-radius: 10px; /* Curved Edges */
+        border: 2px var(color);        /* A Border*/
+    }
+        </textarea>
+  </div>
+</div>
+<div class="modalWrapper">
+  <div class="layoutWrapper-inner-left">
+    <h3 class="montserrat-pos">Popup Boxes</h3>
+    <p> This will appear when a user is attempting to complete an irreversible action.
+      The popup will contain the options yes, no, or cancel, one of which must be chosen.</p>
+    <p> Ex. Termination of an account, post, or Removable of a friend</p>
+    <button id="example1" class="montserrat example1">Delete Account</button>
+    <div id="modal" class="ModalExample">
+      <div class="ModelExample-content">
+        <span class="close">&times;</span>
+        <p class="center"> Are you sure?</p>
+        <div class="ModalExample-buttons">
+          <button id='yes' class="example1 color-9 marg-right"> No </button>
+          <button id='no' class="example1 color-8 marg-left"> Yes </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="layoutWrapper-inner-right">
+        <textarea class="textarea" disabled="true">
+
+    <button id="example" class="montserrat example">Delete Account</button>
+        <div id="modal" class="ModalExample">
+            <div class="ModelExample-content">
+                <span class="close">&times;</span>
+                <p class="center"> Are you sure?</p>
+                <div class="ModalExample-buttons">
+                    <button class="example color-9 marg-right"> No </button>
+                    <button class="example color-8 marg-left"> Yes </button>
+                </div>
+            </div>
+        </div>
+
+    .montserrat {
+    font-family: 'Montserrat';
+    }
+    .example {
+        padding: 0 20px;
+        height: 35px;
+        border: none;
+        border-radius: 3px;
+        font-size: 25px;
+        background: #F3C26E;
+        color: #000000;
+        box-shadow: 0 4px 14px 0 rgb(0 0 0 / 13%);
+        transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+        cursor: pointer;
+    }
+
+    .ModalExample {
+        display: none;
+        z-index: 1;
+        overflow: auto;
+        background-color: #FEFEE2;
+        position: absolute;
+        width: 50vh;
+        height: 35vh;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 10px;
+        border: 2px solid black;
+    }
+    .ModalExample-content {
+        background-color: black;
+        color: white;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        text-align: center;
+    }
+    .ModalExample-buttons {
+        text-align: center;
+        padding-top: 11.5vh;
+    }
+
+    .center {
+        padding-top: 5vh;
+        text-align: center;
+    }
+
+    .marg-left{
+        margin-left: 3vh;
+    }
+    .marg-right{
+        margin-right: 3vh;
+    }
+
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        top: 0;
+        right: 1vh;
+        position: absolute;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    <script>
+    var modal = document.getElementById("modal");
+    var btn = document.getElementById("example1");
+    var span = document.getElementsByClassName("close")[0];
+
+
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    //     for the example above
+    const yes = document.querySelector('#yes');
+    const no = document.querySelector('#no');
+
+    yes.addEventListener('click', removePopup);
+    no.addEventListener('click', removePopup);
+
+    function removePopup() {
+        const popup = document.querySelector('#modal');
+        popup.remove();
+    }
+    </script>
+        </textarea>
+  </div>
+</div>
+<div class="modalWrapper">
+  <div class="layoutWrapper-inner-left">
+    <h3 class="montserrat-pos">Drop Down Menu</h3>
+    <p>Dropdowns are useful when a single action could have multiple outcomes</p>
+    <p>Ex: Upon clicking your profile picture, you can choose to go to your profile, check notifications, or log out</p>
+  </div>
+  <div class="layoutWrapper-inner-right">
+        <textarea class="textarea" disabled="true">
+
+    <button className="sort-post-button" onClick={sortButtonToggleHandler}>
+          Sort Posts
+    </button>
+
+    const PostSortDropdown = (props) => {
+      if (props.isActive) {
+        return (
+          <div className="posts-sort-dropdown">
+            <ul className="posts-sort-options-list">
+              <li className="posts-sort-option">
+                <span className="active-text">By Posted Date</span>
+                <span className="inactive-text">Newest to Oldest</span>
+              </li>
+              <li className="posts-sort-option">
+                <span className="active-text">By Likes</span>
+                <span className="inactive-text">Most to Least</span>
+              </li>
+              <li className="posts-sort-option">
+                <span className="active-text">By Comments</span>
+                <span className="inactive-text">Most to Least</span>
+              </li>
+            </ul>
+          </div>
+        );
+      }
+    };
+
+    /* Posts Sort Dropdown */
+    .posts-sort-dropdown {
+      position: absolute;
+      background-color: var(--light-yellow);
+      border: 2px solid var(--bistre);
+      border-radius: 10px;
+    }
+    .posts-sort-options-list {
+      list-style: none;
+    }
+    .posts-sort-option {
+      border-radius: 5px;
+      padding: 5px;
+      cursor: pointer;
+    }
+    .posts-sort-option:hover{
+      background-color: var(--yellow-apricot);
+    }
+        </textarea>
+  </div>
+</div>
+<div class="modalWrapper">
+  <div class="layoutWrapper-inner-left">
+    <h3 class="montserrat-pos">Toast</h3>
+    <p> This will appear as a temporary 5 second notification serving as feedback on certain actions</p>
+    <p> Ex. Sending a friend request, Post reported, or Logged in</p>
+  </div>
+  <div class="layoutWrapper-inner-right">
+        <textarea class="textarea" disabled="true">
+
+    <!--     Not Yet Implemented       -->
+        </textarea>
+  </div>
+</div>
+
+<h2>Feedback in cases of Success and Failure</h2>
+<div class="FeedbackWrapper">
+  <div class="layoutWrapper-inner-left">
+    <h3 class="montserrat-pos">Success</h3>
+    <p>Upon successfully performing a task, a temporary notification with a blueish color will appear on the bottom
+      left side of the user's screen for 5 seconds</p>
+    <p>Ex: Upon the completion of editing your profile, you may receive the message
+      "Profile Updated Successfully!"</p>
+    <button id="changes" class="example1 montserrat">Submit Changes</button>
+    <div id="feedback" class="success">
+      <div class="left">
+        <p>Profile Updated Successfully!</p>
+      </div>
+      <span class="right">&times;</span>
+    </div>
+  </div>
+  <div class="layoutWrapper-inner-right">
+        <textarea class="textarea" disabled="true">
+
+    <button id="changes" class="base montserrat">Submit Changes</button>
+    <div id="feedback" class="success">
+        <div class="left">
+            <p>Profile Updated Successfully!</p>
+        </div>
+        <span id="closed" class="right">&times;</span>
+    </div>
+
+    .success {
+    position: absolute;
+    z-index: 1;
+    display: none;
+    width: 40vh;
+    height: 3em;
+    padding-bottom: .5vh;
+    background-color: #127475;
+    border-radius: 10px;
+    border: 2px solid black;
+    padding-left: 1vh;
+    bottom: 1vh;
+    left: 1vh;
+    position: fixed;
+
+    }
+    .left {
+        width: 85%;
+        float: left;
+    }
+    .right {
+        width: 10%;
+        float: left;
+        text-align: right;
+        padding-top: .5vh;
+        font-size: 30px;
+        cursor: pointer;
+
+    }
+        </textarea>
+  </div>
+</div>
+<div class="FeedbackWrapper">
+  <div class="layoutWrapper-inner-left">
+    <h3 class="montserrat-pos">Failure</h3>
+    <p>Upon unsuccessfully performing a task, a temporary notification with a redish color will appear on the bottom
+      left side of the user's screen for 5 seconds</p>
+    <p>Ex: Trying to submit edits to your profile that don't work may prompt the message
+      "Something went wrong"</p>
+    <button id="failure" class="example1 montserrat">Submit Changes</button>
+    <div id="failback" class="failure">
+      <div class="left">
+        <p>Something went wrong!</p>
+      </div>
+      <span class="right">&times;</span>
+    </div>
+  </div>
+  <div class="layoutWrapper-inner-right">
+        <textarea class="textarea" disabled="true">
+
+    <button id="failure" class="base montserrat">Submit Changes</button>
+    <div id="failback" class="failure">
+        <div class="left">
+            <p>Profile Updated Successfully!</p>
+        </div>
+        <span class="right">&times;</span>
+    </div>
+
+    .failure {
+        position: absolute;
+        z-index: 1;
+        display: none;
+        width: 40vh;
+        height: 3em;
+        padding-bottom: .5vh;
+        background-color: #FF4700;
+        border-radius: 10px;
+        border: 2px solid black;
+        padding-left: 1vh;
+        bottom: 1vh;
+        left: 1vh;
+        position: fixed;
+    }
+    .left {
+        width: 85%;
+        float: left;
+    }
+    .right {
+        width: 10%;
+        float: left;
+        text-align: right;
+        padding-top: .5vh;
+        font-size: 30px;
+        cursor: pointer;
+    }
+        </textarea>
+  </div>
+</div>
+
+<h2 style="font-weight: normal;">Methods for Inline Help</h2>
+<div class="FeedbackWrapper">
+  <div class="layoutWrapper-inner-left">
+    <h3 class="montserrat-pos">Warning</h3>
+    <p>If an error is run into, a warning message will occur that will stay on the screen
+      for about 10 seconds.</p>
+    <p>Ex: Trying to create a post in a community a user is not part of might prompt the message
+      "Join Community" </p>
+    <button id="warning" class="example1 montserrat">Create Post</button>
+    <div id="warning-message" class="warning">
+      <div class="left">
+        <p>Join the Community First</p>
+      </div>
+      <span class="right">&times;</span>
+    </div>
+  </div>
+  <div class="layoutWrapper-inner-right">
+        <textarea class="textarea" disabled="true">
+
+    <button id="warning" class="base montserrat">Create Post</button>
+    <div id="warning-message" class="warning">
+        <div class="left">
+            <p>Join the Community First</p>
+        </div>
+        <span class="right">&times;</span>
+    </div>
+
+    .warning {
+        position: absolute;
+        z-index: 1;
+        display: none;
+        width: 40vh;
+        height: 3em;
+        padding-bottom: .5vh;
+        background-color: #FF4700;
+        border-radius: 10px;
+        border: 2px solid black;
+        padding-left: 1vh;
+        bottom: 1vh;
+        left: 1vh;
+        position: fixed;
+    }
+    .left {
+        width: 85%;
+        float: left;
+    }
+    .right {
+        width: 10%;
+        float: left;
+        text-align: right;
+        padding-top: .5vh;
+        font-size: 30px;
+        cursor: pointer;
+    }
+        </textarea>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<script>
+  // popup
+  var modal = document.getElementById("modal");
+  var btn = document.getElementById("example1");
+  var span = document.getElementsByClassName("close")[0];
+  btn.onclick = function() {modal.style.display = "block";}
+  span.onclick = function() {modal.style.display = "none";}
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }}
+
+  //  for the example above
+  const yes = document.querySelector('#yes');
+  const no = document.querySelector('#no');
+  yes.addEventListener('click', removePopup);
+  no.addEventListener('click', removePopup);
+  function removePopup() {
+    const popup = document.querySelector('#modal');
+    popup.remove();
+  }
+
+  // successful feedback
+  var successful = document.getElementById("feedback");
+  var success = document.getElementById("changes");
+  var span2 = document.getElementsByClassName("right")[0];
+  success.onclick = function() {
+    successful.style.display = "block";
+    setTimeout(function() {
+      successful.style.display = "none";
+    }, 5000);
+  };
+  span2.onclick = function() {successful.style.display = "none";}
+  window.onclick = function(event) {
+    if (event.target == modal2) {
+      successful.style.display = "none";
+    }}
+
+  // fail feedback
+  var fail = document.getElementById("failback");
+  var press = document.getElementById("failure");
+  var span3 = document.getElementsByClassName("right")[1];
+  press.onclick = function() {
+    fail.style.display = "block";
+    setTimeout(function() {
+      fail.style.display = "none";
+    }, 5000);
+  };
+  span3.onclick = function() {fail.style.display = "none";}
+  window.onclick = function(event) {
+    if (event.target == fail) {
+      fail.style.display = "none";
+    }}
+
+  // warning help
+  var warning = document.getElementById("warning-message");
+  var push = document.getElementById("warning")
+  var third = document.getElementsByClassName("right")[2];
+  push.onclick = function() {
+    warning.style.display = "block";
+    setTimeout(function() {
+      warning.style.display = "none";
+    }, 10000);
+  };
+  third.onclick = function() {warning.style.display = "none";}
+  window.onclick = function(event) {
+    if (event.target == warning) {
+      warning.style.display = "none";
+    }}
+
+</script>
+
+</body>
+</html>

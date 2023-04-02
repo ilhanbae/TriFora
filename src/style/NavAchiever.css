@@ -1,0 +1,85 @@
+/* default stuff*/
+* {
+    box-sizing: border-box;
+}
+
+.headerNav {
+    background-color: #F3C26E;
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    /*padding: 1rem;*/
+    padding-inline: 3rem;
+    position: sticky;
+    top: 0;
+    right: 0;
+    left: 0;
+    align-items: center;
+}
+
+/* using a instead of Link seems to be correct */
+.headerNav a {
+    color: inherit;
+    text-decoration: none;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.headerNav ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+}
+
+.logo {
+    font-size: 4rem;
+    color: #3D211A;
+}
+
+.nav_text {
+    color: #3D211A;
+    padding-top: 11%;
+    padding-bottom: 11%;
+}
+
+.nav_text:hover {
+    border-bottom: solid 3px #8E6F52;
+}
+
+.profile-icon{
+  width:40px;
+  height:40px;
+}
+
+.profile-holder {
+    padding: 0;
+    /* border-width: 0; */
+}
+
+ul.hideDrop {
+    display: none;
+}
+
+ul.showDrop {
+    position: absolute;
+    display: block;
+    background: #FEFEE2;
+    right: 0;
+}
+
+ul.showDrop li {
+    padding: 5px;
+    margin: 0;
+    color: #8E6F52;
+}
+
+ul.showDrop li a:hover {
+    background: #3D211A ;
+}
+
+.input {
+    align-items: center;
+}

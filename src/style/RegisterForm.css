@@ -1,0 +1,125 @@
+/* Registration Page */
+body {
+    /*background-color: rgba(243, 194, 110, 0.65);*/
+    background-color: #FEFEE2;
+}
+
+.wrapper {
+    position: relative;
+    max-width: 758px;
+    margin: auto;
+}
+
+.inner {
+    max-width: 758px;
+    text-align: center;
+    padding: 27px 20px 37px;
+}
+
+.password {
+    -webkit-text-security: square;
+}
+
+.pfp {
+    /*background-color: #F3C26E;*/
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 50%;
+    font-size: 16px;
+    color: #000000;
+    cursor: pointer;
+}
+
+.display {
+    display: none;
+}
+
+.profile_image {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    left: 320px;
+    top: 140px;
+    border-radius: 50%;
+
+    background: #F3C26E;
+}
+
+.input {
+    text-align: center;
+    position: center;
+    display: block;
+    margin-bottom: 25px;
+}
+
+.input-stuff {
+    border: none;
+    border-bottom: 2px solid #C06A30;
+    width: 508px;
+    height: 43px;
+    font-size: 15px;
+    background: none;
+}
+
+.input-stuff:focus {
+    outline: none;
+    border-bottom: 2px solid #999999;
+}
+
+.container {
+    height: 50px;
+    width: 300px;
+}
+
+/* Base Button Design */
+
+.base {
+    padding: 0 20px;
+    height: 35px;
+    border: none;
+    border-radius: 3px;
+    font-size: 25px;
+    background: #F3C26E;
+    color: #000000;
+    box-shadow: 0 4px 14px 0 rgb(0 0 0 / 13%);
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+.base:hover {
+    background: #F3C26E;
+    box-shadow: 0 6px 20px rgb(245 245 220 / 43%);
+}
+
+/* Back Arrow */
+
+.base-back {
+    position: absolute;
+    top: 1%;
+    left: -10%;
+}
+
+
+/* Submit Button */
+
+.base-submit {
+    /*position: absolute;*/
+    bottom: 5px;
+    padding: 0 25px;
+    height: 45px;
+    font-size: 16px;
+}
+
+.h3-inner {
+    font-size: 38px;
+    font-family: "Montserrat-Bold", sans-serif;
+    text-align: center;
+    color: #3D211A;
+}
+
+.login-link{
+    font-size: 1.5vw;
+
+}
