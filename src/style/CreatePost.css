@@ -1,5 +1,70 @@
-.return-button {
-    position: relative;
-    left: 0px;
-    top: 0px;
+* {
+    box-sizing: border-box;
+}
+
+.create-post-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin: 5%;
+}
+
+.return-button-box {
+    display: flex;
+    justify-content: space-around;
+}
+
+.cancel-post-button {
+    padding: 0 20px;
+    height: 35px;
+    border: none;
+    border-radius: 3px;
+    font-size: 25px;
+    background: #F3C26E;
+    color: #000000;
+    box-shadow: 0 4px 14px 0 rgb(0 0 0 / 13%);
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-box-wrapper {
+    align-self: center;
+    text-align: left;
+}
+
+.create-post-title {
+    width: 80%;
+    padding: .5rem;
+    border-radius: 10px;
+}
+
+.create-post-content {
+    width: 80%;
+    padding: .5rem;
+    border-radius: 10px;
+    resize: none;
+}
+
+.upload-image {
+    width: 25%;
+    height: auto;
+}
+
+.upload-image:hover {
+    cursor: pointer;
+}
+
+.post-button {
+    padding: 0 20px;
+    height: 35px;
+    border: none;
+    border-radius: 3px;
+    font-size: 25px;
+    background: #F3C26E;
+    color: #000000;
+    box-shadow: 0 4px 14px 0 rgb(0 0 0 / 13%);
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-button:hover {
+    cursor: pointer;
 }

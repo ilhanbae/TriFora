@@ -1,6 +1,7 @@
 import React from "react";
 import "../style/CreatePost.css";
 import imageUpload from "../assets/image_upload_icon.jpeg";
+import { Link, Navigate, redirect } from "react-router-dom";
 
 export default class CreatePost extends React.Component {
 
@@ -9,7 +10,8 @@ export default class CreatePost extends React.Component {
         this.state = {
             postTitle: "",
             postContent: "",
-            postmessage: ""
+            postmessage: "",
+            postSuccess: false
         };
     }
 
@@ -22,6 +24,8 @@ export default class CreatePost extends React.Component {
         // make sure a submission isn't empty, currently we only consider title necessary
         if (this.state.postTitle.length < 1) {
             alert("Post title cannot be empty")
+        } else if (this.state.postContent.length < 1) {
+            alert("Post description cannot be empty")
         } else {
             //make the api call to post
             fetch(process.env.REACT_APP_API_PATH + "/posts", {
@@ -38,7 +42,7 @@ export default class CreatePost extends React.Component {
                         public: true, // all post are public for now?
                         // this is just going to have to store an empty string and be tested for post page side I think
                         postDescription: this.state.postContent,
-                        
+                        // need to handle images here
                     }
                 })
             })
@@ -51,6 +55,9 @@ export default class CreatePost extends React.Component {
                         alert("Post was successful");
                         // once a post is complete, reload the feed
                         // this.postListing.current.loadPosts();
+                        // Navigate({ to: "/", replace: true});
+                        // return redirect("/")
+
                     },
                     error => {
                         alert("error!");
@@ -79,43 +86,48 @@ export default class CreatePost extends React.Component {
             return ("Please log in to make and view posts");
         }
         return (
-            <div>
-                <div className="return-button">
-                    <p>return to community will go here</p>
+            <div className="create-post-wrapper"> {/* wrapper for flexbox column layout */}
+                <div className="return-button-box"> {/* back button wrapper to allow offset placement */}
+                    {/* Disguising a link as a button to allow navigation, still not sure why we are doing this */}
+                    <Link to="/" className="cancel-post-button">Cancel post</Link>
+                    <span></span> {/* just being used for button positioning*/}
+                    <span></span>
                 </div>
-                <form onSubmit={this.submitHandler}>
-                    <label>
-                        Post Title:
+                <div className="form-box-wrapper"> {/* form wrapper for flexbox alignment */}
+                    <form onSubmit={this.submitHandler}>
+                        <div> {/* wrapped in divs due to a spacing issue */}
+                            <label>
+                                <h1>{this.state.postMessage}</h1>
+                                <input autoFocus type="text" className="create-post-title" onChange={this.myTitleChangeHandler} />
+                            </label>
+                        </div>
+
                         <br />
-                        <input type="text" size="78" onChange={this.myTitleChangeHandler} />
-                    </label>
-                    <br />
 
-                    <label>
-                        Description:
+                        <div>
+                            <label>
+                                <h1>Description:</h1>
+                                <textarea className="create-post-content" rows="8" onChange={this.myContentChangeHandler} />
+                            </label>
+                        </div>
+
                         <br />
-                        <textarea rows="10" cols="70" onChange={this.myContentChangeHandler} />
-                    </label>
-                    <br />
 
-                    <div>
-                        <label>
-                            Images:
-                            <br />
-                            <input type="file"/>
-                            <img src={imageUpload}/>
-                        </label>
-                        <label>
-                            Tags:
-                            <br />
-                            <textarea rows="5" cols="30" />
-                        </label>
-                    </div>
+                        <div>
+                            <label>
+                                <h1>Images:</h1>
+                                <input type="file" accept="image/*" hidden />
+                                <img src={imageUpload} className="upload-image" />
+                            </label>
+                        </div>
 
-                    <input type="submit" value="Post" />
-                    <br />
-                    {this.state.postmessage}
-                </form>
+                        <br />
+                        <input className="post-button" type="submit" value="Post" />
+                        <br />
+
+                        {this.state.postmessage}
+                    </form>
+                </div>
             </div>
         );
     }
