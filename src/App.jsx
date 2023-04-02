@@ -12,7 +12,6 @@ import ProfilePage from "./Component/ProfilePage";
 import EditProfilePage from "./Component/EditProfilePage";
 import CommunityPage from "./Component/CommunityPage";
 
-
 export default function App() {
   // The app component maintains whether or not the login or logout actions were triggerd.
   const [isLoggedIn, setIsLoggedIn] = useState(false);
