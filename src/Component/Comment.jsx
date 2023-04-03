@@ -3,6 +3,8 @@ import PostPageCSS from "../style/PostPage.module.css";
 import red_icon from "../assets/red-icon.jpeg";
 import black_icon from "../assets/black-icon.jpeg";
 import Convert_time from "../Helper/Convert_time";
+import Modal from "./Modal";
+import PostPage from "./PostPage";
 
 /* The Comment is going to render a single comment related to that post.*/
 
@@ -17,6 +19,7 @@ export default class Comment extends React.Component {
             comment_content: this.props.post.content,
             edit_comment: false,
             edit_comment_input: "",
+            openModal: false,
         };
       }
 
@@ -92,6 +95,18 @@ export default class Comment extends React.Component {
         }
     }
 
+    ClickDeleteButton(){
+        this.setState({
+            openModal: true,
+        });
+    }
+
+    toggleModal = event => {
+        this.setState({
+            openModal: !this.state.openModal,
+        });
+    }
+
     render() {
         //console.log("Each comment in Comment");
         //console.log(this.props.post.content);
@@ -109,11 +124,9 @@ export default class Comment extends React.Component {
                 </div>
 
                 <Comment_text edit_comment={this.state.edit_comment} comment_content={this.props.post.content} edit_comment_handler={e => this.Edit_Comment_Handler(e)} submit={this.Edit_Comment_SubmitHandler}/>
-                {/* <div className = 'comment-text'>
-                    {this.state.comment_content}
-                </div> */}
 
-                <Comment_interaction join={this.props.join} delete={e => this.deleteComment(this.props.post.id)} comment_user={this.state.comment_userid} edit={() => this.edit()}/>
+                <Comment_interaction join={this.props.join} ClickDelete={() => this.ClickDeleteButton()} comment_user={this.state.comment_userid} edit={() => this.edit()} openModal={this.state.openModal} toggleModal={this.toggleModal} delete={e => this.deleteComment(this.props.post.id)}/>
+                {/* <Comment_interaction join={this.props.join} delete={e => this.deleteComment(this.props.post.id)} comment_user={this.state.comment_userid} edit={() => this.edit()} openModal={this.state.openModal} toggleModal={this.toggleModal}/> */}
             </div>
         );
     }
@@ -132,8 +145,15 @@ const Comment_interaction = (props) => {
         return(
             <div className = {PostPageCSS['comment-interaction']}>
                 <div className = {PostPageCSS['comment-delete']}>
-                    <button className = {PostPageCSS['comment-delete-button']} onClick={props.delete}></button>
+                    <button className = {PostPageCSS['comment-delete-button']} onClick={props.ClickDelete}></button>
                     <b className = {PostPageCSS['comment-delete-text']}>Delete</b>
+                    <Modal show={props.openModal} onClose={props.toggleModal}>
+                        <div className={PostPageCSS['delete-popup-title']}>Delete Your Comment</div>
+                        <div className={PostPageCSS['popup-buttons']}>
+                            <button className={PostPageCSS['delete-button']} onClick={props.delete}>Delete</button>
+                            <button className={PostPageCSS['cancel-button']} onClick={props.toggleModal}>Cancel</button>
+                        </div>
+                    </Modal>
                 </div>
                 <div className = {PostPageCSS['comment-edit']}>
                     <button className = {PostPageCSS['comment-edit-button']} onClick={props.edit}></button>

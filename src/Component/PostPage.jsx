@@ -5,6 +5,7 @@ import upvote from "../assets/upvote.jpeg";
 import downvote from "../assets/downvote.jpeg";
 import CommentList from "./CommentList";
 import Convert_time from "../Helper/Convert_time";
+import Modal from "./Modal";
 
 // Post Page will render a single post with all the related compontents (user, content, comments)
 export default class PostPage extends React.Component {
@@ -35,6 +36,9 @@ export default class PostPage extends React.Component {
             // Render Comment states
             comment_input: "",
             comments: [],
+
+            // pop up window state
+            openModal: false,
         }
         this.loadPost = this.loadPost.bind(this);
     }
@@ -268,6 +272,18 @@ export default class PostPage extends React.Component {
         }
     }
 
+    ClickDeleteButton(){
+        this.setState({
+            openModal: true,
+        });
+    }
+
+    toggleModal = event => {
+        this.setState({
+            openModal: !this.state.openModal,
+        });
+    }
+
     render() {
         return (
             <div className = {PostPageCSS['post-page']}>
@@ -275,44 +291,50 @@ export default class PostPage extends React.Component {
                 <div className = {PostPageCSS['postpage-content']}>
                     <div className = {PostPageCSS['community-background']}></div>
                     <div className = {PostPageCSS['community-bar']}>
-                        <div className = {PostPageCSS['community-image']}>
-                        </div>
-                        <div className = {PostPageCSS['community-info']}>
-                            <div className = {PostPageCSS['community-name']}>
-                                Class of 2023
+                        <div className = {PostPageCSS['image-info']}>
+                            <div className = {PostPageCSS['community-image']}>
                             </div>
-                            <div className = {PostPageCSS['community-created']}>
-                                Since February 19, 2023
+                            <div className = {PostPageCSS['community-info']}>
+                                <div className = {PostPageCSS['community-name']}>
+                                    Class of 2023
+                                </div>
+                                <div className = {PostPageCSS['community-created']}>
+                                    Since February 19, 2023
+                                </div>
                             </div>
                         </div>
                         <Notification join={this.state.join} text={this.state.notification_text} color={this.state.notification_color_class} click={() => this.notification_click()}/>
-                        <Member_info join={this.state.join} />
-                        <Join_button join={this.state.join} click={() => this.joined()} />
+                        <div className={PostPageCSS["member-info-join"]}>
+                            <Member_info join={this.state.join} />
+                            <Join_button join={this.state.join} click={() => this.joined()} />
+                        </div>
                         {/* <button className = {this.state.join_class} onClick={() => this.joined()}>{this.state.join}</button> */}
                     </div>
 
-                    <form action="/previous_page">
+                    <div className={PostPageCSS['back-button-bar']}>
                         <button className = {PostPageCSS['back-button']}>
                             <img className = {PostPageCSS['back-button-image']} src={back} alt='back'/>
                         </button>
-                    </form>
+                    </div>
 
                 {/*</div><div className = 'postpage-content'>*/}
                     <div className = {PostPageCSS['main-post']}>
                         <div className = {PostPageCSS['post-header']}>
-                            <div className = {PostPageCSS['post-avater']}>
-                                <img alt="" className={PostPageCSS['profile_image']} src={this.state.profileimage} />
-                            </div>
-                            <div className = {PostPageCSS['post-by']}>
-                                Posted By
-                                <div className = {PostPageCSS['post-username']}>
-                                    {this.state.username}
+                            <div className = {PostPageCSS['poster-info']}>
+                                <div className = {PostPageCSS['post-avater']}>
+                                    <img alt="" className={PostPageCSS['profile_image']} src={this.state.profileimage} />
                                 </div>
-                            </div>
-                            <div className = {PostPageCSS['post-on']}>
-                                Posted On
-                                <div className = {PostPageCSS['post-date']}>
-                                    {this.state.post_date}
+                                <div className = {PostPageCSS['post-by']}>
+                                    Posted By
+                                    <div className = {PostPageCSS['post-username']}>
+                                        {this.state.username}
+                                    </div>
+                                </div>
+                                <div className = {PostPageCSS['post-on']}>
+                                    Posted On
+                                    <div className = {PostPageCSS['post-date']}>
+                                        {this.state.post_date}
+                                    </div>
                                 </div>
                             </div>
                             <div className = {PostPageCSS['post-views']}>
@@ -332,7 +354,7 @@ export default class PostPage extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <Post_bar join={this.state.join} click={() => this.upvote_click()} upvote={this.state.upvote_num} delete_post={this.DeletePostHandler}/>
+                    <Post_bar join={this.state.join} click={() => this.upvote_click()} upvote={this.state.upvote_num} delete_post={this.DeletePostHandler} ClickDelete={() => this.ClickDeleteButton()} openModal={this.state.openModal} toggleModal={this.toggleModal}/>
                     <Comment_input join={this.state.join} comment_input={this.CommentHandler} submit={this.CommentSumbitHandler}/>
                     <CommentList join={this.state.join} comment_list={this.state.comments} loadPost={this.loadPost}/>
                 </div>
@@ -400,22 +422,31 @@ const Post_bar = (props) => {
                     <input className = {PostPageCSS['upvote-button-image']} type='image' src={upvote} alt='upvote' onClick={props.click}/>
                     <b className = {PostPageCSS['upvote-number']}>{props.upvote}</b>
                 </div>
-            
-                <div className = {PostPageCSS['post-pin']}>
-                    <button className = {PostPageCSS['post-pin-button']}></button>
-                    <b className = {PostPageCSS['post-pin-text']}>Pin</b>
-                </div> 
-                <div className = {PostPageCSS['post-hide']}>
-                    <button className = {PostPageCSS['post-hide-button']}></button>
-                    <b className = {PostPageCSS['post-hide-text']}>Hide</b>
-                </div> 
-                <div className = {PostPageCSS['post-report']}>
-                    <button className = {PostPageCSS['post-report-button']}></button>
-                    <b className = {PostPageCSS['post-report-text']}>Report</b>
-                </div> 
-                <div className = {PostPageCSS['post-delete']}>
-                    <button className = {PostPageCSS['post-delete-button']} onClick={props.delete_post}></button>
-                    <b className = {PostPageCSS['post-delete-text']}>Delete</b>
+
+                <div className = {PostPageCSS['post-buttons']}>
+                    <div className = {PostPageCSS['post-pin']}>
+                        <button className = {PostPageCSS['post-pin-button']}></button>
+                        <b className = {PostPageCSS['post-pin-text']}>Pin</b>
+                    </div> 
+                    <div className = {PostPageCSS['post-hide']}>
+                        <button className = {PostPageCSS['post-hide-button']}></button>
+                        <b className = {PostPageCSS['post-hide-text']}>Hide</b>
+                    </div> 
+                    <div className = {PostPageCSS['post-report']}>
+                        <button className = {PostPageCSS['post-report-button']}></button>
+                        <b className = {PostPageCSS['post-report-text']}>Report</b>
+                    </div> 
+                    <div className = {PostPageCSS['post-delete']}>
+                        <button className = {PostPageCSS['post-delete-button']} onClick={props.ClickDelete}></button>
+                        <b className = {PostPageCSS['post-delete-text']}>Delete</b>
+                        <Modal show={props.openModal} onClose={props.toggleModal}>
+                            <div className={PostPageCSS['delete-popup-title']}>Delete Your Post</div>
+                            <div className={PostPageCSS['popup-buttons']}>
+                                <button className={PostPageCSS['delete-button']} onClick={props.delete_post}>Delete</button>
+                                <button className={PostPageCSS['cancel-button']} onClick={props.toggleModal}>Cancel</button>
+                            </div>
+                        </Modal>
+                    </div>
                 </div>
             </div>
         );

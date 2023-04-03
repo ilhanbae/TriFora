@@ -18,10 +18,51 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [navStyle, setNavStyle] = useState(2);
 
-  const navSwitch = (headerStyle) => {
-    if (headerStyle !== navStyle) {
-      setNavStyle(headerStyle)
-    }
+// toggleModal will both show and hide the modal dialog, depending on current state.  Note that the
+// contents of the modal dialog are set separately before calling toggle - this is just responsible
+// for showing and hiding the component
+function toggleModal(app) {
+  app.setState({
+    openModal: !app.state.openModal
+  });
+}
+
+
+// the App class defines the main rendering method and state information for the app
+class App extends React.Component {
+
+  // the app holds a few state items : whether or not the modal dialog is open, whether or not we need to refresh 
+  // the post list, and whether or not the login or logout actions have been triggered, which will change what the 
+  // user can see (many features are only available when you are logged in)
+  constructor(props) {
+    super(props);
+    this.state = {
+      openModal: false,
+      refreshPosts: false,
+      logout: false,
+      login: false,
+    };
+
+    // in the event we need a handle back to the parent from a child component,
+    // we can create a reference to this and pass it down.
+    this.mainContent = React.createRef();
+
+    // since we are passing the following methods to a child component, we need to 
+    // bind them, otherwise the value of "this" will mean the child, and not the app 
+    this.doRefreshPosts = this.doRefreshPosts.bind(this);
+    this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
+  }
+
+  // on logout, pull the session token and user from session storage and update state
+  logout = () =>{
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
+    this.setState({
+      logout: true,
+      login: false
+    });
+    
   }
 
   /* On logout, pull the session token and user from session storage and update the 

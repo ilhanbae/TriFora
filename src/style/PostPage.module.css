@@ -1,6 +1,5 @@
 /* Page Background color */
 .post-page{
-    position: relative;
     width: 100vw;
     height: 100vh;
 }
@@ -17,13 +16,12 @@ body {
     align-items: center;
     justify-content: flex-start;
 
-    position: absolute;
     width: 100%;
     height: 1000px;
     left: 0%;
-    top: 20%;
 }
 
+/* community-bar */ 
 .community-bar{
     box-sizing: border-box;
 
@@ -32,22 +30,29 @@ body {
     align-items: center;
     justify-content: flex-start;
 
-    position: relative;
     width: 100%;
     top: 0%;
-    margin-bottom: 50px;
 
     background: #F3C26E;
     border: 2px solid #000000;
 }
 
+.image-info{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: 9.38%;
+}
+
 .community-image{
     box-sizing: border-box;
-    position: relative;
     height: 65px;
     width: 65px;
     margin: 10px;
-    margin-left: 9.38%;
+    margin-left: 0; 
 
     background: #F3C26E;
     border: 2px solid #000000;
@@ -65,7 +70,6 @@ body {
 }
 
 .community-name{
-    position: relative;
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
@@ -74,7 +78,6 @@ body {
 }
 
 .community-created{
-    position: relative;
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
@@ -85,7 +88,6 @@ body {
 
 .notification{
     box-sizing: border-box;
-    position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -109,22 +111,18 @@ body {
 }
 
 .notification_text{
-    position: relative;
-
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
     font-size: 18px;
     display: flex;
     align-items: center;
-    width: 60%;
     margin: 5px;
 
     color: #000000;
 }
 
 .green-button{
-    position: relative;
     width: 25px;
     height: 25px;
     margin: 5px;
@@ -134,13 +132,23 @@ body {
 }
 
 .red-button{
-    position: relative;
     width: 25px;
     height: 25px;
     margin: 5px;
     background: red;
     border: 2px solid black;
     border-radius: 50%;
+}
+
+.member-info-join{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: auto;
+    margin-right: 5%;
 }
 
 .member-info{
@@ -155,7 +163,6 @@ body {
 }
 
 .member-username{
-    position: relative;
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
@@ -165,8 +172,6 @@ body {
 }
 
 .member-joindate{
-    position: relative;
-
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
@@ -177,9 +182,6 @@ body {
 
 .join-button{
     box-sizing: border-box;
-    
-    position: relative;
-
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
@@ -188,7 +190,6 @@ body {
     width: 49px;
     height: 36px;
     margin-right: 5%;
-    margin-left: auto;
     
     background: #FEFEE2;
     border: 2px solid #8E6F52;
@@ -202,9 +203,6 @@ body {
 
 .joined-button{
     box-sizing: border-box;
-    
-    position: relative;
-
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
@@ -213,7 +211,6 @@ body {
     width: 49px;
     height: 36px;
     margin-right: 5%;
-    margin-left: auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -228,23 +225,163 @@ body {
     color: white;
 }
 
-.back-button{
-    position: absolute;
-    width: 4vw;
-    height: 2.5vw;
-    left: 3%;
+/* community-bar under 1100px */
+@media (max-width: 1100px){
+    .image-info{
+        box-sizing: border-box;
 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        margin-left: 9.38%;
+    }
+
+    .member-info-join{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+        margin-right: 5%;
+    }
+}
+
+/* community-bar under 800px */
+@media (max-width: 800px){
+    .notification{
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        height: 80px;
+        width: 160px;
+        margin: 10px;
+        margin-left: 10%;
+    
+        background: #FEFEE2;
+        border: 1px solid #000000;
+        border-radius: 10px;
+    }
+}
+
+/* community-bar under 685px */
+@media (max-width: 685px){
+    .notification{
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        height: 100px;
+        width: 160px;
+        margin: 10px;
+        margin-left: 5%;
+    
+        background: #FEFEE2;
+        border: 1px solid #000000;
+        border-radius: 10px;
+    }
+}
+
+/* community-bar under 400px */
+@media (max-width: 400px){
+    .community-bar{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    
+        width: 100%;
+        top: 0%;
+    
+        background: #F3C26E;
+        border: 2px solid #000000;
+    }
+
+    .image-info{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 10px;
+    }
+
+    .community-info{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 10px;
+    }
+
+    .community-image{
+        box-sizing: border-box;
+        height: 65px;
+        width: 65px;
+    
+        background: #F3C26E;
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+
+    .member-info-join{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 10px;
+    }
+
+    .member-info{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 10px;
+    }
+}
+
+/* back button */
+.back-button-bar{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    top: 0%;
+}
+
+.back-button{
+    width: 45px;
+    height: 30px;
+    margin: 10px;
+    margin-left: 3%;
     background: #F3C26E;
 }
 
 .back-button-image{
-    position: absolute;
-    width: 2.1vw;
-    height: 2.1vw;
-    left: 22%;
-    top: 2.5%;
+    width: 26px;
+    height: 26px;
 }
 
+/* main post */
 .main-post{
     box-sizing: border-box;
 
@@ -275,6 +412,13 @@ body {
 
     border: 2px solid #000000;
     border-radius: 10px;
+}
+
+.poster-info{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 .post-avater{
@@ -449,6 +593,198 @@ body {
     color: #000000;
 }
 
+@media (max-width: 600px){
+    .post-header{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+    
+        margin: 10px;
+        margin-bottom: 5px;
+        padding: 10px;
+        width: 90%;
+    
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+
+    .poster-info{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    .post-avater{
+        width: 56px;
+        height: 56px;
+        margin-left: 0px;
+    
+        background: #FEFEE2;
+        border: 3px solid #000000;
+        border-radius: 50%;
+    }
+    
+    .post-by{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 10px;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+    
+        color: #000000;
+    }
+
+    .post-username{
+        margin: 10px;
+        margin-left: 0;
+        margin-right: 0;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 19px;
+    
+        color: #127475;
+    }
+    
+    .post-on{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 10px;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 19px;
+    
+        color: #000000;
+    }
+
+    .post-date{
+        margin: 10px;
+        margin-left: 0;
+        margin-right: 0;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 19px;
+    
+        color: #000000;
+    }
+
+    .post-title{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+    
+        margin: 10px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        padding: 10px;
+        width: 90%;
+    
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+
+    .post-content{
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-start;
+    
+        margin: 10px;
+        margin-top: 5px;
+        padding: 10px;
+        width: 90%;
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+}
+
+@media (max-width: 280px){
+    .post-header{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+    
+        margin: 10px;
+        margin-bottom: 5px;
+        padding: 10px;
+        width: 85%;
+    
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+
+    .post-by{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        margin: 10px;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+    
+        color: #000000;
+    }
+
+    .post-title{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    
+        margin: 10px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        padding: 10px;
+        width: 85%;
+    
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+
+    .post-content{
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-start;
+    
+        margin: 10px;
+        margin-top: 5px;
+        padding: 10px;
+        width: 85%;
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+}
+
+/* post bar */
 .post-bar{
     display: flex;
     flex-direction: row;
@@ -457,7 +793,6 @@ body {
 
     position: relative;
     width: 85%;
-    height: 10%;
     left: 2%;
 }
 
@@ -493,6 +828,17 @@ body {
     font-size: 20px;
     
     color: #8E6F52;
+}
+
+.post-buttons{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    margin-left: auto;
 }
 
 .post-delete{
@@ -635,6 +981,163 @@ body {
     background-color: #F3C26E;
 }
 
+@media (max-width: 550px){
+    .post-buttons{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    
+        margin-left: auto;
+    }
+
+    .post-delete{
+        position: relative;
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 10px;
+        margin-left: auto;
+        margin-right: 15px;
+    }
+    
+    .post-delete-button{
+        position: relative;
+        width: 20px;
+        height: 20px;
+        margin: 5px;
+        background: red;
+        border: 2px solid black;
+        border-radius: 50%;
+    }
+    
+    .post-delete-text{
+        position: relative;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+    }
+    
+    .post-delete-button:hover{
+        background-color: #F3C26E;
+    }
+    
+    .post-report{
+        position: relative;
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 10px;
+        margin-left: auto;
+    }
+    
+    .post-report-button{
+        position: relative;
+        width: 20px;
+        height: 20px;
+        margin: 5px;
+        background: #3D211A;
+        border: 2px solid black;
+        border-radius: 50%;
+    }
+    
+    .post-report-text{
+        position: relative;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+    }
+    
+    .post-report-button:hover{
+        background-color: #F3C26E;
+    }
+    
+    .post-hide{
+        position: relative;
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 10px;
+        margin-left: auto;
+        margin-right: 23px;
+    }
+    
+    .post-hide-button{
+        position: relative;
+        width: 20px;
+        height: 20px;
+        margin: 5px;
+        background: #8E6F52;
+        border: 2px solid black;
+        border-radius: 50%;
+    }
+    
+    .post-hide-text{
+        position: relative;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+    }
+    
+    .post-hide-button:hover{
+        background-color: #F3C26E;
+    }
+    
+    .post-pin{
+        position: relative;
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 10px;
+        margin-left: auto;
+        margin-right: 31px;
+    }
+    
+    .post-pin-button{
+        position: relative;
+        width: 20px;
+        height: 20px;
+        margin: 5px;
+        background: #127475;
+        border: 2px solid black;
+        border-radius: 50%;
+    }
+    
+    .post-pin-text{
+        position: relative;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+    }
+    
+    .post-pin-button:hover{
+        background-color: #F3C26E;
+    }
+}
+
+/* send comment bar */
 .send-comment{
     box-sizing: border-box;
     display: flex;
@@ -707,6 +1210,7 @@ input[type="submit"] {
     font-weight: bold;
 }
 
+/* comment section */
 .comment-section{
     box-sizing: border-box;
 
@@ -717,7 +1221,6 @@ input[type="submit"] {
 
     position: relative;
     width: 80%;
-    height: 450px;
     left: 2%;
     margin-top: 30px;
 }
@@ -802,7 +1305,6 @@ input[type="submit"] {
     font-style: normal;
     font-weight: bold;
     font-size: 20px;
-    line-height: 16px;
     display: flex;
     align-items: center;
 
@@ -953,4 +1455,186 @@ input[type="submit"] {
 .edit-button:hover {
     background-color: #3D211A;
     color: white;
+}
+
+.delete-popup-title {
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 40px;
+    text-align: center;
+    margin: 10px;
+}
+
+.popup-buttons{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: Center;
+
+    position: relative;
+    width: 100%;
+}
+
+.delete-button{
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    text-align: center;
+    margin: 20px;
+    margin-right: 30px;
+
+    background: red;
+    border: 2px solid #8E6F52;
+    border-radius: 10px;
+}
+
+.delete-button:hover{
+    background-color: #3D211A;
+    color: white;
+}
+
+.cancel-button{
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    text-align: center;
+    margin: 20px;
+    margin-left: 30px;
+
+    background: #FEFEE2;
+    border: 2px solid #8E6F52;
+    border-radius: 10px;
+}
+
+.cancel-button:hover{
+    background-color: #3D211A;
+    color: white;
+}
+
+@media (max-width: 450px){
+    .individual-comment{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    
+        border-radius: 10px;
+        color: #000;
+        margin: 10px;
+        padding: 10px;
+    
+        border: 2px solid #000000;
+    }
+
+    .comment-user-info{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+    
+        position: relative;
+        border-radius: 10px;
+        color: #000;
+        margin: 10px;
+        padding: 10px;
+        max-width: 90%;
+        width: auto;
+    
+        border: 2px solid #000000;
+    }
+
+    .comment-user-avater{
+        width: 50px;
+        height: 50px;
+        margin-left: 0;
+
+        background: #FEFEE2;
+        border: 3px solid #000000;
+        border-radius: 50%;
+    }
+
+    .comment-user-username{
+        position: relative;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: bold;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin: 5px;
+    
+        color: #000000;
+    }
+    
+    .comment-user-date{
+        position: relative;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: bold;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin: 5px;
+    
+        color: #000000;
+    }
+
+    .comment-interaction{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+    
+        position: relative;
+        border-radius: 10px;
+        color: #000;
+        margin: 10px;
+        padding: 10px;
+        max-width: 90%;
+        width: auto;
+        left: 0%;
+    
+        border: 2px solid #000000;
+    }
+
+    .comment-edit{
+        position: relative;
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 10px;
+        margin-top: 15px;
+    }
+}
+
+@media (max-width: 280px){
+    .comment-user-info{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    
+        position: relative;
+        border-radius: 10px;
+        color: #000;
+        margin: 10px;
+        padding: 10px;
+        max-width: 90%;
+        width: auto;
+    
+        border: 2px solid #000000;
+    }
+
 }
