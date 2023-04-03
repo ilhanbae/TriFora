@@ -67,14 +67,23 @@ there's community name, community background, community icon, and a join button*
 const CommunityBanner = (props) => {
   return (
     <div className={style['community-banner']}>
+      {/* Community Banner Background */}
       <div className={style['community-banner-background']}>Banner background</div>
+      
+      {/* Commnity Banner Content*/}
       <div className={style['community-banner-content']}>
-        <div className={style['community-avatar']}></div>
-        <div className={style['community-info']}>
-          <h2>{props.communityDetails.name}</h2>
-          <span className={style['inactive-text']}>Since February 19th, 2023</span>
+        {/* Community Banner Content Left */}
+        <div className={style['community-banner-content-left']}>
+          <div className={style['community-avatar']}></div>
+          <div className={style['community-info']}>
+            <h2>{props.communityDetails.name}</h2>
+            <span className={style['inactive-text']}>Since February 19th, 2023</span>
+          </div>
         </div>
-        <button className={style['join-button']}>Join</button>
+        {/* Community Banner Content Right */}
+        <div className={style['community-banner-content-right']}>
+          <button className={`${style['button']} ${style['button__bordered']}`}>Join</button>
+        </div>
       </div>
     </div>
   );
@@ -270,7 +279,7 @@ const CommunityPost = (props) => {
     }
   };
 
-  // This method handles delete post action. It should check if current user has the 
+  // This method handles delete post action.
   const deletePost = async () => {
     // Send DELETE request to the database.
     const {data, errorMessage} = await genericDelete(`/posts/${props.post.id}`);
@@ -310,17 +319,17 @@ const CommunityPost = (props) => {
         {/* Post Action Labels */}
         <div className={style['post-action-labels']}>
           {isPostReported && (
-            <div className={style['post-action-report-label']}>
+            <div className={`${style['post-action-label']} ${style['post-action-label__bistre']}`}>
               <span>Reported</span>
             </div>
           )}
           {isPostHidden && (
-            <div className={style['post-action-hide-label']}>
+            <div className={`${style['post-action-label']} ${style['post-action-label__french-bistre']}`}>
               <span>Hidden</span>
             </div>
           )}
           {isPostPinned && (
-            <div className={style['post-action-pin-label']}>
+            <div className={`${style['post-action-label']} ${style['post-action-label__skobeloff']}`}>
               <span>Pinned</span>
             </div>
           )}
@@ -339,11 +348,10 @@ const CommunityPost = (props) => {
         </div>
       </div>
 
-      <div className={style['post-action']}>
-        <span className={style['post-action-icon']} onClick={postActionButtonHandler}>
-          {/* This should be replaced with actual icon */}
-          ...
-        </span>
+      {/* Post Action Sidemenu */}
+      <div>
+        {/* This should be replaced with actual icon */}
+        <span className={style['meatballs-icon']} onClick={postActionButtonHandler}></span>
         <PostActionSidemenu
           isActive={isPostActionActive}
           postActionOptionsHandler={postActionOptionsHandler}
@@ -363,18 +371,20 @@ const PostControlTool = () => {
   };
 
   return (
-    <div className={style['post-control-tool']}>
-      <div className={style['sort-post-box']}>
-        <button className={style['sort-post-button']} onClick={sortButtonToggleHandler}>
+    <div className={style['content-control-tool']}>
+      {/* Left Control */}
+      <div className={style['left-control-box']}>
+        <button className={`${style['button']} ${style['button__bordered']} ${style['button__filled']}`} onClick={sortButtonToggleHandler}>
           Sort Posts
         </button>
         <PostSortDropdown isActive={isPostSortActive} />
       </div>
-      <div className={style['create-post-box']}>
-        <div className={`${style['create-post-placeholder']} ${style['inactive-text']}`}>
+      {/* Right Control */}
+      <div className={style['right-control-box']}>
+        <div className={`${style['right-control-placeholder']} ${style['inactive-text']}`}>
           Tell us your story!
         </div>
-        <button className={style['create-post-button']}>Create Post</button>
+        <button className={`${style['button']} ${style['button__outlined']} ${style['button__filled']}`}>Create Post</button>
       </div>
     </div>
   );
@@ -385,17 +395,20 @@ By Likes, and By Comments. This will be triggered when the user clicks on SortPo
 const PostSortDropdown = (props) => {
   if (props.isActive) {
     return (
-      <div className={style['posts-sort-dropdown']}>
-        <ul className={style['posts-sort-options-list']}>
-          <li className={style['posts-sort-option']}>
+      <div className={style['dropdown']}>
+        <ul className={style['dropdown-option-list']}>
+          {/* By Posted Date */}
+          <li className={style['dropdown-option']}>
             <span className={style['active-text']}>By Posted Date</span>
             <span className={style['inactive-text']}>Newest to Oldest</span>
           </li>
-          <li className={style['posts-sort-option']}>
+          {/* By Likes */}
+          <li className={style['dropdown-option']}>
             <span className={style['active-text']}>By Likes</span>
             <span className={style['inactive-text']}>Most to Least</span>
           </li>
-          <li className={style['posts-sort-option']}>
+          {/* By Comments */}
+          <li className={style['dropdown-option']}>
             <span className={style['active-text']}>By Comments</span>
             <span className={style['inactive-text']}>Most to Least</span>
           </li>
@@ -451,22 +464,26 @@ const PostActionSidemenu = (props) => {
 
   if (props.isActive) {
     return (
-      <div className={style['post-action-sidemenu']}>
-        <ul className={style['post-action-options-list']}>
-          <li className={style['post-action-option']} onClick={pinActionHandler}>
-            <span className={style['post-action-pin-icon']}></span>
+      <div className={style['action-sidemenu']}>
+        <ul className={style['action-sidemenu-option-list']}>
+          {/* Pin */}
+          <li className={style['action-sidemenu-option']} onClick={pinActionHandler}>
+            <span className={`${style['square-icon']} ${style['square-icon__skobeloff']}`}></span>
             <span className={style['active-text']}>{pinOptionName}</span>
           </li>
-          <li className={style['post-action-option']} onClick={hideActionHandler}>
-            <span className={style['post-action-hide-icon']}></span>
+          {/* Hide */}
+          <li className={style['action-sidemenu-option']} onClick={hideActionHandler}>
+            <span className={`${style['square-icon']} ${style['square-icon__french-bistre']}`}></span>
             <span className={style['active-text']}>{hideOptionName}</span>
           </li>
-          <li className={style['post-action-option']} onClick={reportActionHandler}>
-            <span className={style['post-action-report-icon']}></span>
+          {/* Report */}
+          <li className={style['action-sidemenu-option']} onClick={reportActionHandler}>
+            <span className={`${style['square-icon']} ${style['square-icon__bistre']}`}></span>
             <span className={style['active-text']}>{reportOptionName}</span>
           </li>
-          <li className={style['post-action-option']} onClick={deleteActionHandler}>
-            <span className={style['post-action-delete-icon']}></span>
+          {/* Delete */}
+          <li className={style['action-sidemenu-option']} onClick={deleteActionHandler}>
+            <span className={`${style['square-icon']} ${style['square-icon__red-orange']}`}></span>
             <span className={style['active-text']}>{deleteOptionName}</span>
           </li>
         </ul>
@@ -531,15 +548,17 @@ const CommunityMembersList = (props) => {
       return (
         <div>
           {/* Member Control Tool */}
-          {/* <PostControlTool /> */}
+          <MemberControlTool />
           {/* Member */}
-          {members.map((member) => (
-            <CommunityMember
-              key={member.id}
-              member={member}
-              refreshMembers={refreshMembers}
-            />
-          ))}
+          <div className={style['community-members-list']}>
+            {members.map((member) => (
+              <CommunityMember
+                key={member.id}
+                member={member}
+                refreshMembers={refreshMembers}
+              />
+            ))}
+          </div>
           {/* Pagination */}
           <Pagination />
         </div>
@@ -551,28 +570,210 @@ const CommunityMembersList = (props) => {
 /* [TODO] This component will render a single member on community members list with all attributes like 
 username, role, etc. */
 const CommunityMember = (props) => {
+  const [isMemberActionActive, setIsMemberActionActive] = useState(false);
+  // const [isPostPinned, setIsPostPinned] = useState(false);
+  // const [isPostHidden, setIsPostHidden] = useState(false);
+  // const [isPostReported, setIsPostReported] = useState(false);
+
+  // This method toggles between post action active and inactive
+  const memberActionButtonHandler = () => {
+    setIsMemberActionActive(isMemberActionActive ? false : true);
+  };
+
+  // This method handles member actions such as view profile, block, report, or kick.
+  // It's passed on to its child component - memberActionSidemenu, where the action options are selected.
+
+  // TODO: It should call API to update each community member, and refresh the community member list.
+  // TODO: It should also display modal or toast to indiate that the member action has been selected
+  const memberActionOptionsHandler = (option) => {
+    switch (option) {
+      case "view":
+        // console.log(option);
+        break;
+      case "block":
+        // console.log(option);
+        break;
+      case "report":
+        // console.log(option);
+        break;
+      case "kick":
+        // console.log(option);
+        kickMember();
+        break;
+      default:
+        console.log(`Invalid Post Action: ${option}`);
+    }
+  };
+
+  // This method handles kick member action. It should check if current user has the 
+  const kickMember = async () => {
+    // Send DELETE request to the database.
+    const {data, errorMessage} = await genericDelete(`/group-members/${props.member.id}`);
+    // console.log(data, errorMessage)
+    if (errorMessage) {
+      alert(errorMessage)
+    }
+    // Call refreshMemberes method to tell its parent component - CommunityMemberList to refresh the member list
+    props.refreshMembers();
+  };
+
+
   return (
     <div className={style['community-member']}>
-      <span className={style['inactive-text']}>Community Member Id</span>
-      <span className={style['active-text']}>{props.member.id}</span>
 
-      <span className={style['inactive-text']}>Name</span>
-      <span className={style['active-text']}>{props.member.user.attributes.profile.username}</span>
+      {/* Community Member Profile Avatar */}
+      <div className={style['community-member-profile-avatar']}></div>
 
-      <span className={style['inactive-text']}>Role</span>
-      <span className={style['active-text']}>{props.member.attributes.role}</span>
+      {/* Community Member Info */}
+      <div className={style['community-member-info']}>
+        {/* Community Member Username */}
+        <h6 className={`${style['active-text']} ${style['bold']}`}>{props.member.user.attributes.profile.username}</h6>
+        {/* Community Member Role */}
+        <span className={style['inactive-text']}>{props.member.attributes.role}</span>
+      </div>
+
+      {/* Member Action Side Menu */}
+      <div>
+        {/* This should be replaced with actual icon */}
+        <span className={style['meatballs-icon']} onClick={memberActionButtonHandler}></span>
+        <MemberActionSidemenu
+          isActive={isMemberActionActive}
+          memberActionOptionsHandler={memberActionOptionsHandler}
+        />
+      </div>
     </div>
   )
 }
+
+/* [TODO] This component serves as a container for two buttons - SortMembersButton and SearchMemberButton. */
+const MemberControlTool = () => {
+  const [isPostSortActive, setIsPostSortActive] = useState(false);
+
+  // Toggles between post sort active and inactive
+  const sortButtonToggleHandler = () => {
+    setIsPostSortActive(isPostSortActive ? false : true);
+  };
+
+  return (
+    <div className={style['content-control-tool']}>
+      <div className={style['left-control-box']}>
+        <button className={`${style['button']} ${style['button__bordered']} ${style['button__filled']}`} onClick={sortButtonToggleHandler}>
+          Sort Members
+        </button>
+        <MemberSortDropdown isActive={isPostSortActive} />
+      </div>
+      <div className={style['right-control-box']}>
+        <div className={`${style['right-control-placeholder']} ${style['inactive-text']}`}>
+          Who are you looking for?
+        </div>
+        <button className={`${style['button']} ${style['button__outlined']} ${style['button__filled']}`}>Search Member</button>
+      </div>
+    </div>
+  );
+};
+
+/* [TODO] This component will render a dropdown menu that lists options like By Joined Date and 
+By Role. This will be triggered when the user clicks on SortMembers button. */
+const MemberSortDropdown = (props) => {
+  if (props.isActive) {
+    return (
+      <div className={style['dropdown']}>
+        <ul className={style['dropdown-option-list']}>
+          {/* By Joined Date */}
+          <li className={style['dropdown-option']}>
+            <span className={style['active-text']}>By Joined Date</span>
+            <span className={style['inactive-text']}>Newest to Oldest</span>
+          </li>
+          {/* By Role */}
+          <li className={style['dropdown-option']}>
+            <span className={style['active-text']}>By Role</span>
+            <span className={style['inactive-text']}>Admin to Member</span>
+          </li>
+        </ul>
+      </div>
+    );
+  }
+};
+
+/* [TODO] This component will render a member action sidemenu that lists options like view profile, 
+block, report, and kick. This component will be triggered when the user clicks on '...' icon on each member. 
+Some of these member action options should be user-specific. For example, "Kick" option should only available 
+to admin or mods.
+
+* Block is user-specific action, and they should persist to only user's member list.
+* Report & Kick are global actions, and they should persist to all users' member lists.
+*/
+const MemberActionSidemenu = (props) => {
+  const [isViewProfile, setIsViewProfile] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false);
+  const [isReported, setIsRepoerted] = useState(false);
+  const [isKicked, setIsKicked] = useState(false);
+
+  // These methods update the option labels and send the chosen action option to its parent component - CommunityMember.
+  const viewProfileActionHandler = () => {
+    setIsViewProfile(isViewProfile ? false : true) // update the options status
+    props.memberActionOptionsHandler("view"); // tell CommunityMember component that 'view profile' option was chosen
+  }
+  let viewProfileOptionName = isViewProfile ? "View Profile" : "View Profile" // update the view profile option lable based on the state
+
+  const blockActionHandler = () => {
+    setIsBlocked(isBlocked ? false : true); // update the option status
+    props.memberActionOptionsHandler("block"); // tell CommunityMember component that 'block' option was chosen
+  };
+  let blockOptionName = isBlocked ? "Unblock" : "Block"; // update the block option label based on the state
+
+  const reportActionHandler = () => {
+    setIsRepoerted(isReported ? false : true); // update the option status
+    props.memberActionOptionsHandler("report"); // tell CommunityMember component that 'report' option was chosen
+  };
+  let reportOptionName = isReported ? "Reported" : "Report"; // update the report option label based on the state
+
+  const kickActionHandler = () => {
+    setIsKicked(isKicked ? false : true) // tell commmunityMember component that 'kick' option was chosen
+    props.memberActionOptionsHandler('kick') // tell CommunityMember component that 'kick' option was chosen
+  }
+  let kickOptionName = isKicked ? "Kick" : "Kick"; // update the kick option label based on the state
+
+
+  if (props.isActive) {
+    return (
+      <div className={style['action-sidemenu']}>
+        <ul className={style['action-sidemenu-option-list']}>
+          {/* View Profile */}
+          <li className={style['action-sidemenu-option']} onClick={viewProfileActionHandler}>
+            <span className={`${style['square-icon']} ${style['square-icon__skobeloff']}`}></span>
+            <span className={style['active-text']}>{viewProfileOptionName}</span>
+          </li>
+          {/* Block */}
+          <li className={style['action-sidemenu-option']} onClick={blockActionHandler}>
+            <span className={`${style['square-icon']} ${style['square-icon__french-bistre']}`}></span>
+            <span className={style['active-text']}>{blockOptionName}</span>
+          </li>
+          {/* Report */}
+          <li className={style['action-sidemenu-option']} onClick={reportActionHandler}>
+            <span className={`${style['square-icon']} ${style['square-icon__bistre']}`}></span>
+            <span className={style['active-text']}>{reportOptionName}</span>
+          </li>
+          {/* Kick */}
+          <li className={style['action-sidemenu-option']} onClick={kickActionHandler}>
+            <span className={`${style['square-icon']} ${style['square-icon__red-orange']}`}></span>
+            <span className={style['active-text']}>{kickOptionName}</span>
+          </li>
+        </ul>
+      </div>
+    );
+  }
+}
+
 
 /* [TODO] This component will render a pagination for communityPostList and CommunityMemberList. 
 It contains previous button, next button, and current page indicatior. */
 const Pagination = (props) => {
   return (
     <div className={style['pagination']}>
-      <button className={style['prev-button']}>Previous</button>
+      <button className={`${style['button']} ${style['button__bordered']} ${style['button__filled']}`}>Previous</button>
       <div className={style['page-number']}>1</div>
-      <button className={style['next-button']}>Next</button>
+      <button className={`${style['button']} ${style['button__bordered']} ${style['button__filled']}`}>Next</button>
     </div>
   );
 };
