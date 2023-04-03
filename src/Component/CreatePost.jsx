@@ -10,6 +10,7 @@ export default class CreatePost extends React.Component {
         this.state = {
             postTitle: "",
             postContent: "",
+            postImages: null,
             postmessage: "",
             postSuccess: false
         };
@@ -80,22 +81,69 @@ export default class CreatePost extends React.Component {
         });
     };
 
+    imageChangeHandler = event => {
+        // only do something if user actually uploaded files
+        if (event.target.files.length > 0) {
+            // file upload should return a list of files
+
+            // counter for checking all images
+            let count = 0;
+            // check that each file is an image
+            Array.from(event.target.files).forEach(element => {
+                if (element.type.includes('image')) {
+                    /*
+                     * Not sure how reliable the above check is yet, might have to switch back to doing
+                     * === "image/png" || element.type === "image/jpg" || element.type === "image/jpeg"
+                     * 
+                     * easy reference sources on the above style:
+                     * https://stackoverflow.com/questions/29805909/jquery-how-to-check-if-uploaded-file-is-an-image-without-checking-extensions
+                     * https://stackoverflow.com/questions/32222786/file-upload-check-if-valid-image
+                     */
+                    
+                    // if file is an image increment the count
+                    count++;
+                }
+            });
+
+            // if the count equals the number of uploaded files, change the state
+            if (count === event.target.files.length) {
+                alert("file upload success")
+                // should only get here if all files are images, in which case can update state
+                this.setState({
+                    postImages: event.target.files
+                });
+            } else {
+                // if not alert to try again
+                alert("All files must be images. Please try again")
+            }
+        } else {
+            // this is the scenario where the user uploads, and hits cancel after having already uploaded
+            alert("No files uploaded")
+        }
+    };
+
     render() {
         if (!sessionStorage.getItem("token")) {
             console.log("NO TOKEN");
             return ("Please log in to make and view posts");
         }
         return (
-            <div className="create-post-wrapper"> {/* wrapper for flexbox column layout */}
-                <div className="return-button-box"> {/* back button wrapper to allow offset placement */}
+            /* wrapper for flexbox column layout */
+            <div className="create-post-wrapper">
+                {/* back button wrapper to allow offset placement */}
+                <div className="return-button-box">
                     {/* Disguising a link as a button to allow navigation, still not sure why we are doing this */}
                     <Link to="/" className="cancel-post-button">Cancel post</Link>
-                    <span></span> {/* just being used for button positioning*/}
+                    {/* spans just being used for button positioning*/}
+                    <span></span>
                     <span></span>
                 </div>
-                <div className="form-box-wrapper"> {/* form wrapper for flexbox alignment */}
+
+                {/* form wrapper for flexbox alignment */}
+                <div className="form-box-wrapper">
                     <form onSubmit={this.submitHandler}>
-                        <div> {/* wrapped in divs due to a spacing issue */}
+                        {/* wrapped in divs to solve a spacing issue */}
+                        <div>
                             <label>
                                 <h1>{this.state.postMessage}</h1>
                                 <input autoFocus type="text" className="create-post-title" onChange={this.myTitleChangeHandler} />
@@ -116,7 +164,7 @@ export default class CreatePost extends React.Component {
                         <div>
                             <label>
                                 <h1>Images:</h1>
-                                <input type="file" accept="image/*" hidden />
+                                <input type="file" accept="image/*" onChange={this.imageChangeHandler} multiple hidden />
                                 <img src={imageUpload} className="upload-image" />
                             </label>
                         </div>
@@ -125,6 +173,7 @@ export default class CreatePost extends React.Component {
                         <input className="post-button" type="submit" value="Post" />
                         <br />
 
+                        {/* not really sure what this is doing yet, but professor had it too to make posts */}
                         {this.state.postmessage}
                     </form>
                 </div>
