@@ -53,6 +53,7 @@ export default class CreatePost extends React.Component {
                         imageUrlArray.push(serverAvaterLink)
                     }
                 });
+                // if the above throws an error the fetch below would be undefined
             }
 
             // make the api call to post
@@ -125,9 +126,11 @@ export default class CreatePost extends React.Component {
 
             // counter for checking all images
             let count = 0;
+            // check for file size
+            let sizeValid = true;
             // check that each file is an image
-            Array.from(event.target.files).forEach(element => {
-                if (element.type.includes('image')) {
+            Array.from(event.target.files).forEach(userFile => {
+                if (userFile.type.includes('image')) {
                     /*
                      * Not sure how reliable the above check is yet, might have to switch back to doing
                      * === "image/png" || element.type === "image/jpg" || element.type === "image/jpeg"
@@ -139,12 +142,16 @@ export default class CreatePost extends React.Component {
 
                     // if file is an image increment the count
                     count++;
+                    // if a file is too big for api flag to not continue
+                    if (userFile.size > 10000000) {
+                        sizeValid = false;
+                    }
                 }
             });
 
             // if the count equals the number of uploaded files and there was an actual upload, change the state
-            if (count === event.target.files.length && count > 0) {
-                alert("file upload success")
+            if (count === event.target.files.length && count > 0 && sizeValid) {
+                // alert("file upload success")
                 // should only get here if all files are images, in which case can update state
                 this.setState({
                     postImages: Array.from(event.target.files)
@@ -215,7 +222,7 @@ export default class CreatePost extends React.Component {
 
                         <div>
                             <label>
-                                <h1>Images:</h1>
+                                <h1>Media:</h1>
                                 <input
                                     type="file"
                                     accept="image/*"
