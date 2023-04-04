@@ -75,17 +75,20 @@ export default class ProfilePage extends React.Component {
                 <div className = {ProfilePageCSS.profile_title}>
                     {this.state.username}&prime;s Profile Page
                 </div>
-                <Link to="/edit-profile" className = {ProfilePageCSS.edit_button}>
-                    Edit
-                </Link>
 
-                {/* <button className= {ProfilePageCSS.addfriend_button}>Add Friend</button> */}
+                <div className = {ProfilePageCSS['title-bar-buttons']}>
+                    <Link to="/edit-profile" className = {ProfilePageCSS.edit_button}>
+                        Edit
+                    </Link>
 
-                {/* <button className= {ProfilePageCSS.removefriend_button}>Remove Friend</button> */}
+                    {/* <button className= {ProfilePageCSS.addfriend_button}>Add Friend</button> */}
 
-                <Link to='/' className = {ProfilePageCSS.close_button}>
-                    Close
-                </Link>
+                    {/* <button className= {ProfilePageCSS.removefriend_button}>Remove Friend</button> */}
+
+                    <Link to='/' className = {ProfilePageCSS.close_button}>
+                        Close
+                    </Link>
+                </div>
             </div>
 
             <div className ={ProfilePageCSS.profile_info_bar}>
@@ -104,7 +107,7 @@ export default class ProfilePage extends React.Component {
                     </div>
                 </div>
                 <div className = {ProfilePageCSS.description}>
-                    {/* Hi, I’m Spiderman. I live my life with great responsibilities. */}
+                    Hi, I’m Spiderman. I live my life with great responsibilities.
                     {this.state.description}
                 </div>
             </div>
