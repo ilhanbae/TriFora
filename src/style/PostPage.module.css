@@ -355,6 +355,25 @@ body {
     }
 }
 
+/* community-bar under 190px */
+@media (max-width: 190px){
+    .notification{
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        height: 100px;
+        width: 100px;
+        margin: 10px;
+        margin-left: 5%;
+    
+        background: #FEFEE2;
+        border: 1px solid #000000;
+        border-radius: 10px;
+    }
+}
+
 /* back button */
 .back-button-bar{
     box-sizing: border-box;
@@ -784,6 +803,84 @@ body {
     }
 }
 
+@media (max-width: 160px){
+    .post-header{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    
+        margin: 10px;
+        margin-bottom: 5px;
+        padding: 10px;
+        width: 75%;
+    
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+
+    .post-views{
+        box-sizing: border-box;
+        position: relative;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        margin: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 19px;
+    
+        color: #000000;
+    }
+
+    .post-title{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    
+        margin: 10px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        padding: 10px;
+        width: 75%;
+    
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+
+    .post-title-text{
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: bold;
+        font-size: 20px;
+        margin: 10px;
+    
+        color: #000000;
+    }
+
+    .post-content{
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-start;
+    
+        margin: 10px;
+        margin-top: 5px;
+        padding: 10px;
+        width: 75%;
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+}
+
 /* post bar */
 .post-bar{
     display: flex;
@@ -1134,6 +1231,17 @@ body {
     
     .post-pin-button:hover{
         background-color: #F3C26E;
+    }
+}
+
+@media (max-width: 200px){
+    .post-bar{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    
+        position: relative;
     }
 }
 
