@@ -32,7 +32,9 @@ export default class CreatePost extends React.Component {
         } else {
             // turn the image list into a url list for api
             let imageUrlArray = [];
+
             if (this.state.postImages.length > 0) {
+                // loop through user images if they exist
                 this.state.postImages.forEach(async userImage => {
                     let formDataParams = { // set up form data params for image upload
                         uploaderID: this.state.currentUser,
@@ -45,8 +47,8 @@ export default class CreatePost extends React.Component {
                     if (uploadFileErrorMessage) {
                         alert(uploadFileErrorMessage)
                     } else {
-                        // console.log(uploadedServerAvatarFile, uploadFileErrorMessage);
-                        let serverAvaterLink = `${process.env.REACT_APP_DOMAIN_PATH}${uploadedServerAvatarFile.path}` // Format server link with app domain 
+                        // add to the url array if successful helper call
+                        let serverAvaterLink = `${process.env.REACT_APP_DOMAIN_PATH}${uploadedServerAvatarFile.path}` // Format server link with app domain
                         imageUrlArray.push(serverAvaterLink)
                     }
                 });
@@ -67,6 +69,7 @@ export default class CreatePost extends React.Component {
                         title: this.state.postTitle,
                         public: true, // all post are public for now?
                         // need to handle images here
+                        images: imageUrlArray
                     }
                 })
             })
@@ -128,8 +131,8 @@ export default class CreatePost extends React.Component {
                 }
             });
 
-            // if the count equals the number of uploaded files, change the state
-            if (count === event.target.files.length) {
+            // if the count equals the number of uploaded files and there was an actual upload, change the state
+            if (count === event.target.files.length && count > 0) {
                 alert("file upload success")
                 // should only get here if all files are images, in which case can update state
                 this.setState({
