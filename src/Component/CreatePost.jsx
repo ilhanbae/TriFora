@@ -38,11 +38,10 @@ export default class CreatePost extends React.Component {
                 body: JSON.stringify({
                     authorID: sessionStorage.getItem("user"),
                     recipientGroupID: 25, // 25 is a placeholder for now until we know how our communities are working
-                    content: this.state.postTitle,
+                    content: this.state.postContent, // if post description can be empty this is just going to have to store an empty string and be tested for post page side I think
                     attributes: {
+                        title: this.state.postTitle,
                         public: true, // all post are public for now?
-                        // this is just going to have to store an empty string and be tested for post page side I think
-                        postDescription: this.state.postContent,
                         // need to handle images here
                     }
                 })
@@ -99,7 +98,7 @@ export default class CreatePost extends React.Component {
                      * https://stackoverflow.com/questions/29805909/jquery-how-to-check-if-uploaded-file-is-an-image-without-checking-extensions
                      * https://stackoverflow.com/questions/32222786/file-upload-check-if-valid-image
                      */
-                    
+
                     // if file is an image increment the count
                     count++;
                 }
