@@ -324,7 +324,7 @@
     border-top: 1px solid #000000;
 }
 
-.profile_avatar{
+.profile_image{
     box-sizing: border-box;
 
     width: 15vw;
@@ -404,7 +404,7 @@
         border-top: 1px solid #000000;
     }
 
-    .profile_avatar{
+    .profile_image{
         box-sizing: border-box;
     
         width: 100px;

@@ -248,7 +248,7 @@ const UserProfileForm = (prop) => {
               type="text"
               value={firstname}
               onChange={firstnameInputHandler}
-              disabled
+              /* disabled */
             />
           </label>
           {/* Lastname Input Field*/}
@@ -259,7 +259,7 @@ const UserProfileForm = (prop) => {
               type="text"
               value={lastname}
               onChange={lastnameInputHandler}
-              disabled
+              /* disabled */
             />
           </label>
         </div>
