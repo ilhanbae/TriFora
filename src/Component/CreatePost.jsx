@@ -8,18 +8,19 @@ export default class CreatePost extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentUser: sessionStorage.getItem("user"),
             postTitle: "",
             postContent: "",
-            postImages: null,
+            postImages: [],
             postmessage: "",
             postSuccess: false
         };
     }
 
     /* Handler for making a post will go here (controller api) */
-    submitHandler = event => {
+    submitHandler = async event => {
 
-        //keep the form from actually submitting via HTML - we want to handle it in react
+        // keep the form from actually submitting via HTML - we want to handle it in react
         event.preventDefault();
 
         // make sure a submission isn't empty, currently we only consider title necessary
@@ -28,7 +29,29 @@ export default class CreatePost extends React.Component {
         } else if (this.state.postContent.length < 1) {
             alert("Post description cannot be empty")
         } else {
-            //make the api call to post
+            // turn the image list into a url list for api
+            let imageUrlArray = [];
+            if (this.state.postImages.length > 0) {
+                this.state.postImages.forEach(userImage => {
+                    let formDataParams = { // set up form data params for image upload
+                        uploaderID: this.state.currentUser,
+                        attributes: { type: "post-image" },
+                        file: userImage,
+                      };
+                });
+                const { data: uploadedServerAvatarFile, errorMessage: uploadFileErrorMessage } = await uploadFile(formDataParams);
+    
+                // Check for upload file error
+                if(uploadFileErrorMessage) {
+                  alert(uploadFileErrorMessage)
+                } else {
+                  // console.log(uploadedServerAvatarFile, uploadFileErrorMessage);
+                  serverAvaterLink = `${process.env.REACT_APP_DOMAIN_PATH}${uploadedServerAvatarFile.path}` // Format server link with app domain 
+                  imageUrlArray.push(serverAvaterLink)
+                }
+            }
+
+            // make the api call to post
             fetch(process.env.REACT_APP_API_PATH + "/posts", {
                 method: "post",
                 headers: {
@@ -36,7 +59,7 @@ export default class CreatePost extends React.Component {
                     'Authorization': 'Bearer ' + sessionStorage.getItem("token")
                 },
                 body: JSON.stringify({
-                    authorID: sessionStorage.getItem("user"),
+                    authorID: this.state.currentUser,
                     recipientGroupID: 25, // 25 is a placeholder for now until we know how our communities are working
                     content: this.state.postContent, // if post description can be empty this is just going to have to store an empty string and be tested for post page side I think
                     attributes: {
