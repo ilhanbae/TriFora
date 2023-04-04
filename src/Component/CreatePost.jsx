@@ -2,6 +2,7 @@ import React from "react";
 import "../style/CreatePost.css";
 import imageUpload from "../assets/image_upload_icon.jpeg";
 import { Link, Navigate, redirect } from "react-router-dom";
+import uploadFile from "../helper/uploadFile";
 
 export default class CreatePost extends React.Component {
 
@@ -18,7 +19,7 @@ export default class CreatePost extends React.Component {
     }
 
     /* Handler for making a post will go here (controller api) */
-    submitHandler = async event => {
+    submitHandler = event => {
 
         // keep the form from actually submitting via HTML - we want to handle it in react
         event.preventDefault();
@@ -32,7 +33,7 @@ export default class CreatePost extends React.Component {
             // turn the image list into a url list for api
             let imageUrlArray = [];
             if (this.state.postImages.length > 0) {
-                this.state.postImages.forEach(userImage => {
+                this.state.postImages.forEach(async userImage => {
                     let formDataParams = { // set up form data params for image upload
                         uploaderID: this.state.currentUser,
                         attributes: { type: "post-image" },
