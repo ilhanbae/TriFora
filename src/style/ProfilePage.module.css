@@ -38,11 +38,21 @@
     color: #000000;
 }
 
+.title-bar-buttons{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    margin-left: auto;
+}
+
 .edit_button{
     box-sizing: border-box;
 
     margin: 10px;
-    margin-left: auto;
 
     width: 60px;
     height: 40px;
@@ -69,7 +79,6 @@
     box-sizing: border-box;
 
     margin: 10px;
-    margin-left: auto;
 
     width: 150px;
     height: 40px;
@@ -93,7 +102,6 @@
     box-sizing: border-box;
 
     margin: 10px;
-    margin-left: auto;
 
     width: 150px;
     height: 40px;
@@ -140,6 +148,166 @@
     color: white;
 }
 
+/* title bar under 700px */
+@media (max-width: 700px){
+    .title-bar-buttons{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+    
+        margin-left: auto;
+    }
+}
+
+/* title bar under 500px */
+@media (max-width: 500px){
+    .profile_title_bar{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    
+        width: 100%;
+        padding-left: 20%;
+    
+        border: 2px solid #000000;
+    }
+
+    .title-bar-buttons{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+    
+        margin-left: auto;
+    }
+
+    .close_button{
+        box-sizing: border-box;
+    
+        margin: 10px; 
+    
+        width: 60px;
+        height: 40px;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: bold;
+        font-size: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    
+        background: #F3C26E;
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+}
+
+/* title bar under 350px */
+@media (max-width: 350px){
+    .profile_title_bar{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    
+        width: 100%;
+        padding-left: 0%;
+    
+        border: 2px solid #000000;
+    }
+
+    .title-bar-buttons{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-left: 0%;
+    }
+}
+
+/* title bar under 210px */
+@media (max-width: 210px){
+    .profile_title_bar{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    
+        width: 100%;
+        padding-left: 0%;
+    
+        border: 2px solid #000000;
+    }
+
+    .title-bar-buttons{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-left: 0%;
+    }
+
+    .edit_button{
+        box-sizing: border-box;
+    
+        /* margin: 10px;
+        margin-left: auto; */
+    
+        width: 60px;
+        height: 40px;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: bold;
+        font-size: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    
+        background: #F3C26E;
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+
+    .close_button{
+        box-sizing: border-box;
+    
+        /* margin: 10px; */
+    
+        width: 60px;
+        height: 40px;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: bold;
+        font-size: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    
+        background: #F3C26E;
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+}
+
 /* Profile Info */
 .profile_info_bar{
     box-sizing: border-box;
@@ -150,7 +318,6 @@
     justify-content: flex-start;
 
     width: 100%;
-    height: 30%;
     top: 0%;
 
     border: 2px solid #000000;
@@ -220,6 +387,65 @@
     color:#000000;
 }
 
+/* profile_info under 500px */
+@media (max-width: 500px){
+    .profile_info_bar{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    
+        width: 100%;
+        top: 0%;
+    
+        border: 2px solid #000000;
+        border-top: 1px solid #000000;
+    }
+
+    .profile_avatar{
+        box-sizing: border-box;
+    
+        width: 100px;
+        height: 100px;
+        margin: 10px;
+    
+        background: #F3C26E;
+        border: 2px solid #000000;
+        border-radius: 50%;
+    }
+
+    .description{
+        box-sizing: border-box;
+    
+        width: 80%;
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: bold;
+        font-size: 20px;
+        margin: 10px;
+    
+        color:#000000;
+    }
+}
+
+/* user info bar under 200px */
+@media (max-width: 200px){
+    .description{
+        box-sizing: border-box;
+    
+        width: 80%;
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: bold;
+        font-size: 16px;
+        margin: 10px;
+    
+        color:#000000;
+    }
+}
+
 /* Favorite Communities */
 .favorite_communities_bar{
     box-sizing: border-box;
@@ -277,8 +503,8 @@
 
 .community_image{
     box-sizing: border-box;
-    width: 8vw;
-    height: 8vw;
+    width: 100px;
+    height: 100px;
     margin: 10px;
 
     background: #F3C26E;
@@ -293,6 +519,28 @@
     font-size: 16px;
     margin: 10px;;
     color: #000000;
+}
+
+/* Favorite Communities under 430px */
+@media (max-width: 430px){
+    .communities_bar{
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    
+        width: 100%;
+    }
+
+    .community{
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0px;
+    }
 }
 
 /* Friends */
@@ -348,17 +596,10 @@
     justify-content: center;
 
     width: 100%;
-
 }
 
 .friend_card{
     box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    width: 15vw;
-    height: 14vw;
     margin: 20px;
 
     background: #F3C26E;
@@ -368,8 +609,8 @@
 
 .friend_avatar{
     box-sizing: border-box;
-    width: 6vw;
-    height: 6vw;
+    width: 80px;
+    height: 80px;
     margin: 10px;
 
     background: #FFFFFF;
@@ -392,13 +633,13 @@
 .friend_remove{
     box-sizing: border-box;
 
-    width: 5vw;
-    height: 3vw;
+    width: 80px;
+    height: 30px;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: bold;
-    font-size: 1.1vw;
+    font-size: 16px;
     margin: 10px;
 
     color: #000000;
@@ -411,5 +652,18 @@
 .friend_remove:hover{
     background-color: #3D211A;
     color: white;
+}
+
+/* Favorite Communities under 430px */
+@media (max-width: 430px){
+    .friend_card_bar{
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    
+        width: 100%;
+    }
 }
 
