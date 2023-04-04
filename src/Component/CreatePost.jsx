@@ -37,18 +37,18 @@ export default class CreatePost extends React.Component {
                         uploaderID: this.state.currentUser,
                         attributes: { type: "post-image" },
                         file: userImage,
-                      };
+                    };
+                    const { data: uploadedServerAvatarFile, errorMessage: uploadFileErrorMessage } = await uploadFile(formDataParams);
+
+                    // Check for upload file error
+                    if (uploadFileErrorMessage) {
+                        alert(uploadFileErrorMessage)
+                    } else {
+                        // console.log(uploadedServerAvatarFile, uploadFileErrorMessage);
+                        let serverAvaterLink = `${process.env.REACT_APP_DOMAIN_PATH}${uploadedServerAvatarFile.path}` // Format server link with app domain 
+                        imageUrlArray.push(serverAvaterLink)
+                    }
                 });
-                const { data: uploadedServerAvatarFile, errorMessage: uploadFileErrorMessage } = await uploadFile(formDataParams);
-    
-                // Check for upload file error
-                if(uploadFileErrorMessage) {
-                  alert(uploadFileErrorMessage)
-                } else {
-                  // console.log(uploadedServerAvatarFile, uploadFileErrorMessage);
-                  serverAvaterLink = `${process.env.REACT_APP_DOMAIN_PATH}${uploadedServerAvatarFile.path}` // Format server link with app domain 
-                  imageUrlArray.push(serverAvaterLink)
-                }
             }
 
             // make the api call to post
