@@ -92,8 +92,8 @@ export default class ProfilePage extends React.Component {
             </div>
 
             <div className ={ProfilePageCSS.profile_info_bar}>
-                <div className = {ProfilePageCSS.profile_avatar}>
-                    <img alt="" className={ProfilePageCSS.profile_image} src={this.state.profileImage} />
+                <div>
+                    <img className={ProfilePageCSS.profile_image} src={this.state.profileImage} />
                 </div>
                 <div className = {ProfilePageCSS.user_info}>
                     <div className = {ProfilePageCSS.username}>
