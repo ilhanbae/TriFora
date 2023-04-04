@@ -1,7 +1,7 @@
 import React from "react";
 import "../style/CreatePost.css";
 import imageUpload from "../assets/image_upload_icon.jpeg";
-import { Link, Navigate, redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import uploadFile from "../helper/uploadFile";
 
 export default class CreatePost extends React.Component {
@@ -24,7 +24,8 @@ export default class CreatePost extends React.Component {
         // keep the form from actually submitting via HTML - we want to handle it in react
         event.preventDefault();
 
-        // make sure a submission isn't empty, currently we only consider title necessary
+        // make sure a submission isn't empty, currently we only consider title and description necessary
+        // these checks might now be redundant since using required attribute
         if (this.state.postTitle.length < 1) {
             alert("Post title cannot be empty")
         } else if (this.state.postContent.length < 1) {
@@ -85,6 +86,16 @@ export default class CreatePost extends React.Component {
                         // Navigate({ to: "/", replace: true});
                         // return redirect("/")
 
+                        // clear form, currently needed since not redirecting
+                        this.setState({
+                            postTitle: ""
+                        });
+                        this.setState({
+                            postContent: ""
+                        });
+                        this.setState({
+                            postImages: []
+                        });
                     },
                     error => {
                         alert("error!");
@@ -171,8 +182,16 @@ export default class CreatePost extends React.Component {
                         {/* wrapped in divs to solve a spacing issue */}
                         <div>
                             <label>
-                                <h1>{this.state.postMessage}</h1>
-                                <input autoFocus type="text" className="create-post-title" onChange={this.myTitleChangeHandler} />
+                                <h1>Title:</h1>
+                                <input
+                                    type="text"
+                                    className="create-post-title"
+                                    onChange={this.myTitleChangeHandler}
+                                    autoFocus
+                                    required
+                                    onInvalid={e => e.target.setCustomValidity("Post requires a title")}
+                                    onInput={e => e.target.setCustomValidity("")} // not sure if this is needed
+                                />
                             </label>
                         </div>
 
@@ -181,7 +200,14 @@ export default class CreatePost extends React.Component {
                         <div>
                             <label>
                                 <h1>Description:</h1>
-                                <textarea className="create-post-content" rows="8" onChange={this.myContentChangeHandler} />
+                                <textarea
+                                    className="create-post-content"
+                                    rows="8"
+                                    onChange={this.myContentChangeHandler}
+                                    required
+                                    onInvalid={e => e.target.setCustomValidity("Post requires a description")}
+                                    onInput={e => e.target.setCustomValidity("")} // not sure if this is needed
+                                />
                             </label>
                         </div>
 
@@ -190,8 +216,31 @@ export default class CreatePost extends React.Component {
                         <div>
                             <label>
                                 <h1>Images:</h1>
-                                <input type="file" accept="image/*" onChange={this.imageChangeHandler} multiple hidden />
-                                <img src={imageUpload} className="upload-image" />
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={this.imageChangeHandler}
+                                    hidden//={this.state.postImages.length < 1}
+                                    multiple
+                                />
+                                {this.state.postImages.length < 1 ?
+                                // if no pictures use default icon, else preview images
+                                    (<img
+                                        src={imageUpload}
+                                        className="upload-image"
+                                        alt="Upload"
+                                        title="Upload image(s)" />
+                                    ) : (
+                                        this.state.postImages.map((image) =>
+                                        <img
+                                            src={URL.createObjectURL(image)}
+                                            className="upload-image"
+                                            alt="Upload"
+                                            title="Upload image(s)" />
+                                        )
+                                    )
+                                }
+
                             </label>
                         </div>
 
