@@ -100,6 +100,27 @@
 .action-sidemenu-option:hover {
   background-color: var(--yellow-apricot);
 }
+
+/* Images */
+.image {
+  object-fit: cover;
+  border: 2px solid var(--bistre);
+  background-color: var(--french-bistre);
+}
+.image__sm {
+  width: 70px;
+  height: 70px;
+}
+.image__md {
+  width: 90px;
+  height: 90px;
+}
+.image__round {
+  border-radius: 90px;
+}
+.image__square {
+  border-radius: 10px;
+}
 /**** End of Generic Components ****/
 
 /* Community Page */
@@ -138,14 +159,6 @@
 .community-banner-content-right {
   display: flex;
   align-items: center;
-}
-
-.community-avatar {
-  width: 70px;
-  height: 70px;
-  border: 2px solid var(--bistre);
-  background-color: var(--french-bistre);
-  border-radius: 10px;
 }
 .community-info {
   /* border: 1px solid var(--bistre); */
@@ -240,13 +253,6 @@
   gap: 10px;
   justify-content: center;
 }
-.post-thumbnail {
-  width: 90px;
-  height: 90px;
-  border: 2px solid var(--bistre);
-  background-color: var(--french-bistre);
-  border-radius: 10px;
-}
 .post-id-title {
   /* border: 1px solid var(--bistre); */
   width: 100%; 
@@ -322,13 +328,6 @@
   padding: 5px;
   display: flex;
   justify-content: space-between;
-}
-.community-member-profile-avatar {
-  width: 90px;
-  height: 90px;
-  border-radius: 90px;
-  border: 2px solid var(--bistre);
-  background-color: var(--french-bistre);
 }
 .community-member-info {
   display: flex;

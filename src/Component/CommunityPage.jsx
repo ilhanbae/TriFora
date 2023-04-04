@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 import genericFetch from "../helper/genericFetch";
 import genericDelete from "../helper/genericDelete";
 import style from "../style/CommunityPage.module.css";
+import defaultProfileImage from "../assets/defaultProfileImage.png";
+import defaultPostImage from "../assets/defaultPostImage.png";
+import defaultCommunityImage from "../assets/defaultCommunityImage.png";
 
 /* This component renders a single community page. Inside the community page, 
 there are posts tab and members tab. */
@@ -74,7 +77,8 @@ const CommunityBanner = (props) => {
       <div className={style['community-banner-content']}>
         {/* Community Banner Content Left */}
         <div className={style['community-banner-content-left']}>
-          <div className={style['community-avatar']}></div>
+          {/* Community Avatar Image */}
+          <img className={`${style['image']} ${style['image__sm']} ${style['image__square']}`} src={props.communityDetails.attributes.design.bannerBackgroundImage} onError={(e) => e.currentTarget.src = defaultCommunityImage} alt="" />
           <div className={style['community-info']}>
             <h2>{props.communityDetails.name}</h2>
             <span className={style['inactive-text']}>Since February 19th, 2023</span>
@@ -291,9 +295,13 @@ const CommunityPost = (props) => {
     props.refreshPosts();
   };
 
+  // Set post thumbnail image
+  let postThumbnailImage = props.post.attributes.images[0] ? props.post.attributes.images[0] : defaultPostImage
+
   return (
     <div className={style['community-post']} key={props.post.id}>
-      <div className={style['post-thumbnail']}></div>
+      {/* Post Thumbnail */}
+      <img className={`${style['image']} ${style['image__md']} ${style['image__square']}`} src={postThumbnailImage} onError={(e) => e.currentTarget.src = defaultProfileImage} alt="" />
 
       <div className={style['post-summary']}>
         <div className={style['post-id-title']}>
@@ -617,12 +625,11 @@ const CommunityMember = (props) => {
     props.refreshMembers();
   };
 
-
   return (
     <div className={style['community-member']}>
 
       {/* Community Member Profile Avatar */}
-      <div className={style['community-member-profile-avatar']}></div>
+      <img className={`${style['image']} ${style['image__md']} ${style['image__round']}`} src={props.member.user.attributes.profile.profileImage} onError={(e) => e.currentTarget.src = defaultProfileImage} alt="" />
 
       {/* Community Member Info */}
       <div className={style['community-member-info']}>
