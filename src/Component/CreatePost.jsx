@@ -136,7 +136,7 @@ export default class CreatePost extends React.Component {
                 alert("file upload success")
                 // should only get here if all files are images, in which case can update state
                 this.setState({
-                    postImages: event.target.files
+                    postImages: Array.from(event.target.files)
                 });
             } else {
                 // if not alert to try again
