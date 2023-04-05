@@ -1,7 +1,7 @@
 import React from "react";
 import "../style/CreatePost.css";
 import imageUpload from "../assets/image_upload_icon.jpeg";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import uploadFile from "../helper/uploadFile";
 
 export default class CreatePost extends React.Component {
@@ -14,7 +14,8 @@ export default class CreatePost extends React.Component {
             postContent: "",
             postImages: [],
             postmessage: "",
-            postSuccess: false
+            postSuccess: false,
+            submitRedirect: false
         };
     }
 
@@ -88,14 +89,21 @@ export default class CreatePost extends React.Component {
                         // return redirect("/")
 
                         // clear form, currently needed since not redirecting
+                        // this.setState({
+                        //     postTitle: ""
+                        // });
+                        // this.setState({
+                        //     postContent: ""
+                        // });
+                        // this.setState({
+                        //     postImages: []
+                        // });
+                        // this.props.history.push("/")
+                        // above doesn't work
+
+                        // trying with state variable and Navigate tag
                         this.setState({
-                            postTitle: ""
-                        });
-                        this.setState({
-                            postContent: ""
-                        });
-                        this.setState({
-                            postImages: []
+                            submitRedirect: true
                         });
                     },
                     error => {
@@ -171,6 +179,9 @@ export default class CreatePost extends React.Component {
             console.log("NO TOKEN");
             return ("Please log in to make and view posts");
         }
+        if (this.state.submitRedirect) {
+            return <Navigate to="/" replace={true} />;
+        }
         return (
             /* wrapper for flexbox column layout */
             <div className="create-post-wrapper">
@@ -222,7 +233,7 @@ export default class CreatePost extends React.Component {
 
                         <div>
                             <label>
-                                <h1>Media:</h1>
+                                <h1>Images:</h1>
                                 <input
                                     type="file"
                                     accept="image/*"
@@ -230,24 +241,20 @@ export default class CreatePost extends React.Component {
                                     hidden//={this.state.postImages.length < 1}
                                     multiple
                                 />
-                                {this.state.postImages.length < 1 ?
-                                // if no pictures use default icon, else preview images
-                                    (<img
-                                        src={imageUpload}
-                                        className="upload-image"
-                                        alt="Upload"
-                                        title="Upload image(s)" />
-                                    ) : (
-                                        this.state.postImages.map((image) =>
+                                {this.state.postImages.length > 0 &&
+                                    this.state.postImages.map((image) =>
                                         <img
                                             src={URL.createObjectURL(image)}
                                             className="upload-image"
                                             alt="Upload"
                                             title="Upload image(s)" />
-                                        )
                                     )
                                 }
-
+                                <img
+                                    src={imageUpload}
+                                    className="upload-image"
+                                    alt="Upload"
+                                    title="Upload image(s)" />
                             </label>
                         </div>
 
