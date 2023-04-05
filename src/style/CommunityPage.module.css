@@ -316,12 +316,13 @@
 .community-members-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  /* gap: 10px; */
 }
 
 /* Community Member */
 .community-member {
-  flex: 0 0 calc(20% - 10px);
+  flex: 0 0 calc(20%);
+  /* flex: 0 0 calc(20% - 10px); */
   border: 2px solid var(--bistre);
   background-color: var(--light-yellow);
   border-radius: 10px;
@@ -340,8 +341,9 @@
 /* Pagination */
 .pagination {
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
 }
 .page-number {
   padding: 10px;
+  border-radius: 10px;
 }
