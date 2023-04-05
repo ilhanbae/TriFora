@@ -67,6 +67,7 @@ export default class CreatePost extends React.Component {
                 body: JSON.stringify({
                     authorID: this.state.currentUser,
                     recipientGroupID: 25, // 25 is a placeholder for now until we know how our communities are working
+                    // recipientGroupID: {this.props.communityId},
                     content: this.state.postContent, // if post description can be empty this is just going to have to store an empty string and be tested for post page side I think
                     attributes: {
                         title: this.state.postTitle,
@@ -83,24 +84,6 @@ export default class CreatePost extends React.Component {
                             postmessage: result.Status
                         });
                         alert("Post was successful");
-                        // once a post is complete, reload the feed
-                        // this.postListing.current.loadPosts();
-                        // Navigate({ to: "/", replace: true});
-                        // return redirect("/")
-
-                        // clear form, currently needed since not redirecting
-                        // this.setState({
-                        //     postTitle: ""
-                        // });
-                        // this.setState({
-                        //     postContent: ""
-                        // });
-                        // this.setState({
-                        //     postImages: []
-                        // });
-                        // this.props.history.push("/")
-                        // above doesn't work
-
                         // trying with state variable and Navigate tag
                         this.setState({
                             submitRedirect: true
@@ -180,6 +163,7 @@ export default class CreatePost extends React.Component {
             return ("Please log in to make and view posts");
         }
         if (this.state.submitRedirect) {
+            // return <Navigate to=`/groups/${this.props.communityId}` replace={true} />;
             return <Navigate to="/" replace={true} />;
         }
         return (
