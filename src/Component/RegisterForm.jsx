@@ -1,6 +1,5 @@
 import React from 'react';
 import "../style/RegisterForm.css";
-import image_upload_icon from "../assets/image_upload_icon.jpeg";
 import { Link, useNavigate} from "react-router-dom";
 
 export default class RegisterForm extends React.Component {

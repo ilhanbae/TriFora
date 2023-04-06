@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import "../style/EditProfile.css";
+import "../style/EditProfilePage.css";
 import genericFetch from "../helper/genericFetch";
 import uploadFile from "../helper/uploadFile";
 import genericPatch from "../helper/genericPatch";
