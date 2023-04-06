@@ -4,7 +4,7 @@ import back from "../assets/back-button.jpeg";
 import upvote from "../assets/upvote.jpeg";
 import downvote from "../assets/downvote.jpeg";
 import CommentList from "./CommentList";
-import Convert_time from "../Helper/Convert_time";
+import Convert_time from "../helper/Convert_time";
 import Modal from "./Modal";
 
 // Post Page will render a single post with all the related compontents (user, content, comments)
@@ -28,7 +28,7 @@ export default class PostPage extends React.Component {
             username: "",
             post_date: "",
             views: "",
-            post_id: "159",
+            post_id: "183",
             title: "",
             content: "",
             likes: "",
@@ -111,7 +111,7 @@ export default class PostPage extends React.Component {
 
     loadPost() {
         // set the auth token and user ID in the session state
-        sessionStorage.setItem("token", "underachievers|sfcS9pGf9wdSr1Z4accUvxhNvVyTggJyMWnAl1ZcPQ0");
+        sessionStorage.setItem("token", "underachievers|5phjGPWGGwQyIXHPSj9g7VMIFhLPVhBe2AQWtjOlF3s");
         sessionStorage.setItem("user", "165");
 
         // if the user is not logged in, we don't want to try loading post, because it will just error out. 
@@ -296,10 +296,10 @@ export default class PostPage extends React.Component {
                             </div>
                             <div className = {PostPageCSS['community-info']}>
                                 <div className = {PostPageCSS['community-name']}>
-                                    Class of 2023
+                                    <h1>Class of 2023</h1>
                                 </div>
                                 <div className = {PostPageCSS['community-created']}>
-                                    Since February 19, 2023
+                                    <h5>Since February 19, 2023</h5>
                                 </div>
                             </div>
                         </div>
@@ -325,32 +325,32 @@ export default class PostPage extends React.Component {
                                     <img alt="" className={PostPageCSS['profile_image']} src={this.state.profileimage} />
                                 </div>
                                 <div className = {PostPageCSS['post-by']}>
-                                    Posted By
+                                    <h5> Posted By </h5>
                                     <div className = {PostPageCSS['post-username']}>
-                                        {this.state.username}
+                                        <h5> {this.state.username} </h5>
                                     </div>
                                 </div>
                                 <div className = {PostPageCSS['post-on']}>
-                                    Posted On
+                                    <h5> Posted On </h5>
                                     <div className = {PostPageCSS['post-date']}>
-                                        {this.state.post_date}
+                                        <h5> {this.state.post_date} </h5>
                                     </div>
                                 </div>
                             </div>
                             <div className = {PostPageCSS['post-views']}>
-                                Views
+                                <h5> Views </h5>
                                 <div className = {PostPageCSS['post-viewnumber']}>
-                                    100
+                                    <h5> 100 </h5>
                                 </div>
                             </div>
                         </div>
                         <div className = {PostPageCSS['post-title']}>
-                            <b className = {PostPageCSS['post-id']}> #{this.state.post_id} </b>
-                            <b className = {PostPageCSS['post-title-text']}>How to survive on Campus?</b>
+                            <h5 className = {PostPageCSS['post-id']}> #{this.state.post_id} </h5>
+                            <h1 className = {PostPageCSS['post-title-text']}> How to survive on Campus? </h1>
                         </div>
                         <div className = {PostPageCSS['post-content']}>
                             <div className = {PostPageCSS['post-content-text']}>
-                                {this.state.content}
+                                <h5> {this.state.content} </h5>
                             </div>
                         </div>
                     </div>
@@ -372,7 +372,7 @@ const Notification = (props) => {
     } else {
         return (
             <button className = {PostPageCSS['notification']} onClick={props.click}>
-                <b className = {PostPageCSS['notification_text']}>{props.text}</b>
+                <h5 className = {PostPageCSS['notification_text']}>{props.text}</h5>
                 <div className = {PostPageCSS[props.color]}></div>
             </button>
         );
@@ -388,10 +388,10 @@ const Member_info = (props) => {
         return (
             <div className={PostPageCSS['member-info']}>
                 <div className = {PostPageCSS['member-username']}>
-                    Member
+                    <h3> Member </h3>
                 </div>
                 <div className = {PostPageCSS['member-joindate']}>
-                    Since February 19, 2023
+                    <h5> Since February 19, 2023 </h5>
                 </div>
             </div>
         );
@@ -420,25 +420,25 @@ const Post_bar = (props) => {
             <div className = {PostPageCSS['post-bar']}>
                 <div className = {PostPageCSS['upvote']}>
                     <input className = {PostPageCSS['upvote-button-image']} type='image' src={upvote} alt='upvote' onClick={props.click}/>
-                    <b className = {PostPageCSS['upvote-number']}>{props.upvote}</b>
+                    <h5 className = {PostPageCSS['upvote-number']}>{props.upvote}</h5>
                 </div>
 
                 <div className = {PostPageCSS['post-buttons']}>
                     <div className = {PostPageCSS['post-pin']}>
                         <button className = {PostPageCSS['post-pin-button']}></button>
-                        <b className = {PostPageCSS['post-pin-text']}>Pin</b>
+                        <h5 className = {PostPageCSS['post-pin-text']}>Pin</h5>
                     </div> 
                     <div className = {PostPageCSS['post-hide']}>
                         <button className = {PostPageCSS['post-hide-button']}></button>
-                        <b className = {PostPageCSS['post-hide-text']}>Hide</b>
+                        <h5 className = {PostPageCSS['post-hide-text']}>Hide</h5>
                     </div> 
                     <div className = {PostPageCSS['post-report']}>
                         <button className = {PostPageCSS['post-report-button']}></button>
-                        <b className = {PostPageCSS['post-report-text']}>Report</b>
+                        <h5 className = {PostPageCSS['post-report-text']}>Report</h5>
                     </div> 
                     <div className = {PostPageCSS['post-delete']}>
                         <button className = {PostPageCSS['post-delete-button']} onClick={props.ClickDelete}></button>
-                        <b className = {PostPageCSS['post-delete-text']}>Delete</b>
+                        <h5 className = {PostPageCSS['post-delete-text']}>Delete</h5>
                         <Modal show={props.openModal} onClose={props.toggleModal}>
                             <div className={PostPageCSS['delete-popup-title']}>Delete Your Post</div>
                             <div className={PostPageCSS['popup-buttons']}>

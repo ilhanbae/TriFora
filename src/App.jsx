@@ -100,6 +100,7 @@ class App extends React.Component {
               <Route path="community/:communityId" element={<CommunityPage />} />
               <Route path="community/:communityId/create-post" element={<CreatePost />} /> {/* probably exist a cleaner way */}
               <Route path="/" element={<LoginOrProfile login={login} />} />
+              <Route path="/post_page" element={<PostPage  login={login}/>} />
             </Routes>
           </div>
 
@@ -124,6 +125,24 @@ const LoginOrProfile = (props) => {
       <ProfilePage />
     );
   }
+}
+
+const PostPage = (props) => {
+  // if the user is not logged in, show the login form.  Otherwise, show the post form
+  if (!sessionStorage.getItem("token")){
+    console.log("LOGGED OUT");
+    return(
+      <div>
+        <LoginForm login={props.login}  />
+      </div>
+    );
+  }
+   return (
+    <div>
+        <Post_Page />
+    </div>
+   );
+
 }
 
 // export the app for use in index.js

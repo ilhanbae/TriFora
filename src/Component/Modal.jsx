@@ -1,7 +1,7 @@
 import React from "react";
-import "../App.css";
 import PropTypes from "prop-types";
 import ReactDom from "react-dom";
+import ModalCSS from "../style/Modal.module.css";
 
 // This component is an example of a modal dialog.  The content can be swapped out for different uses, and
 // should be passed in from the parent class.
@@ -16,9 +16,9 @@ export default class Modal extends React.Component {
       return null;
     }
     return ReactDom.createPortal(
-      <div id="myModal" className="modal">
-        <div className="modal-content">
-          <span className="close" onClick={this.onClose}>
+      <div id="myModal" className= {ModalCSS["modal"]}>
+        <div className= {ModalCSS["modal-content"]}>
+          <span className= {ModalCSS["close"]} onClick={this.onClose}>
             &times;
           </span>
           <div id="modalcontent">{this.props.children}</div>

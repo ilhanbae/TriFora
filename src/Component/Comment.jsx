@@ -2,7 +2,7 @@ import React from "react";
 import PostPageCSS from "../style/PostPage.module.css";
 import red_icon from "../assets/red-icon.jpeg";
 import black_icon from "../assets/black-icon.jpeg";
-import Convert_time from "../Helper/Convert_time";
+import Convert_time from "../helper/Convert_time";
 import Modal from "./Modal";
 import PostPage from "./PostPage";
 
@@ -116,10 +116,10 @@ export default class Comment extends React.Component {
                     <div className = {PostPageCSS['comment-user-avater']}>
                     </div>
                     <div className = {PostPageCSS['comment-user-username']}>
-                        {this.state.comment_username}
+                        <h4> {this.state.comment_username} </h4>
                     </div>
                     <div className = {PostPageCSS['comment-user-date']}>
-                        {this.state.comment_date}
+                        <h6> {this.state.comment_date} </h6>
                     </div>
                 </div>
 
@@ -146,7 +146,7 @@ const Comment_interaction = (props) => {
             <div className = {PostPageCSS['comment-interaction']}>
                 <div className = {PostPageCSS['comment-delete']}>
                     <button className = {PostPageCSS['comment-delete-button']} onClick={props.ClickDelete}></button>
-                    <b className = {PostPageCSS['comment-delete-text']}>Delete</b>
+                    <h6 className = {PostPageCSS['comment-delete-text']}>Delete</h6>
                     <Modal show={props.openModal} onClose={props.toggleModal}>
                         <div className={PostPageCSS['delete-popup-title']}>Delete Your Comment</div>
                         <div className={PostPageCSS['popup-buttons']}>
@@ -157,7 +157,7 @@ const Comment_interaction = (props) => {
                 </div>
                 <div className = {PostPageCSS['comment-edit']}>
                     <button className = {PostPageCSS['comment-edit-button']} onClick={props.edit}></button>
-                    <b className = {PostPageCSS['comment-edit-text']}>Edit</b>
+                    <h6 className = {PostPageCSS['comment-edit-text']}>Edit</h6>
                 </div>
             </div>
         );
@@ -169,7 +169,7 @@ const Comment_text = (props) => {
     if (!props.edit_comment){
         return (
             <div className = {PostPageCSS['comment-text']}>
-                {props.comment_content}
+                <h5> {props.comment_content} </h5>
             </div>
         );
 
