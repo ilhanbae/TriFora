@@ -174,17 +174,7 @@ export default class ProfilePage extends React.Component {
                             <h5>Remove</h5>
                         </button>
                     </div>
-
-                    <div className = {ProfilePageCSS.friend_card}>
-                        <div className = {ProfilePageCSS.friend_avatar}>
-                        </div>
-                        <div className = {ProfilePageCSS.friend_name}>
-                            <h4> Doc Ock </h4>
-                        </div>
-                        <button className = {ProfilePageCSS.friend_remove} onClick={() => this.removeHandler_1()}>
-                            <h5>Remove</h5>
-                        </button>
-                    </div>
+                    
                 </div>
 
             </div> 
