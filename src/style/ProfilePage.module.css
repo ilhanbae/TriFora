@@ -28,10 +28,6 @@
 }
 
 .profile_title{
-    font-family: 'Alfa Slab One';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 30px;
     margin: 10px;
     display: flex;
 
@@ -59,11 +55,14 @@
 
     font-family: 'Alfa Slab One';
     font-style: normal;
-    font-weight: bold;
+    font-weight: normal;
     font-size: 20px;
+    text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    color: black;
+    padding: 5px;
 
     background: #F3C26E;
     border: 2px solid #000000;
@@ -85,8 +84,10 @@
 
     font-family: 'Alfa Slab One';
     font-style: normal;
-    font-weight: bold;
+    font-weight: normal;
     font-size: 20px;
+    color: black;
+    padding: 5px;
 
     background: #00FF00;
     border: 2px solid #000000;
@@ -108,8 +109,10 @@
 
     font-family: 'Alfa Slab One';
     font-style: normal;
-    font-weight: bold;
+    font-weight: normal;
     font-size: 20px;
+    color: black;
+    padding: 5px;
 
     background: #FF0000;
     border: 2px solid #000000;
@@ -127,16 +130,19 @@
     margin: 10px;
     margin-right: 75px; 
 
-    width: 60px;
+    width: 70px;
     height: 40px;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
-    font-weight: bold;
+    font-weight: normal;
     font-size: 20px;
     display: flex;
+    text-align: center;
     flex-direction: column;
     justify-content: center;
+    color: black;
+    padding: 5px;
 
     background: #F3C26E;
     border: 2px solid #000000;
@@ -194,16 +200,18 @@
     
         margin: 10px; 
     
-        width: 60px;
+        width: 70px;
         height: 40px;
     
         font-family: 'Alfa Slab One';
         font-style: normal;
-        font-weight: bold;
+        font-weight: normal;
         font-size: 20px;
         display: flex;
+        text-align: center;
         flex-direction: column;
         justify-content: center;
+        padding: 5px;
     
         background: #F3C26E;
         border: 2px solid #000000;
@@ -275,11 +283,13 @@
     
         font-family: 'Alfa Slab One';
         font-style: normal;
-        font-weight: bold;
+        font-weight: normal;
         font-size: 20px;
         display: flex;
+        text-align: center;
         flex-direction: column;
         justify-content: center;
+        padding: 5px;
     
         background: #F3C26E;
         border: 2px solid #000000;
@@ -296,11 +306,13 @@
     
         font-family: 'Alfa Slab One';
         font-style: normal;
-        font-weight: bold;
+        font-weight: normal;
         font-size: 20px;
+        text-align: center;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        padding: 5px;
     
         background: #F3C26E;
         border: 2px solid #000000;
@@ -345,30 +357,15 @@
 }
 
 .username{
-    font-family: 'Alfa Slab One';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 36px;
     margin: 10px;
-
     color: #000000;
 }
 
 .first_name{
-    font-family: 'Alfa Slab One';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 20px;
-
     color: #8E6F52;
 }
 
 .last_name{
-    font-family: 'Alfa Slab One';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 20px;
-
     color: #8E6F52;
 }
 
@@ -376,10 +373,6 @@
     box-sizing: border-box;
 
     width: 30%;
-    font-family: 'Alfa Slab One';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 20px;
     margin: 10px;
     margin-left: auto;
     margin-right: 60px;
@@ -418,12 +411,7 @@
 
     .description{
         box-sizing: border-box;
-    
         width: 80%;
-        font-family: 'Alfa Slab One';
-        font-style: normal;
-        font-weight: bold;
-        font-size: 20px;
         margin: 10px;
     
         color:#000000;
@@ -473,10 +461,6 @@
 }
 
 .favorite_communities_title{
-    font-family: 'Alfa Slab One';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 20px;
     margin: 10px;
 
     color: #000000;
@@ -513,10 +497,6 @@
 }
 
 .community_title{
-    font-family: 'Alfa Slab One';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
     margin: 10px;;
     color: #000000;
 }
@@ -571,20 +551,10 @@
 }
 
 .friend_title{
-    font-family: 'Alfa Slab One';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 20px;
-
     color: #000000;
 }
 
 .friend_num{
-    font-family: 'Alfa Slab One';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 20px;
-
     color: #000000;
 }
 
@@ -619,10 +589,6 @@
 }
 
 .friend_name{
-    font-family: 'Alfa Slab One';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 20px;
     margin: 10px;
     margin-top: 0;
     margin-bottom: 0;
@@ -636,10 +602,6 @@
     width: 80px;
     height: 30px;
 
-    font-family: 'Alfa Slab One';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
     margin: 10px;
 
     color: #000000;

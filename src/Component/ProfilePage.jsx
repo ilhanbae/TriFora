@@ -74,7 +74,7 @@ export default class ProfilePage extends React.Component {
 
             <div className = {ProfilePageCSS.profile_title_bar}> 
                 <div className = {ProfilePageCSS.profile_title}>
-                    {this.state.username}&prime;s Profile Page
+                    <h1> {this.state.username}&prime;s Profile Page </h1>
                 </div>
 
                 <div className = {ProfilePageCSS['title-bar-buttons']}>
@@ -98,45 +98,45 @@ export default class ProfilePage extends React.Component {
                 </div>
                 <div className = {ProfilePageCSS.user_info}>
                     <div className = {ProfilePageCSS.username}>
-                        {this.state.username}
+                        <h1> {this.state.username} </h1>
                     </div>
                     <div className = {ProfilePageCSS.first_name}>
-                        First Name: {this.state.firstName}
+                        <h3> First Name: {this.state.firstName} </h3>
                     </div>
                     <div className = {ProfilePageCSS.last_name}>
-                        Last Name: {this.state.lastName}
+                        <h3> Last Name: {this.state.lastName} </h3>
                     </div>
                 </div>
                 <div className = {ProfilePageCSS.description}>
-                    Hi, I’m Spiderman. I live my life with great responsibilities.
-                    {this.state.description}
+                    <h4> Hi, I’m Spiderman. I live my life with great responsibilities. </h4>
+                    {/* <h4> {this.state.description} </h4> */}
                 </div>
             </div>
 
             <div className = {ProfilePageCSS.favorite_communities_bar}>
                 <div className = {ProfilePageCSS.favorite_communities_title_bar}>
-                    <div className = {ProfilePageCSS.favorite_communities_title}>Favorite Communities</div>
+                    <h2 className = {ProfilePageCSS.favorite_communities_title}>Favorite Communities</h2>
                 </div>
                 <div className = {ProfilePageCSS.communities_bar}>
                     <div className = {ProfilePageCSS.community}>
                         <div className = {ProfilePageCSS.community_image}>
                         </div>
                         <div className = {ProfilePageCSS.community_title}>
-                            Class of 2023
+                            <h4> Class of 2023 </h4>
                         </div>
                     </div>
                     <div className = {ProfilePageCSS.community}>
                         <div className = {ProfilePageCSS.community_image}>
                         </div>
                         <div className = {ProfilePageCSS.community_title}>
-                            Class of 2023
+                            <h4> Class of 2023 </h4>
                         </div>
                     </div>
                     <div className = {ProfilePageCSS.community}>
                         <div className = {ProfilePageCSS.community_image}>
                         </div>
                         <div className = {ProfilePageCSS.community_title}>
-                            Class of 2023
+                            <h4> Class of 2023 </h4>
                         </div>
                     </div>
                 </div>
@@ -145,10 +145,10 @@ export default class ProfilePage extends React.Component {
             <div className = {ProfilePageCSS.my_friend_bar}>
                 <div className = {ProfilePageCSS.friend_title_bar}>
                     <div className = {ProfilePageCSS.friend_title}>
-                        My Friends
+                        <h2> My Friends </h2>
                     </div>
                     <div className = {ProfilePageCSS.friend_num}>
-                        &#40;{this.state.current_friend_num}&#41;
+                        <h3> &#40;{this.state.current_friend_num}&#41; </h3>
                     </div>
                 </div>
 
@@ -157,10 +157,10 @@ export default class ProfilePage extends React.Component {
                         <div className = {ProfilePageCSS.friend_avatar}>
                         </div>
                         <div className = {ProfilePageCSS.friend_name}>
-                            Doc Ock
+                            <h4> Doc Ock </h4>
                         </div>
                         <button className = {ProfilePageCSS.friend_remove} onClick={() => this.removeHandler_1()}>
-                                Remove
+                            <h5>Remove</h5>
                         </button>
                     </div>
 
@@ -168,10 +168,10 @@ export default class ProfilePage extends React.Component {
                         <div className = {ProfilePageCSS.friend_avatar}>
                         </div>
                         <div className = {ProfilePageCSS.friend_name}>
-                            Doc Ock
+                            <h4> Doc Ock </h4>
                         </div>
                         <button className = {ProfilePageCSS.friend_remove} onClick={() => this.removeHandler_1()}>
-                                Remove
+                            <h5>Remove</h5>
                         </button>
                     </div>
 
@@ -179,10 +179,10 @@ export default class ProfilePage extends React.Component {
                         <div className = {ProfilePageCSS.friend_avatar}>
                         </div>
                         <div className = {ProfilePageCSS.friend_name}>
-                            Doc Ock
+                            <h4> Doc Ock </h4>
                         </div>
                         <button className = {ProfilePageCSS.friend_remove} onClick={() => this.removeHandler_1()}>
-                                Remove
+                            <h5>Remove</h5>
                         </button>
                     </div>
                 </div>
