@@ -191,6 +191,7 @@ export default class CreatePost extends React.Component {
                                     onChange={this.myTitleChangeHandler}
                                     autoFocus
                                     required
+                                    // below is field check error message since required field
                                     onInvalid={e => e.target.setCustomValidity("Post requires a title")}
                                     onInput={e => e.target.setCustomValidity("")} // not sure if this is needed
                                 />
@@ -207,6 +208,7 @@ export default class CreatePost extends React.Component {
                                     rows="8"
                                     onChange={this.myContentChangeHandler}
                                     required
+                                    // below is field check error message since required field
                                     onInvalid={e => e.target.setCustomValidity("Post requires a description")}
                                     onInput={e => e.target.setCustomValidity("")} // not sure if this is needed
                                 />
