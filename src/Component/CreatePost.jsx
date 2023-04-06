@@ -162,7 +162,7 @@ export default class CreatePost extends React.Component {
             return ("Please log in to make and view posts");
         }
         if (this.state.postSuccess) {
-            // return <Navigate to=`/groups/${this.props.communityId}` replace={true} />;
+            // return <Navigate to=`/community/${this.props.communityId}` replace={true} />;
             return <Navigate to="/" replace={true} />;
         }
         return (

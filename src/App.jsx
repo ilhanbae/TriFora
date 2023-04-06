@@ -57,7 +57,7 @@ export default function App() {
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/edit-profile" element={<EditProfilePage />} />
               <Route path="community/:communityId" element={<CommunityPage />} />
-              <Route path="/create-post" element={<CreatePost />} />
+              <Route path="community/:communityId/create-post" element={<CreatePost />} /> {/* probably exist a cleaner way */}
               <Route path="/" element={<LoginOrProfile login={login} />} />
             </Routes>
           </div>
