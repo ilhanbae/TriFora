@@ -15,7 +15,6 @@ export default class CreatePost extends React.Component {
             postImages: [],
             postmessage: "",
             postSuccess: false,
-            submitRedirect: false
         };
     }
 
@@ -86,7 +85,7 @@ export default class CreatePost extends React.Component {
                         alert("Post was successful");
                         // trying with state variable and Navigate tag
                         this.setState({
-                            submitRedirect: true
+                            postSuccess: true
                         });
                     },
                     error => {
@@ -162,7 +161,7 @@ export default class CreatePost extends React.Component {
             console.log("NO TOKEN");
             return ("Please log in to make and view posts");
         }
-        if (this.state.submitRedirect) {
+        if (this.state.postSuccess) {
             // return <Navigate to=`/groups/${this.props.communityId}` replace={true} />;
             return <Navigate to="/" replace={true} />;
         }
@@ -172,6 +171,7 @@ export default class CreatePost extends React.Component {
                 {/* back button wrapper to allow offset placement */}
                 <div className="return-button-box">
                     {/* Disguising a link as a button to allow navigation, still not sure why we are doing this */}
+                    {/* <Link to=`/groups/${this.props.communityId}` className="cancel-post-button">Cancel post</Link> */}
                     <Link to="/" className="cancel-post-button">Cancel post</Link>
                     {/* spans just being used for button positioning*/}
                     <span></span>
