@@ -120,6 +120,8 @@ const CommunityContentDisplay = (props) => {
   // It's passed on to its child component - CommunityStats, where the options are selected.
   // Then the CommunityContentDisplay component renders based on the display type (post list or members list)
   const postContentDisplayHandler = (type) => {
+    setCommunityPostSkipOffset(null);
+    setCommunityMemberSkipOffset(null);
     setContentDisplayType(type);
   };
 
