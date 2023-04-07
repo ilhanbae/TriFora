@@ -6,6 +6,7 @@ import style from "../style/CommunityPage.module.css";
 import defaultProfileImage from "../assets/defaultProfileImage.png";
 import defaultPostImage from "../assets/defaultPostImage.png";
 import defaultCommunityImage from "../assets/defaultCommunityImage.png";
+import report from "../helper/report";
 
 /* This component renders a single community page. Inside the community page, 
 there are posts tab and members tab. */
@@ -339,7 +340,8 @@ const CommunityPost = (props) => {
         setIsPostHidden(isPostHidden ? false : true);
         break;
       case "report":
-        // console.log(option);
+        console.log(option);
+        report(props.post.id)
         setIsPostReported(isPostReported ? false : true);
         break;
       case "delete":

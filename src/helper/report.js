@@ -17,35 +17,70 @@ import genericFetch from "./genericFetch";
 //
 // }
 
-function report(postId) {
+export default function report(postId) {
     // Get the ID of the post that the user is reacting to
     // const postId = getPostId();
 
     const authToken = sessionStorage.getItem("token");
+    console.log(authToken);
+    console.log(sessionStorage)
     // Make a request to the /post-reactions endpoint to add a "like" reaction
-    fetch('/post-reactions', {
+    // https://webdev.cse.buffalo.edu/hci/api/api/underachievers/users/216?relatedObjectsAction=delete
+
+    const baseUrl = `${process.env.REACT_APP_API_PATH}`;
+    const endpoint = "/post-reactions"
+
+    const url = `${baseUrl}${endpoint}`;
+    console.log(url);
+
+    const requestOptions = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${authToken}`
         },
+    // {
+    //     "postID": 181,
+    //     "reactorID": 211,
+    //     "name": "like",
+    //     "value": 1,
+    //     "attributes": {}
+    // }
         body: JSON.stringify({
-            post_id: postId,
+            postID: postId,
             reactorID: sessionStorage.getItem("user"),
             name: 'report',
+            value: 1
+            // attributes: {
+            //     description: "post is bad"
+            // }
         })
-    })
+    };
+
+    fetch(url, requestOptions)
+    // fetch('/post-reactions', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //         'Authorization': `Bearer ${authToken}`
+    //     },
+    //     body: JSON.stringify({
+    //         post_id: postId,
+    //         reactorID: sessionStorage.getItem("user"),
+    //         name: 'report',
+    //     })
+    // })
         .then(response => {
             if (response.ok) {
                 // The reaction was added successfully
                 alert('Post Reported!');
             } else {
                 // There was an error adding the reaction
-                alert('Error reporting, try again!');
+                alert('Error reporting, try again');
             }
         })
         .catch(error => {
             console.error(error);
-            alert('Error reporting!');
+            alert('Error reporting');
         });
 }
