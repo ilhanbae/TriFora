@@ -104,7 +104,7 @@
 
     margin: 10px;
 
-    width: 150px;
+    width: 180px;
     height: 40px;
 
     font-family: 'Alfa Slab One';
@@ -120,6 +120,31 @@
 }
 
 .removefriend_button:hover {
+    background-color: #3D211A;
+    color: white;
+}
+
+.RequestSent_button{
+    box-sizing: border-box;
+
+    margin: 10px;
+
+    width: 160px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    color: black;
+    padding: 5px;
+
+    background: gray;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.RequestSent_button:hover {
     background-color: #3D211A;
     color: white;
 }
@@ -572,6 +597,11 @@
 
 .friend_card{
     box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     margin: 20px;
 
     background: #F3C26E;
