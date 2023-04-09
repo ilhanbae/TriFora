@@ -255,7 +255,7 @@ export default class ProfilePage extends React.Component {
             })
             .then(
                 result => {
-                    alert("Delete Friend Request Successfully");
+                    //alert("Delete Friend Request Successfully");
                     console.log("Delete Friend Request Successfully");
                     this.check_user_connection(user_id);
                 },
