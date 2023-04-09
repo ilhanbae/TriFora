@@ -12,17 +12,26 @@ there are posts tab and members tab. */
 export default function CommunityPage(props) {
   const { communityId } = useParams(); // Retrieve the community id from the URL Param
   const [communityDetails, setCommunityDetails] = useState(null);
+  const [userCommunityMemberDetails, setUserCommunityMemberDetails] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
   // Fetch the community details when the community page is loaded
   useEffect(() => {
-    loadCommunityDetails();
+    loadCommunityAndUser();
   }, []);
+
+  /* This method loads both the community and user community member details */
+  const loadCommunityAndUser = async () => {
+    setIsLoaded(false);
+    await loadCommunityDetails();
+    await loadUserCommunityMemberDetails();
+    setIsLoaded(true);
+  };
 
   /* This methods loads the community details by sending the API request. */
   const loadCommunityDetails = async () => {
-    setIsLoaded(false);
+    // setIsLoaded(false);
     let endpoint = `/groups/${communityId}`;
     let query = {};
     const { data, errorMessage } = await genericFetch(endpoint, query);
@@ -32,16 +41,36 @@ export default function CommunityPage(props) {
     } else {
       setCommunityDetails(data);
     }
-    setIsLoaded(true);
+    // setIsLoaded(true);
   };
 
   /* This method refresh the communit details by sending the API request again.
   It can be passed on to child components that can change the state of the community page. 
   Note, currently the only attributes the community page maintains is its banner design.
   Perhaps, this can be called when the community admin/mod wishes to change the style of the community. */
-  const refreshCommunityDetails = () => {
+  const refreshCommunityDetails = async () => {
     // console.log("refreshing community details");
-    loadCommunityDetails(); // Fetch the community details again
+    setIsLoaded(false);
+    await loadCommunityDetails(); // Fetch the community details again
+    setIsLoaded(true);
+  };
+
+  /* This method loads current user as community member by sending the API request. */
+  const loadUserCommunityMemberDetails = async () => {
+    // setIsLoaded(false);
+    let endpoint = `/group-members`;
+    let query = {
+      userID: sessionStorage.getItem("user"),
+      groupID: communityId,
+    };
+    const { data, errorMessage } = await genericFetch(endpoint, query);
+    // console.log(data, errorMessage);
+    if (errorMessage) {
+      setErrorMessage(errorMessage);
+    } else {
+      setUserCommunityMemberDetails(data[0][0]);
+    }
+    // setIsLoaded(true);
   };
 
   // Render Component
@@ -53,12 +82,18 @@ export default function CommunityPage(props) {
     return (
       <div className={style["community-page"]}>
         {/* Banner */}
-        <CommunityBanner communityDetails={communityDetails} />
+        <CommunityBanner
+          communityDetails={communityDetails}
+          userCommunityMemberDetails={userCommunityMemberDetails}
+        />
 
         {/* Main section */}
         <div className={style["main-section"]}>
           {/* Main Content Display */}
-          <CommunityContentDisplay communityId={communityId} />
+          <CommunityContentDisplay
+            communityId={communityId}
+            userCommunityMemberDetails={userCommunityMemberDetails}
+          />
         </div>
       </div>
     );
@@ -68,15 +103,34 @@ export default function CommunityPage(props) {
 /* [TODO] This component serves as container for banner contents. Inside the banner, 
 there's community name, community background, community icon, and a join button*/
 const CommunityBanner = (props) => {
+  let bannerColor = props.communityDetails.attributes.design.bannerColor
+    ? `#${props.communityDetails.attributes.design.bannerColor}`
+    : "#f3c26e";
+
+  // Set post thumbnail image
+  let bannerBackgroundImage = props.communityDetails.attributes.design
+    .bannerBackgroundImage
+    ? props.communityDetails.attributes.design.bannerBackgroundImage
+    : "";
+
+  // Check current user's community role & joined state
+  const isUserAdmin = props.userCommunityMemberDetails?.attributes.role === "admin";
+  const isUserMod = props.userCommunityMemberDetails?.attributes.role === "mod";
+  const isUserJoined = props.userCommunityMemberDetails != null;
+
   return (
     <div className={style["community-banner"]}>
       {/* Community Banner Background */}
-      <div className={style["community-banner-background"]}>
-        Banner background
-      </div>
+      <div
+        className={style["community-banner-background"]}
+        style={{ backgroundImage: `url(${bannerBackgroundImage})` }}
+      ></div>
 
       {/* Commnity Banner Content*/}
-      <div className={style["community-banner-content"]}>
+      <div
+        className={style["community-banner-content"]}
+        style={{ backgroundColor: bannerColor }}
+      >
         {/* Community Banner Content Left */}
         <div className={style["community-banner-content-left"]}>
           {/* Community Avatar Image */}
@@ -84,19 +138,35 @@ const CommunityBanner = (props) => {
             className={`${style["image"]} ${style["image__sm"]} ${style["image__square"]}`}
             src={props.communityDetails.attributes.design.bannerBackgroundImage}
             onError={(e) => (e.currentTarget.src = defaultCommunityImage)}
-            alt=""
+            alt="Community background"
           />
+          {/* Community Info */}
           <div className={style["community-info"]}>
             <h2>{props.communityDetails.name}</h2>
             <span className={style["inactive-text"]}>
               Since February 19th, 2023
             </span>
           </div>
+          {/* Edit Button */}
+          {(isUserAdmin || isUserMod) && (
+            <button
+              className={`${style["button"]} ${style["button__bordered"]}`}
+            >
+              Edit
+            </button>
+          )}
         </div>
         {/* Community Banner Content Right */}
         <div className={style["community-banner-content-right"]}>
+          {/* Notification Button */}
+          {isUserJoined &&
+            <button className={`${style["button"]} ${style["button__bordered"]}`}>
+              Notfication
+            </button>
+          }
+          {/* Join Button */}
           <button className={`${style["button"]} ${style["button__bordered"]}`}>
-            Join
+            {props.userCommunityMemberDetails ? "Joined" : "Join"}
           </button>
         </div>
       </div>
@@ -111,10 +181,9 @@ const CommunityContentDisplay = (props) => {
   const [communityPostCounts, setCommunityPostCounts] = useState(0);
   const [communityMemberCounts, setCommunityMemberCounts] = useState(0);
   const [communityPostSkipOffset, setCommunityPostSkipOffset] = useState(null);
-  const [communityMemberSkipOffset, setCommunityMemberSkipOffset] = useState(null);
   const [communityPostTakeCount, setCommunityPostTakeCount] = useState(10);
+  const [communityMemberSkipOffset, setCommunityMemberSkipOffset] = useState(null);
   const [communityMembersCount, setCommunityMembersTakeCount] = useState(15);
-
 
   // This method updates the current content display type as either posts or members.
   // It's passed on to its child component - CommunityStats, where the options are selected.
@@ -137,15 +206,22 @@ const CommunityContentDisplay = (props) => {
     setCommunityMemberCounts(newCount);
   };
 
-  // Thie method updates community member skip offset 
-  const updateCommunityMemberSkipOffset = (offset) => {
-    setCommunityMemberSkipOffset(communityMemberSkipOffset ? communityMemberSkipOffset + offset : offset);
-  }
 
-  // Thie method updates community post skip offset 
+  // This method updates community member skip offset
+  // It will be called whenever the user interacts with pagination buttons on community members display view
+  const updateCommunityMemberSkipOffset = (offset) => {
+    setCommunityMemberSkipOffset(
+      communityMemberSkipOffset ? communityMemberSkipOffset + offset : offset
+    );
+  };
+
+  // This method updates community post skip offset
+  // It will be called whenever the user interacts with pagination buttons on community members display view
   const updateCommunityPostSkipOffset = (offset) => {
-    setCommunityPostSkipOffset(communityPostSkipOffset ? communityPostSkipOffset + offset : offset);
-  }
+    setCommunityPostSkipOffset(
+      communityPostSkipOffset ? communityPostSkipOffset + offset : offset
+    );
+  };
 
   return (
     <div className={style["community-content-display"]}>
@@ -159,17 +235,24 @@ const CommunityContentDisplay = (props) => {
       {contentDisplayType === "posts" && (
         <div>
           {/* Post Control Tool */}
-          <PostControlTool />
+          <PostControlTool 
+            userCommunityMemberDetails={props.userCommunityMemberDetails}
+          />
           {/* Commmunity Posts List */}
           <CommunityPostsList
+            userCommunityMemberDetails={props.userCommunityMemberDetails}
             communityId={props.communityId}
             updateCommunityPostCounts={updateCommunityPostCounts}
             updateCommunityMemberCounts={updateCommunityMemberCounts}
             communityPostSkipOffset={communityPostSkipOffset}
             communityPostTakeCount={communityPostTakeCount}
-          />          
+          />
           {/* Pagination */}
-          <Pagination contentsCount={communityPostCounts} updateContentSkipOffset={updateCommunityPostSkipOffset} contentTakeCount={communityPostTakeCount}/>
+          <Pagination
+            contentsCount={communityPostCounts}
+            updateContentSkipOffset={updateCommunityPostSkipOffset}
+            contentTakeCount={communityPostTakeCount}
+          />
         </div>
       )}
 
@@ -179,6 +262,7 @@ const CommunityContentDisplay = (props) => {
           <MemberControlTool />
           {/* Comunity Members List */}
           <CommunityMembersList
+            userCommunityMemberDetails={props.userCommunityMemberDetails}
             communityId={props.communityId}
             updateCommunityPostCounts={updateCommunityPostCounts}
             updateCommunityMemberCounts={updateCommunityMemberCounts}
@@ -186,14 +270,18 @@ const CommunityContentDisplay = (props) => {
             communityMemberTakeCount={communityMembersCount}
           />
           {/* Pagination */}
-          <Pagination contentsCount={communityMemberCounts} updateContentSkipOffset={updateCommunityMemberSkipOffset} contentTakeCount={communityMembersCount}/>
+          <Pagination
+            contentsCount={communityMemberCounts}
+            updateContentSkipOffset={updateCommunityMemberSkipOffset}
+            contentTakeCount={communityMembersCount}
+          />
         </div>
       )}
     </div>
   );
 };
 
-/* [TODO] This component serves as a container for community stats like the number of posts 
+/* This component serves as a container for community stats like the number of posts 
 and number of members. Each stat also serves as a navigation tab between CommunityPostsList 
 and CommunityMembersList */
 const CommunityStats = (props) => {
@@ -229,6 +317,7 @@ const CommunityPostsList = (props) => {
   const [posts, setPosts] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [communityPostAuthorRoles, setCommunityPostAuthorRoles] = useState({});
 
   // Fetch both posts and members when the component is loaded.
   useEffect(() => {
@@ -238,9 +327,8 @@ const CommunityPostsList = (props) => {
 
   // Refresh posts whenever the community post skip offset has changed. The offset is changed by the Pagination component.
   useEffect(() => {
-    refreshPosts()
-  }, [props.communityPostSkipOffset])
-
+    refreshPosts();
+  }, [props.communityPostSkipOffset]);
 
   // This methods loads the community members using genericFetch & update the community members count stat
   const loadMembers = async () => {
@@ -250,6 +338,11 @@ const CommunityPostsList = (props) => {
     const { data, errorMessage } = await genericFetch(endpoint, query);
     // console.log(data, errorMessage)
     if (data) {
+      let postAuthorRoles = {};
+      data[0].forEach(( {userID, attributes} )=> {
+        postAuthorRoles[userID] = attributes.role
+      })
+      setCommunityPostAuthorRoles(postAuthorRoles);
       props.updateCommunityMemberCounts(data[1]);
     }
   };
@@ -262,8 +355,12 @@ const CommunityPostsList = (props) => {
       sort: "newest",
       parentID: "",
       recipientGroupID: props.communityId,
-      ...(props.communityPostSkipOffset && { skip: props.communityPostSkipOffset }),
-      ...(props.communityPostTakeCount && { take: props.communityPostTakeCount })
+      ...(props.communityPostSkipOffset && {
+        skip: props.communityPostSkipOffset,
+      }),
+      ...(props.communityPostTakeCount && {
+        take: props.communityPostTakeCount,
+      }),
     };
     const { data, errorMessage } = await genericFetch(endpoint, query);
     // console.log(data, errorMessage)
@@ -301,6 +398,8 @@ const CommunityPostsList = (props) => {
                 key={post.id}
                 post={post}
                 refreshPosts={refreshPosts}
+                userCommunityMemberDetails={props.userCommunityMemberDetails}
+                communityPostAuthorRoles={communityPostAuthorRoles}
               />
             ))}
           </div>
@@ -321,6 +420,17 @@ const CommunityPost = (props) => {
   const postActionButtonHandler = () => {
     setIsPostActionActive(isPostActionActive ? false : true);
   };
+
+  // Check post author's role
+  const isAuthorUser = props.post.authorID === props.userCommunityMemberDetails?.user.id;
+  const isAuthorAdmin = props.communityPostAuthorRoles[props.post.authorID] === "admin";
+  const isAuthorMod = props.communityPostAuthorRoles[props.post.authorID] === "mod";
+
+  // Set post author role label
+  const postAuthorRoleLabel = isAuthorAdmin ? "Admin" :
+    isAuthorMod ? "Mod" :
+    isAuthorUser ? "You" :
+    "Member"
 
   // This method handles post actions such as pinning, hiding, reporting, or deleting.
   // It's passed on to its child component - postActionSidemenu, where the action options are selected.
@@ -391,13 +501,18 @@ const CommunityPost = (props) => {
         <div className={style["post-author-date"]}>
           <div className={style["post-author"]}>
             <span className={style["inactive-text"]}>Posted By</span>
-            <span className={style["active-text"]}>
-              {props.post.author.attributes.profile.username}
-            </span>
+            <p className={style["active-text"]}>
+              <span className={style["bold"]}>
+                {props.post.author.attributes.profile.username}
+              </span>
+               <span>
+                ({postAuthorRoleLabel})
+              </span>
+            </p>
           </div>
           <div className={style["post-date"]}>
             <span className={style["inactive-text"]}>Posted On</span>
-            <span className={style["active-text"]}>{props.post.created}</span>
+            <span className={`${style["active-text"]} ${style["bold"]}`}>{props.post.created}</span>
           </div>
         </div>
       </div>
@@ -406,23 +521,17 @@ const CommunityPost = (props) => {
         {/* Post Action Labels */}
         <div className={style["post-action-labels"]}>
           {isPostReported && (
-            <div
-              className={`${style["post-action-label"]} ${style["post-action-label__bistre"]}`}
-            >
+            <div className={`${style["post-action-label"]} ${style["post-action-label__bistre"]}`}>
               <span>Reported</span>
             </div>
           )}
           {isPostHidden && (
-            <div
-              className={`${style["post-action-label"]} ${style["post-action-label__french-bistre"]}`}
-            >
+            <div className={`${style["post-action-label"]} ${style["post-action-label__french-bistre"]}`}>
               <span>Hidden</span>
             </div>
           )}
           {isPostPinned && (
-            <div
-              className={`${style["post-action-label"]} ${style["post-action-label__skobeloff"]}`}
-            >
+            <div className={`${style["post-action-label"]} ${style["post-action-label__skobeloff"]}`}>
               <span>Pinned</span>
             </div>
           )}
@@ -455,6 +564,9 @@ const CommunityPost = (props) => {
         <PostActionSidemenu
           isActive={isPostActionActive}
           postActionOptionsHandler={postActionOptionsHandler}
+          post={props.post}
+          userCommunityMemberDetails={props.userCommunityMemberDetails}
+          communityPostAuthorRoles={props.communityPostAuthorRoles}
         />
       </div>
     </div>
@@ -462,7 +574,7 @@ const CommunityPost = (props) => {
 };
 
 /* [TODO] This component serves as a container for two buttons - SortPostsButton and CreatePostButton. */
-const PostControlTool = () => {
+const PostControlTool = (props) => {
   const [isPostSortActive, setIsPostSortActive] = useState(false);
 
   // Toggles between post sort active and inactive
@@ -474,6 +586,7 @@ const PostControlTool = () => {
     <div className={style["content-control-tool"]}>
       {/* Left Control */}
       <div className={style["left-control-box"]}>
+        {/* Sort Posts Button */}
         <button
           className={`${style["button"]} ${style["button__bordered"]} ${style["button__filled"]}`}
           onClick={sortButtonToggleHandler}
@@ -483,18 +596,17 @@ const PostControlTool = () => {
         <PostSortDropdown isActive={isPostSortActive} />
       </div>
       {/* Right Control */}
-      <div className={style["right-control-box"]}>
-        <div
-          className={`${style["right-control-placeholder"]} ${style["inactive-text"]}`}
-        >
-          Tell us your story!
+      {props.userCommunityMemberDetails &&
+        <div className={style["right-control-box"]}>
+          {/* Create Post Button */}
+          <div className={`${style["right-control-placeholder"]} ${style["inactive-text"]}`}>
+            Tell us your story!
+          </div>
+          <button className={`${style["button"]} ${style["button__outlined"]} ${style["button__filled"]}`}>
+            Create Post
+          </button>
         </div>
-        <button
-          className={`${style["button"]} ${style["button__outlined"]} ${style["button__filled"]}`}
-        >
-          Create Post
-        </button>
-      </div>
+      }
     </div>
   );
 };
@@ -536,15 +648,21 @@ to posts that belongs to the user or to all posts if the user's a admin or a mod
 * Report & Delete are global actions, and they should persist to all users' post lists.
 */
 const PostActionSidemenu = (props) => {
-  // TODOs
-  // 1. Should know what kind of relationsip does user have with the post
-  // - 'Delete' option should be only available for user's post or if the user is the community owner/admin
-  // 2. The action sidemenu should close when user clicks anywhere outside
+  // TODO: The action sidemenu should close when user clicks anywhere outside
   // -  maybe use CSS pseudo focus-within?
   const [isPinned, setIsPinned] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const [isReported, setIsReported] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
+
+  // Check current user's community role & post author's role
+  const isUserAdmin = props.userCommunityMemberDetails?.attributes.role === "admin";
+  const isUserMod = props.userCommunityMemberDetails?.attributes.role === "mod";
+  const isAuthorUser = props.post.authorID === props.userCommunityMemberDetails?.user.id;
+  const isAuthorAdmin = props.communityPostAuthorRoles[props.post.authorID] === "admin";
+  const isAuthorMod = props.communityPostAuthorRoles[props.post.authorID] === "mod";
+
+  // console.log(props.post.id, props.post.authorID, isAuthorUser, isAuthorAdmin, isAuthorMod)
 
   // These methods update the option labels and send the chosen action option to its parent component - CommunityPost.
   const pinActionHandler = () => {
@@ -576,45 +694,31 @@ const PostActionSidemenu = (props) => {
       <div className={style["action-sidemenu"]}>
         <ul className={style["action-sidemenu-option-list"]}>
           {/* Pin */}
-          <li
-            className={style["action-sidemenu-option"]}
-            onClick={pinActionHandler}
-          >
-            <span
-              className={`${style["square-icon"]} ${style["square-icon__skobeloff"]}`}
-            ></span>
+          <li className={style["action-sidemenu-option"]} onClick={pinActionHandler}>
+            <span className={`${style["square-icon"]} ${style["square-icon__skobeloff"]}`}></span>
             <span className={style["active-text"]}>{pinOptionName}</span>
           </li>
           {/* Hide */}
-          <li
-            className={style["action-sidemenu-option"]}
-            onClick={hideActionHandler}
-          >
-            <span
-              className={`${style["square-icon"]} ${style["square-icon__french-bistre"]}`}
-            ></span>
-            <span className={style["active-text"]}>{hideOptionName}</span>
-          </li>
+          {!isAuthorUser &&
+            <li className={style["action-sidemenu-option"]} onClick={hideActionHandler}>
+              <span className={`${style["square-icon"]} ${style["square-icon__french-bistre"]}`}></span>
+              <span className={style["active-text"]}>{hideOptionName}</span>
+            </li>
+          }
           {/* Report */}
-          <li
-            className={style["action-sidemenu-option"]}
-            onClick={reportActionHandler}
-          >
-            <span
-              className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}
-            ></span>
-            <span className={style["active-text"]}>{reportOptionName}</span>
-          </li>
+          {((!isAuthorUser && !isAuthorAdmin && !isAuthorMod) && (!isUserAdmin)) &&
+            <li className={style["action-sidemenu-option"]} onClick={reportActionHandler}>
+              <span className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}></span>
+              <span className={style["active-text"]}>{reportOptionName}</span>
+            </li>
+          }
           {/* Delete */}
-          <li
-            className={style["action-sidemenu-option"]}
-            onClick={deleteActionHandler}
-          >
-            <span
-              className={`${style["square-icon"]} ${style["square-icon__red-orange"]}`}
-            ></span>
-            <span className={style["active-text"]}>{deleteOptionName}</span>
-          </li>
+          {(isAuthorUser || (isUserMod && !isAuthorAdmin && !isAuthorMod) || isUserAdmin) && 
+            <li className={style["action-sidemenu-option"]} onClick={deleteActionHandler}>
+              <span className={`${style["square-icon"]} ${style["square-icon__red-orange"]}`}></span>
+              <span className={style["active-text"]}>{deleteOptionName}</span>
+            </li>
+          }
         </ul>
       </div>
     );
@@ -633,12 +737,10 @@ const CommunityMembersList = (props) => {
     loadPosts();
   }, []);
 
-
   // Refresh members whenever the community member skip offset has changed. The offset is changed by the Pagination component
   useEffect(() => {
-    refreshMembers()
-  }, [props.communityMemberSkipOffset])
-
+    refreshMembers();
+  }, [props.communityMemberSkipOffset]);
 
   // This methods loads the community posts using genericFetch & update the community posts count stat
   const loadPosts = async () => {
@@ -662,8 +764,12 @@ const CommunityMembersList = (props) => {
     let endpoint = `/group-members`;
     let query = {
       groupID: props.communityId,
-      ...(props.communityMemberSkipOffset && { skip: props.communityMemberSkipOffset }),
-      ...(props.communityMemberTakeCount && { take: props.communityMemberTakeCount })
+      ...(props.communityMemberSkipOffset && {
+        skip: props.communityMemberSkipOffset,
+      }),
+      ...(props.communityMemberTakeCount && {
+        take: props.communityMemberTakeCount,
+      }),
     };
     const { data, errorMessage } = await genericFetch(endpoint, query);
     // console.log(data, errorMessage)
@@ -698,6 +804,7 @@ const CommunityMembersList = (props) => {
                 key={member.id}
                 member={member}
                 refreshMembers={refreshMembers}
+                userCommunityMemberDetails={props.userCommunityMemberDetails}
               />
             ))}
           </div>
@@ -711,9 +818,7 @@ const CommunityMembersList = (props) => {
 username, role, etc. */
 const CommunityMember = (props) => {
   const [isMemberActionActive, setIsMemberActionActive] = useState(false);
-  // const [isPostPinned, setIsPostPinned] = useState(false);
-  // const [isPostHidden, setIsPostHidden] = useState(false);
-  // const [isPostReported, setIsPostReported] = useState(false);
+  const [isMemberReported, setIsMemberReported] = useState(false);
 
   // This method toggles between post action active and inactive
   const memberActionButtonHandler = () => {
@@ -730,15 +835,16 @@ const CommunityMember = (props) => {
       case "view":
         // console.log(option);
         break;
-      case "block":
-        // console.log(option);
-        break;
       case "report":
         // console.log(option);
+        setIsMemberReported(isMemberReported ? false : true);
         break;
       case "kick":
         // console.log(option);
         kickMember();
+        break;
+      case "assign":
+        // console.log(option);
         break;
       default:
         console.log(`Invalid Post Action: ${option}`);
@@ -759,8 +865,14 @@ const CommunityMember = (props) => {
     props.refreshMembers();
   };
 
+  // Check if member is current user 
+  const isMemberUser = props.member?.userID === props.userCommunityMemberDetails?.userID;
+  const commmunityMemberStyle = isMemberUser
+    ? `${style["community-member"]} ${style["community-member__filled"]}`
+    : `${style["community-member"]}`;
+
   return (
-    <div className={style["community-member"]}>
+    <div className={commmunityMemberStyle}>
       {/* Community Member Profile Avatar */}
       <img
         className={`${style["image"]} ${style["image__md"]} ${style["image__round"]}`}
@@ -771,14 +883,23 @@ const CommunityMember = (props) => {
 
       {/* Community Member Info */}
       <div className={style["community-member-info"]}>
-        {/* Community Member Username */}
-        <h6 className={`${style["active-text"]} ${style["bold"]}`}>
-          {props.member.user.attributes.profile.username}
-        </h6>
-        {/* Community Member Role */}
-        <span className={style["inactive-text"]}>
-          {props.member.attributes.role}
-        </span>
+        <div>
+          {/* Community Member Username */}
+          <span className={`${style["active-text"]} ${style["bold"]}`}>
+            {props.member.user.attributes.profile.username}
+          </span>
+          {/* Community Member Role */}
+          <span className={style["inactive-text"]}>
+            {props.member.attributes.role}
+          </span>
+        </div>
+
+        {/* Member Action Label */}
+        {isMemberReported &&
+          <div className={`${style["member-action-label"]} ${style["post-action-label__bistre"]}`}>
+            <span>Reported</span>
+          </div>
+        }
       </div>
 
       {/* Member Action Side Menu */}
@@ -791,6 +912,8 @@ const CommunityMember = (props) => {
         <MemberActionSidemenu
           isActive={isMemberActionActive}
           memberActionOptionsHandler={memberActionOptionsHandler}
+          member = {props.member}
+          userCommunityMemberDetails={props.userCommunityMemberDetails}
         />
       </div>
     </div>
@@ -866,128 +989,126 @@ to admin or mods.
 */
 const MemberActionSidemenu = (props) => {
   const [isViewProfile, setIsViewProfile] = useState(false);
-  const [isBlocked, setIsBlocked] = useState(false);
-  const [isReported, setIsRepoerted] = useState(false);
+  const [isReported, setIsReported] = useState(false);
   const [isKicked, setIsKicked] = useState(false);
+  const [isAssignRole, setIsAssignRole] = useState(false);
+
+  // Check current user's community role & member's community role
+  const isUserAdmin = props.userCommunityMemberDetails?.attributes.role === "admin";
+  const isUserMod = props.userCommunityMemberDetails?.attributes.role === "mod";
+  const isMemberUser = props.member.userID === props.userCommunityMemberDetails?.user.id;
+  const isMemberAdmin = props.member.attributes.role === "admin";
+  const isMemberMod = props.member.attributes.role === "mod";
+
+  // console.log(props.member.user.attributes.profile.username, isMemberUser)
 
   // These methods update the option labels and send the chosen action option to its parent component - CommunityMember.
   const viewProfileActionHandler = () => {
     setIsViewProfile(isViewProfile ? false : true); // update the options status
-    props.memberActionOptionsHandler("view"); // tell CommunityMember component that 'view profile' option was chosen
+    props.memberActionOptionsHandler("view"); // tell CommunityMember component that 'view' option was chosen
   };
   let viewProfileOptionName = isViewProfile ? "View Profile" : "View Profile"; // update the view profile option lable based on the state
 
-  const blockActionHandler = () => {
-    setIsBlocked(isBlocked ? false : true); // update the option status
-    props.memberActionOptionsHandler("block"); // tell CommunityMember component that 'block' option was chosen
-  };
-  let blockOptionName = isBlocked ? "Unblock" : "Block"; // update the block option label based on the state
-
   const reportActionHandler = () => {
-    setIsRepoerted(isReported ? false : true); // update the option status
+    setIsReported(isReported ? false : true); // update the option status
     props.memberActionOptionsHandler("report"); // tell CommunityMember component that 'report' option was chosen
   };
   let reportOptionName = isReported ? "Reported" : "Report"; // update the report option label based on the state
 
   const kickActionHandler = () => {
-    setIsKicked(isKicked ? false : true); // tell commmunityMember component that 'kick' option was chosen
+    setIsKicked(isKicked ? false : true); // update the option status
     props.memberActionOptionsHandler("kick"); // tell CommunityMember component that 'kick' option was chosen
   };
-  let kickOptionName = isKicked ? "Kick" : "Kick"; // update the kick option label based on the state
+  let kickOptionName = isKicked ? "Kicked" : "Kick"; // update the kick option label based on the state
+
+  const assignRoleActionHandler = () => {
+    setIsAssignRole(isAssignRole ? false : true); // update the option status
+    props.memberActionOptionsHandler("assign"); // tell commmunityMember component that 'assign' option was chosen
+  }
+  let assignOptionName = isAssignRole ? "Assign Role" : "Assign Role";
 
   if (props.isActive) {
     return (
       <div className={style["action-sidemenu"]}>
         <ul className={style["action-sidemenu-option-list"]}>
           {/* View Profile */}
-          <li
-            className={style["action-sidemenu-option"]}
-            onClick={viewProfileActionHandler}
-          >
-            <span
-              className={`${style["square-icon"]} ${style["square-icon__skobeloff"]}`}
-            ></span>
-            <span className={style["active-text"]}>
-              {viewProfileOptionName}
-            </span>
-          </li>
-          {/* Block */}
-          <li
-            className={style["action-sidemenu-option"]}
-            onClick={blockActionHandler}
-          >
-            <span
-              className={`${style["square-icon"]} ${style["square-icon__french-bistre"]}`}
-            ></span>
-            <span className={style["active-text"]}>{blockOptionName}</span>
+          <li className={style["action-sidemenu-option"]} onClick={viewProfileActionHandler}>
+            <span className={`${style["square-icon"]} ${style["square-icon__skobeloff"]}`}></span>
+            <span className={style["active-text"]}>{viewProfileOptionName}</span>
           </li>
           {/* Report */}
-          <li
-            className={style["action-sidemenu-option"]}
-            onClick={reportActionHandler}
-          >
-            <span
-              className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}
-            ></span>
-            <span className={style["active-text"]}>{reportOptionName}</span>
-          </li>
+          {(!isMemberUser && !isMemberAdmin && !isMemberMod) && (!isUserAdmin) &&
+            <li className={style["action-sidemenu-option"]} onClick={reportActionHandler}>
+              <span className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}></span>
+              <span className={style["active-text"]}>{reportOptionName}</span>
+            </li>
+          }
+          {/* Assign Role */}
+          {(isUserAdmin && !isMemberUser) &&
+            <li className={style["action-sidemenu-option"]} onClick={assignRoleActionHandler}>
+              <span className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}></span>
+              <span className={style["active-text"]}>{assignOptionName}</span>
+            </li>
+          }
           {/* Kick */}
-          <li
-            className={style["action-sidemenu-option"]}
-            onClick={kickActionHandler}
-          >
-            <span
-              className={`${style["square-icon"]} ${style["square-icon__red-orange"]}`}
-            ></span>
-            <span className={style["active-text"]}>{kickOptionName}</span>
-          </li>
+          {(((isUserAdmin || isUserMod) && (!isMemberUser && !isMemberAdmin && !isMemberMod)) || (isUserAdmin && !isMemberUser)) &&
+            <li className={style["action-sidemenu-option"]} onClick={kickActionHandler}>
+              <span className={`${style["square-icon"]} ${style["square-icon__red-orange"]}`}></span>
+              <span className={style["active-text"]}>{kickOptionName}</span>
+            </li>
+          }
         </ul>
       </div>
     );
   }
 };
 
-/* [TODO] This component will render a pagination for communityPostList and CommunityMemberList. 
+/* This component will render a pagination for communityPostList and CommunityMemberList. 
 It contains previous button, next button, and current page indicatior. */
 const Pagination = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   // Calculate last Page
-  const lastPage = Math.ceil(props.contentsCount / props.contentTakeCount)
+  const lastPage = Math.ceil(props.contentsCount / props.contentTakeCount);
 
   const handlePreviousPage = () => {
     // console.log(currentPage)
     setCurrentPage(currentPage > 1 ? currentPage - 1 : currentPage);
     props.updateContentSkipOffset(props.contentTakeCount * -1);
-  }
+  };
 
   const handleNextPage = () => {
     // console.log(currentPage);
-    setCurrentPage(currentPage < props.contentsCount ? currentPage + 1: currentPage)
-    props.updateContentSkipOffset(props.contentTakeCount)
-  }
-
+    setCurrentPage(
+      currentPage < props.contentsCount ? currentPage + 1 : currentPage
+    );
+    props.updateContentSkipOffset(props.contentTakeCount);
+  };
 
   return (
     <div className={style["pagination"]}>
       {/* Prev Button */}
-      {currentPage > 1 && <button
-        className={`${style["button"]} ${style["button__bordered"]} ${style["button__filled"]}`}
-        onClick={handlePreviousPage}
-      >
-        Previous
-      </button>}
+      {currentPage > 1 && (
+        <button
+          className={`${style["button"]} ${style["button__bordered"]} ${style["button__filled"]}`}
+          onClick={handlePreviousPage}
+        >
+          Previous
+        </button>
+      )}
 
       {/* Current Page Number */}
       <span className={style["page-number"]}>{currentPage}</span>
 
       {/* Next Button */}
-      {currentPage < lastPage && <button
-        className={`${style["button"]} ${style["button__bordered"]} ${style["button__filled"]}`}
-        onClick={handleNextPage}
-      >
-        Next
-      </button>}
+      {currentPage < lastPage && (
+        <button
+          className={`${style["button"]} ${style["button__bordered"]} ${style["button__filled"]}`}
+          onClick={handleNextPage}
+        >
+          Next
+        </button>
+      )}
     </div>
   );
 };

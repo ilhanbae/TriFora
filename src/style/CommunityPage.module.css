@@ -60,6 +60,9 @@
 .button__outlined {
   outline: 2px solid var(--bistre);;
 }
+.button:disabled {
+  background-color: var(--red-orange);
+}
 
 /* Dropdown */
 .dropdown {
@@ -140,15 +143,21 @@
   flex-direction: column;
 }
 .community-banner-background {
-  /* background-color: var(--bistre); */
-  /* border: 1px solid var(--bistre); */
+  background-size: contain;
+
+  /* background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed; */
+
   width: 100%;
   height: 350px;
 }
 .community-banner-content {
-  background-color: var(--yellow-apricot);
+  /* background-color: var(--yellow-apricot); */
   /* border: 1px solid var(--bistre); */
   display: flex;
+  flex-direction: row;
   padding: 5px 100px;
   justify-content: space-between;
 }
@@ -162,8 +171,15 @@
 }
 .community-info {
   /* border: 1px solid var(--bistre); */
-  width: 370px;
+  /* width: 370px; */
+  max-width: calc(80% - 30px);
   padding: 0 10px;
+  white-space: nowrap;
+}
+.community-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Main section */
@@ -311,24 +327,31 @@
   background-color: var(--skobeloff);
   color: var(--light-yellow);
 }
+.post-action-label__red-orange {
+  background-color: var(--red-orange);
+  color: var(--light-yellow);
+}
+
 
 /* Community members list*/
 .community-members-list {
   display: flex;
   flex-wrap: wrap;
-  /* gap: 10px; */
+  gap: 10px;
 }
 
 /* Community Member */
 .community-member {
-  flex: 0 0 calc(20%);
-  /* flex: 0 0 calc(20% - 10px); */
-  border: 2px solid var(--bistre);
-  background-color: var(--light-yellow);
+  /* flex: 0 0 calc(20%); */
+  flex: 0 0 calc(20% - 10px);
+  outline: 2px solid var(--bistre);
   border-radius: 10px;
   padding: 5px;
   display: flex;
   justify-content: space-between;
+}
+.community-member__filled {
+  background-color: var(--yellow-apricot);
 }
 .community-member-info {
   display: flex;
@@ -336,6 +359,25 @@
   justify-content: center;
   padding: 10px;
   gap: 5px;
+}
+
+/* Member Action Labels */
+.member-action-labels {
+  /* position: absolute; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100px;
+  /* border: 1px solid var(--bistre); */
+  /* background-color: var(--red-orange); */
+}
+.member-action-label {
+  /* position: relative; */
+  margin-bottom: 80px;
+  position: absolute;
+  align-items: flex-start;
+  padding: 5px;
+  border-radius: 0px 0px 5px 5px;
 }
 
 /* Pagination */
