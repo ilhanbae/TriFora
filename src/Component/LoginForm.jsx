@@ -110,7 +110,7 @@ export default class LoginForm extends React.Component {
                         <label className='input1'>
                         </label>
 
-                        <Link to="/profile" onClick={this.submitHandler}>
+                        <Link to='/profile' onClick={this.submitHandler}>
                             <label className='input1'>
                                 <button className='base base-submit1 txt1'>Sign In</button>
                             </label>
