@@ -39,44 +39,22 @@ export default function report(postId) {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${authToken}`
         },
-    // {
-    //     "postID": 181,
-    //     "reactorID": 211,
-    //     "name": "like",
-    //     "value": 1,
-    //     "attributes": {}
-    // }
         body: JSON.stringify({
             postID: postId,
             reactorID: sessionStorage.getItem("user"),
             name: 'report',
             value: 1
-            // attributes: {
-            //     description: "post is bad"
-            // }
         })
     };
 
     fetch(url, requestOptions)
-    // fetch('/post-reactions', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //         'Authorization': `Bearer ${authToken}`
-    //     },
-    //     body: JSON.stringify({
-    //         post_id: postId,
-    //         reactorID: sessionStorage.getItem("user"),
-    //         name: 'report',
-    //     })
-    // })
         .then(response => {
             if (response.ok) {
                 // The reaction was added successfully
                 alert('Post Reported!');
             } else {
                 // There was an error adding the reaction
-                alert('Error reporting, try again');
+                alert('Login first');
             }
         })
         .catch(error => {

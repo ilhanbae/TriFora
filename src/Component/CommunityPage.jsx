@@ -367,6 +367,28 @@ const CommunityPost = (props) => {
     props.refreshPosts();
   };
 
+  // Returns number of reports on a post
+  function reports(props) {
+    const reactions = props.post.reactions;
+    const report_count = reactions.filter(reaction => reaction.name === 'report').length;
+    return (
+        <div>
+          <p>{report_count}</p>
+        </div>
+    );
+  }
+
+  // Returns the number of likes on a post
+  function likes(props){
+    const reactions = props.post.reactions;
+    const report_count = reactions.filter(reaction => reaction.name === 'like').length;
+    return (
+        <div>
+          <p>{report_count}</p>
+        </div>
+    );
+  }
+
   // Set post thumbnail image
   let postThumbnailImage = props.post.attributes.images[0]
     ? props.post.attributes.images[0]
@@ -434,7 +456,8 @@ const CommunityPost = (props) => {
         <div className={style["post-stat-labels"]}>
           <div className={style["post-stat-label"]}>
             <span className={style["active-text"]}>
-              {props.post.reactions.length}
+              {console.log(props.post.reactions)}
+              {likes(props)}
             </span>
             <span className={style["inactive-text"]}>Likes</span>
           </div>
