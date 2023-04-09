@@ -337,13 +337,13 @@
 .community-members-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  /* gap: 10px; */
 }
 
 /* Community Member */
 .community-member {
-  /* flex: 0 0 calc(20%); */
-  flex: 0 0 calc(20% - 10px);
+  flex: 0 0 calc(20%);
+  /* flex: 0 0 calc(20% - 10px); */
   outline: 2px solid var(--bistre);
   border-radius: 10px;
   padding: 5px;

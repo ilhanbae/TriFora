@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import genericFetch from "../helper/genericFetch";
 import genericDelete from "../helper/genericDelete";
+import genericPost from "../helper/genericPost";
 import style from "../style/CommunityPage.module.css";
 import defaultProfileImage from "../assets/defaultProfileImage.png";
 import defaultPostImage from "../assets/defaultPostImage.png";
@@ -18,11 +19,11 @@ export default function CommunityPage(props) {
 
   // Fetch the community details when the community page is loaded
   useEffect(() => {
-    loadCommunityAndUser();
+    loadCommunityAndUserMemberDetails();
   }, []);
 
-  /* This method loads both the community and user community member details */
-  const loadCommunityAndUser = async () => {
+  /* This method loads both the community and user's community member details */
+  const loadCommunityAndUserMemberDetails = async () => {
     setIsLoaded(false);
     await loadCommunityDetails();
     await loadUserCommunityMemberDetails();
@@ -44,17 +45,6 @@ export default function CommunityPage(props) {
     // setIsLoaded(true);
   };
 
-  /* This method refresh the communit details by sending the API request again.
-  It can be passed on to child components that can change the state of the community page. 
-  Note, currently the only attributes the community page maintains is its banner design.
-  Perhaps, this can be called when the community admin/mod wishes to change the style of the community. */
-  const refreshCommunityDetails = async () => {
-    // console.log("refreshing community details");
-    setIsLoaded(false);
-    await loadCommunityDetails(); // Fetch the community details again
-    setIsLoaded(true);
-  };
-
   /* This method loads current user as community member by sending the API request. */
   const loadUserCommunityMemberDetails = async () => {
     // setIsLoaded(false);
@@ -73,6 +63,22 @@ export default function CommunityPage(props) {
     // setIsLoaded(true);
   };
 
+  /* This method refresh the communit details by sending the API request again.
+  It can be passed on to child components that can change the state of the community page. 
+  Note, currently the only attributes the community page maintains is its banner design.
+  Perhaps, this can be called when the community admin/mod wishes to change the style of the community. */
+  const refreshCommunityDetails = async () => {
+    // console.log("refreshing community details");
+    setIsLoaded(false);
+    await loadCommunityDetails(); // Fetch the community details again
+    setIsLoaded(true);
+  };
+
+  /* This method refreshes both the community and user's community member details */
+  const refreshCommunityAndUserMemberDetails = () => {
+    loadCommunityAndUserMemberDetails();
+  }
+
   // Render Component
   if (errorMessage) {
     return <div>Error: {errorMessage}</div>;
@@ -85,6 +91,7 @@ export default function CommunityPage(props) {
         <CommunityBanner
           communityDetails={communityDetails}
           userCommunityMemberDetails={userCommunityMemberDetails}
+          refreshCommunityAndUserMemberDetails={refreshCommunityAndUserMemberDetails}
         />
 
         {/* Main section */}
@@ -103,6 +110,7 @@ export default function CommunityPage(props) {
 /* [TODO] This component serves as container for banner contents. Inside the banner, 
 there's community name, community background, community icon, and a join button*/
 const CommunityBanner = (props) => {
+  // Set community banner color
   let bannerColor = props.communityDetails.attributes.design.bannerColor
     ? `#${props.communityDetails.attributes.design.bannerColor}`
     : "#f3c26e";
@@ -118,19 +126,56 @@ const CommunityBanner = (props) => {
   const isUserMod = props.userCommunityMemberDetails?.attributes.role === "mod";
   const isUserJoined = props.userCommunityMemberDetails != null;
 
+  // This method handles join button action.
+  const joinButtonHandler = async () => {
+    // Check if user is already a community member
+    if (props.userCommunityMemberDetails) {
+      await removeUserFromCommunity();
+    }
+    else {
+      await addUserToCommunity();
+    }
+
+  }
+
+  // This method adds user to community by sending POST request to API server
+  const addUserToCommunity = async () => {
+      let endpoint = '/group-members';
+      let body = {
+        userID: parseInt(sessionStorage.getItem('user')),
+        groupID: props.communityDetails.id,
+        attributes: {
+          role: 'member'
+        }
+      };
+      const { data, errorMessage } = await genericPost(endpoint, body);
+      // console.log(data, errorMessage)
+      if (errorMessage) {
+        alert(errorMessage);
+      } else {
+        props.refreshCommunityAndUserMemberDetails();
+      }
+  }
+
+  // This methods removes user from community by sending DELTE request to API server
+  const removeUserFromCommunity = async () => {
+    let endpoint = `/group-members/${props.userCommunityMemberDetails.id}`;
+    const { data, errorMessage } = await genericDelete(endpoint);
+    // console.log(data, errorMessage)
+    if (errorMessage) {
+      alert(errorMessage);
+    } else {
+      props.refreshCommunityAndUserMemberDetails();
+    }
+  }
+
   return (
     <div className={style["community-banner"]}>
       {/* Community Banner Background */}
-      <div
-        className={style["community-banner-background"]}
-        style={{ backgroundImage: `url(${bannerBackgroundImage})` }}
-      ></div>
+      <div className={style["community-banner-background"]} style={{ backgroundImage: `url(${bannerBackgroundImage})` }}></div>
 
       {/* Commnity Banner Content*/}
-      <div
-        className={style["community-banner-content"]}
-        style={{ backgroundColor: bannerColor }}
-      >
+      <div className={style["community-banner-content"]} style={{ backgroundColor: bannerColor }}>
         {/* Community Banner Content Left */}
         <div className={style["community-banner-content-left"]}>
           {/* Community Avatar Image */}
@@ -149,13 +194,12 @@ const CommunityBanner = (props) => {
           </div>
           {/* Edit Button */}
           {(isUserAdmin || isUserMod) && (
-            <button
-              className={`${style["button"]} ${style["button__bordered"]}`}
-            >
+            <button className={`${style["button"]} ${style["button__bordered"]}`}>
               Edit
             </button>
           )}
         </div>
+
         {/* Community Banner Content Right */}
         <div className={style["community-banner-content-right"]}>
           {/* Notification Button */}
@@ -165,7 +209,9 @@ const CommunityBanner = (props) => {
             </button>
           }
           {/* Join Button */}
-          <button className={`${style["button"]} ${style["button__bordered"]}`}>
+          <button 
+            className={`${style["button"]} ${style["button__bordered"]}`}
+            onClick={joinButtonHandler}>
             {props.userCommunityMemberDetails ? "Joined" : "Join"}
           </button>
         </div>
@@ -425,12 +471,14 @@ const CommunityPost = (props) => {
   const isAuthorUser = props.post.authorID === props.userCommunityMemberDetails?.user.id;
   const isAuthorAdmin = props.communityPostAuthorRoles[props.post.authorID] === "admin";
   const isAuthorMod = props.communityPostAuthorRoles[props.post.authorID] === "mod";
+  const isAuthorMember = props.communityPostAuthorRoles[props.post.authorID] === "member"
 
   // Set post author role label
   const postAuthorRoleLabel = isAuthorAdmin ? "Admin" :
     isAuthorMod ? "Mod" :
+    isAuthorMember ? "Member" :
     isAuthorUser ? "You" :
-    "Member"
+    "Departed"
 
   // This method handles post actions such as pinning, hiding, reporting, or deleting.
   // It's passed on to its child component - postActionSidemenu, where the action options are selected.
@@ -503,7 +551,7 @@ const CommunityPost = (props) => {
             <span className={style["inactive-text"]}>Posted By</span>
             <p className={style["active-text"]}>
               <span className={style["bold"]}>
-                {props.post.author.attributes.profile.username}
+                {props.post.author?.attributes.profile.username}
               </span>
                <span>
                 ({postAuthorRoleLabel})
