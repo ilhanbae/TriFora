@@ -12,6 +12,7 @@ import ProfilePage from "./Component/ProfilePage";
 import EditProfilePage from "./Component/EditProfilePage";
 import CommunityPage from "./Component/CommunityPage";
 import CreatePost from "./Component/CreatePost";
+import Notification from "./Component/Notification";
 
 export default function App() {
   // The app component maintains whether or not the login or logout actions were triggerd.
@@ -58,6 +59,7 @@ export default function App() {
               <Route path="/edit-profile" element={<EditProfilePage />} />
               <Route path="community/:communityId" element={<CommunityPage />} />
               <Route path="/create-post" element={<CreatePost />} />
+              <Route path="/notification" element={<Notification />} />
               <Route path="/" element={<LoginOrProfile login={login} />} />
             </Routes>
           </div>

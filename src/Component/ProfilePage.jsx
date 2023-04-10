@@ -20,7 +20,7 @@ export default class ProfilePage extends React.Component {
             user_connection: false,
             connection_id: "",
 
-            user_id: "165",
+            user_id: "166",
         };
     }
  
@@ -123,9 +123,9 @@ export default class ProfilePage extends React.Component {
                 same_user_profile: true,
             });
         } else {
-            // Get the connection between the user of Session Storage and the user_id
-            let url = process.env.REACT_APP_API_PATH+"/connections?fromUserID=" + sessionStorage.getItem("user") + "&" + "toUserID=" + user_id;
-            fetch(url, {
+            // Get the connection from "the user of Session Storage" to "the user_id"
+            let url_1 = process.env.REACT_APP_API_PATH+"/connections?fromUserID=" + sessionStorage.getItem("user") + "&" + "toUserID=" + user_id;
+            fetch(url_1, {
             method: "get",
             headers: {
                 'Content-Type': 'application/json',
@@ -147,16 +147,47 @@ export default class ProfilePage extends React.Component {
                         });
                     } else if (result[0][0].attributes.status === "inactive") {
                         this.setState({
-                            user_connection: "waiting",
+                            user_connection: "waiting-response",
                             connection_id: result[0][0].id.toString(),
                         });
                     }
                 } else{
-                    this.setState({
-                        user_connection: false,
-                        connection_id: "",
-                    });
-                    this.load_friend(user_id);
+                    // Get the connection between the user of Session Storage and the user_id
+                    let url_2 = process.env.REACT_APP_API_PATH+"/connections?fromUserID=" + user_id + "&" + "toUserID=" + sessionStorage.getItem("user");
+                    fetch(url_2, {
+                    method: "get",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                    },
+                    })
+                    .then(res => res.json())
+                    .then(
+                        result => {
+                        console.log(result);
+                        // Check if the result array length == 0
+                        // If result array length is 0, this means no connection between users
+                        // If result array length is not 0, this means there is a connection between users
+                        if (result[0].length !== 0){
+                            if (result[0][0].attributes.status === "inactive") {
+                                this.setState({
+                                    user_connection: "need-response",
+                                    connection_id: result[0][0].id.toString(),
+                                });
+                            }
+                        }else{
+                            this.setState({
+                                user_connection: false,
+                                connection_id: "",
+                            });
+                            this.load_friend(user_id);
+                        }
+                        },
+                        error => {
+                            alert("ERROR loading Friends");
+                            console.log("ERROR loading Friends")
+                        }
+                    );
                 }
                 },
                 error => {
@@ -164,6 +195,7 @@ export default class ProfilePage extends React.Component {
                     console.log("ERROR loading Friends")
                 }
             );
+
         }
     }
 
@@ -272,6 +304,106 @@ export default class ProfilePage extends React.Component {
         }
     }
 
+    // This function will accept a friend request, this will also create two way connection between two users
+    accept_friend = (user_id) => {
+        // If user logged in accept the request
+        if (sessionStorage.getItem("user")){
+            // Update the status of the connection to "active"
+            let patch_url = process.env.REACT_APP_API_PATH+"/connections/" + this.state.connection_id;
+            fetch(patch_url, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+sessionStorage.getItem("token")
+            },
+            body: JSON.stringify({
+                attributes: {
+                    status: "active",
+                    type: "friend"
+                },
+            })
+            })
+            .then(res => res.json())
+            .then(
+                result => {
+                    console.log(result);
+                    console.log("Connection Updated");
+                    alert("Connection Updated")
+                },
+                error => {
+                    alert("ERROR updating Connection");
+                    console.log("ERROR updating Connection")
+                }
+            );
+
+            // Create a another connection from toUserID to FromUserID
+            let post_url = process.env.REACT_APP_API_PATH+"/connections";
+            fetch(post_url, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+sessionStorage.getItem("token")
+            },
+            body: JSON.stringify({
+                fromUserID: sessionStorage.getItem("user"),
+                toUserID: user_id,
+                attributes: {
+                    status: "active",
+                    type: "friend"
+                },
+            })
+            })
+            .then(res => res.json())
+            .then(
+                result => {
+                    console.log(result);
+                    console.log("Connection Created");
+                    alert("Connection Created");
+                    this.check_user_connection(user_id);
+                    this.load_friend(user_id);
+                },
+                error => {
+                    alert("ERROR creating new Connection");
+                    console.log("ERROR creating new Connection")
+                }
+            );
+
+        }else{
+            console.log("Please Login First!")
+        }
+    }
+
+    // This function will reject a friend request, this will delete the connection between two users
+    reject_friend = (user_id) => {
+        // If user logged in reject the request
+        if (sessionStorage.getItem("user")){
+            // delete the connection between two users
+            let delete_url = process.env.REACT_APP_API_PATH+"/connections/" + this.state.connection_id;
+            fetch(delete_url, {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                },
+            })
+            .then(
+                result => {
+                    alert("Delete Friend Request Successfully");
+                    console.log("Delete Connection Successfully");
+                    this.check_user_connection(user_id);
+                },
+                error => {
+                    alert("ERROR when deleting Connection");
+                    console.log(error);
+                    console.log("ERROR when deleting Connection");
+                }
+            );
+
+        // Check if user not logged in, Login First
+        }else{
+            console.log("Please Login First!")
+        }
+    }
 
     render() {
         return(
@@ -289,6 +421,8 @@ export default class ProfilePage extends React.Component {
                         send_friend_request={this.send_friend_request}
                         undo_friend_request={this.undo_friend_request}
                         delete_friend_connection={this.delete_friend_connection}
+                        accept_friend={this.accept_friend}
+                        reject_friend={this.reject_friend}
                         />
     
                         <Link to='/' className = {ProfilePageCSS.close_button}>
@@ -313,8 +447,7 @@ export default class ProfilePage extends React.Component {
                         </div>
                     </div>
                     <div className = {ProfilePageCSS.description}>
-                        <h4> Hi, I’m Spiderman. I live my life with great responsibilities. </h4>
-                        {/* <h4> {this.state.description} </h4> */}
+                        <h4> {this.state.description} </h4>
                     </div>
                 </div>
     
@@ -359,7 +492,7 @@ export default class ProfilePage extends React.Component {
     
                     <div className = {ProfilePageCSS.friend_card_bar}>
                         {this.state.friend_list.map(friend => (
-                            <Friend key={friend.id} friend={friend} />
+                            <Friend key={friend.id} friend={friend} view_userID={this.state.user_id}/>
                         ))}
                     </div>
     
@@ -386,7 +519,7 @@ const Render_Buttons = (props) => {
         );
 
     // If there is a one way connection between two users, render "Request Sent" button
-    } else if (props.state.user_connection === "waiting"){
+    } else if (props.state.user_connection === "waiting-response"){
         return(
             <button className={ProfilePageCSS.RequestSent_button} onClick={() => props.undo_friend_request(props.state.user_id)}>Request Sent</button>
         );
@@ -395,6 +528,14 @@ const Render_Buttons = (props) => {
     } else if (props.state.user_connection === false){
         return (
             <button className={ProfilePageCSS.addfriend_button} onClick={() => props.send_friend_request(props.state.user_id)}>Add Friend</button>
+        );
+
+    } else if (props.state.user_connection === "need-response"){
+        return (
+            <div>
+                <button className={ProfilePageCSS.accept_button} onClick={() => props.accept_friend(props.state.user_id)} >Accept</button>
+                <button className={ProfilePageCSS.reject_button} onClick={() => props.reject_friend(props.state.user_id)} >Reject</button>
+            </div>
         );
     }
     

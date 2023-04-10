@@ -1,0 +1,464 @@
+.notification-page{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100vw;
+    height: 100vh;
+
+    background: var(--light-yellow);
+}
+
+/* Notification Header*/
+.notification-header{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+}
+
+.notification-message{
+    box-sizing: border-box;
+    margin: 10px;
+    margin-left: 5%;
+}
+
+.close-button{
+    box-sizing: border-box;
+
+    margin: 10px; 
+    margin-left: auto;
+    margin-right: 5%; 
+
+    width: 70px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    color: black;
+    padding: 5px;
+
+    background: var(--yellow-apricot);
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.close-button:hover {
+    background-color: var(--bistre);
+    color: white;
+}
+
+/* notification-body under 290px */
+@media (max-width: 290px){
+    .notification-header{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    
+        width: 100%;
+    }
+
+    .notification-message{
+        box-sizing: border-box;
+        margin: 10px;
+    }
+
+    .close-button{
+        box-sizing: border-box;
+    
+        margin: 10px; 
+    
+        width: 70px;
+        height: 40px;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 20px;
+        display: flex;
+        text-align: center;
+        flex-direction: column;
+        justify-content: center;
+        color: black;
+        padding: 5px;
+    
+        background: var(--yellow-apricot);
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+}
+
+/* Notification body*/
+.notification-body{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 90%;
+}
+
+.notification-box{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 10px;
+
+    width: 100%;
+    min-height: 80px;
+
+    background-color: var(--yellow-apricot);
+    border: 10px solid var(--bistre);
+    border-radius: 10px;
+}
+
+.notification-user-content{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+}
+
+.notification-user{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+
+    width: 10%;
+    min-height: 80px;
+
+    background-color: var(--light-yellow);
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.notification-image{
+    width: 54px;
+    height: 54px;
+
+    background: var(--yellow-apricot);
+    border: 3px solid #000000;
+    border-radius: 50%;
+}
+
+.notification-content{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 10px;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 10px;
+
+    width: 90%;
+    min-height: 80px;
+
+    background-color: var(--light-yellow);
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.notification-action{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 10px;
+
+    width: 10%;
+    min-height: 80px;
+
+    background-color: var(--light-yellow);
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.notification-accept{
+    box-sizing: border-box;
+    margin: 10px;
+
+    width: 80px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    color: black;
+    padding: 5px;
+
+    background: #00FF00;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.notification-accept:hover{
+    background-color: var(--bistre);
+    color: white;
+}
+
+.notification-reject{
+    box-sizing: border-box;
+    margin: 10px;
+
+    width: 80px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    color: black;
+    padding: 5px;
+
+    background: #FF0000;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.notification-reject:hover{
+    background-color: var(--bistre);
+    color: white;
+}
+
+/* notification-bodu under 1000px */
+@media (max-width: 1000px){
+    .notification-accept{
+        box-sizing: border-box;
+        margin: 10px;
+    
+        width: 60px;
+        height: 40px;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        color: black;
+        padding: 5px;
+    
+        background: #00FF00;
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+
+    .notification-reject{
+        box-sizing: border-box;
+        margin: 10px;
+    
+        width: 60px;
+        height: 40px;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        color: black;
+        padding: 5px;
+    
+        background: #FF0000;
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+}
+
+/* notification-body under 750px */
+@media (max-width: 750px){
+    .notification-box{
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 10px;
+    
+        width: 100%;
+        min-height: 80px;
+    
+        background-color: var(--yellow-apricot);
+        border: 10px solid var(--bistre);
+        border-radius: 10px;
+    }
+
+    .notification-user{
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin: 10px;
+        margin-left: 0;
+    
+        width: 20%;
+        min-height: 80px;
+    
+        background-color: var(--light-yellow);
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+
+    .notification-action{
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 10px;
+    
+        width: 90%;
+        min-height: 80px;
+    
+        background-color: var(--light-yellow);
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+
+    .notification-accept{
+        box-sizing: border-box;
+        margin: 10px;
+    
+        width: 80px;
+        height: 40px;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        color: black;
+        padding: 5px;
+    
+        background: #00FF00;
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+
+    .notification-reject{
+        box-sizing: border-box;
+        margin: 10px;
+        margin-left: auto;
+    
+        width: 80px;
+        height: 40px;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        color: black;
+        padding: 5px;
+    
+        background: #FF0000;
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+}
+
+/* notification-body under 450px */
+@media (max-width: 450px){
+    .notification-user-content{
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 90%;
+    }
+
+    .notification-user{
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin: 10px;
+    
+        width: 100%;
+        min-height: 80px;
+    
+        background-color: var(--light-yellow);
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+
+    .notification-content{
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 10px;
+        padding: 10px;
+    
+        width: 100%;
+        min-height: 80px;
+    
+        background-color: var(--light-yellow);
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+}
+
+/* notification-body under 290px */
+@media (max-width: 290px){
+    .notification-action{
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 10px;
+    
+        width: 90%;
+        min-height: 80px;
+    
+        background-color: var(--light-yellow);
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+
+    .notification-reject{
+        box-sizing: border-box;
+        margin: 10px;
+        width: 80px;
+        height: 40px;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        color: black;
+        padding: 5px;
+    
+        background: #FF0000;
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+
+}
