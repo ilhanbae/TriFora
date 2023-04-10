@@ -20,7 +20,7 @@ export default class ProfilePage extends React.Component {
             user_connection: false,
             connection_id: "",
 
-            user_id: "166",
+            user_id: "165",
         };
     }
  
@@ -83,7 +83,7 @@ export default class ProfilePage extends React.Component {
         if (sessionStorage.getItem("token")){
 
             // get all connections using fromUserID
-            let url = process.env.REACT_APP_API_PATH+"/connections?fromUserID=" + user_id;
+            let url = process.env.REACT_APP_API_PATH+"/connections?fromUserID=" + user_id + "&" + "attributes=%7B%0A%20%20%22path%22%3A%20%22status%22%2C%0A%20%20%22equals%22%3A%20%22active%22%2C%0A%20%20%22stringContains%22%3A%20%22active%22%2C%0A%20%20%22stringStartsWith%22%3A%20%22active%22%2C%0A%20%20%22stringEndsWith%22%3A%20%22active%22%2C%0A%20%20%22arrayContains%22%3A%20%22active%22%0A%7D";
             fetch(url, {
             method: "get",
             headers: {
@@ -359,8 +359,7 @@ export default class ProfilePage extends React.Component {
     
                     <div className = {ProfilePageCSS.friend_card_bar}>
                         {this.state.friend_list.map(friend => (
-                            console.log(friend.toUser),
-                            <Friend key={friend.id} friend={friend}/>
+                            <Friend key={friend.id} friend={friend} />
                         ))}
                     </div>
     
@@ -588,7 +587,7 @@ const Render_User = (props) => {
                     <div className = {ProfilePageCSS.friend_card_bar}>
                         {this.state.friend_list.map(friend => (
                             console.log(friend.toUser),
-                            <Friend key={friend.id} friend={friend}/>
+                            <Friend key={friend.id} friend={friend} view_userID={this.state.user_id}/>
                         ))}
                     </div>
     
