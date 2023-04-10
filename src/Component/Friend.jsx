@@ -17,9 +17,7 @@ export default class Friend extends React.Component {
         if (this.props.view_userID !== sessionStorage.getItem("user")){
             return (
                 <div className = {ProfilePageCSS.friend_card}>
-                    <div className = {ProfilePageCSS.friend_avatar}>
-                        {this.props.friend.toUser.attributes.profile.profileImage}
-                    </div>
+                    <img className = {ProfilePageCSS.friend_avatar} src={this.props.friend.toUser.attributes.profile.profileImage}></img>
                     <div className = {ProfilePageCSS.friend_name}>
                         <h4> {this.props.friend.toUser.attributes.profile.username} </h4>
                     </div>
@@ -28,9 +26,7 @@ export default class Friend extends React.Component {
         }else{
             return(
                 <div className = {ProfilePageCSS.friend_card}>
-                    <div className = {ProfilePageCSS.friend_avatar}>
-                        {this.props.friend.toUser.attributes.profile.profileImage}
-                    </div>
+                    <img className = {ProfilePageCSS.friend_avatar} src={this.props.friend.toUser.attributes.profile.profileImage}></img>
                     <div className = {ProfilePageCSS.friend_name}>
                         <h4> {this.props.friend.toUser.attributes.profile.username} </h4>
                     </div>

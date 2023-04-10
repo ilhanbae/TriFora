@@ -99,6 +99,31 @@
     color: white;
 }
 
+.accept_button {
+    box-sizing: border-box;
+
+    margin: 10px;
+
+    width: 100px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    color: black;
+    padding: 5px;
+
+    background: #00FF00;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.accept_button:hover {
+    background-color: #3D211A;
+    color: white;
+}
+
 .removefriend_button{
     box-sizing: border-box;
 
@@ -120,6 +145,31 @@
 }
 
 .removefriend_button:hover {
+    background-color: #3D211A;
+    color: white;
+}
+
+.reject_button{
+    box-sizing: border-box;
+
+    margin: 10px;
+
+    width: 100px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    color: black;
+    padding: 5px;
+
+    background: #FF0000;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.reject_button:hover {
     background-color: #3D211A;
     color: white;
 }
