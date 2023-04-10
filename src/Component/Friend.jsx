@@ -14,19 +14,32 @@ export default class Friend extends React.Component {
     }
 
     render() {
-        return(
-            <div className = {ProfilePageCSS.friend_card}>
-                <div className = {ProfilePageCSS.friend_avatar}>
-                    {this.props.friend.toUser.attributes.profile.profileImage}
+        if (this.props.view_userID !== sessionStorage.getItem("user")){
+            return (
+                <div className = {ProfilePageCSS.friend_card}>
+                    <div className = {ProfilePageCSS.friend_avatar}>
+                        {this.props.friend.toUser.attributes.profile.profileImage}
+                    </div>
+                    <div className = {ProfilePageCSS.friend_name}>
+                        <h4> {this.props.friend.toUser.attributes.profile.username} </h4>
+                    </div>
                 </div>
-                <div className = {ProfilePageCSS.friend_name}>
-                    <h4> {this.props.friend.toUser.attributes.profile.username} </h4>
+            );
+        }else{
+            return(
+                <div className = {ProfilePageCSS.friend_card}>
+                    <div className = {ProfilePageCSS.friend_avatar}>
+                        {this.props.friend.toUser.attributes.profile.profileImage}
+                    </div>
+                    <div className = {ProfilePageCSS.friend_name}>
+                        <h4> {this.props.friend.toUser.attributes.profile.username} </h4>
+                    </div>
+                    <button className = {ProfilePageCSS.friend_remove}>
+                        <h5>Remove</h5>
+                    </button>
                 </div>
-                <button className = {ProfilePageCSS.friend_remove}>
-                    <h5>Remove</h5>
-                </button>
-            </div>
-        );
+            );
+        }
     }
 
 }
