@@ -12,6 +12,7 @@ import ProfilePage from "./Component/ProfilePage";
 import EditProfilePage from "./Component/EditProfilePage";
 import CommunityPage from "./Component/CommunityPage";
 import CreatePost from "./Component/CreatePost";
+import Homepage from "./Component/Homepage";
 
 export default function App() {
   // The app component maintains whether or not the login or logout actions were triggerd.
@@ -80,7 +81,8 @@ const LoginOrProfile = (props) => {
   } else {
     console.log("Logged In");
     return (
-      <ProfilePage />
+      <Homepage />
+      // <ProfilePage />
     );
   }
 }
