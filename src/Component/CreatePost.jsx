@@ -28,8 +28,10 @@ export default class CreatePost extends React.Component {
         // these checks might now be redundant since using required attribute
         if (this.state.postTitle.length < 1) {
             alert("Post title cannot be empty")
+            // the above needs to be changed somehow to not have alert box if not redundant
         } else if (this.state.postContent.length < 1) {
             alert("Post description cannot be empty")
+            // the above needs to be changed somehow to not have alert box if not redundant
         } else {
             // turn the image list into a url list for api
             let imageUrlArray = [];
@@ -42,15 +44,15 @@ export default class CreatePost extends React.Component {
                         attributes: { type: "post-image" },
                         file: userImage,
                     };
-                    const { data: uploadedServerAvatarFile, errorMessage: uploadFileErrorMessage } = await uploadFile(formDataParams);
+                    const { data: uploadedPostImageFile, errorMessage: uploadFileErrorMessage } = await uploadFile(formDataParams);
 
                     // Check for upload file error
                     if (uploadFileErrorMessage) {
                         alert(uploadFileErrorMessage)
                     } else {
                         // add to the url array if successful helper call
-                        let serverAvaterLink = `${process.env.REACT_APP_DOMAIN_PATH}${uploadedServerAvatarFile.path}` // Format server link with app domain
-                        imageUrlArray.push(serverAvaterLink)
+                        let postImageLink = `${process.env.REACT_APP_DOMAIN_PATH}${uploadedPostImageFile.path}` // Format server link with app domain
+                        imageUrlArray.push(postImageLink)
                     }
                 });
                 // if the above throws an error the fetch below would be undefined
@@ -65,8 +67,8 @@ export default class CreatePost extends React.Component {
                 },
                 body: JSON.stringify({
                     authorID: this.state.currentUser,
-                    recipientGroupID: 25, // 25 is a placeholder for now until we know how our communities are working
-                    // recipientGroupID: {this.props.communityId},
+                    // recipientGroupID: 25, // 25 is a placeholder for now until we know how our communities are working
+                    recipientGroupID: this.props.communityId,
                     content: this.state.postContent, // if post description can be empty this is just going to have to store an empty string and be tested for post page side I think
                     attributes: {
                         title: this.state.postTitle,
@@ -83,6 +85,7 @@ export default class CreatePost extends React.Component {
                             postmessage: result.Status
                         });
                         alert("Post was successful");
+                        // the above needs to be changed somehow to not have alert box, refreshing posts might be enough
                         // trying with state variable and Navigate tag
                         this.setState({
                             postSuccess: true
@@ -120,10 +123,11 @@ export default class CreatePost extends React.Component {
             let sizeValid = true;
             // check that each file is an image
             Array.from(event.target.files).forEach(userFile => {
-                if (userFile.type.includes('image')) {
+                if (userFile.type === "image/png" || userFile.type === "image/jpg" || userFile.type === "image/jpeg") {
                     /*
+                     * if (userFile.type.includes('image'))
                      * Not sure how reliable the above check is yet, might have to switch back to doing
-                     * === "image/png" || element.type === "image/jpg" || element.type === "image/jpeg"
+                     * === "image/png" || userFile.type === "image/jpg" || userFile.type === "image/jpeg"
                      * 
                      * easy reference sources on the above style:
                      * https://stackoverflow.com/questions/29805909/jquery-how-to-check-if-uploaded-file-is-an-image-without-checking-extensions
@@ -149,10 +153,12 @@ export default class CreatePost extends React.Component {
             } else {
                 // if not alert to try again
                 alert("All files must be images. Please try again")
+                // the above needs to be changed somehow to not have alert box
             }
         } else {
             // this is the scenario where the user uploads, and hits cancel after having already uploaded
             alert("No files uploaded")
+            // the above needs to be changed somehow to not have alert box
         }
     };
 
@@ -162,6 +168,7 @@ export default class CreatePost extends React.Component {
             return ("Please log in to make and view posts");
         }
         if (this.state.postSuccess) {
+            // this section needs to change if modal view is successful
             // return <Navigate to=`/community/${this.props.communityId}` replace={true} />;
             return <Navigate to="/" replace={true} />;
         }
@@ -173,6 +180,8 @@ export default class CreatePost extends React.Component {
                     {/* Disguising a link as a button to allow navigation, still not sure why we are doing this */}
                     {/* <Link to=`/groups/${this.props.communityId}` className="cancel-post-button">Cancel post</Link> */}
                     <Link to="/" className="cancel-post-button">Cancel post</Link>
+                    {/* The above changes to closing modal if modal gets used correctly */}
+
                     {/* spans just being used for button positioning*/}
                     <span></span>
                     <span></span>
@@ -222,7 +231,7 @@ export default class CreatePost extends React.Component {
                                 <h1>Images:</h1>
                                 <input
                                     type="file"
-                                    accept="image/*"
+                                    accept="image/png, image/jpg, image/jpeg"
                                     onChange={this.imageChangeHandler}
                                     hidden//={this.state.postImages.length < 1}
                                     multiple
