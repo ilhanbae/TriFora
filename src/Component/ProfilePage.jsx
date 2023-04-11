@@ -15,12 +15,14 @@ export default class ProfilePage extends React.Component {
             lastName: "",
             description: "",
             profileImage: "",
+
             friend_list: [],
             same_user_profile: false,
             user_connection: false,
-            connection_id: "",
+            fromUser_toUser_connection_id: "", /* This connection_id contain the id from Session Storage User to current viewing user */
+            toUser_fromUser_connection_id: "", /* This connection_id contain the id from current viewing user to Session Storage User */
 
-            user_id: "166",
+            user_id: "165",
         };
     }
  
@@ -143,18 +145,42 @@ export default class ProfilePage extends React.Component {
                     if (result[0][0].attributes.status === "active") {
                         this.setState({
                             user_connection: true,
-                            connection_id: result[0][0].id.toString(),
+                            fromUser_toUser_connection_id: result[0][0].id.toString(),
                         });
+                        // If the connection is "active", get the toUser_fromUser_connection_id
+                        let url_2 = process.env.REACT_APP_API_PATH+"/connections?fromUserID=" + user_id + "&" + "toUserID=" + sessionStorage.getItem("user");
+                            fetch(url_2, {
+                            method: "get",
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                            },
+                            })
+                            .then(res => res.json())
+                            .then(
+                                result => {
+                                console.log(result);
+                                this.setState({
+                                    toUser_fromUser_connection_id: result[0][0].id.toString(),
+                                });
+                                },
+                                error => {
+                                    alert("ERROR loading Friends");
+                                    console.log("ERROR loading Friends")
+                                }
+                            );
+
                     } else if (result[0][0].attributes.status === "inactive") {
                         this.setState({
                             user_connection: "waiting-response",
-                            connection_id: result[0][0].id.toString(),
+                            fromUser_toUser_connection_id: result[0][0].id.toString(),
                         });
                     }
+
                 } else{
                     // Get the connection between the user of Session Storage and the user_id
-                    let url_2 = process.env.REACT_APP_API_PATH+"/connections?fromUserID=" + user_id + "&" + "toUserID=" + sessionStorage.getItem("user");
-                    fetch(url_2, {
+                    let url_3 = process.env.REACT_APP_API_PATH+"/connections?fromUserID=" + user_id + "&" + "toUserID=" + sessionStorage.getItem("user");
+                    fetch(url_3, {
                     method: "get",
                     headers: {
                         'Content-Type': 'application/json',
@@ -172,13 +198,13 @@ export default class ProfilePage extends React.Component {
                             if (result[0][0].attributes.status === "inactive") {
                                 this.setState({
                                     user_connection: "need-response",
-                                    connection_id: result[0][0].id.toString(),
+                                    fromUser_toUser_connection_id: result[0][0].id.toString(),
                                 });
                             }
                         }else{
                             this.setState({
                                 user_connection: false,
-                                connection_id: "",
+                                fromUser_toUser_connection_id: "",
                             });
                             this.load_friend(user_id);
                         }
@@ -243,8 +269,8 @@ export default class ProfilePage extends React.Component {
         // if the user is logged in, delete the friend request
         if (sessionStorage.getItem("token")){
             // delete a friend request using connection ID
-            console.log(this.state.connection_id);
-            let delete_url = process.env.REACT_APP_API_PATH+"/connections/" + this.state.connection_id;
+            console.log(this.state.fromUser_toUser_connection_id);
+            let delete_url = process.env.REACT_APP_API_PATH+"/connections/" + this.state.fromUser_toUser_connection_id;
             fetch(delete_url, {
                 method: "DELETE",
                 headers: {
@@ -272,13 +298,34 @@ export default class ProfilePage extends React.Component {
     }
 
 
-    // This function will delete a one way friend connection between two users
+    // This function will delete two way friend connections between two users
     delete_friend_connection = (user_id) => {
         // if the user is logged in, delete the friend request
         if (sessionStorage.getItem("token")){
-            // delete a friend request using connection ID
-            let delete_url = process.env.REACT_APP_API_PATH+"/connections/" + this.state.connection_id;
-            fetch(delete_url, {
+            // delete two way friend connections using connection ID
+            let delete_url_1 = process.env.REACT_APP_API_PATH+"/connections/" + this.state.fromUser_toUser_connection_id;
+            fetch(delete_url_1, {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                },
+            })
+            .then(
+                result => {
+                    //alert("Delete Friend Request Successfully");
+                    console.log("Delete Friend Request Successfully");
+                    this.check_user_connection(user_id);
+                },
+                error => {
+                    alert("ERROR when deleting Friend Request");
+                    console.log(error);
+                    console.log("ERROR when deleting Friend Request");
+                }
+            );
+
+            let delete_url_2 = process.env.REACT_APP_API_PATH+"/connections/" + this.state.toUser_fromUser_connection_id;
+            fetch(delete_url_2, {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json',
@@ -309,7 +356,7 @@ export default class ProfilePage extends React.Component {
         // If user logged in accept the request
         if (sessionStorage.getItem("user")){
             // Update the status of the connection to "active"
-            let patch_url = process.env.REACT_APP_API_PATH+"/connections/" + this.state.connection_id;
+            let patch_url = process.env.REACT_APP_API_PATH+"/connections/" + this.state.fromUser_toUser_connection_id;
             fetch(patch_url, {
             method: "PATCH",
             headers: {
@@ -378,7 +425,7 @@ export default class ProfilePage extends React.Component {
         // If user logged in reject the request
         if (sessionStorage.getItem("user")){
             // delete the connection between two users
-            let delete_url = process.env.REACT_APP_API_PATH+"/connections/" + this.state.connection_id;
+            let delete_url = process.env.REACT_APP_API_PATH+"/connections/" + this.state.fromUser_toUser_connection_id;
             fetch(delete_url, {
                 method: "DELETE",
                 headers: {
@@ -492,7 +539,12 @@ export default class ProfilePage extends React.Component {
     
                     <div className = {ProfilePageCSS.friend_card_bar}>
                         {this.state.friend_list.map(friend => (
-                            <Friend key={friend.id} friend={friend} view_userID={this.state.user_id}/>
+                            <Friend 
+                            key={friend.id} 
+                            friend={friend} 
+                            view_userID={this.state.user_id}
+                            check_user_connection={this.check_user_connection}
+                            load_friend={this.load_friend}/>
                         ))}
                     </div>
     
@@ -727,7 +779,6 @@ const Render_User = (props) => {
     
                     <div className = {ProfilePageCSS.friend_card_bar}>
                         {this.state.friend_list.map(friend => (
-                            console.log(friend.toUser),
                             <Friend key={friend.id} friend={friend} view_userID={this.state.user_id}/>
                         ))}
                     </div>
