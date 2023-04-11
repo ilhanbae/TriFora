@@ -31,7 +31,9 @@ export default function Homepage() {
                 </h1>
             </div>
             {/* The following list should be mapped from communities user is part of from earlier fetch.
-                and possibly randomly displayed if possible */}
+                and possibly randomly displayed if possible.
+                Perhaps if not logged in can map all random communities.
+                Need to consider if user is part of less than 3 communites. */}
             <ul className="homepage-communities-row">
                 <li className="homepage-joined-communities">
                     <Link to="community/25"> {/* the id should be dynamic from the above idea/implementation */}

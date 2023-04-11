@@ -9,7 +9,7 @@
 .homepage-communities-row {
     display: flex;
     justify-content: space-evenly;
-    width: 100%;
+    width: 75%;
 }
 
 @media (max-width: 800px) {
