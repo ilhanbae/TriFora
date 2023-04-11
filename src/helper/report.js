@@ -51,10 +51,10 @@ export default function report(postId) {
         .then(response => {
             if (response.ok) {
                 // The reaction was added successfully
-                alert('Post Reported!');
+                // alert('Post Reported!');
             } else {
                 // There was an error adding the reaction
-                alert('Login first');
+                // alert('Login first');
             }
         })
         .catch(error => {
