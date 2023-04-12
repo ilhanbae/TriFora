@@ -23,13 +23,13 @@
 /* Profile Header */
 .profile-header {
   width: 100%;
-  height: 85px;
+  /*height: 85px;*/
   background: none;
-  border-bottom: 2px solid var(--bistre);
+  /*border-bottom: 2px solid var(--bistre);*/
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 300px;
+  padding: 100px 300px;
 }
 
 /* Page nav buttons */
@@ -48,10 +48,13 @@
 
 /* User Profile Form */
 .user-profile-form {
+  flex-basis: 100%;
   display: flex;
   justify-content: center;
   gap: 50px;
-  border: 2px solid var(--bistre);
+  /*border: 2px solid var(--bistre);*/
+  flex-wrap: wrap;
+  /*flex-direction: column;*/
 }
 .text-input {
   border: 2px solid var(--bistre);
@@ -84,7 +87,9 @@
   /* margin-right: auto; */
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
+  /*flex-basis: 33%;*/
 }
 .profile-avatar-preview {
   border: 2px solid var(--bistre);
@@ -102,17 +107,66 @@
 
 /* User profile basic info field */
 .user-profile-basic-info {
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  text-align: left;
+  /*flex-basis: 33%;*/
+}
+
+/* User profile detail info field */
+.user-profile-detail-info {
+  flex-basis: 33%;
+  /* margin-left: auto; */
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   text-align: left;
 }
 
-/* User profile detail info field */
-.user-profile-detail-info {
-  /* margin-left: auto; */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  text-align: left;
+@media (max-width: 1200px) {
+  .profile-header {
+    padding: 100px 100px 0;
+  }
+  .user-profile-avatar{
+    width: 100%;
+  }
+}
+
+@media (max-width: 860px) {
+  .profile-header{
+    padding-top: 100px;
+  }
+  .user-profile-form{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: 400px) {
+  .user-profile-form {
+    gap: 20px;
+  }
+  .text-input, .textarea-input{
+    width: 300px;
+  }
+
+  .profile-header {
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 300px) {
+  .text-input, .textarea-input{
+    width: 200px;
+  }
+
+}
+
+@media (max-width: 200px) {
+  .text-input, .textarea-input{
+    width: 100px;
+  }
 }
