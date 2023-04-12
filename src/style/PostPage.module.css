@@ -535,6 +535,54 @@ body {
     color: #000000;
 }
 
+.post-images{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    margin: 10px;
+    margin-top: 5px;
+    padding: 10px;
+    width: 95%;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.post-image-1{
+    width: 200px;
+    height: 180px;
+    margin: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.post-image-2{
+    width: 200px;
+    height: 180px;
+    margin: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.post-image-3{
+    width: 200px;
+    height: 180px;
+    margin: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
 @media (max-width: 600px){
     .post-header{
         display: flex;
@@ -706,6 +754,39 @@ body {
         border: 2px solid #000000;
         border-radius: 10px;
     }
+
+    .post-image-1{
+        width: 100px;
+        height: 90px;
+        margin: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+    
+    .post-image-2{
+        width: 100px;
+        height: 90px;
+        margin: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+    
+    .post-image-3{
+        width: 100px;
+        height: 90px;
+        margin: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
 }
 
 @media (max-width: 160px){
@@ -804,13 +885,23 @@ body {
     margin-left: 30px;
 }
 
-.upvote-button-image{
-    position: relative;
-    width: 40px;
-    height: 40px;
+.upvote-button-before{
+    width: 0;
+	height: 0;
+	border-left: 20px solid transparent;
+	border-right: 20px solid transparent;
+	border-bottom: 30px solid #8E6F52;
 }
 
-.upvote-number{
+.upvote-button-after{
+    width: 0;
+	height: 0;
+	border-left: 20px solid transparent;
+	border-right: 20px solid transparent;
+	border-bottom: 30px solid #3D211A;
+}
+
+.upvote-number-before{
     position: relative;
     width: 40px;
     height: 40px;
@@ -820,6 +911,18 @@ body {
     align-items: center;
 
     color: #8E6F52;
+}
+
+.upvote-number-after{
+    position: relative;
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    color: #3D211A;
 }
 
 .post-buttons{

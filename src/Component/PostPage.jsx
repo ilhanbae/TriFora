@@ -6,6 +6,10 @@ import downvote from "../assets/downvote.jpeg";
 import CommentList from "./CommentList";
 import Convert_time from "../helper/Convert_time";
 import Modal from "./Modal";
+import Mario from "../assets/mario.png";
+import Luigi from "../assets/luigi.png";
+import Toad from "../assets/Toad.jpg";
+import { array } from "prop-types";
 
 // Post Page will render a single post with all the related compontents (user, content, comments)
 export default class PostPage extends React.Component {
@@ -18,19 +22,18 @@ export default class PostPage extends React.Component {
             notification_text: "Notification ON",
             notification_switch: "ON", 
             notification_color_class: "green-button",
-            upvote_num: 0,
+
             upvote_set: false,
-            downvote_num: 0,
-            downvote_set: false,
 
             // Render Post states
             user_image: "",
             username: "",
             post_date: "",
             views: "",
-            post_id: "183",
+            post_id: "181",
             title: "",
             content: "",
+            post_images: [],
             likes: "",
 
             // Render Comment states
@@ -72,46 +75,15 @@ export default class PostPage extends React.Component {
         }
     }
 
-    upvote_click() {
-        //console.log(this.state)
-        //console.log("we're in upvotef")
-        //console.log(this.state.upvote_set)
-        if (this.state.upvote_set === false) {
-            this.setState({
-                upvote_num: this.state.upvote_num + 1,
-                upvote_set: true
-            })
-            //console.log(this.state.upvote_set)
-        } else {
-            this.setState({
-                upvote_num: this.state.upvote_num - 1,
-                upvote_set: false
-            })
-        }
-    }
-
-    downvote_click() {
-        if (this.state.downvote_set === false){
-            this.setState({
-                downvote_num: this.state.downvote_num - 1,
-                downvote_set: true
-            })
-        } else {
-            this.setState({
-                downvote_num: this.state.downvote_num + 1,
-                downvote_set: false
-            })
-        }
-    }
-
     // the first thing we do when the component is ready is load the posts.  This updates the props, which will render the posts  
     componentDidMount() {
         this.loadPost();
+        this.loadPost_reaction();
     }
 
     loadPost() {
         // set the auth token and user ID in the session state
-        sessionStorage.setItem("token", "underachievers|5phjGPWGGwQyIXHPSj9g7VMIFhLPVhBe2AQWtjOlF3s");
+        sessionStorage.setItem("token", "underachievers|Rec0pI_XOkyJDUt5eDqUlqvT-XKWoqF6LyW7XUS88wQ");
         sessionStorage.setItem("user", "165");
 
         // if the user is not logged in, we don't want to try loading post, because it will just error out. 
@@ -138,9 +110,9 @@ export default class PostPage extends React.Component {
                         post_date: Convert_time(result.created),
                         views: "",
                         post_id: result.id,
-                        title: "",
+                        title: result.attributes.title,
                         content: result.content,
-                        likes: "",
+                        post_images: result.attributes.images,
                     });
                     console.log("Got Post");
                 }
@@ -183,6 +155,156 @@ export default class PostPage extends React.Component {
                 error => {
                     alert("ERROR loading comments");
                     console.log("ERROR loading comments")
+                }
+            );
+
+            
+        }else{
+            //If user is not logged in, show error message
+            alert("Not Logged In");
+        }
+    }
+
+    loadPost_reaction() {
+         // if the user is not logged in, we don't want to try get all the reactions
+         if (sessionStorage.getItem("token")){
+            // get all the "like" reactions for the current post
+            let get_all_like_url = process.env.REACT_APP_API_PATH+"/post-reactions?postID=" + this.state.post_id + "&" + "name=" + "like";
+            fetch(get_all_like_url, {
+            method: "get",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+sessionStorage.getItem("token")
+            },
+        
+            })
+            .then(res => res.json())
+            .then(
+                result => {
+                console.log(result);
+                if (result) {
+                    this.setState({
+                        likes: result[0].length,
+                    });
+                    console.log("Got Reactions");
+                }
+                },
+                error => {
+                    alert("ERROR loading Reactions");
+                    console.log("ERROR loading Reactions")
+                }
+            );
+
+            // Check if the current user already like the post or not
+            let get_user_like_url = process.env.REACT_APP_API_PATH+"/post-reactions?postID=" + this.state.post_id + "&" + "reactorID=" + sessionStorage.getItem("user") + "&" + "name=" + "like";
+            fetch(get_user_like_url, {
+            method: "get",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+sessionStorage.getItem("token")
+            },
+        
+            })
+            .then(res => res.json())
+            .then(
+                result => {
+                console.log(result);
+                if (result[0].length !== 0) {
+                    this.setState({
+                        upvote_set: true,
+                    });
+                    console.log("Like Reaction already exist");
+                }
+                },
+                error => {
+                    alert("ERROR loading Reactions");
+                    console.log("ERROR loading Reactions")
+                }
+            );
+
+        }else{
+            //If user is not logged in, show error message
+            alert("Not Logged In");
+        }
+    }
+
+    click_like = () => {
+        if (sessionStorage.getItem("token")){
+            //make the api call to send a reaction
+            fetch(process.env.REACT_APP_API_PATH+"/post-reactions", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                },
+                body: JSON.stringify({
+                    postID: this.state.post_id,
+                    reactorID: sessionStorage.getItem("user"),
+                    name: "like",
+                    value: 0,
+                })
+                })
+                .then(res => res.json())
+                .then(
+                    result => {
+                        console.log(result);
+                        //alert("Post Reaction was successful");
+                        // once Post reaction is complete, reload the all reaction
+                        this.loadPost_reaction();
+                    },
+                    error => {
+                        alert("ERROR when submit Reaction");
+                    }
+                );
+        }else{
+            //If user is not logged in, show error message
+            alert("Not Logged In");
+        }
+    }
+
+    click_undo_like = () => {
+        if (sessionStorage.getItem("token")){
+            // get the reaction ID
+            let get_user_like_url = process.env.REACT_APP_API_PATH+"/post-reactions?postID=" + this.state.post_id + "&" + "reactorID=" + sessionStorage.getItem("user") + "&" + "name=" + "like";
+            fetch(get_user_like_url, {
+            method: "get",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+sessionStorage.getItem("token")
+            },
+            })
+            .then(res => res.json())
+            .then(
+                result => {
+                console.log(result);
+                // delete a Like reaction using post-reaction ID
+                let delete_url = process.env.REACT_APP_API_PATH+"/post-reactions/" + result[0][0].id;
+                fetch(delete_url, {
+                    method: "DELETE",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                    },
+                })
+                .then(
+                    result => {
+                        //alert("Delete Like Successfully");
+                        console.log("Delete Like Successfully");
+                        this.setState({
+                            upvote_set: false,
+                        });
+                        this.loadPost_reaction();
+                    },
+                    error => {
+                        alert("ERROR when deleting Like");
+                        console.log(error);
+                        console.log("ERROR when deleting Like");
+                    }
+                );
+                },
+                error => {
+                    alert("ERROR loading Reactions");
+                    console.log("ERROR loading Reactions")
                 }
             );
         }else{
@@ -321,9 +443,7 @@ export default class PostPage extends React.Component {
                     <div className = {PostPageCSS['main-post']}>
                         <div className = {PostPageCSS['post-header']}>
                             <div className = {PostPageCSS['poster-info']}>
-                                <div className = {PostPageCSS['post-avater']}>
-                                    <img alt="" className={PostPageCSS['profile_image']} src={this.state.profileimage} />
-                                </div>
+                                <img alt="post-avater" className={PostPageCSS['post-avater']} src={this.state.user_image} />
                                 <div className = {PostPageCSS['post-by']}>
                                     <h5> Posted By </h5>
                                     <div className = {PostPageCSS['post-username']}>
@@ -346,15 +466,16 @@ export default class PostPage extends React.Component {
                         </div>
                         <div className = {PostPageCSS['post-title']}>
                             <h5 className = {PostPageCSS['post-id']}> #{this.state.post_id} </h5>
-                            <h1 className = {PostPageCSS['post-title-text']}> How to survive on Campus? </h1>
+                            <h1 className = {PostPageCSS['post-title-text']}> {this.state.title} </h1>
                         </div>
                         <div className = {PostPageCSS['post-content']}>
                             <div className = {PostPageCSS['post-content-text']}>
                                 <h5> {this.state.content} </h5>
                             </div>
                         </div>
+                        <Post_Image post_image_list={this.state.post_images} state={this.state}/>
                     </div>
-                    <Post_bar join={this.state.join} click={() => this.upvote_click()} upvote={this.state.upvote_num} delete_post={this.DeletePostHandler} ClickDelete={() => this.ClickDeleteButton()} openModal={this.state.openModal} toggleModal={this.toggleModal}/>
+                    <Post_bar state={this.state} click_like={this.click_like} click_undo_like={this.click_undo_like} delete_post={this.DeletePostHandler} ClickDelete={() => this.ClickDeleteButton()} toggleModal={this.toggleModal}/>
                     <Comment_input join={this.state.join} comment_input={this.CommentHandler} submit={this.CommentSumbitHandler}/>
                     <CommentList join={this.state.join} comment_list={this.state.comments} loadPost={this.loadPost}/>
                 </div>
@@ -410,17 +531,51 @@ const Join_button = (props) => {
     }
 }
 
+const Post_Image = (props) => {
+    if (props.post_image_list.length === 3){
+        return (
+            <div className = {PostPageCSS['post-images']}>
+                <img className = {PostPageCSS['post-image-1']} src={props.state.post_images[0]} alt="Post-Image-1"/>
+                <img className = {PostPageCSS['post-image-2']} src={props.state.post_images[1]} alt="Post-Image-2"/>
+                <img className = {PostPageCSS['post-image-3']} src={props.state.post_images[2]} alt="Post-Image-3"/>
+            </div>
+        );
+
+    } else if (props.post_image_list.length === 2){
+        return (
+            <div className = {PostPageCSS['post-images']}>
+                <img className = {PostPageCSS['post-image-1']} src={props.state.post_images[0]} alt="Post-Image-1"/>
+                <img className = {PostPageCSS['post-image-2']} src={props.state.post_images[1]} alt="Post-Image-2"/>
+            </div>
+        );
+
+    } else if (props.post_image_list.length === 1){
+        return (
+            <div className = {PostPageCSS['post-images']}>
+                <img className = {PostPageCSS['post-image-1']} src={props.state.post_images[0]} alt="Post-Image-1"/>
+            </div>
+        );
+    } else{
+        return (
+            <div>
+            </div>
+        );
+    }
+
+}
+
 const Post_bar = (props) => {
-    if (props.join === 'Join'){
+    if (props.state.join === 'Join'){
         return(
             <></>
         );
-    } else {
+    } else if (props.state.upvote_set === false) {
+        console.log("Here")
         return(
             <div className = {PostPageCSS['post-bar']}>
                 <div className = {PostPageCSS['upvote']}>
-                    <input className = {PostPageCSS['upvote-button-image']} type='image' src={upvote} alt='upvote' onClick={props.click}/>
-                    <h5 className = {PostPageCSS['upvote-number']}>{props.upvote}</h5>
+                    <input className = {PostPageCSS['upvote-button-before']} type='image' onClick={() => props.click_like()}/>
+                    <h5 className = {PostPageCSS['upvote-number-before']}>{props.state.likes}</h5>
                 </div>
 
                 <div className = {PostPageCSS['post-buttons']}>
@@ -439,7 +594,42 @@ const Post_bar = (props) => {
                     <div className = {PostPageCSS['post-delete']}>
                         <button className = {PostPageCSS['post-delete-button']} onClick={props.ClickDelete}></button>
                         <h5 className = {PostPageCSS['post-delete-text']}>Delete</h5>
-                        <Modal show={props.openModal} onClose={props.toggleModal}>
+                        <Modal show={props.state.openModal} onClose={props.toggleModal}>
+                            <div className={PostPageCSS['delete-popup-title']}>Delete Your Post</div>
+                            <div className={PostPageCSS['popup-buttons']}>
+                                <button className={PostPageCSS['delete-button']} onClick={props.delete_post}>Delete</button>
+                                <button className={PostPageCSS['cancel-button']} onClick={props.toggleModal}>Cancel</button>
+                            </div>
+                        </Modal>
+                    </div>
+                </div>
+            </div>
+        );
+    } else if (props.state.upvote_set === true) {
+        return(
+            <div className = {PostPageCSS['post-bar']}>
+                <div className = {PostPageCSS['upvote']}>
+                    <input className = {PostPageCSS['upvote-button-after']} type='image' onClick={() => props.click_undo_like()}/>
+                    <h5 className = {PostPageCSS['upvote-number-after']}>{props.state.likes}</h5>
+                </div>
+
+                <div className = {PostPageCSS['post-buttons']}>
+                    <div className = {PostPageCSS['post-pin']}>
+                        <button className = {PostPageCSS['post-pin-button']}></button>
+                        <h5 className = {PostPageCSS['post-pin-text']}>Pin</h5>
+                    </div> 
+                    <div className = {PostPageCSS['post-hide']}>
+                        <button className = {PostPageCSS['post-hide-button']}></button>
+                        <h5 className = {PostPageCSS['post-hide-text']}>Hide</h5>
+                    </div> 
+                    <div className = {PostPageCSS['post-report']}>
+                        <button className = {PostPageCSS['post-report-button']}></button>
+                        <h5 className = {PostPageCSS['post-report-text']}>Report</h5>
+                    </div> 
+                    <div className = {PostPageCSS['post-delete']}>
+                        <button className = {PostPageCSS['post-delete-button']} onClick={props.ClickDelete}></button>
+                        <h5 className = {PostPageCSS['post-delete-text']}>Delete</h5>
+                        <Modal show={props.state.openModal} onClose={props.toggleModal}>
                             <div className={PostPageCSS['delete-popup-title']}>Delete Your Post</div>
                             <div className={PostPageCSS['popup-buttons']}>
                                 <button className={PostPageCSS['delete-button']} onClick={props.delete_post}>Delete</button>
