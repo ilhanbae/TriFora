@@ -368,7 +368,6 @@ body {
     width: 45px;
     height: 30px;
     margin: 10px;
-    margin-left: 3%;
     background: #F3C26E;
 }
 
@@ -386,7 +385,6 @@ body {
     align-items: center;
     justify-content: flex-start;
 
-    position: relative;
     width: 85%;
     left: 2%;
     top: 0%;
@@ -418,7 +416,6 @@ body {
 }
 
 .post-avater{
-    position: relative;
     width: 56px;
     height: 56px;
     margin-left: 20px;
@@ -430,7 +427,6 @@ body {
 
 .post-by{
     box-sizing: border-box;
-    position: relative;
 
     display: flex;
     flex-direction: column;
@@ -451,7 +447,6 @@ body {
 
 .post-on{
     box-sizing: border-box;
-    position: relative;
 
     display: flex;
     flex-direction: column;
@@ -472,7 +467,6 @@ body {
 
 .post-views{
     box-sizing: border-box;
-    position: relative;
 
     display: flex;
     flex-direction: column;
@@ -807,7 +801,6 @@ body {
 
     .post-views{
         box-sizing: border-box;
-        position: relative;
     
         display: flex;
         flex-direction: column;
@@ -868,13 +861,11 @@ body {
     align-items: center;
     justify-content: flex-start;
 
-    position: relative;
     width: 85%;
     left: 2%;
 }
 
 .upvote{
-    position: relative;
     box-sizing: border-box;
 
     display: flex;
@@ -888,6 +879,7 @@ body {
 .upvote-button-before{
     width: 0;
 	height: 0;
+    margin: 10px;
 	border-left: 20px solid transparent;
 	border-right: 20px solid transparent;
 	border-bottom: 30px solid #8E6F52;
@@ -896,13 +888,13 @@ body {
 .upvote-button-after{
     width: 0;
 	height: 0;
+    margin: 10px;
 	border-left: 20px solid transparent;
 	border-right: 20px solid transparent;
 	border-bottom: 30px solid #3D211A;
 }
 
 .upvote-number-before{
-    position: relative;
     width: 40px;
     height: 40px;
 
@@ -914,7 +906,6 @@ body {
 }
 
 .upvote-number-after{
-    position: relative;
     width: 40px;
     height: 40px;
 
@@ -937,7 +928,6 @@ body {
 }
 
 .post-delete{
-    position: relative;
     box-sizing: border-box;
 
     display: flex;
@@ -949,7 +939,6 @@ body {
 }
 
 .post-delete-button{
-    position: relative;
     width: 20px;
     height: 20px;
     margin: 5px;
@@ -958,16 +947,13 @@ body {
     border-radius: 50%;
 }
 
-.post-delete-text{
-    position: relative;
-}
+
 
 .post-delete-button:hover{
     background-color: #F3C26E;
 }
 
 .post-report{
-    position: relative;
     box-sizing: border-box;
 
     display: flex;
@@ -979,7 +965,6 @@ body {
 }
 
 .post-report-button{
-    position: relative;
     width: 20px;
     height: 20px;
     margin: 5px;
@@ -988,16 +973,11 @@ body {
     border-radius: 50%;
 }
 
-.post-report-text{
-    position: relative;
-}
-
 .post-report-button:hover{
     background-color: #F3C26E;
 }
 
 .post-hide{
-    position: relative;
     box-sizing: border-box;
 
     display: flex;
@@ -1009,7 +989,6 @@ body {
 }
 
 .post-hide-button{
-    position: relative;
     width: 20px;
     height: 20px;
     margin: 5px;
@@ -1018,16 +997,11 @@ body {
     border-radius: 50%;
 }
 
-.post-hide-text{
-    position: relative;
-}
-
 .post-hide-button:hover{
     background-color: #F3C26E;
 }
 
 .post-pin{
-    position: relative;
     box-sizing: border-box;
 
     display: flex;
@@ -1039,17 +1013,12 @@ body {
 }
 
 .post-pin-button{
-    position: relative;
     width: 20px;
     height: 20px;
     margin: 5px;
     background: #127475;
     border: 2px solid black;
     border-radius: 50%;
-}
-
-.post-pin-text{
-    position: relative;
 }
 
 .post-pin-button:hover{
@@ -1069,7 +1038,6 @@ body {
     }
 
     .post-delete{
-        position: relative;
         box-sizing: border-box;
     
         display: flex;
@@ -1082,7 +1050,6 @@ body {
     }
     
     .post-delete-button{
-        position: relative;
         width: 20px;
         height: 20px;
         margin: 5px;
@@ -1091,16 +1058,11 @@ body {
         border-radius: 50%;
     }
     
-    .post-delete-text{
-        position: relative;
-    }
-    
     .post-delete-button:hover{
         background-color: #F3C26E;
     }
     
     .post-report{
-        position: relative;
         box-sizing: border-box;
     
         display: flex;
@@ -1112,7 +1074,6 @@ body {
     }
     
     .post-report-button{
-        position: relative;
         width: 20px;
         height: 20px;
         margin: 5px;
@@ -1121,16 +1082,11 @@ body {
         border-radius: 50%;
     }
     
-    .post-report-text{
-        position: relative;
-    }
-    
     .post-report-button:hover{
         background-color: #F3C26E;
     }
     
     .post-hide{
-        position: relative;
         box-sizing: border-box;
     
         display: flex;
@@ -1143,7 +1099,6 @@ body {
     }
     
     .post-hide-button{
-        position: relative;
         width: 20px;
         height: 20px;
         margin: 5px;
@@ -1152,16 +1107,11 @@ body {
         border-radius: 50%;
     }
     
-    .post-hide-text{
-        position: relative;
-    }
-    
     .post-hide-button:hover{
         background-color: #F3C26E;
     }
     
     .post-pin{
-        position: relative;
         box-sizing: border-box;
     
         display: flex;
@@ -1174,17 +1124,12 @@ body {
     }
     
     .post-pin-button{
-        position: relative;
         width: 20px;
         height: 20px;
         margin: 5px;
         background: #127475;
         border: 2px solid black;
         border-radius: 50%;
-    }
-    
-    .post-pin-text{
-        position: relative;
     }
     
     .post-pin-button:hover{
@@ -1198,8 +1143,6 @@ body {
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-    
-        position: relative;
     }
 }
 
@@ -1211,7 +1154,6 @@ body {
     align-items: center;
     justify-content: flex-start;
 
-    position: relative;
     width: 85%;
 
     height: 6%;
@@ -1221,7 +1163,6 @@ body {
 .comment-inputbox{
     box-sizing: border-box;
 
-    position: relative;
     height: 100%;
     width: 95%;
 
@@ -1240,7 +1181,6 @@ body {
 .send-button{
     box-sizing: border-box;
 
-    position: relative;
     height: 60px;
     margin-left: auto;
 
@@ -1272,7 +1212,6 @@ input[type="submit"] {
     align-items: center;
     justify-content: flex-start;
 
-    position: relative;
     width: 80%;
     left: 2%;
     margin-top: 30px;
@@ -1299,7 +1238,6 @@ input[type="submit"] {
     align-items: center;
     justify-content: space-evenly;
 
-    position: relative;
     border-radius: 10px;
     color: #000;
     margin: 10px;
@@ -1311,7 +1249,6 @@ input[type="submit"] {
 }
 
 .comment-user-avater{
-    position: relative;
     width: 54px;
     height: 54px;
 
@@ -1321,7 +1258,6 @@ input[type="submit"] {
 }
 
 .comment-user-username{
-    position: relative;
     display: flex;
     align-items: center;
     text-align: center;
@@ -1331,7 +1267,6 @@ input[type="submit"] {
 }
 
 .comment-user-date{
-    position: relative;
     display: flex;
     align-items: center;
     text-align: center;
@@ -1340,7 +1275,6 @@ input[type="submit"] {
 }
 
 .comment-text{
-    position: relative;
     display: flex;
     align-items: center;
 
@@ -1361,7 +1295,6 @@ input[type="submit"] {
     align-items: center;
     justify-content: space-evenly;
 
-    position: relative;
     border-radius: 10px;
     color: #000;
     margin: 10px;
@@ -1374,7 +1307,6 @@ input[type="submit"] {
 }
 
 .comment-delete{
-    position: relative;
     box-sizing: border-box;
 
     display: flex;
@@ -1386,7 +1318,6 @@ input[type="submit"] {
 }
 
 .comment-delete-button{
-    position: relative;
     width: 20px;
     height: 20px;
     margin: 5px;
@@ -1395,16 +1326,11 @@ input[type="submit"] {
     border-radius: 50%;
 }
 
-.comment-delete-text{
-    position: relative;
-}
-
 .comment-delete-button:hover{
     background-color: #F3C26E;
 }
 
 .comment-edit{
-    position: relative;
     box-sizing: border-box;
 
     display: flex;
@@ -1416,17 +1342,12 @@ input[type="submit"] {
 }
 
 .comment-edit-button{
-    position: relative;
     width: 20px;
     height: 20px;
     margin: 5px;
     background: black;
     border: 2px solid black;
     border-radius: 50%;
-}
-
-.comment-edit-text{
-    position: relative;
 }
 
 .comment-edit-button:hover{
@@ -1440,14 +1361,12 @@ input[type="submit"] {
     align-items: center;
     justify-content: flex-start;
 
-    position: relative;
     width: 100%;
 }
 
 .edit-inputbox{
     box-sizing: border-box;
 
-    position: relative;
     height: 60px;
     width: 85%;
     margin: 5px;
@@ -1467,7 +1386,6 @@ input[type="submit"] {
 .edit-button{
     box-sizing: border-box;
 
-    position: relative;
     height: 60px;
     margin: 5px;
     margin-left: auto;
@@ -1500,7 +1418,6 @@ input[type="submit"] {
     align-items: center;
     justify-content: Center;
 
-    position: relative;
     width: 100%;
 }
 
@@ -1565,7 +1482,6 @@ input[type="submit"] {
         align-items: center;
         justify-content: flex-start;
     
-        position: relative;
         border-radius: 10px;
         color: #000;
         margin: 10px;
@@ -1587,8 +1503,6 @@ input[type="submit"] {
     }
 
     .comment-user-username{
-        position: relative;
-    
         display: flex;
         align-items: center;
         text-align: center;
@@ -1598,8 +1512,6 @@ input[type="submit"] {
     }
     
     .comment-user-date{
-        position: relative;
-    
         display: flex;
         align-items: center;
         text-align: center;
@@ -1614,7 +1526,6 @@ input[type="submit"] {
         align-items: center;
         justify-content: space-evenly;
     
-        position: relative;
         border-radius: 10px;
         color: #000;
         margin: 10px;
@@ -1627,7 +1538,6 @@ input[type="submit"] {
     }
 
     .comment-edit{
-        position: relative;
         box-sizing: border-box;
     
         display: flex;
@@ -1646,7 +1556,6 @@ input[type="submit"] {
         align-items: center;
         justify-content: flex-start;
     
-        position: relative;
         border-radius: 10px;
         color: #000;
         margin: 10px;

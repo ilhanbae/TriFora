@@ -1,7 +1,7 @@
 import React from "react";
 import "../style/ProfilePage.css";
 import {
-    Link
+    Link, Navigate
  } from 'react-router-dom';
 
 export default class ProfilePage extends React.Component {
@@ -16,6 +16,7 @@ export default class ProfilePage extends React.Component {
             description: "",
             profileImage: "",
             phone: "",
+            postID: "181",
 
             isRemoved_1: false,
             isRemoved_2: false,
@@ -216,7 +217,9 @@ export default class ProfilePage extends React.Component {
                         <b className = 'edit-button-text'>Edit</b>
                     </button>
                 </Link>
-                {/* <button className = 'close-button'>Close</button> */}
+                {/*
+                    <button className = 'close-button'>Close</button>
+                */}
             </div>
 
             <div className = 'profile-info-bar'>

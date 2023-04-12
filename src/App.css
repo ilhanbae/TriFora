@@ -9,7 +9,7 @@ and any component-specific styling may overide these rules using unique classnam
 :root {
   --bistre: #3d211a; /* Plain & Active Text */
   --french-bistre: #8e6f52; /* Meta & Inactive Text */
-  ≈: #f3c26e; /* Brand Color */
+  --yellow-apricot: #f3c26e; /* Brand Color */
   --light-yellow: #fefee2; /* Background Color */
   --skobeloff: #127475; /* Success Color */
   --red-orange: #ff4700; /* Error Color */

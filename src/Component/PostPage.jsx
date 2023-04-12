@@ -1,15 +1,10 @@
 import React from "react";
 import PostPageCSS from "../style/PostPage.module.css";
 import back from "../assets/back-button.jpeg";
-import upvote from "../assets/upvote.jpeg";
-import downvote from "../assets/downvote.jpeg";
 import CommentList from "./CommentList";
 import Convert_time from "../helper/Convert_time";
 import Modal from "./Modal";
-import Mario from "../assets/mario.png";
-import Luigi from "../assets/luigi.png";
-import Toad from "../assets/Toad.jpg";
-import { array } from "prop-types";
+import { Link } from "react-router-dom";
 
 // Post Page will render a single post with all the related compontents (user, content, comments)
 export default class PostPage extends React.Component {
@@ -25,12 +20,16 @@ export default class PostPage extends React.Component {
 
             upvote_set: false,
 
-            // Render Post states
+            // Current Community ID
+            community_id: window.location.href.split("/")[4],
+
+            // Render Post Info states
+            authorID: "",
             user_image: "",
             username: "",
             post_date: "",
             views: "",
-            post_id: "181",
+            post_id: window.location.href.split("/")[6],
             title: "",
             content: "",
             post_images: [],
@@ -79,6 +78,8 @@ export default class PostPage extends React.Component {
     componentDidMount() {
         this.loadPost();
         this.loadPost_reaction();
+        console.log("community_id", window.location.href.split("/")[4])
+        console.log("post_id", window.location.href.split("/")[6])
     }
 
     loadPost() {
@@ -105,14 +106,15 @@ export default class PostPage extends React.Component {
                 console.log(result);
                 if (result) {
                     this.setState({
-                        user_image: result.author.attributes.profile.profileImage,
-                        username: result.author.attributes.profile.username,
-                        post_date: Convert_time(result.created),
+                        authorID: result.authorID,
+                        user_image: result.author.attributes.profile.profileImage || "",
+                        username: result.author.attributes.profile.username || "",
+                        post_date: Convert_time(result.created) || "",
                         views: "",
-                        post_id: result.id,
-                        title: result.attributes.title,
-                        content: result.content,
-                        post_images: result.attributes.images,
+                        post_id: result.id || "",
+                        title: result.attributes.title || "",
+                        content: result.content || "",
+                        post_images: result.attributes.images || [],
                     });
                     console.log("Got Post");
                 }
@@ -146,7 +148,7 @@ export default class PostPage extends React.Component {
                 console.log(result);
                 if (result) {
                     this.setState({
-                        comments: result[0],
+                        comments: result[0] || [],
                     });
                     console.log(this.state.comments)
                     console.log("Got Comments");
@@ -434,9 +436,11 @@ export default class PostPage extends React.Component {
                     </div>
 
                     <div className={PostPageCSS['back-button-bar']}>
-                        <button className = {PostPageCSS['back-button']}>
-                            <img className = {PostPageCSS['back-button-image']} src={back} alt='back'/>
-                        </button>
+                        <Link to={`/community/${this.state.community_id}`}>
+                            <button className = {PostPageCSS['back-button']}>
+                                <img className = {PostPageCSS['back-button-image']} src={back} alt='back'/>
+                            </button>
+                        </Link>
                     </div>
 
                 {/*</div><div className = 'postpage-content'>*/}
@@ -628,7 +632,7 @@ const Post_bar = (props) => {
                     </div> 
                     <div className = {PostPageCSS['post-delete']}>
                         <button className = {PostPageCSS['post-delete-button']} onClick={props.ClickDelete}></button>
-                        <h5 className = {PostPageCSS['post-delete-text']}>Delete</h5>
+                        <h5>Delete</h5>
                         <Modal show={props.state.openModal} onClose={props.toggleModal}>
                             <div className={PostPageCSS['delete-popup-title']}>Delete Your Post</div>
                             <div className={PostPageCSS['popup-buttons']}>
