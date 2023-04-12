@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import "../style/EditProfilePage.css";
+import "../style/EditProfilePage.module.css";
 import genericFetch from "../helper/genericFetch";
 import uploadFile from "../helper/uploadFile";
 import genericPatch from "../helper/genericPatch";
 import validateUserProfileFields from "../helper/validateUserProfileFields";
+import style from "../style/EditProfilePage.module.css"
 
 export default function EditProfile() {
   const [errorMessage, setErrorMessage] = useState(null);
@@ -36,7 +37,7 @@ export default function EditProfile() {
   } else {
     if (user) {
       return (
-        <div className="container">
+        <div className={style["container"]}>
           {/* <ProfileHeader username={user.username} /> */}
           <ProfileMain user={user} />
         </div>
@@ -53,16 +54,16 @@ const ProfileHeader = (prop) => {
   };
 
   return (
-    <div className="profile-header">
-      <div className="user-profile-headline">
-        <h1 className="active-text">{prop.username}'s Profile Page</h1>
+    <div className={style["profile-header"]}>
+      <div className={style["user-profile-headline"]}>
+        <h1 className={style["active-text"]}>{prop.username}'s Profile Page</h1>
       </div>
-      <div className="page-nav-buttons">
-        <button className="button" onClick={saveActionHandler}>
+      <div className={style["page-nav-buttons"]}>
+        <button className={style["button"]} onClick={saveActionHandler}>
           Save
         </button>
         <Link to="/profile">
-          <button className="button">Close</button>
+          <button className={style["button"]}>Close</button>
         </Link>
       </div>
     </div>
@@ -72,7 +73,7 @@ const ProfileHeader = (prop) => {
 /* Profile Main */
 const ProfileMain = (prop) => {
   return (
-    <div className="profile-main">
+    <div className={style["profile-main"]}>
       <UserProfileForm user={prop.user} />
     </div>
   );
@@ -210,30 +211,30 @@ const UserProfileForm = (prop) => {
 
       {/* Main Form */}
       <form
-        className="user-profile-form"
+        className={style["user-profile-form"]}
         onSubmit={userProfileFormSubmitHandler}
         autoComplete="off"
       >
         {/* User profile avatar field */}
-        <div className="user-profile-avatar">
-          <img className="profile-avatar-preview" src={avatarLink} alt="" />
+        <div className={style["user-profile-avatar"]}>
+          <img className={style["profile-avatar-preview"]} src={avatarLink} alt="" />
           <input
-            id="profile-avatar-upload-input"
+            id={style["profile-avatar-upload-input"]}
             type="file"
             onChange={avatarSelectHandler}
           />
-          <label htmlFor="profile-avatar-upload-input" className="button bold">
+          <label htmlFor="profile-avatar-upload-input" className={style["button"] + " " + style["bold"]}>
             Upload
           </label>
         </div>
 
         {/* User basic info field */}
-        <div className="user-profile-basic-info">
+        <div className={style["user-profile-basic-info"]}>
           {/* Username Input Field*/}
           <label>
-            <span className="active-text bold">Username:</span>
+            <span className={style["active-text"] + " " + style["bold"]}>Username:</span>
             <input
-              className="text-input"
+              className={style["text-input"]}
               type="text"
               value={username}
               onChange={usernameInputHandler}
@@ -241,9 +242,9 @@ const UserProfileForm = (prop) => {
           </label>
           {/* Firstname Input Field*/}
           <label>
-            <span className="active-text bold">First Name:</span>
+            <span className={style["active-text"] + " " + style["bold"]}>First Name:</span>
             <input
-              className="text-input"
+              className={style["text-input"]}
               type="text"
               value={firstname}
               onChange={firstnameInputHandler}
@@ -252,9 +253,9 @@ const UserProfileForm = (prop) => {
           </label>
           {/* Lastname Input Field*/}
           <label>
-            <span className="active-text bold">Last Name:</span>
+            <span className={style["active-text"] + " " + style["bold"]}>Last Name:</span>
             <input
-              className="text-input"
+              className={style["text-input"]}
               type="text"
               value={lastname}
               onChange={lastnameInputHandler}
@@ -264,11 +265,11 @@ const UserProfileForm = (prop) => {
         </div>
 
         {/* User detail info field*/}
-        <div className="user-profile-detail-info">
+        <div className={style["user-profile-detail-info"]}>
           <label>
-            <span className="active-text bold">Description:</span>
+            <span className={style["active-text"] + " " + style["bold"]}>Description:</span>
             <textarea
-              className="textarea-input"
+              className={style["textarea-input"]}
               type="text"
               value={description}
               onChange={descriptionInputHandler}
@@ -277,9 +278,9 @@ const UserProfileForm = (prop) => {
         </div>
 
         {/* User Profile Avatar */}
-        <div className="user-profile-avatar"></div>
+        <div className={style["user-profile-avatar"]}></div>
         {/* User Profile Identity  */}
-        <div className="usr-profile-identity">{prop.username}</div>
+        <div className={style["usr-profile-identity"]}>{prop.username}</div>
       </form>
     </div>
   );
