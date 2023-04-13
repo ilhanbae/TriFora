@@ -55,9 +55,9 @@ export default function App() {
               <Route path="/register" element={<RegisterForm login={login} />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/login" element={<LoginOrProfile login={login} />} />
-              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/profile/:profileId" element={<ProfilePage />} />
               <Route path="/edit-profile" element={<EditProfilePage />} />
-              <Route path="community/:communityId" element={<CommunityPage />} />
+              <Route path="/community/:communityId" element={<CommunityPage />} />
               <Route path="/create-post" element={<CreatePost />} />
               <Route path="/notification" element={<Notification />} />
               <Route path="/" element={<LoginOrProfile login={login} />} />

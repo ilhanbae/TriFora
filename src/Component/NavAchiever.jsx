@@ -142,11 +142,11 @@ class NavAchiever extends React.Component {
                             {/* the following line uses ternary statement to allow for the hiding/showing of the drop down via css */}
                             <ul className={this.state.showDropMenu ? "showDrop" : "hideDrop"}>
                                 <li>
-                                    <Link to="/profile" onClick={this.menuSwitch}> My Profile </Link>
+                                    <Link to={`/profile/${sessionStorage.getItem("user")}`} onClick={() => {window.location.assign(`/profile/${sessionStorage.getItem("user")}`)}}> My Profile </Link>
                                 </li>
-                                {/* <li>
-                                    <Link to="/notifications" onClick={this.menuSwitch}> Notifications </Link>
-                                </li> */}
+                                <li>
+                                    <Link to="/notification" onClick={this.menuSwitch}> Notifications </Link>
+                                </li>
                                 <li>
                                     <Link to="/login" onClick={e => {
                                         {/* this is the only way I could think to do this for logout */}

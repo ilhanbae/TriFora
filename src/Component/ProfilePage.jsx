@@ -3,12 +3,15 @@ import ProfilePageCSS from "../style/ProfilePage.module.css";
 import { Link, useParams } from 'react-router-dom';
 import { setEmitFlags } from "typescript";
 import Friend from './Friend';
+import JoinedCommunity from "./JoinedCommunity";
 
 export default class ProfilePage extends React.Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
+            // Profile User Infos
+            user_id: window.location.href.split('/')[4],
             email: "",
             username: "",
             firstName: "",
@@ -16,23 +19,26 @@ export default class ProfilePage extends React.Component {
             description: "",
             profileImage: "",
 
+            // Community Infos
+            community_list: [],
+
+            // Friend Infos
             friend_list: [],
+
+            // Others
             same_user_profile: false,
             user_connection: false,
             fromUser_toUser_connection_id: "", /* This connection_id contain the id from Session Storage User to current viewing user */
             toUser_fromUser_connection_id: "", /* This connection_id contain the id from current viewing user to Session Storage User */
-
-            user_id: "165",
         };
     }
  
     componentDidMount() {
-        // set the auth token and user ID in the session state
-        //sessionStorage.setItem("token", "underachievers|KOBXIgdj9cxepnzHLCYi1K7IbIdFQgzQfQ5BJ4D13HA");
-        //sessionStorage.setItem("user", "165");
         this.render_user(this.state.user_id);
+        this.load_communties(this.state.user_id);
         this.load_friend(this.state.user_id);
         this.check_user_connection(this.state.user_id);
+        console.log("profile ID", window.location.href.split('/')[4])
     }
 
     // pass a user ID into it, and returns all the infos of the user
@@ -73,6 +79,42 @@ export default class ProfilePage extends React.Component {
                 alert("error!");
                 }
             );
+        }else{
+            //If user is not logged in, show error message
+            alert("Not Logged In");
+        }
+    }
+
+    // This function will load all the communities that the user joined
+    load_communties = (user_id) => {
+        // if the user is not logged in, we don't want to try loading communities.
+        if (sessionStorage.getItem("token")){
+            // Get all the communties
+            let url = process.env.REACT_APP_API_PATH+"/group-members?userID=" + user_id;
+            fetch(url, {
+            method: "get",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+sessionStorage.getItem("token")
+            },
+            })
+            .then(res => res.json())
+            .then(
+                result => {
+                console.log(result);
+                if (result) {
+                    this.setState({
+                        community_list: result[0]
+                    });
+                    console.log("Got communities");
+                }
+                },
+                error => {
+                    alert("ERROR loading communities");
+                    console.log("ERROR loading communities")
+                }
+            );
+        
         }else{
             //If user is not logged in, show error message
             alert("Not Logged In");
@@ -500,31 +542,22 @@ export default class ProfilePage extends React.Component {
     
                 <div className = {ProfilePageCSS.favorite_communities_bar}>
                     <div className = {ProfilePageCSS.favorite_communities_title_bar}>
-                        <h2 className = {ProfilePageCSS.favorite_communities_title}>Favorite Communities</h2>
+                        <h2 className = {ProfilePageCSS.favorite_communities_title}>Joined Communities</h2>
+                        <div className = {ProfilePageCSS.communities_num}>
+                            <h3> &#40;{this.state.community_list.length}&#41; </h3>
+                        </div>
                     </div>
+
                     <div className = {ProfilePageCSS.communities_bar}>
-                        <div className = {ProfilePageCSS.community}>
-                            <div className = {ProfilePageCSS.community_image}>
-                            </div>
-                            <div className = {ProfilePageCSS.community_title}>
-                                <h4> Class of 2023 </h4>
-                            </div>
-                        </div>
-                        <div className = {ProfilePageCSS.community}>
-                            <div className = {ProfilePageCSS.community_image}>
-                            </div>
-                            <div className = {ProfilePageCSS.community_title}>
-                                <h4> Class of 2023 </h4>
-                            </div>
-                        </div>
-                        <div className = {ProfilePageCSS.community}>
-                            <div className = {ProfilePageCSS.community_image}>
-                            </div>
-                            <div className = {ProfilePageCSS.community_title}>
-                                <h4> Class of 2023 </h4>
-                            </div>
-                        </div>
+                        {this.state.community_list.map(community_list => (
+                            <JoinedCommunity 
+                            key={community_list.id}
+                            community_id={community_list.groupID}
+                            community_name={community_list.group.name}
+                            community_banner_image={community_list.group.attributes.design.bannerProfileImage}/>
+                        ))}
                     </div>
+
                 </div>
     
                 <div className = {ProfilePageCSS.my_friend_bar}>
@@ -539,9 +572,11 @@ export default class ProfilePage extends React.Component {
     
                     <div className = {ProfilePageCSS.friend_card_bar}>
                         {this.state.friend_list.map(friend => (
+                            console.log(friend),
                             <Friend 
                             key={friend.id} 
                             friend={friend} 
+                            friend_id={friend.toUserID}
                             view_userID={this.state.user_id}
                             check_user_connection={this.check_user_connection}
                             load_friend={this.load_friend}/>
@@ -591,201 +626,4 @@ const Render_Buttons = (props) => {
         );
     }
     
-}
-
-
-const Render_User = (props) => {
-    const { userId } = useParams();
-    console.log(userId);
-    // If it is the current user profile page
-    if ( userId === sessionStorage.getItem("user")){
-        props.render_user(userId);
-        props.load_friend(userId);
-        return(
-            <div className = {ProfilePageCSS.profile_page}>
-    
-                <div className = {ProfilePageCSS.profile_title_bar}> 
-                    <div className = {ProfilePageCSS.profile_title}>
-                        <h1> {props.state.username}&prime;s Profile Page </h1>
-                    </div>
-    
-                    <div className = {ProfilePageCSS['title-bar-buttons']}>
-                        <Link to="/edit-profile" className = {ProfilePageCSS.edit_button}>
-                            Edit
-                        </Link>
-    
-                        <Link to='/' className = {ProfilePageCSS.close_button}>
-                            Close
-                        </Link>
-                    </div>
-                </div>
-    
-                <div className ={ProfilePageCSS.profile_info_bar}>
-                    <div>
-                        <img className={ProfilePageCSS.profile_image} src={props.state.profileImage} />
-                    </div>
-                    <div className = {ProfilePageCSS.user_info}>
-                        <div className = {ProfilePageCSS.username}>
-                            <h1> {props.state.username} </h1>
-                        </div>
-                        <div className = {ProfilePageCSS.first_name}>
-                            <h3> First Name: {props.state.firstName} </h3>
-                        </div>
-                        <div className = {ProfilePageCSS.last_name}>
-                            <h3> Last Name: {props.state.lastName} </h3>
-                        </div>
-                    </div>
-                    <div className = {ProfilePageCSS.description}>
-                        <h4> Hi, I’m Spiderman. I live my life with great responsibilities. </h4>
-                        {/* <h4> {props.state.description} </h4> */}
-                    </div>
-                </div>
-    
-                <div className = {ProfilePageCSS.favorite_communities_bar}>
-                    <div className = {ProfilePageCSS.favorite_communities_title_bar}>
-                        <h2 className = {ProfilePageCSS.favorite_communities_title}>Favorite Communities</h2>
-                    </div>
-                    <div className = {ProfilePageCSS.communities_bar}>
-                        <div className = {ProfilePageCSS.community}>
-                            <div className = {ProfilePageCSS.community_image}>
-                            </div>
-                            <div className = {ProfilePageCSS.community_title}>
-                                <h4> Class of 2023 </h4>
-                            </div>
-                        </div>
-                        <div className = {ProfilePageCSS.community}>
-                            <div className = {ProfilePageCSS.community_image}>
-                            </div>
-                            <div className = {ProfilePageCSS.community_title}>
-                                <h4> Class of 2023 </h4>
-                            </div>
-                        </div>
-                        <div className = {ProfilePageCSS.community}>
-                            <div className = {ProfilePageCSS.community_image}>
-                            </div>
-                            <div className = {ProfilePageCSS.community_title}>
-                                <h4> Class of 2023 </h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-    
-                <div className = {ProfilePageCSS.my_friend_bar}>
-                    <div className = {ProfilePageCSS.friend_title_bar}>
-                        <div className = {ProfilePageCSS.friend_title}>
-                            <h2> My Friends </h2>
-                        </div>
-                        <div className = {ProfilePageCSS.friend_num}>
-                            <h3> &#40;{props.state.friend_list.length}&#41; </h3>
-                        </div>
-                    </div>
-    
-                    <div className = {ProfilePageCSS.friend_card_bar}>
-                        {props.state.friend_list.map(friend => (
-                            <Friend key={friend.id} friend={friend}/>
-                        ))}
-                    </div>
-                </div> 
-    
-            </div>
-        );
-
-    }else{
-        return(
-            <div className = {ProfilePageCSS.profile_page}>
-    
-                <div className = {ProfilePageCSS.profile_title_bar}> 
-                    <div className = {ProfilePageCSS.profile_title}>
-                        <h1> {this.state.username}&prime;s Profile Page </h1>
-                    </div>
-    
-                    <div className = {ProfilePageCSS['title-bar-buttons']}>
-
-                        {/*
-                        <Link to="/edit-profile" className = {ProfilePageCSS.edit_button}>
-                            Edit
-                        </Link>
-                        */}
-    
-                        <button className= {ProfilePageCSS.addfriend_button}>Add Friend</button>
-    
-                        {/* <button className= {ProfilePageCSS.removefriend_button}>Remove Friend</button> */}
-    
-                        <Link to='/' className = {ProfilePageCSS.close_button}>
-                            Close
-                        </Link>
-                    </div>
-                </div>
-    
-                <div className ={ProfilePageCSS.profile_info_bar}>
-                    <div>
-                        <img className={ProfilePageCSS.profile_image} src={this.state.profileImage} />
-                    </div>
-                    <div className = {ProfilePageCSS.user_info}>
-                        <div className = {ProfilePageCSS.username}>
-                            <h1> {this.state.username} </h1>
-                        </div>
-                        <div className = {ProfilePageCSS.first_name}>
-                            <h3> First Name: {this.state.firstName} </h3>
-                        </div>
-                        <div className = {ProfilePageCSS.last_name}>
-                            <h3> Last Name: {this.state.lastName} </h3>
-                        </div>
-                    </div>
-                    <div className = {ProfilePageCSS.description}>
-                        <h4> Hi, I’m Spiderman. I live my life with great responsibilities. </h4>
-                        {/* <h4> {this.state.description} </h4> */}
-                    </div>
-                </div>
-    
-                <div className = {ProfilePageCSS.favorite_communities_bar}>
-                    <div className = {ProfilePageCSS.favorite_communities_title_bar}>
-                        <h2 className = {ProfilePageCSS.favorite_communities_title}>Favorite Communities</h2>
-                    </div>
-                    <div className = {ProfilePageCSS.communities_bar}>
-                        <div className = {ProfilePageCSS.community}>
-                            <div className = {ProfilePageCSS.community_image}>
-                            </div>
-                            <div className = {ProfilePageCSS.community_title}>
-                                <h4> Class of 2023 </h4>
-                            </div>
-                        </div>
-                        <div className = {ProfilePageCSS.community}>
-                            <div className = {ProfilePageCSS.community_image}>
-                            </div>
-                            <div className = {ProfilePageCSS.community_title}>
-                                <h4> Class of 2023 </h4>
-                            </div>
-                        </div>
-                        <div className = {ProfilePageCSS.community}>
-                            <div className = {ProfilePageCSS.community_image}>
-                            </div>
-                            <div className = {ProfilePageCSS.community_title}>
-                                <h4> Class of 2023 </h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-    
-                <div className = {ProfilePageCSS.my_friend_bar}>
-                    <div className = {ProfilePageCSS.friend_title_bar}>
-                        <div className = {ProfilePageCSS.friend_title}>
-                            <h2> My Friends </h2>
-                        </div>
-                        <div className = {ProfilePageCSS.friend_num}>
-                            <h3> &#40;{this.state.friend_list.length}&#41; </h3>
-                        </div>
-                    </div>
-    
-                    <div className = {ProfilePageCSS.friend_card_bar}>
-                        {this.state.friend_list.map(friend => (
-                            <Friend key={friend.id} friend={friend} view_userID={this.state.user_id}/>
-                        ))}
-                    </div>
-    
-                </div> 
-    
-            </div>
-        );
-    }
 }
