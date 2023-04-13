@@ -12,57 +12,17 @@ import ProfilePage from "./Component/ProfilePage";
 import EditProfilePage from "./Component/EditProfilePage";
 import CommunityPage from "./Component/CommunityPage";
 import CreatePost from "./Component/CreatePost";
+import Post_Page from "./Component/PostPage.jsx";
 
 export default function App() {
   // The app component maintains whether or not the login or logout actions were triggerd.
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [navStyle, setNavStyle] = useState(2);
 
-// toggleModal will both show and hide the modal dialog, depending on current state.  Note that the
-// contents of the modal dialog are set separately before calling toggle - this is just responsible
-// for showing and hiding the component
-function toggleModal(app) {
-  app.setState({
-    openModal: !app.state.openModal
-  });
-}
-
-
-// the App class defines the main rendering method and state information for the app
-class App extends React.Component {
-
-  // the app holds a few state items : whether or not the modal dialog is open, whether or not we need to refresh 
-  // the post list, and whether or not the login or logout actions have been triggered, which will change what the 
-  // user can see (many features are only available when you are logged in)
-  constructor(props) {
-    super(props);
-    this.state = {
-      openModal: false,
-      refreshPosts: false,
-      logout: false,
-      login: false,
-    };
-
-    // in the event we need a handle back to the parent from a child component,
-    // we can create a reference to this and pass it down.
-    this.mainContent = React.createRef();
-
-    // since we are passing the following methods to a child component, we need to 
-    // bind them, otherwise the value of "this" will mean the child, and not the app 
-    this.doRefreshPosts = this.doRefreshPosts.bind(this);
-    this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
-  }
-
-  // on logout, pull the session token and user from session storage and update state
-  logout = () =>{
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("user");
-    this.setState({
-      logout: true,
-      login: false
-    });
-    
+  const navSwitch = (headerStyle) => {
+    if (headerStyle !== navStyle) {
+      setNavStyle(headerStyle)
+    }
   }
 
   /* On logout, pull the session token and user from session storage and update the 
@@ -97,7 +57,7 @@ class App extends React.Component {
               <Route path="/login" element={<LoginOrProfile login={login} />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/edit-profile" element={<EditProfilePage />} />
-              <Route path="community/:communityId" element={<CommunityPage />} />
+              <Route path="/community/:communityId" element={<CommunityPage />} />
               <Route path="/create-post" element={<CreatePost />} />
               <Route path="/" element={<LoginOrProfile login={login} />} />
               <Route path="/community/:communityId/post_page/:postID" element={<Post_Page login={login}/>} />
