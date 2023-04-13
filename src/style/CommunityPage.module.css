@@ -144,17 +144,16 @@
 }
 .community-banner-background {
   background-size: contain;
-
-  /* background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-attachment: fixed; */
-
+  /* background-size: cover; */
+  /* background-repeat: no-repeat; */
+  /* background-position: center center; */
+  /* background-attachment: fixed; */
+  border: 5px solid var(--bistre);
   width: 100%;
   height: 350px;
 }
 .community-banner-content {
-  /* background-color: var(--yellow-apricot); */
+  background-color: var(--yellow-apricot);
   /* border: 1px solid var(--bistre); */
   display: flex;
   flex-direction: row;

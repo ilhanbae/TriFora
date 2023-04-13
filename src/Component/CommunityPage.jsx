@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import CommunityPageSetting from "./CommunityPageSetting";
 import genericFetch from "../helper/genericFetch";
 import genericDelete from "../helper/genericDelete";
 import genericPost from "../helper/genericPost";
+import genericPatch from "../helper/genericPatch";
 import style from "../style/CommunityPage.module.css";
 import defaultProfileImage from "../assets/defaultProfileImage.png";
 import defaultPostImage from "../assets/defaultPostImage.png";
@@ -63,7 +65,7 @@ export default function CommunityPage(props) {
     // setIsLoaded(true);
   };
 
-  /* This method refresh the communit details by sending the API request again.
+  /* This method refresh the community details by sending the API request again.
   It can be passed on to child components that can change the state of the community page. 
   Note, currently the only attributes the community page maintains is its banner design.
   Perhaps, this can be called when the community admin/mod wishes to change the style of the community. */
@@ -92,6 +94,9 @@ export default function CommunityPage(props) {
           communityDetails={communityDetails}
           userCommunityMemberDetails={userCommunityMemberDetails}
           refreshCommunityAndUserMemberDetails={refreshCommunityAndUserMemberDetails}
+          refreshCommunityDetails={refreshCommunityDetails}
+          openModal={props.openModal}
+          closeModal={props.closeModal}
         />
 
         {/* Main section */}
@@ -108,18 +113,12 @@ export default function CommunityPage(props) {
 }
 
 /* [TODO] This component serves as container for banner contents. Inside the banner, 
-there's community name, community background, community icon, and a join button*/
+there's community name, community background, community icon, and a join button */
 const CommunityBanner = (props) => {
-  // Set community banner color
-  let bannerColor = props.communityDetails.attributes.design.bannerColor
-    ? `#${props.communityDetails.attributes.design.bannerColor}`
+  // Set community banner background color
+  let bannerBackgroundColor = props.communityDetails.attributes.design.bannerBackgroundColor
+    ? props.communityDetails.attributes.design.bannerBackgroundColor
     : "#f3c26e";
-
-  // Set post thumbnail image
-  let bannerBackgroundImage = props.communityDetails.attributes.design
-    .bannerBackgroundImage
-    ? props.communityDetails.attributes.design.bannerBackgroundImage
-    : "";
 
   // Check current user's community role & joined state
   const isUserAdmin = props.userCommunityMemberDetails?.attributes.role === "admin";
@@ -138,7 +137,7 @@ const CommunityBanner = (props) => {
 
   }
 
-  // This method adds user to community by sending POST request to API server
+  // This method adds user to community by sending POST request to the API server
   const addUserToCommunity = async () => {
       let endpoint = '/group-members';
       let body = {
@@ -157,7 +156,7 @@ const CommunityBanner = (props) => {
       }
   }
 
-  // This methods removes user from community by sending DELTE request to API server
+  // This methods removes user from community by sending DELTE request to the API server
   const removeUserFromCommunity = async () => {
     let endpoint = `/group-members/${props.userCommunityMemberDetails.id}`;
     const { data, errorMessage } = await genericDelete(endpoint);
@@ -169,33 +168,55 @@ const CommunityBanner = (props) => {
     }
   }
 
+  // This method opens edit commmunity form modal
+  const openEditCommunityFormModal = () => {
+    const modalContent = <CommunityPageSetting 
+      communityId={props.communityDetails.id}
+      refreshCommunityDetails={props.refreshCommunityDetails}
+      closeModal={props.closeModal}
+    />;
+    const modalTitle = "Community Setting"
+    const modalStyle = {
+      // width: '60%'
+      // height: '50%',
+    }
+    props.openModal({title: modalTitle, content: modalContent, style: modalStyle});
+  }
+
   return (
     <div className={style["community-banner"]}>
       {/* Community Banner Background */}
-      <div className={style["community-banner-background"]} style={{ backgroundImage: `url(${bannerBackgroundImage})` }}></div>
+      <div className={style["community-banner-background"]} style={{ backgroundColor: bannerBackgroundColor }}></div>
 
       {/* Commnity Banner Content*/}
-      <div className={style["community-banner-content"]} style={{ backgroundColor: bannerColor }}>
+      <div
+        className={style["community-banner-content"]}
+      >
         {/* Community Banner Content Left */}
         <div className={style["community-banner-content-left"]}>
           {/* Community Avatar Image */}
           <img
             className={`${style["image"]} ${style["image__sm"]} ${style["image__square"]}`}
-            src={props.communityDetails.attributes.design.bannerBackgroundImage}
-            onError={(e) => (e.currentTarget.src = defaultCommunityImage)}
+            src={props.communityDetails.attributes.design.bannerProfileImage}
             alt="Community background"
+            onError={(e) => (e.currentTarget.src = defaultCommunityImage)}
           />
           {/* Community Info */}
           <div className={style["community-info"]}>
+            {/* Community Name */}
             <h2>{props.communityDetails.name}</h2>
+            {/* Community Created Date */}
             <span className={style["inactive-text"]}>
               Since February 19th, 2023
             </span>
           </div>
-          {/* Edit Button */}
+          {/* Setting Button */}
           {(isUserAdmin || isUserMod) && (
-            <button className={`${style["button"]} ${style["button__bordered"]}`}>
-              Edit
+            <button 
+              className={`${style["button"]} ${style["button__bordered"]}`}
+              onClick={openEditCommunityFormModal}
+            >
+              Setting
             </button>
           )}
         </div>
@@ -203,15 +224,18 @@ const CommunityBanner = (props) => {
         {/* Community Banner Content Right */}
         <div className={style["community-banner-content-right"]}>
           {/* Notification Button */}
-          {isUserJoined &&
-            <button className={`${style["button"]} ${style["button__bordered"]}`}>
+          {isUserJoined && (
+            <button
+              className={`${style["button"]} ${style["button__bordered"]}`}
+            >
               Notfication
             </button>
-          }
+          )}
           {/* Join Button */}
-          <button 
+          <button
             className={`${style["button"]} ${style["button__bordered"]}`}
-            onClick={joinButtonHandler}>
+            onClick={joinButtonHandler}
+          >
             {props.userCommunityMemberDetails ? "Joined" : "Join"}
           </button>
         </div>
@@ -474,10 +498,10 @@ const CommunityPost = (props) => {
   const isAuthorMember = props.communityPostAuthorRoles[props.post.authorID] === "member"
 
   // Set post author role label
-  const postAuthorRoleLabel = isAuthorAdmin ? "Admin" :
+  const postAuthorRoleLabel = isAuthorUser ? "You" :
+    isAuthorAdmin ? "Admin" :
     isAuthorMod ? "Mod" :
     isAuthorMember ? "Member" :
-    isAuthorUser ? "You" :
     "Departed"
 
   // This method handles post actions such as pinning, hiding, reporting, or deleting.
@@ -523,19 +547,15 @@ const CommunityPost = (props) => {
     props.refreshPosts();
   };
 
-  // Set post thumbnail image
-  let postThumbnailImage = props.post.attributes.images[0]
-    ? props.post.attributes.images[0]
-    : defaultPostImage;
-
   return (
     <div className={style["community-post"]} key={props.post.id}>
       {/* Post Thumbnail */}
       <img
         className={`${style["image"]} ${style["image__md"]} ${style["image__square"]}`}
-        src={postThumbnailImage}
-        onError={(e) => (e.currentTarget.src = defaultProfileImage)}
-        alt=""
+        // src={postThumbnailImage}
+        src={String(props.post.attributes?.images[0])}
+        alt="Post placeholder"
+        onError={(e) => (e.currentTarget.src = defaultPostImage)}
       />
 
       <div className={style["post-summary"]}>
@@ -693,8 +713,7 @@ Some of these post action options should be user-specific. For example, "Delete"
 to posts that belongs to the user or to all posts if the user's a admin or a mod.
 
 * Pin & Hide are user-specific actions, and they should persist to only user's post list.
-* Report & Delete are global actions, and they should persist to all users' post lists.
-*/
+* Report & Delete are global actions, and they should persist to all users' post lists. */
 const PostActionSidemenu = (props) => {
   // TODO: The action sidemenu should close when user clicks anywhere outside
   // -  maybe use CSS pseudo focus-within?
@@ -706,10 +725,12 @@ const PostActionSidemenu = (props) => {
   // Check current user's community role & post author's role
   const isUserAdmin = props.userCommunityMemberDetails?.attributes.role === "admin";
   const isUserMod = props.userCommunityMemberDetails?.attributes.role === "mod";
+  const isUserVisiter = props.userCommunityMemberDetails == null;
   const isAuthorUser = props.post.authorID === props.userCommunityMemberDetails?.user.id;
   const isAuthorAdmin = props.communityPostAuthorRoles[props.post.authorID] === "admin";
   const isAuthorMod = props.communityPostAuthorRoles[props.post.authorID] === "mod";
 
+  // console.log(isUserVisiter)
   // console.log(props.post.id, props.post.authorID, isAuthorUser, isAuthorAdmin, isAuthorMod)
 
   // These methods update the option labels and send the chosen action option to its parent component - CommunityPost.
@@ -754,7 +775,7 @@ const PostActionSidemenu = (props) => {
             </li>
           }
           {/* Report */}
-          {((!isAuthorUser && !isAuthorAdmin && !isAuthorMod) && (!isUserAdmin)) &&
+          {!isUserVisiter && (!isAuthorUser && !isAuthorAdmin && !isAuthorMod) && (!isUserAdmin) &&
             <li className={style["action-sidemenu-option"]} onClick={reportActionHandler}>
               <span className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}></span>
               <span className={style["active-text"]}>{reportOptionName}</span>
@@ -925,8 +946,8 @@ const CommunityMember = (props) => {
       <img
         className={`${style["image"]} ${style["image__md"]} ${style["image__round"]}`}
         src={props.member.user.attributes.profile.profileImage}
+        alt="Community member profile"
         onError={(e) => (e.currentTarget.src = defaultProfileImage)}
-        alt=""
       />
 
       {/* Community Member Info */}
@@ -1033,8 +1054,7 @@ Some of these member action options should be user-specific. For example, "Kick"
 to admin or mods.
 
 * Block is user-specific action, and they should persist to only user's member list.
-* Report & Kick are global actions, and they should persist to all users' member lists.
-*/
+* Report & Kick are global actions, and they should persist to all users' member lists. */
 const MemberActionSidemenu = (props) => {
   const [isViewProfile, setIsViewProfile] = useState(false);
   const [isReported, setIsReported] = useState(false);
@@ -1044,10 +1064,12 @@ const MemberActionSidemenu = (props) => {
   // Check current user's community role & member's community role
   const isUserAdmin = props.userCommunityMemberDetails?.attributes.role === "admin";
   const isUserMod = props.userCommunityMemberDetails?.attributes.role === "mod";
+  const isUserVisiter = props.userCommunityMemberDetails == null;
   const isMemberUser = props.member.userID === props.userCommunityMemberDetails?.user.id;
   const isMemberAdmin = props.member.attributes.role === "admin";
   const isMemberMod = props.member.attributes.role === "mod";
 
+  // console.log(isUserVisiter)
   // console.log(props.member.user.attributes.profile.username, isMemberUser)
 
   // These methods update the option labels and send the chosen action option to its parent component - CommunityMember.
@@ -1085,7 +1107,7 @@ const MemberActionSidemenu = (props) => {
             <span className={style["active-text"]}>{viewProfileOptionName}</span>
           </li>
           {/* Report */}
-          {(!isMemberUser && !isMemberAdmin && !isMemberMod) && (!isUserAdmin) &&
+          {!isUserVisiter && (!isMemberUser && !isMemberAdmin && !isMemberMod) && (!isUserAdmin) &&
             <li className={style["action-sidemenu-option"]} onClick={reportActionHandler}>
               <span className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}></span>
               <span className={style["active-text"]}>{reportOptionName}</span>
