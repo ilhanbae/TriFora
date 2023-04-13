@@ -1,7 +1,9 @@
 import React from "react";
 import ProfilePageCSS from "../style/ProfilePage.module.css";
+import { Link, useParams } from 'react-router-dom';
 
-/* The FriendList is going to load all the Friends related to the current user on profile page.*/
+
+/* The Friend is going to load all the Friends related to the current user on profile page.*/
 
 export default class Friend extends React.Component {
 
@@ -10,12 +12,14 @@ export default class Friend extends React.Component {
         this.state = {
             /* we can get "fromUser_toUser_connection_id" from "this.props.friend.id"*/
             toUser_fromUser_connection_id: "",
+            click_friend_id: "",
         };
     }
 
     componentDidMount() {
         this.load_toUser_fromUser_connection_id();
     }
+
 
     // This function will get the toUser_fromUser_connection_id
     load_toUser_fromUser_connection_id = () => {
@@ -64,9 +68,9 @@ export default class Friend extends React.Component {
                     this.props.load_friend(this.props.view_userID);
                 },
                 error => {
-                    alert("ERROR when deleting Friend connection");
+                    alert("ERROR when deleting Frist Friend connection");
                     console.log(error);
-                    console.log("ERROR when deleting Friend connection");
+                    console.log("ERROR when deleting First Friend 1 connection");
                 }
             );
 
@@ -86,9 +90,9 @@ export default class Friend extends React.Component {
                     this.props.load_friend(this.props.view_userID);
                 },
                 error => {
-                    alert("ERROR when deleting Friend connection");
+                    alert("ERROR when deleting Second Friend connection");
                     console.log(error);
-                    console.log("ERROR when deleting Friend connection");
+                    console.log("ERROR when deleting Second Friend connection");
                 }
             );
 
@@ -99,26 +103,32 @@ export default class Friend extends React.Component {
     }
 
     render() {
+        // If view_userID != to the current logged in user, remove the "Remove" button
         if (this.props.view_userID !== sessionStorage.getItem("user")){
             return (
-                <div className = {ProfilePageCSS.friend_card}>
-                    <img className = {ProfilePageCSS.friend_avatar} src={this.props.friend.toUser.attributes.profile.profileImage}></img>
-                    <div className = {ProfilePageCSS.friend_name}>
-                        <h4> {this.props.friend.toUser.attributes.profile.username} </h4>
+                    <div className = {ProfilePageCSS.friend_card}>
+                        <Link to={`/profile/${this.props.friend_id}`} onClick={() => {window.location.assign(`/profile/${this.props.friend_id}`)}}>
+                            <img className = {ProfilePageCSS.friend_avatar} src={this.props.friend.toUser.attributes.profile.profileImage}></img>
+                            <div className = {ProfilePageCSS.friend_name}>
+                                <h4> {this.props.friend.toUser.attributes.profile.username} </h4>
+                            </div>
+                        </Link>
                     </div>
-                </div>
             );
+        // If view_userID == to the current logged in user, render the "Remove" button
         }else{
             return(
-                <div className = {ProfilePageCSS.friend_card}>
-                    <img className = {ProfilePageCSS.friend_avatar} src={this.props.friend.toUser.attributes.profile.profileImage}></img>
-                    <div className = {ProfilePageCSS.friend_name}>
-                        <h4> {this.props.friend.toUser.attributes.profile.username} </h4>
+                    <div className = {ProfilePageCSS.friend_card}>
+                        <Link to={`/profile/${this.props.friend_id}`} onClick={() => {window.location.assign(`/profile/${this.props.friend_id}`)}}>
+                            <img className = {ProfilePageCSS.friend_avatar} src={this.props.friend.toUser.attributes.profile.profileImage}></img>
+                            <div className = {ProfilePageCSS.friend_name}>
+                                <h4> {this.props.friend.toUser.attributes.profile.username} </h4>
+                            </div>
+                        </Link>
+                        <button className = {ProfilePageCSS.friend_remove} onClick={() => this.remove_friend_connection()}>
+                            <h5>Remove</h5>
+                        </button>
                     </div>
-                    <button className = {ProfilePageCSS.friend_remove} onClick={() => this.remove_friend_connection()}>
-                        <h5>Remove</h5>
-                    </button>
-                </div>
             );
         }
     }

@@ -57,7 +57,6 @@ export default class Notification extends React.Component {
         }else{
             console.log("Please Login First!")
         }
-
     }
 
     render() {
@@ -67,7 +66,7 @@ export default class Notification extends React.Component {
                     <div className={NotificationCSS["notification-message"]}>
                         <h2>You Have &#91; {this.state.friend_notification_list.length} &#93; Notifications</h2>
                     </div>
-                    <Link to='/profile' className={NotificationCSS["close-button"]}>
+                    <Link to={`/profile/${sessionStorage.getItem('user')}`} className={NotificationCSS["close-button"]}>
                         Close
                     </Link>
                 </div>
@@ -76,8 +75,6 @@ export default class Notification extends React.Component {
                     {this.state.friend_notification_list.map(notification => (
                         <NotificationBox key={notification.id} notification={notification} load_friend_notification={this.load_friend_notification}/>
                     ))}
-
-            
                 </div>
             </div>
         );
