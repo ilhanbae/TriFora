@@ -54,23 +54,23 @@ export default function EditableColor(props) {
 
   return (
     <div className={style["container"]}>
-      {/* Hidden Color Picker */}
-      <input 
-          type="color"
-          value={newColor}
-          onChange={colorInputChangeHandler}
-          ref={colorPickerRef}
-          style={{ visibility: "hidden"}}
-      />
-
       {/* Original Color Display */}
       {!isEditColor && <div>{originalColorDisplay}</div>}
 
       {/* Edited Color Display*/}
       {isEditColor && (
         <div className={style["edit-color-display"]}>
+          {/* Hidden Color Picker */}
+          <input
+            type="color"
+            value={newColor}
+            onChange={colorInputChangeHandler}
+            style={{ visibility: "hidden" }}
+            // style={{ display: "none" }}
+            ref={colorPickerRef}
+          />
           {/* New Color Display */}
-          <div 
+          <div
             className={style["edit-color-preview"]}
             onClick={toggleImagePicker}
             style={{ backgroundColor: newColor }}
@@ -91,7 +91,7 @@ export default function EditableColor(props) {
             <span className={style["cancel-icon"]}></span>
             Cancel
           </button>
-        </div> 
+        </div>
       )}
 
       {/* Edit Button */}
@@ -105,7 +105,7 @@ export default function EditableColor(props) {
         </button>
       )}
     </div>
-  )
+  );
 }
 
 EditableColor.propTypes = {

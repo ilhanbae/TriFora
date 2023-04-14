@@ -84,6 +84,15 @@
 }
 
 /* Action Sidemenu */
+.nested-action-sidemenu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  background-color: var(--light-yellow);
+  border: 2px solid var(--bistre);
+  border-radius: 10px;
+}
+
 .action-sidemenu {
   position: absolute;
   background-color: var(--light-yellow);

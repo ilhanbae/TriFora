@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import CommunityPageSetting from "./CommunityPageSetting";
 import genericFetch from "../helper/genericFetch";
@@ -112,7 +112,7 @@ export default function CommunityPage(props) {
   }
 }
 
-/* [TODO] This component serves as container for banner contents. Inside the banner, 
+/* This component serves as container for banner contents. Inside the banner, 
 there's community name, community background, community icon, and a join button */
 const CommunityBanner = (props) => {
   // Set community banner background color
@@ -177,8 +177,8 @@ const CommunityBanner = (props) => {
     />;
     const modalTitle = "Community Setting"
     const modalStyle = {
-      // width: '60%'
-      // height: '50%',
+      width: '80%',
+      height: '60%',
     }
     props.openModal({title: modalTitle, content: modalContent, style: modalStyle});
   }
@@ -244,7 +244,7 @@ const CommunityBanner = (props) => {
   );
 };
 
-/* [TODO] This component will render either the community posts list or community members list. 
+/* This component will render either the community posts list or community members list. 
 The type of content to display is chosen by the community stats tab*/
 const CommunityContentDisplay = (props) => {
   const [contentDisplayType, setContentDisplayType] = useState("posts");
@@ -379,7 +379,7 @@ const CommunityStats = (props) => {
   );
 };
 
-/* [TODO] This component will render all the posts within a community. This list will update 
+/* This component will render all the posts within a community. This list will update 
 whenever user makes change to the post, this includes pinning the post, hiding the post, 
 reporting the post, and removing the post. This component also include post control tool 
 and pagination */
@@ -479,14 +479,29 @@ const CommunityPostsList = (props) => {
   }
 };
 
-/* [TODO] This component will render a single post on community post list with all attributes like author, summary, reaction, post-action-menu, etc. */
+/* This component will render a single post on community post list with all attributes like author, summary, reaction, post-action-menu, etc. */
 const CommunityPost = (props) => {
   const [isPostActionActive, setIsPostActionActive] = useState(false);
   const [isPostPinned, setIsPostPinned] = useState(false);
   const [isPostHidden, setIsPostHidden] = useState(false);
   const [isPostReported, setIsPostReported] = useState(false);
+  const postActionSidemenuRef = useRef(null); // Create a ref for post action sidemenu component
 
-  // This method toggles between post action active and inactive
+  /* This hook check if mousedown DOM event occurs outside a post action sidemenu.  */
+  useEffect(() => {
+    const outSideClickHandler = (event) => {
+      if(postActionSidemenuRef.current && !postActionSidemenuRef.current.contains(event.target)) {
+        setIsPostActionActive(false);
+      }
+    }
+    document.addEventListener('mousedown', outSideClickHandler);
+
+    return () => {
+      document.removeEventListener('mousedown', outSideClickHandler)
+    }
+  })
+
+  /* This method toggles between post action active and inactive */
   const postActionButtonHandler = () => {
     setIsPostActionActive(isPostActionActive ? false : true);
   };
@@ -504,12 +519,8 @@ const CommunityPost = (props) => {
     isAuthorMember ? "Member" :
     "Departed"
 
-  // This method handles post actions such as pinning, hiding, reporting, or deleting.
-  // It's passed on to its child component - postActionSidemenu, where the action options are selected.
-
-  // TODO: It should call API to update each post, and refresh the post list.
-  // TODO: Should Pinning, hiding, or reporting considered as a reaction?
-  // TODO: It should also display modal or toast to indiate that the post action has been selected
+  /* This method handles post actions such as pinning, hiding, reporting, or deleting.
+  It's passed on to its child component - postActionSidemenu, where the action options are selected. */
   const postActionOptionsHandler = (option) => {
     switch (option) {
       case "pin":
@@ -533,7 +544,7 @@ const CommunityPost = (props) => {
     }
   };
 
-  // This method handles delete post action.
+  /* This method handles delete post action by sending DELETE request to API server. */
   const deletePost = async () => {
     // Send DELETE request to the database.
     const { data, errorMessage } = await genericDelete(
@@ -635,6 +646,7 @@ const CommunityPost = (props) => {
           post={props.post}
           userCommunityMemberDetails={props.userCommunityMemberDetails}
           communityPostAuthorRoles={props.communityPostAuthorRoles}
+          postActionSidemenuRef={postActionSidemenuRef}
         />
       </div>
     </div>
@@ -715,8 +727,6 @@ to posts that belongs to the user or to all posts if the user's a admin or a mod
 * Pin & Hide are user-specific actions, and they should persist to only user's post list.
 * Report & Delete are global actions, and they should persist to all users' post lists. */
 const PostActionSidemenu = (props) => {
-  // TODO: The action sidemenu should close when user clicks anywhere outside
-  // -  maybe use CSS pseudo focus-within?
   const [isPinned, setIsPinned] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const [isReported, setIsReported] = useState(false);
@@ -760,7 +770,7 @@ const PostActionSidemenu = (props) => {
 
   if (props.isActive) {
     return (
-      <div className={style["action-sidemenu"]}>
+      <div className={style["action-sidemenu"]} ref={props.postActionSidemenuRef}>
         <ul className={style["action-sidemenu-option-list"]}>
           {/* Pin */}
           <li className={style["action-sidemenu-option"]} onClick={pinActionHandler}>
@@ -794,7 +804,7 @@ const PostActionSidemenu = (props) => {
   }
 };
 
-/* [TODO] This component will render all members within a community. This component also include member control tool and pagination */
+/* This component will render all members within a community. This component also include member control tool and pagination */
 const CommunityMembersList = (props) => {
   const [members, setMembers] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -888,17 +898,29 @@ username, role, etc. */
 const CommunityMember = (props) => {
   const [isMemberActionActive, setIsMemberActionActive] = useState(false);
   const [isMemberReported, setIsMemberReported] = useState(false);
+  const memberActionSidemenuRef = useRef(null); // Create a ref for memver action sidemenu component
 
-  // This method toggles between post action active and inactive
+  /* This hook check if mousedown DOM  event occurs outside a member action sidemenu.  */
+  useEffect(() => {
+    const outSideClickHandler = (event) => {
+      if(memberActionSidemenuRef.current && !memberActionSidemenuRef.current.contains(event.target)) {
+        setIsMemberActionActive(false);
+      }
+    }
+    document.addEventListener('mousedown', outSideClickHandler);
+
+    return () => {
+      document.removeEventListener('mousedown', outSideClickHandler)
+    }
+  })
+
+  /* This method toggles between post action active and inactive */
   const memberActionButtonHandler = () => {
     setIsMemberActionActive(isMemberActionActive ? false : true);
   };
 
-  // This method handles member actions such as view profile, block, report, or kick.
-  // It's passed on to its child component - memberActionSidemenu, where the action options are selected.
-
-  // TODO: It should call API to update each community member, and refresh the community member list.
-  // TODO: It should also display modal or toast to indiate that the member action has been selected
+  /* This method handles member actions such as view profile, block, report, or kick.
+  It's passed on to its child component - memberActionSidemenu, where the action options are selected. */
   const memberActionOptionsHandler = (option) => {
     switch (option) {
       case "view":
@@ -920,7 +942,7 @@ const CommunityMember = (props) => {
     }
   };
 
-  // This method handles kick member action. It should check if current user has the
+  /* This method handles kick member action. */
   const kickMember = async () => {
     // Send DELETE request to the database.
     const { data, errorMessage } = await genericDelete(
@@ -983,6 +1005,8 @@ const CommunityMember = (props) => {
           memberActionOptionsHandler={memberActionOptionsHandler}
           member = {props.member}
           userCommunityMemberDetails={props.userCommunityMemberDetails}
+          refreshMembers={props.refreshMembers}
+          memberActionSidemenuRef={memberActionSidemenuRef}
         />
       </div>
     </div>
@@ -1060,6 +1084,22 @@ const MemberActionSidemenu = (props) => {
   const [isReported, setIsReported] = useState(false);
   const [isKicked, setIsKicked] = useState(false);
   const [isAssignRole, setIsAssignRole] = useState(false);
+  const assignRoleSidemenuRef = useRef(null); // Create a ref for assign role sidemenu component
+
+  /* This hook check if mousedown DOM  event occurs outside of assign role sidemenu.  */
+  useEffect(() => {
+    const outSideClickHandler = (event) => {
+      if(assignRoleSidemenuRef.current && !assignRoleSidemenuRef.current.contains(event.target)) {
+        setIsAssignRole(false);
+      }
+    }
+    document.addEventListener('mousedown', outSideClickHandler);
+
+    return () => {
+      document.removeEventListener('mousedown', outSideClickHandler)
+    }
+  })
+
 
   // Check current user's community role & member's community role
   const isUserAdmin = props.userCommunityMemberDetails?.attributes.role === "admin";
@@ -1099,7 +1139,7 @@ const MemberActionSidemenu = (props) => {
 
   if (props.isActive) {
     return (
-      <div className={style["action-sidemenu"]}>
+      <div className={style["action-sidemenu"]} ref={props.memberActionSidemenuRef}>
         <ul className={style["action-sidemenu-option-list"]}>
           {/* View Profile */}
           <li className={style["action-sidemenu-option"]} onClick={viewProfileActionHandler}>
@@ -1115,10 +1155,18 @@ const MemberActionSidemenu = (props) => {
           }
           {/* Assign Role */}
           {(isUserAdmin && !isMemberUser) &&
-            <li className={style["action-sidemenu-option"]} onClick={assignRoleActionHandler}>
-              <span className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}></span>
-              <span className={style["active-text"]}>{assignOptionName}</span>
-            </li>
+            <div>
+              <li className={style["action-sidemenu-option"]} onClick={assignRoleActionHandler}>
+                <span className={`${style["square-icon"]} ${style["square-icon__french-bistre"]}`}></span>
+                <span className={style["active-text"]}>{assignOptionName}</span>
+              </li>
+              <AssignRoleSidemenu 
+                isActive={isAssignRole}
+                member={props.member}
+                refreshMembers={props.refreshMembers}
+                assignRoleSidemenuRef={assignRoleSidemenuRef}
+              />
+            </div>
           }
           {/* Kick */}
           {(((isUserAdmin || isUserMod) && (!isMemberUser && !isMemberAdmin && !isMemberMod)) || (isUserAdmin && !isMemberUser)) &&
@@ -1132,6 +1180,62 @@ const MemberActionSidemenu = (props) => {
     );
   }
 };
+
+
+/* [TODO] This component will render a assign role sidemenu that lists options "mod" and "member". This component
+will be triggered when the user clicks on "Assign Role" from member action sidemenu */
+const AssignRoleSidemenu = (props) => {
+  const currentMemberRole = props.member.attributes.role
+
+  // This method assigns new role to member by sending PATCH request to the API server.
+  const assignNewRole = async (newMemberRole) => {
+    let endpoint = `/group-members/${props.member.id}`;
+    let body = {
+      userId: props.member.userID,
+      groupID: props.member.groupID,
+      attributes: {
+        ...props.member.attributes,
+        role: newMemberRole
+      }
+    }
+    const { data, errorMessage } = await genericPatch(endpoint, body);
+    // console.log(data, errorMessage)
+    if (errorMessage) {
+      alert(errorMessage);
+    } else {
+      alert(`Successfully updated ${props.member.user.attributes.profile.username}'s role to ${newMemberRole}`)
+      props.refreshMembers();
+    }
+  };
+
+  
+  // This method handles member role option select
+  const memberRoleOptionHandler = async (memberRole) => {
+    if (memberRole !== currentMemberRole) {
+      await assignNewRole(memberRole);
+    }
+  }
+
+  if (props.isActive) {
+    return (
+      <div className={style["nested-action-sidemenu"]} ref={props.assignRoleSidemenuRef}>
+        <ul className={style["action-sidemenu-option-list"]}>
+          {/* Assign Member Role */}
+          <li className={style["action-sidemenu-option"]} onClick={() => memberRoleOptionHandler('member')}>
+            <span className={`${style["square-icon"]} ${style["square-icon__french-bistre"]}`}></span>
+            <span className={style["active-text"]}>Member</span>
+          </li>
+          {/* Assign Mod Role */}
+          <li className={style["action-sidemenu-option"]} onClick={() => memberRoleOptionHandler('mod')}>
+            <span className={`${style["square-icon"]} ${style["square-icon__french-bistre"]}`}></span>
+            <span className={style["active-text"]}>Mod</span>
+          </li>
+        </ul>
+      </div>
+    );
+  }
+}
+
 
 /* This component will render a pagination for communityPostList and CommunityMemberList. 
 It contains previous button, next button, and current page indicatior. */

@@ -29,22 +29,18 @@
 /* Modal Header */
 .modal-header {
   display: flex;
-  /* justify-content: space-between; */
   align-items: center;
-  /* margin: 0 10px; */
-  /* border: 1px solid var(--bistre); */
-  /* background-color: green; */
+  /* justify-content: space-between; */
+  /* background-color: red; */
 }
 
-/* Modal Content */
-.modal-content {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* margin: 0 10px; */
-  /* background-color: red; */
-  overflow: auto;
+/* Modal Title */
+.modal-title {
+  font-family: 'Alfa Slab One', cursive;
+  font-size: 1.313rem;
+  letter-spacing: 0.1px;
+  font-weight: 300;
+  text-decoration: underline overline;
 }
 
 /* Close Button */
@@ -54,10 +50,19 @@
   font-size: 35px;
   font-weight: bold;
 }
-
 .close:hover,
 .close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+/* Modal Content */
+.modal-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  /* background-color: green; */
 }

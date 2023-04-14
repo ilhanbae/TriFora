@@ -43,7 +43,7 @@ export default function EditCommunityForm(props) {
   }
 
   // This method updates community name by sending PATCH request to the API server.
-  // Should check if the name is taken.
+  // [TODO] Should check if the name is taken.
   const updateCommunityName = async (name) => {
     let endpoint = `/groups/${props.communityId}`;
     let body = {
@@ -175,6 +175,7 @@ export default function EditCommunityForm(props) {
               updateTextHandler={updateCommunityName}
               showEditButton={true}
             >
+              {/* <h2 style={{ whiteSpace: "nowrap"}}>{communityName}</h2> */}
               <h2>{communityName}</h2>
             </EditableText>
 
@@ -217,7 +218,7 @@ export default function EditCommunityForm(props) {
           <span className={style["section-title"]}>Delete Community</span>
           <div className={style["delete-commmunity-section-body"]}>
             <button
-              className={`${style["button"]} ${style["button__bordered"]} ${style["button__filled"]}`}
+              className={`${style["button"]} ${style["button__bordered"]} ${style["button__danger"]}`}
               onClick={deleteCommunity}
             >
               <span className={style["delete-icon"]}></span>

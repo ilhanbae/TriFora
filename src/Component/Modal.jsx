@@ -13,11 +13,9 @@ export default function Modal(props) {
         {/* Modal Header */}
         <div className={style["modal-header"]}>
           {/* Modal Title */}
-          <h1>{props.modalTitle}</h1>
+          <span className={style["modal-title"]}>{props.modalTitle}</span>
           {/* Close Button */}
-          <span className={style["close"]} onClick={props.onClose}>
-            &times;
-          </span>
+          <span className={style["close"]} onClick={props.onClose}>&times;</span>
         </div>
 
         {/* Modal Content */}
