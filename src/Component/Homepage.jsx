@@ -6,8 +6,11 @@ import { Link } from "react-router-dom";
 import genericFetch from "../helper/genericFetch";
 
 export default function Homepage() {
-    const [userDetails, setUserDetails] = useState();
-    const [userLoaded, setUserLoaded] = useState(false)
+    const [username, setUsername] = useState();
+    const [userCommunities, setUserCommunities] = useState();
+    const [numUserCommunities, setNumUserCommunities] = useState();
+    const [userLoaded, setUsernameLoaded] = useState(false)
+    const [userCommunitiesLoaded, setUserCommunitiesLoaded] = useState(false)
     const [topCommunities, setTopCommunities] = useState();
     const [numCommunities, setNumCommunities] = useState();
     const [communitiesLoaded, setCommunitiesLoaded] = useState(false)
@@ -15,7 +18,8 @@ export default function Homepage() {
     // Fetch both user info and communities when the component is loaded.
     useEffect(() => {
         grabUser();
-        // grabCommunities();
+        grabUserCommunities();
+        grabCommunities();
     }, []);
 
     // want to use generic fetch to get username and their communities
@@ -27,8 +31,24 @@ export default function Homepage() {
         if (errorMessage) {
             alert(errorMessage);
         } else {
-            setUserDetails(data);
-            setUserLoaded(true);
+            setUsername(data.attributes.profile.username);
+            // grabUserCommunities(); // putting this here might not be ok to do
+            setUsernameLoaded(true);
+        }
+    };
+
+    // want to use generic fetch to get username and their communities
+    const grabUserCommunities = async () => {
+        let endpoint = `/users/${sessionStorage.getItem('user')}`
+        let query = {}
+        const { data, errorMessage } = await genericFetch(endpoint, query)
+
+        if (errorMessage) {
+            alert(errorMessage);
+        } else {
+            setUserCommunities(data[0]);
+            setNumUserCommunities(data[1]);
+            setUserCommunitiesLoaded(true);
         }
     };
 
@@ -46,8 +66,28 @@ export default function Homepage() {
             setTopCommunities(data[0]);
             setNumCommunities(data[1]); // might be useful to get total number of communities
             setCommunitiesLoaded(true);
+            console.log(topCommunities)
         }
     };
+
+    function DefaultImages() {
+        return (
+            <>
+                <li className="homepage-joined-communities">
+                    <Link to="community/25"> {/* the id should be dynamic from the above idea/implementation */}
+                        <img src={group} className="homepage-community-image" /> {/* placeholder */}
+                    </Link>
+                </li><li className="homepage-joined-communities">
+                    <Link to="community/25">
+                        <img src={group} className="homepage-community-image" /> {/* placeholder */}
+                    </Link>
+                </li><li className="homepage-joined-communities">
+                    <Link to="community/25">
+                        <img src={group} className="homepage-community-image" /> {/* placeholder */}
+                    </Link>
+                </li>
+            </>)
+    }
 
     return (
         <div className="homepage-wrapper">
@@ -55,9 +95,9 @@ export default function Homepage() {
             <div className="homepage-welcome-message">
                 <h1>
                     {/* userName should appear here from earlier fetch */}
-                    Welcome back{userLoaded ? ` ${userDetails.attributes.profile.username}!` : '!'}
+                    Welcome{userLoaded ? ` ${username}!` : '!'}
                     <br />
-                    Jump back in to your community!
+                    Jump in to your community!
                 </h1>
                 {/* <Suspense fallback={<h1>Welcome back!</h1>}>
                     <h1>
@@ -74,52 +114,35 @@ export default function Homepage() {
                 Perhaps if not logged in can map all random communities?
                 Need to consider if user is part of less than 3 communites. */}
             <ul className="homepage-communities-row">
-                {/* {(userLoaded && communitiesLoaded) (
-                    want to do some work here to display communities user is a part of
-                    need to consider what happens with the display if they are part of less than 3
-                    would like them to be randomly chosen without duplicates if possible
+                {communitiesLoaded ?
+                    /* communities are loaded
 
-                    userDetails.attributes.communitiesJoing.map
-                ):(
-                    <li className="homepage-joined-communities">
-                    <Link to="community/25">
-                        <img src={group} className="homepage-community-image" />
-                    </Link>
-                </li>
-                <li className="homepage-joined-communities">
-                    <Link to="community/25">
-                        <img src={group} className="homepage-community-image" />
-                    </Link>
-                </li>
-                <li className="homepage-joined-communities">
-                    <Link to="community/25">
-                        <img src={group} className="homepage-community-image" />
-                    </Link>
-                </li>
-                )} */}
-                <li className="homepage-joined-communities">
-                    <Link to="community/25"> {/* the id should be dynamic from the above idea/implementation */}
-                        <img src={group} className="homepage-community-image" /> {/* placeholder */}
-                    </Link>
-                </li>
-                <li className="homepage-joined-communities">
-                    <Link to="community/25">
-                        <img src={group} className="homepage-community-image" /> {/* placeholder */}
-                    </Link>
-                </li>
-                <li className="homepage-joined-communities">
-                    <Link to="community/25">
-                        <img src={group} className="homepage-community-image" /> {/* placeholder */}
-                    </Link>
-                </li>
-                {/* <span></span>
-                        <span></span>
-                        <img src={group} className="homepage-community-image" />
-                        <img src={group} className="homepage-community-image" />
-                        <img src={group} className="homepage-community-image" />
-                        <span></span>
-                        <span></span> */}
+                       want to do some work here to display communities user is a part of
+                       need to consider what happens with the display if they are part of less than 3
+                       would like them to be randomly chosen without duplicates if possible
+
+                       userDetails.attributes.communitiesJoined.map
+                     */
+                    userCommunitiesLoaded ?
+                        // user part of some communities
+                        <DefaultImages />
+                        :
+                        // user part of no communities
+                        <>
+                            <b> No user communities </b>
+                            <DefaultImages />
+                        </>
+                    :
+                    /* things are not loaded */
+                    <>
+                        <b> No communities loaded </b>
+                        <DefaultImages />
+                    </>
+                }
             </ul>
+
+
+
             {/* The following list should be mapped from communities user is not part of from earlier fetch
                 if possible, and possibly randomly displayed. */}
             <ul className="homepage-communities-row">
