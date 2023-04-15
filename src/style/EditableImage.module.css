@@ -58,6 +58,8 @@
   align-items: center;
   justify-content: center;
   gap: 5px;
+  box-shadow: 0 4px 14px 0 rgb(0 0 0 / 13%);
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 .button__bordered {
   border: 2px solid var(--bistre);
@@ -67,10 +69,17 @@
   background-color: var(--yellow-apricot);
 }
 .button__outlined {
-  outline: 2px solid var(--bistre);
-  border-radius: 10px;
+  outline: 2px solid var(--bistre);;
+}
+.button__danger {
+  background-color: var(--red-orange);
 }
 .button:disabled {
-  background-color: var(--red-orange);
+  background-color: var(--french-bistre);
+  border-color: var(--french-bistre);
+  cursor: not-allowed;
+}
+.button:hover:not([disabled]) {
+  box-shadow: 0 6px 20px rgb(245 245 220 / 43%);
 }
 /**** End of Generic Components ****/

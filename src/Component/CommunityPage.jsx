@@ -731,6 +731,7 @@ const PostControlTool = (props) => {
         <button
           className={`${style["button"]} ${style["button__bordered"]} ${style["button__filled"]}`}
           onClick={sortButtonToggleHandler}
+          disabled
         >
           Sort Posts
         </button>
@@ -1089,6 +1090,7 @@ const MemberControlTool = () => {
         <button
           className={`${style["button"]} ${style["button__bordered"]} ${style["button__filled"]}`}
           onClick={sortButtonToggleHandler}
+          disabled
         >
           Sort Members
         </button>
@@ -1102,6 +1104,7 @@ const MemberControlTool = () => {
         </div>
         <button
           className={`${style["button"]} ${style["button__outlined"]} ${style["button__filled"]}`}
+          disabled
         >
           Search Member
         </button>
