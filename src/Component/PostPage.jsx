@@ -81,13 +81,14 @@ export default class PostPage extends React.Component {
                 }
                 },
                 error => {
-                    alert("ERROR loading Role");
+                    //alert("ERROR loading Role");
                     console.log("ERROR loading Role")
                 }
             );
         }else{
             //If user is not logged in, show error message
-            alert("Not Logged In");
+            //alert("Not Logged In");
+            console.log("Not Logged In");
         }
     }
 
@@ -134,13 +135,14 @@ export default class PostPage extends React.Component {
                 }
                 },
                 error => {
-                    alert("ERROR loading Posts");
+                    //alert("ERROR loading Posts");
                     console.log("ERROR loading Posts")
                 }
             );
         }else{
             //If user is not logged in, show error message
-            alert("Not Logged In");
+            //alert("Not Logged In");
+            console.log("Not Logged In");
         }
 
         // Check if the session token exist
@@ -169,7 +171,7 @@ export default class PostPage extends React.Component {
                 }
                 },
                 error => {
-                    alert("ERROR loading comments");
+                    //alert("ERROR loading comments");
                     console.log("ERROR loading comments")
                 }
             );
@@ -177,7 +179,8 @@ export default class PostPage extends React.Component {
             
         }else{
             //If user is not logged in, show error message
-            alert("Not Logged In");
+            //alert("Not Logged In");
+            console.log("Not Logged In");
         }
     }
 
@@ -206,7 +209,7 @@ export default class PostPage extends React.Component {
                 }
                 },
                 error => {
-                    alert("ERROR loading Reactions");
+                    //alert("ERROR loading Reactions");
                     console.log("ERROR loading Reactions")
                 }
             );
@@ -233,14 +236,15 @@ export default class PostPage extends React.Component {
                 }
                 },
                 error => {
-                    alert("ERROR loading Reactions");
+                    //alert("ERROR loading Reactions");
                     console.log("ERROR loading Reactions")
                 }
             );
 
         }else{
             //If user is not logged in, show error message
-            alert("Not Logged In");
+            //alert("Not Logged In");
+            console.log("Not Logged In");
         }
     }
 
@@ -269,12 +273,14 @@ export default class PostPage extends React.Component {
                         this.loadPost_reaction();
                     },
                     error => {
-                        alert("ERROR when submit Reaction");
+                        //alert("ERROR when submit Reaction");
+                        console.log("ERROR when submit Reaction");
                     }
                 );
         }else{
             //If user is not logged in, show error message
-            alert("Not Logged In");
+            //alert("Not Logged In");
+            console.log("Not Logged In");
         }
     }
 
@@ -312,20 +318,21 @@ export default class PostPage extends React.Component {
                         this.loadPost_reaction();
                     },
                     error => {
-                        alert("ERROR when deleting Like");
+                        //alert("ERROR when deleting Like");
                         console.log(error);
                         console.log("ERROR when deleting Like");
                     }
                 );
                 },
                 error => {
-                    alert("ERROR loading Reactions");
+                    //alert("ERROR loading Reactions");
                     console.log("ERROR loading Reactions")
                 }
             );
         }else{
             //If user is not logged in, show error message
-            alert("Not Logged In");
+            //alert("Not Logged In");
+            console.log("Not Logged In");
         }
     }
 
@@ -346,7 +353,8 @@ export default class PostPage extends React.Component {
         if (sessionStorage.getItem("token")){
             //Check the length of the comment
             if (this.state.comment_input.length === 0){
-                alert("Comment Can be empty!")
+                //alert("Comment Can be empty!")
+                console.log("Comment Can be empty!");
             } else {
                 //make the api call to post
                 fetch(process.env.REACT_APP_API_PATH+"/posts", {
@@ -367,16 +375,19 @@ export default class PostPage extends React.Component {
                             console.log(result);
                             // once a edit is complete, reload the all comments
                             this.loadPost();
-                            alert("Post was successful");
+                            //alert("Post was successful");
+                            console.log("Post was successful");
                         },
                         error => {
-                            alert("ERROR when submit comment");
+                            //alert("ERROR when submit comment");
+                            console.log("ERROR when submit comment");
                         }
                     );
             }
         } else {
             //If user is not logged in, show error message
-            alert("Not Logged In");
+            //alert("Not Logged In");
+            console.log("Not Logged In");
         }
     }
 
@@ -394,12 +405,12 @@ export default class PostPage extends React.Component {
             })
             .then(
                 result => {
-                    alert("Delete Successfully");
+                    //alert("Delete Successfully");
                     console.log("Delete Successfully");
                     this.props.closePostPageModal(); // close the post page modal
                 },
                 error => {
-                    alert("ERROR when deleting post");
+                    //alert("ERROR when deleting post");
                     console.log(error);
                     console.log("ERROR when deleting post");
                 }
@@ -407,7 +418,8 @@ export default class PostPage extends React.Component {
 
         }else{
             //If user is not logged in, show error message
-            alert("Not Logged In");
+            //alert("Not Logged In");
+            console.log("Not Logged In");
         }
     }
 
@@ -431,7 +443,9 @@ export default class PostPage extends React.Component {
                     <div className = {PostPageCSS['main-post']}>
                         <div className = {PostPageCSS['post-header']}>
                             <div className = {PostPageCSS['poster-info']}>
-                                <img alt="post-avater" className={PostPageCSS['post-avater']} src={this.state.user_image} />
+                                <Link to={`/profile/${this.state.authorID}`}>
+                                    <img alt="post-avater" className={PostPageCSS['post-avater']} src={this.state.user_image} />
+                                </Link>
                                 <div className = {PostPageCSS['post-by']}>
                                     <h5> Posted By </h5>
                                     <Link to={`/profile/${this.state.authorID}`}>

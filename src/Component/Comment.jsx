@@ -4,6 +4,7 @@ import red_icon from "../assets/red-icon.jpeg";
 import black_icon from "../assets/black-icon.jpeg";
 import formatDateTime from "../helper/formatDateTime";
 import Modal from "./Modal";
+import { Link } from 'react-router-dom';
 import PostPage from "./PostPage";
 
 /* The Comment is going to render a single comment related to that post.*/
@@ -35,11 +36,13 @@ export default class Comment extends React.Component {
             })
                 .then(
                 result => {
-                    alert("Delete Successfully");
+                    //alert("Delete Successfully");
+                    console.log("Delete Successfully");
                     this.props.loadPost();
                 },
                 error => {
-                    alert("error!"+error);
+                    //alert("error!"+error);
+                    console.log("error!"+error)
                 }
                 );
         }
@@ -65,7 +68,8 @@ export default class Comment extends React.Component {
         if (sessionStorage.getItem("token")){
             //Check the length of the edit_comment_input
             if (this.state.edit_comment_input.length === 0){
-                alert("Comment Can be empty!")
+                //alert("Comment Can be empty!")
+                console.log("Comment Can be empty!");
             } else {
                 fetch(process.env.REACT_APP_API_PATH+"/posts/"+this.props.post.id, {
                     method: "PATCH",
@@ -81,14 +85,16 @@ export default class Comment extends React.Component {
                     .then(
                       result => {
                         console.log(result);
-                        alert("Comment Updated");
+                        //alert("Comment Updated");
+                        console.log("Comment Updated");
                         this.setState({
                             edit_comment: false,
                         });
                         this.props.loadPost();
                       },
                       error => {
-                        alert("error!");
+                        //alert("error!");
+                        console.log("error!")
                       }
                     );
             }
@@ -113,11 +119,14 @@ export default class Comment extends React.Component {
         return (
             <div className = {PostPageCSS['individual-comment']}>
                 <div className = {PostPageCSS['comment-user-info']}>
-                    <div className = {PostPageCSS['comment-user-avater']}>
-                    </div>
-                    <div className = {PostPageCSS['comment-user-username']}>
-                        <h4> {this.state.comment_username} </h4>
-                    </div>
+                    <Link to={`/profile/${this.state.comment_userid}`}>
+                        <img className = {PostPageCSS['comment-user-avater']} src={this.state.comment_userimage} alt="Comment-img"></img>
+                    </Link>
+                    <Link to={`/profile/${this.state.comment_userid}`}>
+                        <div className = {PostPageCSS['comment-user-username']}>
+                            <h4> {this.state.comment_username} </h4>
+                        </div>
+                    </Link>
                     <div className = {PostPageCSS['comment-user-date']}>
                         <h6> {this.state.comment_date} </h6>
                     </div>

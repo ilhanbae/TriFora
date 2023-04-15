@@ -38,6 +38,7 @@ export default class ProfilePage extends React.Component {
         this.load_communties(this.state.user_id);
         this.load_friend(this.state.user_id);
         this.check_user_connection(this.state.user_id);
+        window.scrollTo(0, 0);
         console.log("profile ID", window.location.href.split('/')[4])
     }
 

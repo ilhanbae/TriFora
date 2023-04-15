@@ -41,7 +41,7 @@ export default class Friend extends React.Component {
             });
             },
             error => {
-                alert("ERROR loading Friends");
+                //alert("ERROR loading Friends");
                 console.log("ERROR loading Friends")
             }
         );
@@ -68,7 +68,7 @@ export default class Friend extends React.Component {
                     this.props.load_friend(this.props.view_userID);
                 },
                 error => {
-                    alert("ERROR when deleting Frist Friend connection");
+                    //alert("ERROR when deleting Frist Friend connection");
                     console.log(error);
                     console.log("ERROR when deleting First Friend 1 connection");
                 }
@@ -90,7 +90,7 @@ export default class Friend extends React.Component {
                     this.props.load_friend(this.props.view_userID);
                 },
                 error => {
-                    alert("ERROR when deleting Second Friend connection");
+                    //alert("ERROR when deleting Second Friend connection");
                     console.log(error);
                     console.log("ERROR when deleting Second Friend connection");
                 }
@@ -98,7 +98,8 @@ export default class Friend extends React.Component {
 
         }else{
             //If user is not logged in, show error message
-            alert("Not Logged In");
+            //alert("Not Logged In");
+            console.log("Not Logged In");
         }
     }
 
