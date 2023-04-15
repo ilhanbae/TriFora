@@ -5,6 +5,7 @@ import genericFetch from "../helper/genericFetch";
 import genericDelete from "../helper/genericDelete";
 import genericPost from "../helper/genericPost";
 import genericPatch from "../helper/genericPatch";
+import formatDateTime from "../helper/formatDateTime"
 import style from "../style/CommunityPage.module.css";
 import defaultProfileImage from "../assets/defaultProfileImage.png";
 import defaultPostImage from "../assets/defaultPostImage.png";
@@ -224,13 +225,13 @@ const CommunityBanner = (props) => {
         {/* Community Banner Content Right */}
         <div className={style["community-banner-content-right"]}>
           {/* Notification Button */}
-          {isUserJoined && (
+          {/* {isUserJoined && (
             <button
               className={`${style["button"]} ${style["button__bordered"]}`}
             >
               Notfication
             </button>
-          )}
+          )} */}
           {/* Join Button */}
           <button
             className={`${style["button"]} ${style["button__bordered"]}`}
@@ -558,6 +559,8 @@ const CommunityPost = (props) => {
     props.refreshPosts();
   };
 
+  formatDateTime(props.post.created);
+
   return (
     <div className={style["community-post"]} key={props.post.id}>
       {/* Post Thumbnail */}
@@ -584,14 +587,15 @@ const CommunityPost = (props) => {
               <span className={style["bold"]}>
                 {props.post.author?.attributes.profile.username}
               </span>
-               <span>
-                ({postAuthorRoleLabel})
-              </span>
+              <span>({postAuthorRoleLabel})</span>
             </p>
           </div>
           <div className={style["post-date"]}>
             <span className={style["inactive-text"]}>Posted On</span>
-            <span className={`${style["active-text"]} ${style["bold"]}`}>{props.post.created}</span>
+            <span className={`${style["active-text"]} ${style["bold"]}`}>
+              {formatDateTime(props.post.created)}
+              {/* {props.post.created} */}
+            </span>
           </div>
         </div>
       </div>
@@ -600,17 +604,23 @@ const CommunityPost = (props) => {
         {/* Post Action Labels */}
         <div className={style["post-action-labels"]}>
           {isPostReported && (
-            <div className={`${style["post-action-label"]} ${style["post-action-label__bistre"]}`}>
+            <div
+              className={`${style["post-action-label"]} ${style["post-action-label__bistre"]}`}
+            >
               <span>Reported</span>
             </div>
           )}
           {isPostHidden && (
-            <div className={`${style["post-action-label"]} ${style["post-action-label__french-bistre"]}`}>
+            <div
+              className={`${style["post-action-label"]} ${style["post-action-label__french-bistre"]}`}
+            >
               <span>Hidden</span>
             </div>
           )}
           {isPostPinned && (
-            <div className={`${style["post-action-label"]} ${style["post-action-label__skobeloff"]}`}>
+            <div
+              className={`${style["post-action-label"]} ${style["post-action-label__skobeloff"]}`}
+            >
               <span>Pinned</span>
             </div>
           )}

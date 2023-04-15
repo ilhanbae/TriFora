@@ -274,20 +274,22 @@
   width: 745px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
   justify-content: center;
+  gap: 10px;
+  /* border: 1px solid var(--bistre); */
 }
 .post-id-title {
-  /* border: 1px solid var(--bistre); */
   width: 100%; 
+  /* border: 1px solid var(--bistre); */
 }
 .post-author-date {
-  /* border: 2px solid var(--bistre); */
   display: flex;
   flex-direction: row;
-  width: fit-content;
-  gap: 50px;
+  justify-content: space-between;
+  width: 40%;
+  /* border: 1px solid var(--bistre); */
 }
+
 
 /* Post Labels */
 .post-labels {
