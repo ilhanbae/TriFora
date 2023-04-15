@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import "../style/Homepage.css";
 import group from "../assets/group.png";
 import community from "../assets/defaultPostImage.png";
@@ -9,11 +9,12 @@ export default function Homepage() {
     const [username, setUsername] = useState();
     const [userCommunities, setUserCommunities] = useState();
     const [numUserCommunities, setNumUserCommunities] = useState();
-    const [userLoaded, setUsernameLoaded] = useState(false)
-    const [userCommunitiesLoaded, setUserCommunitiesLoaded] = useState(false)
+    const [userLoaded, setUsernameLoaded] = useState(false);
+    const [userCommunitiesLoaded, setUserCommunitiesLoaded] = useState(false);
     const [topCommunities, setTopCommunities] = useState();
     const [numCommunities, setNumCommunities] = useState();
-    const [communitiesLoaded, setCommunitiesLoaded] = useState(false)
+    const [communitiesLoaded, setCommunitiesLoaded] = useState(false);
+    const [displayPerRow, setDisplayPerRow] = useState(3); // this could be useful to maybe be able to change dynamically
 
     // Fetch both user info and communities when the component is loaded.
     useEffect(() => {
@@ -73,7 +74,7 @@ export default function Homepage() {
     function DefaultImage(props) {
         // the purpose of this is to display a default community image
         return (
-            <li className="homepage-joined-communities">
+            <li className="homepage-communities-item">
                 <img
                     src={group}
                     className="homepage-community-image"
@@ -82,6 +83,17 @@ export default function Homepage() {
                 /> {/* placeholder */}
             </li>
         )
+    }
+
+    function displayUserCommunities() {
+        if (numUserCommunities === 0) {
+            // user has joined no communities
+            let defaultArray = [];
+            for (let i = 0; i < displayPerRow; i++) {
+                defaultArray[i] = <DefaultImage titleAlt={"No communities joined yet"} />;
+            }
+            return defaultArray;
+        }
     }
 
     return (
@@ -120,11 +132,12 @@ export default function Homepage() {
                      */
                     userCommunitiesLoaded ?
                         // user part of some communities
-                        <>
-                            <DefaultImage titleAlt={"loading user communities"} />
-                            <DefaultImage />
-                            <DefaultImage />
-                        </>
+                        // <>
+                        //     <DefaultImage titleAlt={"loading user communities"} />
+                        //     <DefaultImage />
+                        //     <DefaultImage />
+                        // </>
+                        {displayUserCommunities}
                         :
                         // user part of no communities
                         <>
