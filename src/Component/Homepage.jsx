@@ -70,23 +70,18 @@ export default function Homepage() {
         }
     };
 
-    function DefaultImages() {
+    function DefaultImage(props) {
+        // the purpose of this is to display a default community image
         return (
-            <>
-                <li className="homepage-joined-communities">
-                    <Link to="community/25"> {/* the id should be dynamic from the above idea/implementation */}
-                        <img src={group} className="homepage-community-image" /> {/* placeholder */}
-                    </Link>
-                </li><li className="homepage-joined-communities">
-                    <Link to="community/25">
-                        <img src={group} className="homepage-community-image" /> {/* placeholder */}
-                    </Link>
-                </li><li className="homepage-joined-communities">
-                    <Link to="community/25">
-                        <img src={group} className="homepage-community-image" /> {/* placeholder */}
-                    </Link>
-                </li>
-            </>)
+            <li className="homepage-joined-communities">
+                <img
+                    src={group}
+                    className="homepage-community-image"
+                    alt={props.titleAlt}
+                    title={props.titleAlt}
+                /> {/* placeholder */}
+            </li>
+        )
     }
 
     return (
@@ -125,18 +120,26 @@ export default function Homepage() {
                      */
                     userCommunitiesLoaded ?
                         // user part of some communities
-                        <DefaultImages />
+                        <>
+                            <DefaultImage titleAlt={"loading user communities"} />
+                            <DefaultImage />
+                            <DefaultImage />
+                        </>
                         :
                         // user part of no communities
                         <>
                             <b> No user communities </b>
-                            <DefaultImages />
+                            <DefaultImage titleAlt={"no user communities"} />
+                            <DefaultImage />
+                            <DefaultImage />
                         </>
                     :
                     /* things are not loaded */
                     <>
                         <b> No communities loaded </b>
-                        <DefaultImages />
+                        <DefaultImage />
+                        <DefaultImage />
+                        <DefaultImage />
                     </>
                 }
             </ul>
@@ -152,46 +155,55 @@ export default function Homepage() {
                     need to consider what happens with the display if less than 3 communities exist
                     would like them to be randomly chosen without duplicates if possible
 
-                    topCommunities.map
-                ):(
-                    <li className="homepage-joined-communities">
-                    <Link to="community/25">
-                        <img src={group} className="homepage-community-image" />
+                    topCommunities.map */}
+                {communitiesLoaded ?
+                    /* communities are loaded
+
+                       want to do some work here to display communities user is a part of
+                       need to consider what happens with the display if they are part of less than 3
+                       would like them to be randomly chosen without duplicates if possible
+
+                       userDetails.attributes.communitiesJoined.map
+                     */
+                    userCommunitiesLoaded ?
+                        // user part of some communities
+                        <>
+                            <DefaultImage titleAlt={"user communities"} />
+                            <DefaultImage />
+                            <DefaultImage />
+                        </>
+                        :
+                        // user part of no communities
+                        <>
+                            <b> No communities </b>
+                            <DefaultImage titleAlt={"user is part of no communities"} />
+                            <DefaultImage />
+                            <DefaultImage />
+                        </>
+                    :
+                    /* things are not loaded */
+                    <>
+                        <b> No communities loaded </b>
+                        <DefaultImage titleAlt={"loading communities"} />
+                        <DefaultImage />
+                        <DefaultImage />
+                    </>
+                }
+                {/* <li className="homepage-top-communities">
+                    <Link to="community/25"> {/* the id should be dynamic from the above idea/implementation }
+                        <img src={community} className="homepage-community-image" /> {/* placeholder }
                     </Link>
                 </li>
-                <li className="homepage-joined-communities">
-                    <Link to="community/25">
-                        <img src={group} className="homepage-community-image" />
-                    </Link>
-                </li>
-                <li className="homepage-joined-communities">
-                    <Link to="community/25">
-                        <img src={group} className="homepage-community-image" />
-                    </Link>
-                </li>
-                )} */}
                 <li className="homepage-top-communities">
-                    <Link to="community/25"> {/* the id should be dynamic from the above idea/implementation */}
-                        <img src={community} className="homepage-community-image" /> {/* placeholder */}
+                    <Link to="community/25">
+                        <img src={community} className="homepage-community-image" /> {/* placeholder }
                     </Link>
                 </li>
                 <li className="homepage-top-communities">
                     <Link to="community/25">
-                        <img src={community} className="homepage-community-image" /> {/* placeholder */}
+                        <img src={community} className="homepage-community-image" /> {/* placeholder }
                     </Link>
-                </li>
-                <li className="homepage-top-communities">
-                    <Link to="community/25">
-                        <img src={community} className="homepage-community-image" /> {/* placeholder */}
-                    </Link>
-                </li>
-                {/* <span></span>
-                    <span></span>
-                    <img src={community} className="homepage-community-image" />
-                    <img src={community} className="homepage-community-image" />
-                    <img src={community} className="homepage-community-image" />
-                    <span></span>
-                    <span></span> */}
+                </li> */}
             </ul>
         </div>
     )
