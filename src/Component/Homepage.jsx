@@ -18,9 +18,9 @@ export default function Homepage() {
 
     // Fetch both user info and communities when the component is loaded.
     useEffect(() => {
-        grabUser();
-        grabUserCommunities();
-        grabCommunities();
+        grabUser(); // grab user info to display username
+        grabUserCommunities(); // grab the communities the user is a part of for top row display
+        grabCommunities(); // grab all communities for bottom row display
     }, []);
 
     // want to use generic fetch to get username and their communities
@@ -32,9 +32,9 @@ export default function Homepage() {
         if (errorMessage) {
             alert(errorMessage);
         } else {
-            setUsername(data.attributes.profile.username);
+            setUsername(data.attributes.profile.username); // store the username from fetch
             // grabUserCommunities(); // putting this here might not be ok to do
-            setUsernameLoaded(true);
+            setUsernameLoaded(true); // mark username loaded so it renders
         }
     };
 
@@ -47,9 +47,9 @@ export default function Homepage() {
         if (errorMessage) {
             alert(errorMessage);
         } else {
-            setUserCommunities(data[0]);
-            setNumUserCommunities(data[1]);
-            setUserCommunitiesLoaded(true);
+            setUserCommunities(data[0]); // store the communities that the user is a part of
+            setNumUserCommunities(data[1]); // hold on to the number of communities they are a part of for quick referencing
+            setUserCommunitiesLoaded(true); // mark their communities as loaded so it renders
         }
     };
 
@@ -64,9 +64,9 @@ export default function Homepage() {
         if (errorMessage) {
             alert(errorMessage);
         } else {
-            setTopCommunities(data[0]);
-            setNumCommunities(data[1]); // might be useful to get total number of communities
-            setCommunitiesLoaded(true);
+            setTopCommunities(data[0]); // store all communities
+            setNumCommunities(data[1]); // holding the total number of communities might be helpful for referencing
+            setCommunitiesLoaded(true); // mark all communities as loaded so bottom row can begin it's renders
             console.log(topCommunities)
         }
     };
@@ -106,15 +106,6 @@ export default function Homepage() {
                     <br />
                     Jump in to your community!
                 </h1>
-                {/* <Suspense fallback={<h1>Welcome back!</h1>}>
-                    <h1>
-                        {`Welcome back ${userDetails.attributes.profile.username}!`}
-                    </h1>
-                </Suspense>
-                <h1>
-                    <br />
-                    Jump back in to your community!
-                </h1> */}
             </div>
             {/* The following list should be mapped from communities user is part of from earlier fetch.
                 and possibly randomly displayed.
@@ -131,7 +122,7 @@ export default function Homepage() {
                        userDetails.attributes.communitiesJoined.map
                      */
                     userCommunitiesLoaded ?
-                        // user part of some communities
+                        // user communities fetch call complete
                         // <>
                         //     <DefaultImage titleAlt={"loading user communities"} />
                         //     <DefaultImage />
@@ -139,7 +130,7 @@ export default function Homepage() {
                         // </>
                         {displayUserCommunities}
                         :
-                        // user part of no communities
+                        // user communities fetch call incomplete
                         <>
                             <b> No user communities </b>
                             <DefaultImage titleAlt={"no user communities"} />
@@ -147,7 +138,7 @@ export default function Homepage() {
                             <DefaultImage />
                         </>
                     :
-                    /* things are not loaded */
+                    /* communities is not loaded */
                     <>
                         <b> No communities loaded </b>
                         <DefaultImage />
@@ -202,21 +193,6 @@ export default function Homepage() {
                         <DefaultImage />
                     </>
                 }
-                {/* <li className="homepage-top-communities">
-                    <Link to="community/25"> {/* the id should be dynamic from the above idea/implementation }
-                        <img src={community} className="homepage-community-image" /> {/* placeholder }
-                    </Link>
-                </li>
-                <li className="homepage-top-communities">
-                    <Link to="community/25">
-                        <img src={community} className="homepage-community-image" /> {/* placeholder }
-                    </Link>
-                </li>
-                <li className="homepage-top-communities">
-                    <Link to="community/25">
-                        <img src={community} className="homepage-community-image" /> {/* placeholder }
-                    </Link>
-                </li> */}
             </ul>
         </div>
     )
