@@ -11,7 +11,7 @@ export default function Homepage() {
     const [numUserCommunities, setNumUserCommunities] = useState();
     const [userLoaded, setUsernameLoaded] = useState(false);
     const [userCommunitiesLoaded, setUserCommunitiesLoaded] = useState(false);
-    const [topCommunities, setTopCommunities] = useState();
+    const [allCommunities, setAllCommunities] = useState();
     const [numCommunities, setNumCommunities] = useState();
     const [communitiesLoaded, setCommunitiesLoaded] = useState(false);
     const [displayPerRow, setDisplayPerRow] = useState(3); // this could be useful to maybe be able to change dynamically
@@ -41,7 +41,7 @@ export default function Homepage() {
     // want to use generic fetch to get user communities
     const grabUserCommunities = async () => {
         let endpoint = `/group-members/`
-        let query = {userID: sessionStorage.getItem('user')}
+        let query = { userID: sessionStorage.getItem('user') }
         const { data, errorMessage } = await genericFetch(endpoint, query)
 
         if (errorMessage) {
@@ -57,17 +57,21 @@ export default function Homepage() {
      * then maybe do some work to display non-joined communities
      */
     const grabCommunities = async () => {
+        console.log("in grabCommunities")
         let endpoint = `/groups/`
         let query = {}
         const { data, errorMessage } = await genericFetch(endpoint, query)
 
         if (errorMessage) {
             alert(errorMessage);
+            console.log("in grabCommunities error")
         } else {
-            setTopCommunities(data[0]); // store all communities
+            console.log("grabCommunities no error")
+            setAllCommunities(data[0]); // store all communities
             setNumCommunities(data[1]); // holding the total number of communities might be helpful for referencing
             setCommunitiesLoaded(true); // mark all communities as loaded so bottom row can begin it's renders
-            console.log(topCommunities)
+            console.log(data[0])
+            console.log(communitiesLoaded)
         }
     };
 
@@ -91,9 +95,12 @@ export default function Homepage() {
             // user has joined no communities
             let defaultArray = [];
             for (let i = 0; i < displayPerRow; i++) {
-                defaultArray[i] = <DefaultImage titleAlt={"No communities joined yet"} />;
+                defaultArray[i] = "No communities joined yet";
             }
-            return defaultArray;
+            const imageList = defaultArray.map((text) =>
+                <DefaultImage titleAlt={text} />
+            )
+            return imageList;
         }
     }
 
@@ -113,7 +120,7 @@ export default function Homepage() {
                 Perhaps if not logged in can map all random communities?
                 Need to consider if user is part of less than 3 communites. */}
             <ul className="homepage-communities-row">
-                {communitiesLoaded ?
+                {communitiesLoaded && userCommunitiesLoaded ?
                     /* communities are loaded
 
                        want to do some work here to display communities user is a part of
@@ -122,22 +129,24 @@ export default function Homepage() {
 
                        userDetails.attributes.communitiesJoined.map
                      */
-                    userCommunitiesLoaded ?
-                        // user communities fetch call complete
-                        // <>
-                        //     <DefaultImage titleAlt={"loading user communities"} />
-                        //     <DefaultImage />
-                        //     <DefaultImage />
-                        // </>
-                        {displayUserCommunities}
-                        :
-                        // user communities fetch call incomplete
+                    numUserCommunities > 0 ?
+                        // user is part of some communites
                         <>
-                            <b> No user communities </b>
-                            <DefaultImage titleAlt={"no user communities"} />
+                            {/* <p>{communitiesLoaded ? "true" : "false"}</p> */}
+                            <DefaultImage titleAlt={"loading user communities"} />
                             <DefaultImage />
                             <DefaultImage />
                         </>
+                        // {displayUserCommunities}
+                        :
+                        // user not part of any community
+                        displayUserCommunities()
+                        // <>
+                        //     <b> No user communities </b>
+                        //     <DefaultImage titleAlt={"no user communities"} />
+                        //     <DefaultImage />
+                        //     <DefaultImage />
+                        // </>
                     :
                     /* communities is not loaded */
                     <>
@@ -148,8 +157,6 @@ export default function Homepage() {
                     </>
                 }
             </ul>
-
-
 
             {/* The following list should be mapped from communities user is not part of from earlier fetch
                 if possible, and possibly randomly displayed. */}
@@ -173,7 +180,7 @@ export default function Homepage() {
                     userCommunitiesLoaded ?
                         // user part of some communities
                         <>
-                            <DefaultImage titleAlt={"user communities"} />
+                            <DefaultImage titleAlt={"all communities"} />
                             <DefaultImage />
                             <DefaultImage />
                         </>
