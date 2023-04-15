@@ -2,7 +2,7 @@ import React from "react";
 import PostPageCSS from "../style/PostPage.module.css";
 import back from "../assets/back-button.jpeg";
 import CommentList from "./CommentList";
-import Convert_time from "../helper/Convert_time";
+import formatDateTime from "../helper/formatDateTime";
 import Modal from "./Modal";
 import { Link } from "react-router-dom";
 
@@ -119,7 +119,7 @@ export default class PostPage extends React.Component {
                         authorID: result.authorID,
                         user_image: result.author.attributes.profile.profileImage || "",
                         username: result.author.attributes.profile.username || "",
-                        post_date: Convert_time(result.created) || "",
+                        post_date: formatDateTime(result.created) || "",
                         views: "",
                         post_id: result.id || "",
                         title: result.attributes.title || "",
