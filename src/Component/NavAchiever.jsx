@@ -5,6 +5,8 @@ import groupIcon from "../assets/group.png";
 import downIcon from "../assets/downIcon36.png";
 import upIcon from "../assets/upIcon36.png";
 // import DropMenu from "./DropMenu";
+import defaultProfileImage from "../assets/defaultProfileImage.png";
+
 
 class NavAchiever extends React.Component {
 
@@ -48,16 +50,23 @@ class NavAchiever extends React.Component {
                         // try and make the form component uncontrolled, which plays havoc with react
                         profile_icon: result.attributes.profile.profileImage || "",
                         });
+                    // Check if the profileImage is the default value, it is default value set to default image
+                    if (result.attributes.profile.profileImage === ""){
+                        this.setState({
+                            profile_icon: defaultProfileImage
+                        })
+                    }
                 }
                 }
                 },
                 error => {
-                alert("error!");
+                //alert("error!");
                 }
             );
         }else{
             //If user is not logged in, show error message
-            alert("Not Logged In");
+            //alert("Not Logged In");
+            console.log("Not Logged In");
         }
     }
     /* ------ Add Component in Nav ------ */

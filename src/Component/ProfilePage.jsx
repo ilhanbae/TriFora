@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { setEmitFlags } from "typescript";
 import Friend from './Friend';
 import JoinedCommunity from "./JoinedCommunity";
+import defaultProfileImage from "../assets/defaultProfileImage.png";
 
 export default class ProfilePage extends React.Component {
 
@@ -71,8 +72,14 @@ export default class ProfilePage extends React.Component {
                     firstName: result.attributes.profile.firstName || "",
                     lastName: result.attributes.profile.lastName || "",
                     description: result.attributes.profile.description || "",
-                    profileImage: result.attributes.profile.profileImage || "",
+                    profileImage: result.attributes.profile.profileImage || defaultProfileImage,
                     });
+                    // Check if the profileImage is the default value, it is default value set to default image
+                    if (result.attributes.profile.profileImage === ""){
+                        this.setState({
+                            profileImage: defaultProfileImage,
+                        })
+                    }
                 }
                 }
                 },
@@ -530,7 +537,7 @@ export default class ProfilePage extends React.Component {
     
                 <div className ={ProfilePageCSS.profile_info_bar}>
                     <div>
-                        <img className={ProfilePageCSS.profile_image} src={this.state.profileImage} />
+                        <img className={ProfilePageCSS.profile_image} src={this.state.profileImage} alt="profile-img"/>
                     </div>
                     <div className = {ProfilePageCSS.user_info}>
                         <div className = {ProfilePageCSS.username}>

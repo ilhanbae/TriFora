@@ -5,6 +5,8 @@ import CommentList from "./CommentList";
 import formatDateTime from "../helper/formatDateTime";
 import Modal from "./Modal";
 import { Link } from "react-router-dom";
+import defaultProfileImage from "../assets/defaultProfileImage.png";
+
 
 // Post Page will render a single post with all the related compontents (user, content, comments)
 export default class PostPage extends React.Component {
@@ -117,7 +119,7 @@ export default class PostPage extends React.Component {
                 if (result) {
                     this.setState({
                         authorID: result.authorID,
-                        user_image: result.author.attributes.profile.profileImage || "",
+                        user_image: result.author.attributes.profile.profileImage || defaultProfileImage,
                         username: result.author.attributes.profile.username || "",
                         post_date: formatDateTime(result.created) || "",
                         views: "",
@@ -126,6 +128,12 @@ export default class PostPage extends React.Component {
                         content: result.content || "",
                         post_images: result.attributes.images || [],
                     });
+                    // Check if the profileImage is the default value, it is default value set to default image
+                    if (result.author.attributes.profile.profileImage === ""){
+                        this.setState({
+                            user_image: defaultProfileImage
+                        })
+                    }
                     if (this.state.authorID.toString() === sessionStorage.getItem("user")){
                         this.setState({
                             show_delete: true,

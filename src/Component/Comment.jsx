@@ -6,6 +6,7 @@ import formatDateTime from "../helper/formatDateTime";
 import Modal from "./Modal";
 import { Link } from 'react-router-dom';
 import PostPage from "./PostPage";
+import defaultProfileImage from "../assets/defaultProfileImage.png";
 
 /* The Comment is going to render a single comment related to that post.*/
 
@@ -13,7 +14,7 @@ export default class Comment extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            comment_userimage: this.props.post.author.attributes.profile.profileImage,
+            comment_userimage: this.props.post.author.attributes.profile.profileImage === "" ? defaultProfileImage : this.props.post.author.attributes.profile.profileImage,
             comment_username: this.props.post.author.attributes.profile.username,
             comment_userid: this.props.post.author.id,
             comment_date: formatDateTime(this.props.post.created),

@@ -1,12 +1,13 @@
 import React from "react";
 import NotificationCSS from "../style/Notification.module.css";
 import { Link } from 'react-router-dom';
+import defaultProfileImage from "../assets/defaultProfileImage.png";
 
 export default class NotificationBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            notification_image: this.props.notification.fromUser.attributes.profile.profileImage === "" ? defaultProfileImage : this.props.notification.fromUser.attributes.profile.profileImage
         };
     }
 
@@ -116,7 +117,7 @@ export default class NotificationBox extends React.Component {
                 <div className={NotificationCSS["notification-user-content"]}>
                     <div className={NotificationCSS["notification-user"]}>
                         <Link to={`/profile/${this.props.notification.fromUserID}`}>
-                            <img className={NotificationCSS["notification-image"]} src={this.props.notification.fromUser.attributes.profile.profileImage}></img>
+                            <img className={NotificationCSS["notification-image"]} src={this.state.notification_image} alt="notification-img"></img>
                         </Link>
                     </div>
                     <div className={NotificationCSS["notification-content"]}>

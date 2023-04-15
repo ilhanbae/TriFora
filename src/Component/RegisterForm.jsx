@@ -1,6 +1,7 @@
 import React from 'react';
 import "../style/RegisterForm.css";
 import { Link, useNavigate} from "react-router-dom";
+import defaultProfileImage from "../assets/defaultProfileImage.png";
 
 export default class RegisterForm extends React.Component {
     constructor(props) {

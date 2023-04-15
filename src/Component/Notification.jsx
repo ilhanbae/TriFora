@@ -66,7 +66,7 @@ export default class Notification extends React.Component {
                     <div className={NotificationCSS["notification-message"]}>
                         <h2>You Have &#91; {this.state.friend_notification_list.length} &#93; Notifications</h2>
                     </div>
-                    <Link to={`/profile/${sessionStorage.getItem('user')}`} className={NotificationCSS["close-button"]}>
+                    <Link to={-1} className={NotificationCSS["close-button"]}>
                         Close
                     </Link>
                 </div>
