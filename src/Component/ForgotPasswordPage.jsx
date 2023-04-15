@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import "../style/ForgotPasswordPage.css";
+import "../style/ForgotPasswordPage.module.css";
 import validateEmail from "../helper/validateEmail";
+import style from "../style/ForgotPasswordPage.module.css";
 
 export default function ForgotPasswordPage(props) {
   const [isTokenRequestSuccess, setIsTokenRequestSuccess] = useState(false);
@@ -67,7 +68,7 @@ export default function ForgotPasswordPage(props) {
 /* This component contiains the token reset view */
 const TokenRequestView = (props) => {
   return (
-    <div className="container">
+    <div className={style['container']}>
       <Headline title="Forgot Password?" subtitle="No worries, we will send you instructions to your email"/>
       <TokenRequestForm sendResetTokenRequest={props.sendResetTokenRequest} />
       <BackToLogin />
@@ -78,7 +79,7 @@ const TokenRequestView = (props) => {
 /* This component contains the reset password view */
 const ResetPasswordView = (props) => {
   return (
-    <div className="container">
+    <div className={style['container']}>
       <Headline title="Create new password" subtitle="Enter your new password and the reset token"/>
       <ResetPasswordForm sendResetPasswordRequest={props.sendResetPasswordRequest} />
       <BackToLogin />
@@ -89,7 +90,7 @@ const ResetPasswordView = (props) => {
 /* Thie component contains the reset password success view */
 const ResetPasswordSuccessView = (props) => {
   return (
-    <div className="container">
+    <div className={style['container']}>
       <Headline title="Password reset successfully" subtitle="Log back to your account"/>
       <BackToLogin />
     </div>
@@ -100,9 +101,9 @@ const ResetPasswordSuccessView = (props) => {
 and subtitle*/
 const Headline = (props) => {
   return (
-    <div className="headline">
-      <h1 className="active-text">{props.title}</h1>
-      <h1 className="inactive-text">{props.subtitle}</h1>
+    <div className={style['headline']}>
+      <h1 className={style['active-text']}>{props.title}</h1>
+      <h1 className={style['inactive-text']}>{props.subtitle}</h1>
     </div>
   );
 };
@@ -112,7 +113,7 @@ const BackToLogin = () => {
   return (
     <div>
       <Link to="/login">
-        <span className="back-to-login-button">&#8592; Back to Login</span>
+        <span className={style['back-to-login-button']}>&#8592; Back to Login</span>
       </Link>
     </div>
   )
@@ -145,22 +146,22 @@ const TokenRequestForm = (props) => {
 
   return (
     <form
-      className="form"
+      className={style['form']}
       onSubmit={formSubmitHandler}
       autoComplete="off"
     >
       {/* Email Input Field*/}
       <label>
-        <span className="active-text">Email:</span>
+        <span className={style['active-text']}>Email:</span>
         <input
-          className="data-input"
+          className={style['data-input']}
           type="text"
           value={email}
           onChange={emailInputHandler}
         />
       </label>
       {/* Send Instruction button */}
-      <button className="send-instructions-button">Send Instructions</button>
+      <button className={style['send-instructions-button']}>Send Instructions</button>
     </form>
   );
 };
@@ -190,15 +191,15 @@ const ResetPasswordForm = (props) => {
 
   return (
     <form
-      className="form"
+        className={style['form']}
       onSubmit={formSubmitHandler}
       autoComplete="off"
     >
       {/* Password Input Field*/}
       <label>
-        <span className="active-text">New Password:</span>
+        <span className={style['active-text']}>New Password:</span>
         <input
-          className="data-input"
+            className={style['data-input'] + ' ' + style['password']}
           type="text"
           value={password}
           onChange={passwordInputHandler}
@@ -206,16 +207,16 @@ const ResetPasswordForm = (props) => {
       </label>
       {/* Password Input Field*/}
       <label>
-        <span className="active-text">Reset Token:</span>
+        <span className={style['active-text']}>Reset Token:</span>
         <input
-          className="data-input"
+            className={style['data-input']}
           type="text"
           value={token}
           onChange={tokenInputHandler}
         />
       </label>
       {/* Reset Button */}
-      <button className="reset-password-button">Reset Password</button>
+      <button className={style['reset-password-button']}>Reset Password</button>
     </form>
   )
 }

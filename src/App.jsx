@@ -13,6 +13,7 @@ import EditProfilePage from "./Component/EditProfilePage";
 import CommunityPage from "./Component/CommunityPage";
 import CreatePost from "./Component/CreatePost";
 import Modal from "./Component/Modal";
+import Post_Page from "./Component/PostPage.jsx";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -78,7 +79,6 @@ export default function App() {
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/edit-profile" element={<EditProfilePage />} />
               <Route path="/community/:communityId" element={<CommunityPage openModal={openModal} closeModal={closeModal} />} />
-              <Route path="/community/:communityId/create-post" element={<CreatePost />} /> {/* probably exist a cleaner way */}
               <Route path="/" element={<LoginOrProfile login={login} />} />
             </Routes>
           </div>
