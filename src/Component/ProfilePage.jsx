@@ -76,12 +76,14 @@ export default class ProfilePage extends React.Component {
                 }
                 },
                 error => {
-                alert("error!");
+                //alert("error!");
+                console.log("error!")
                 }
             );
         }else{
             //If user is not logged in, show error message
-            alert("Not Logged In");
+            //alert("Not Logged In");
+            console.log("Not Logged In");
         }
     }
 
@@ -110,14 +112,15 @@ export default class ProfilePage extends React.Component {
                 }
                 },
                 error => {
-                    alert("ERROR loading communities");
+                    //alert("ERROR loading communities");
                     console.log("ERROR loading communities")
                 }
             );
         
         }else{
             //If user is not logged in, show error message
-            alert("Not Logged In");
+            //alert("Not Logged In");
+            console.log("Not Logged In");
         }
     }
 
@@ -148,14 +151,15 @@ export default class ProfilePage extends React.Component {
                 }
                 },
                 error => {
-                    alert("ERROR loading Friends");
+                    //alert("ERROR loading Friends");
                     console.log("ERROR loading Friends")
                 }
             );
 
         } else {
             //If user is not logged in, show error message
-            alert("Not Logged In");
+            //alert("Not Logged In");
+            console.log("Not Logged In");
         }
     }
 
@@ -207,7 +211,7 @@ export default class ProfilePage extends React.Component {
                                 });
                                 },
                                 error => {
-                                    alert("ERROR loading Friends");
+                                    //alert("ERROR loading Friends");
                                     console.log("ERROR loading Friends")
                                 }
                             );
@@ -252,14 +256,14 @@ export default class ProfilePage extends React.Component {
                         }
                         },
                         error => {
-                            alert("ERROR loading Friends");
+                            //alert("ERROR loading Friends");
                             console.log("ERROR loading Friends")
                         }
                     );
                 }
                 },
                 error => {
-                    alert("ERROR loading Friends");
+                    //alert("ERROR loading Friends");
                     console.log("ERROR loading Friends")
                 }
             );
@@ -295,14 +299,15 @@ export default class ProfilePage extends React.Component {
                 this.check_user_connection(user_id);
                 },
                 error => {
-                    alert("ERROR sending Friend Request");
+                    //alert("ERROR sending Friend Request");
                     console.log("ERROR loading Friend Request")
                 }
             );
 
         } else {
             //If user is not logged in, show error message
-            alert("Not Logged In");
+            //alert("Not Logged In");
+            console.log("Not Logged In");
         }
     }
 
@@ -327,7 +332,7 @@ export default class ProfilePage extends React.Component {
                     this.check_user_connection(user_id);
                 },
                 error => {
-                    alert("ERROR when deleting Friend Request");
+                    //alert("ERROR when deleting Friend Request");
                     console.log(error);
                     console.log("ERROR when deleting Friend Request");
                 }
@@ -335,7 +340,8 @@ export default class ProfilePage extends React.Component {
 
         }else{
             //If user is not logged in, show error message
-            alert("Not Logged In");
+            //alert("Not Logged In");
+            console.log("Not Logged In");
         }
     }
 
@@ -360,7 +366,7 @@ export default class ProfilePage extends React.Component {
                     this.check_user_connection(user_id);
                 },
                 error => {
-                    alert("ERROR when deleting Friend Request");
+                    //alert("ERROR when deleting Friend Request");
                     console.log(error);
                     console.log("ERROR when deleting Friend Request");
                 }
@@ -381,7 +387,7 @@ export default class ProfilePage extends React.Component {
                     this.check_user_connection(user_id);
                 },
                 error => {
-                    alert("ERROR when deleting Friend Request");
+                    //alert("ERROR when deleting Friend Request");
                     console.log(error);
                     console.log("ERROR when deleting Friend Request");
                 }
@@ -389,7 +395,8 @@ export default class ProfilePage extends React.Component {
 
         }else{
             //If user is not logged in, show error message
-            alert("Not Logged In");
+            //alert("Not Logged In");
+            console.log("Not Logged In");
         }
     }
 
@@ -417,10 +424,10 @@ export default class ProfilePage extends React.Component {
                 result => {
                     console.log(result);
                     console.log("Connection Updated");
-                    alert("Connection Updated")
+                    //alert("Connection Updated")
                 },
                 error => {
-                    alert("ERROR updating Connection");
+                    //alert("ERROR updating Connection");
                     console.log("ERROR updating Connection")
                 }
             );
@@ -447,12 +454,12 @@ export default class ProfilePage extends React.Component {
                 result => {
                     console.log(result);
                     console.log("Connection Created");
-                    alert("Connection Created");
+                    //alert("Connection Created");
                     this.check_user_connection(user_id);
                     this.load_friend(user_id);
                 },
                 error => {
-                    alert("ERROR creating new Connection");
+                    //alert("ERROR creating new Connection");
                     console.log("ERROR creating new Connection")
                 }
             );
@@ -477,12 +484,12 @@ export default class ProfilePage extends React.Component {
             })
             .then(
                 result => {
-                    alert("Delete Friend Request Successfully");
+                    //alert("Delete Friend Request Successfully");
                     console.log("Delete Connection Successfully");
                     this.check_user_connection(user_id);
                 },
                 error => {
-                    alert("ERROR when deleting Connection");
+                    //alert("ERROR when deleting Connection");
                     console.log(error);
                     console.log("ERROR when deleting Connection");
                 }
@@ -514,7 +521,7 @@ export default class ProfilePage extends React.Component {
                         reject_friend={this.reject_friend}
                         />
     
-                        <Link to='/' className = {ProfilePageCSS.close_button}>
+                        <Link to={-1} className = {ProfilePageCSS.close_button}>
                             Close
                         </Link>
                     </div>
