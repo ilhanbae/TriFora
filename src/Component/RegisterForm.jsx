@@ -145,14 +145,13 @@ export default class RegisterForm extends React.Component {
     render() {
         return (
             <div className='wrapper'>
-                <div className='inner'>
                   <Link to='/login'>
                     <button className='base register-base-back'>
                       <b className='login-link'>&#8592; Go to Login</b>
                     </button>
                   </Link>
                     {/*<p>Back to Login</p>*/}
-                    <form>
+                    <form className='signup-form'>
                         <h3 className='h3-inner'>Create an Account</h3>
                         
                         {/*
@@ -182,7 +181,6 @@ export default class RegisterForm extends React.Component {
                         </label>
 
                     </form>
-                </div>
             </div>
         )
     }

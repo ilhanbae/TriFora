@@ -39,6 +39,39 @@
     color: #3D211A;
 }
 
+/* logo under 500px */
+@media (max-width: 500px){
+    .logo {
+        font-size: 2rem;
+        color: #3D211A;
+    }
+}
+
+/* logo under 350px */
+@media (max-width: 350px){
+    .headerNav {
+        background-color: #F3C26E;
+        color: black;
+        display: flex;
+        justify-content: space-between;
+        /*padding: 1rem;*/
+        padding-inline: 1rem;
+        position: sticky;
+        top: 0;
+        right: 0;
+        left: 0;
+        align-items: center;
+    }
+
+    .headerNav ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        display: flex;
+        gap: 1rem;
+    }
+}
+
 .nav_text {
     color: #3D211A;
     padding-top: 11%;
