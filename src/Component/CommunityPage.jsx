@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Modal from "./Modal";
 import CommunityPageSetting from "./CommunityPageSetting";
 import PostPage from "./PostPage";
@@ -12,6 +12,7 @@ import style from "../style/CommunityPage.module.css";
 import defaultProfileImage from "../assets/defaultProfileImage.png";
 import defaultPostImage from "../assets/defaultPostImage.png";
 import defaultCommunityImage from "../assets/defaultCommunityImage.png";
+import CreatePost from "./CreatePost";
 
 /* This component renders a single community page. Inside the community page, 
 there are posts tab and members tab. */
@@ -106,6 +107,7 @@ export default function CommunityPage(props) {
           <CommunityContentDisplay
             communityId={communityId}
             userCommunityMemberDetails={userCommunityMemberDetails}
+            refreshCommunityDetails={refreshCommunityDetails}
           />
         </div>
       </div>
@@ -325,6 +327,7 @@ const CommunityContentDisplay = (props) => {
           {/* Post Control Tool */}
           <PostControlTool 
             userCommunityMemberDetails={props.userCommunityMemberDetails}
+            refreshCommunityDetails={props.refreshCommunityDetails}
           />
           {/* Commmunity Posts List */}
           <CommunityPostsList
@@ -347,7 +350,9 @@ const CommunityContentDisplay = (props) => {
       {contentDisplayType === "members" && (
         <div>
           {/* Member Control Tool */}
-          <MemberControlTool />
+          <MemberControlTool 
+            refreshCommunityDetails={props.refreshCommunityDetails}
+          />
           {/* Comunity Members List */}
           <CommunityMembersList
             userCommunityMemberDetails={props.userCommunityMemberDetails}
@@ -616,12 +621,18 @@ const CommunityPost = (props) => {
           <div className={style["post-author-date"]}>
             <div className={style["post-author"]}>
               <span className={style["inactive-text"]}>Posted By</span>
-              <p className={style["active-text"]}>
-                <span className={style["bold"]}>
-                  {props.post.author?.attributes.profile.username}
-                </span>
-                <span>({postAuthorRoleLabel})</span>
-              </p>
+
+              <Link to={`/profile/${props.post.author.id}`}>
+                <p className={`${style["active-text"]} ${style["post-author__link"]}`}>
+                  {/* Author Username */}
+                  <span className={style["bold"]}>
+                    {props.post.author?.attributes.profile.username}
+                  </span>
+                  {/* Author Role */}
+                  <span>({postAuthorRoleLabel})</span>
+                </p>
+              </Link>
+          
             </div>
             <div className={style["post-date"]}>
               <span className={style["inactive-text"]}>Posted On</span>
@@ -717,11 +728,24 @@ const CommunityPost = (props) => {
 /* [TODO] This component serves as a container for two buttons - SortPostsButton and CreatePostButton. */
 const PostControlTool = (props) => {
   const [isPostSortActive, setIsPostSortActive] = useState(false);
+  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
+  
 
   // Toggles between post sort active and inactive
   const sortButtonToggleHandler = () => {
     setIsPostSortActive(isPostSortActive ? false : true);
   };
+
+  /* This method opens create post page modal */
+  const openCreatePostPageModal = () => {
+    setIsCreatePostModalOpen(true)
+  }
+
+  /* This method closes create post page modal */
+  const closeCreatePostPageModal = () => {
+    props.refreshCommunityDetails(); // Refresh the community details on post page modal close
+    setIsCreatePostModalOpen(true);
+  }
 
   return (
     <div className={style["content-control-tool"]}>
@@ -744,11 +768,29 @@ const PostControlTool = (props) => {
           <div className={`${style["right-control-placeholder"]} ${style["inactive-text"]}`}>
             Tell us your story!
           </div>
-          <button className={`${style["button"]} ${style["button__outlined"]} ${style["button__filled"]}`}>
+          <button 
+            className={`${style["button"]} ${style["button__outlined"]} ${style["button__filled"]}`}
+            onClick={openCreatePostPageModal} 
+          >  
             Create Post
           </button>
         </div>
       }
+      {/* Create Post Modal */}
+      <Modal
+        show={isCreatePostModalOpen}
+        onClose={closeCreatePostPageModal}
+        modalStyle={{
+          width: "90%",
+          height: "90%",
+        }}
+      >
+        <CreatePost
+          communityId={props.communityId}
+          refreshPosts={props.refreshPosts}
+          closePostPageModal={closeCreatePostPageModal}
+        />
+      </Modal>
     </div>
   );
 };
@@ -961,6 +1003,14 @@ const CommunityMember = (props) => {
   const [isMemberActionActive, setIsMemberActionActive] = useState(false);
   const [isMemberReported, setIsMemberReported] = useState(false);
   const memberActionSidemenuRef = useRef(null); // Create a ref for memver action sidemenu component
+  const navigate = useNavigate(); // For navigation
+
+
+  // Check if member is current user 
+  const isMemberUser = props.member?.userID === props.userCommunityMemberDetails?.userID;
+  const commmunityMemberStyle = isMemberUser
+    ? `${style["community-member"]} ${style["community-member__filled"]}`
+    : `${style["community-member"]}`;
 
   /* This hook check if mousedown DOM  event occurs outside a member action sidemenu.  */
   useEffect(() => {
@@ -1018,41 +1068,49 @@ const CommunityMember = (props) => {
     props.refreshMembers();
   };
 
-  // Check if member is current user 
-  const isMemberUser = props.member?.userID === props.userCommunityMemberDetails?.userID;
-  const commmunityMemberStyle = isMemberUser
-    ? `${style["community-member"]} ${style["community-member__filled"]}`
-    : `${style["community-member"]}`;
+  /* This method opens selected member page */
+  const openMemberPage = () => {
+    navigate(`/profile/${props.member.user.id}`); // navigate to member profile
+  }
+
 
   return (
     <div className={commmunityMemberStyle}>
-      {/* Community Member Profile Avatar */}
-      <img
-        className={`${style["image"]} ${style["image__md"]} ${style["image__round"]}`}
-        src={props.member.user.attributes.profile.profileImage}
-        alt="Community member profile"
-        onError={(e) => (e.currentTarget.src = defaultProfileImage)}
-      />
+      <div 
+        className={style["community-member__clickable-area"]}
+        onClick={openMemberPage}
+        on
+      >
+        {/* Community Member Profile Avatar */}
+        <img
+          className={`${style["image"]} ${style["image__md"]} ${style["image__round"]}`}
+          src={props.member.user.attributes.profile.profileImage}
+          alt="Community member profile"
+          onError={(e) => (e.currentTarget.src = defaultProfileImage)}
+        />
 
-      {/* Community Member Info */}
-      <div className={style["community-member-info"]}>
-        <div>
-          {/* Community Member Username */}
-          <span className={`${style["active-text"]} ${style["bold"]}`}>
-            {props.member.user.attributes.profile.username}
-          </span>
-          {/* Community Member Role */}
-          <span className={style["inactive-text"]}>
-            {props.member.attributes.role}
-          </span>
-        </div>
-
-        {/* Member Action Label */}
-        {isMemberReported &&
-          <div className={`${style["member-action-label"]} ${style["post-action-label__bistre"]}`}>
-            <span>Reported</span>
+        {/* Community Member Info */}
+        <div className={style["community-member-info"]}>
+          <div>
+            {/* Community Member Username */}
+            <span className={`${style["active-text"]} ${style["bold"]}`}>
+              {props.member.user.attributes.profile.username}
+            </span>
+            {/* Community Member Role */}
+            <span className={style["inactive-text"]}>
+              {props.member.attributes.role}
+            </span>
           </div>
-        }
+
+          {/* Member Action Label */}
+          {isMemberReported && (
+            <div
+              className={`${style["member-action-label"]} ${style["post-action-label__bistre"]}`}
+            >
+              <span>Reported</span>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Member Action Side Menu */}
@@ -1065,7 +1123,7 @@ const CommunityMember = (props) => {
         <MemberActionSidemenu
           isActive={isMemberActionActive}
           memberActionOptionsHandler={memberActionOptionsHandler}
-          member = {props.member}
+          member={props.member}
           userCommunityMemberDetails={props.userCommunityMemberDetails}
           refreshMembers={props.refreshMembers}
           memberActionSidemenuRef={memberActionSidemenuRef}

@@ -57,7 +57,6 @@
   align-items: center;
   justify-content: center;
   gap: 5px;
-  box-shadow: 0 4px 14px 0 rgb(0 0 0 / 13%);
   transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 .button__bordered {
@@ -79,7 +78,7 @@
   cursor: not-allowed;
 }
 .button:hover:not([disabled]) {
-  box-shadow: 0 6px 20px rgb(245 245 220 / 43%);
+  box-shadow: 0 4px 14px 0 rgb(0 0 0 /50%);
 }
 
 /**** End of Generic Components ****/
