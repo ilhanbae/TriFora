@@ -1,7 +1,7 @@
 /* This is our starting point of our application. This is the level that will handle
 the routing of requests, and also the one that will manage communication between sibling
 components at a lower level. */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import NavAchiever from "./Component/NavAchiever";
@@ -15,10 +15,10 @@ import CreatePost from "./Component/CreatePost";
 import Notification from "./Component/Notification";
 
 export default function App() {
-  // The app component maintains whether or not the login or logout actions were triggerd.
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [navStyle, setNavStyle] = useState(2);
 
+  /* This method changes nav style */
   const navSwitch = (headerStyle) => {
     if (headerStyle !== navStyle) {
       setNavStyle(headerStyle)
@@ -47,11 +47,11 @@ export default function App() {
     <Router basename={process.env.PUBLIC_URL}>
       <div>
         <header>
-
+          {/* Navigation */}
           <NavAchiever logout={logout} navStyle={navStyle} />
-
           <div>
             <Routes>
+              {/* Pages */}
               <Route path="/register" element={<RegisterForm login={login} />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/login" element={<LoginOrProfile login={login} />} />
@@ -63,8 +63,8 @@ export default function App() {
               <Route path="/" element={<LoginOrProfile login={login} />} />
             </Routes>
           </div>
-
         </header>
+
       </div>
     </Router>
   );

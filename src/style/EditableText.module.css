@@ -1,0 +1,86 @@
+/* Container */
+.container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* border: 1px solid var(--bistre); */
+}
+
+/* Edit Text Display */
+.edit-text-display {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Text Inputs */
+.editable-textarea-text {
+  font-family: 'Montserrat', sans-serif;
+  /* background-color: var(--light-yellow); */
+  /* border: 1px solid var(--bistre); */
+  resize: none;
+  border-radius: 5px;
+  border: none;
+  padding: 10px;
+  width: auto;
+}
+.editable-input-text {
+  font-family: 'Montserrat', sans-serif;
+  /* background-color: var(--light-yellow); */
+  /* background: none; */
+  background-color: var(--);
+  border-radius: 5px;
+  border: none;
+  padding: 10px 5px;
+
+}
+
+
+/**** Start of Generic Components ****/
+/* Icons */
+.edit-icon::before {
+  cursor: pointer;
+  content: "\270E";
+  text-align: center;
+}
+.save-icon::before {
+  cursor: pointer;
+  content: "\2713";
+  font-weight: bold;
+  text-align: center;
+}
+.cancel-icon::before {
+  cursor: pointer;
+  font-weight: bold;
+  content: "\2715";
+  text-align: center;
+}
+
+/* Button */
+.button {
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.button__bordered {
+  border: 2px solid var(--bistre);
+  border-radius: 10px;
+}
+.button__filled {
+  background-color: var(--yellow-apricot);
+}
+.button__outlined {
+  outline: 2px solid var(--bistre);
+  border-radius: 10px;
+}
+.button:disabled {
+  background-color: var(--red-orange);
+}
+/**** End of Generic Components ****/
