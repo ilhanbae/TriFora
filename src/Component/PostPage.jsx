@@ -19,8 +19,8 @@ export default class PostPage extends React.Component {
             notification_color_class: "green-button",
 
             // Current Community ID
-            community_id: window.location.href.split("/")[4],
-            //community_id: props.community_id,
+            //community_id: window.location.href.split("/")[4],
+            community_id: props.community_id,
 
             // Render Post Info states
             authorID: "",
@@ -28,8 +28,8 @@ export default class PostPage extends React.Component {
             username: "",
             post_date: "",
             views: "",
-            post_id: window.location.href.split("/")[6],
-            //post_id: props.post_id,
+            //post_id: window.location.href.split("/")[6],
+            post_id: props.post_id,
             title: "",
             content: "",
             post_images: [],
@@ -443,9 +443,11 @@ export default class PostPage extends React.Component {
                                 <img alt="post-avater" className={PostPageCSS['post-avater']} src={this.state.user_image} />
                                 <div className = {PostPageCSS['post-by']}>
                                     <h5> Posted By </h5>
-                                    <div className = {PostPageCSS['post-username']}>
-                                        <h5> {this.state.username} </h5>
-                                    </div>
+                                    <Link to={`/profile/${this.state.authorID}`}>
+                                        <div className = {PostPageCSS['post-username']}>
+                                            <h5> {this.state.username} </h5>
+                                        </div>
+                                    </Link>
                                 </div>
                                 <div className = {PostPageCSS['post-on']}>
                                     <h5> Posted On </h5>
