@@ -20,7 +20,7 @@ export default function CommunityPageSetting(props) {
   // Fetch the community details when the community setting page is loaded
   useEffect(() => {
     loadCommunityDetails();
-  }, [])
+  }, []);
 
   /* This methods loads the community details by sending the API request. */
   const loadCommunityDetails = async () => {
@@ -40,7 +40,7 @@ export default function CommunityPageSetting(props) {
   /* This method refresh the community details by sending the API request again. */
   const refreshCommunityDetails = async () => {
     await loadCommunityDetails();
-  }
+  };
 
   // This method updates community name by sending PATCH request to the API server.
   // [TODO] Should check if the name is taken.
@@ -157,59 +157,69 @@ export default function CommunityPageSetting(props) {
   } else {
     // Unpack community details
     const communityName = communityDetails.name;
-    const bannerBackgroundColor = communityDetails.attributes.design.bannerBackgroundColor
-        ? communityDetails.attributes.design.bannerBackgroundColor
-        : "#f3c26e";
-    const bannerprofileImage = communityDetails.attributes.design.bannerProfileImage
-        ? communityDetails.attributes.design.bannerProfileImage
-        : defaultCommunityImage;
+    const bannerBackgroundColor = communityDetails.attributes.design
+      .bannerBackgroundColor
+      ? communityDetails.attributes.design.bannerBackgroundColor
+      : "#f3c26e";
+    const bannerprofileImage = communityDetails.attributes.design
+      .bannerProfileImage
+      ? communityDetails.attributes.design.bannerProfileImage
+      : defaultCommunityImage;
 
     return (
       <div className={style["container"]}>
         {/* Edit Community Section */}
         <div className={style["edit-community-section"]}>
-          <span className={style["section-title"]}>Edit Community</span>
           <div className={style["edit-community-section-body"]}>
             {/* Community Name */}
-            <EditableText
-              updateTextHandler={updateCommunityName}
-              showEditButton={true}
-            >
-              {/* <h2 style={{ whiteSpace: "nowrap"}}>{communityName}</h2> */}
-              <h2>{communityName}</h2>
-            </EditableText>
+            <div className={style["edit-community-subsection"]}>
+              <span className={style["section-title"]}>Community Name:</span>
+              <EditableText
+                updateTextHandler={updateCommunityName}
+                showEditButton={true}
+              >
+                {/* <h2 style={{ whiteSpace: "nowrap"}}>{communityName}</h2> */}
+                <h2>{communityName}</h2>
+              </EditableText>
+            </div>
 
             {/* Community Banner Background Color */}
-            <EditableColor
-              updateColorHandler={updateCommunityBannerBackgroundColor}
-              showEditButton={true}
-            >
-              <div
-                style={{
-                  backgroundColor: bannerBackgroundColor,
-                  width: "100px",
-                  height: "50px",
-                  borderRadius: "5px",
-                }}
-              ></div>
-            </EditableColor>
+            <div className={style["edit-community-subsection"]}>
+              <span className={style["section-title"]}>Community Background:</span>
+              <EditableColor
+                updateColorHandler={updateCommunityBannerBackgroundColor}
+                showEditButton={true}
+              >
+                <div
+                  style={{
+                    backgroundColor: bannerBackgroundColor,
+                    width: "100px",
+                    height: "50px",
+                    borderRadius: "5px",
+                  }}
+                ></div>
+              </EditableColor>
+            </div>
 
             {/* Community Banner Profile Image */}
-            <EditableImage
-              updateImageHandler={updateCommunityBannerProfileImage}
-              showEditButton={true}
-            >
-              <img
-                src={bannerprofileImage}
-                alt="community banner profile"
-                onError={(e) => (e.currentTarget.src = defaultCommunityImage)}
-                style={{
-                  width: "50px",
-                  height: "50px",
-                  borderRadius: "10px"
-                }}
-              ></img>
-            </EditableImage>
+            <div className={style["edit-community-subsection"]}>
+              <span className={style["section-title"]}>Community Profile:</span>
+              <EditableImage
+                updateImageHandler={updateCommunityBannerProfileImage}
+                showEditButton={true}
+              >
+                <img
+                  src={bannerprofileImage}
+                  alt="community banner profile"
+                  onError={(e) => (e.currentTarget.src = defaultCommunityImage)}
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    borderRadius: "10px",
+                  }}
+                ></img>
+              </EditableImage>
+            </div>
           </div>
         </div>
 
