@@ -11,7 +11,7 @@ import style from "../style/CommunityPageSetting.module.css";
 import defaultCommunityImage from "../assets/defaultCommunityImage.png";
 
 /* This component renders edit community form */
-export default function EditCommunityForm(props) {
+export default function CommunityPageSetting(props) {
   const [communityDetails, setCommunityDetails] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -58,7 +58,7 @@ export default function EditCommunityForm(props) {
       alert(`Successfully Updated Community Name to "${name}"`);
       refreshCommunityDetails();
       props.refreshCommunityDetails();
-      // props.closeModal();
+      // props.closeCommunityPageSettingModal();
     }
   };
 
@@ -131,7 +131,7 @@ export default function EditCommunityForm(props) {
       alert(`Successfully Updated Community Banner to "${serverImageUrl}"`);
       refreshCommunityDetails();
       props.refreshCommunityDetails();
-      // props.closeModal();
+      // props.closeCommunityPageSettingModal();
     }
   };
 
@@ -145,7 +145,7 @@ export default function EditCommunityForm(props) {
     } else {
       alert(`Succesfully removed community: ${props.communityId}`);
       navigate("/"); // navigate back to landing page
-      props.closeModal();
+      props.closeCommunityPageSettingModal();
     }
   };
 

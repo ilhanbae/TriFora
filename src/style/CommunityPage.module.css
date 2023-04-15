@@ -270,6 +270,10 @@
   padding: 5px;
   gap: 5px
 }
+.community-post__clickable-area {
+  display: flex;
+}
+
 .post-summary {
   width: 745px;
   display: flex;

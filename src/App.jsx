@@ -11,17 +11,10 @@ import LoginForm from "./Component/LoginForm";
 import ProfilePage from "./Component/ProfilePage";
 import EditProfilePage from "./Component/EditProfilePage";
 import CommunityPage from "./Component/CommunityPage";
-import CreatePost from "./Component/CreatePost";
-import Modal from "./Component/Modal";
-import Post_Page from "./Component/PostPage.jsx";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [navStyle, setNavStyle] = useState(2);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState(null);
-  const [modalTitle, setModalTitle] = useState(null);
-  const [modalStyle, setModalStyle] = useState(null);
 
   /* This method changes nav style */
   const navSwitch = (headerStyle) => {
@@ -45,22 +38,6 @@ export default function App() {
     setIsLoggedIn(true);
   }
 
-  /* This method closes the modal */
-  const closeModal = () => {
-    setIsModalOpen(false); // Reset modal open state
-    setModalStyle(null); // Reset modal styles
-    setModalContent(null); // Reset modal content
-    setModalTitle(null) // Reset modal title
-  }
-
-  /* This method opens the modal */
-  const openModal = ({content, title, style}) => {
-    setModalContent(content);
-    setModalStyle(style);
-    setModalTitle(title);
-    setIsModalOpen(true);
-  }
-
   return (
     /* The app is wrapped in a router component, that will render the appropriate
     content based on the URL path. Since this is a single page app, it allows some
@@ -78,23 +55,11 @@ export default function App() {
               <Route path="/login" element={<LoginOrProfile login={login} />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/edit-profile" element={<EditProfilePage />} />
-              <Route path="/community/:communityId" element={<CommunityPage openModal={openModal} closeModal={closeModal} />} />
+              <Route path="/community/:communityId" element={<CommunityPage />} />
               <Route path="/" element={<LoginOrProfile login={login} />} />
             </Routes>
           </div>
         </header>
-        {/* UI Elements */}
-        <div>
-          {/* Modal */}
-          <Modal 
-            show={isModalOpen}
-            onClose={closeModal}
-            modalTitle={modalTitle}
-            modalStyle={modalStyle}
-          >
-            {modalContent}
-          </Modal>
-        </div>
 
       </div>
     </Router>

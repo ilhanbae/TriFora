@@ -21,8 +21,8 @@ export default class Comment extends React.Component {
             edit_comment_input: "",
             openModal: false,
         };
-      }
-
+    }
+    
     deleteComment(comment_id) {
         if (sessionStorage.getItem("token")){
             //make the api call to post
@@ -133,11 +133,7 @@ export default class Comment extends React.Component {
 }
 
 const Comment_interaction = (props) => {
-    if (props.join === 'Join'){
-        return (
-            <></>
-        );
-    }else if (props.comment_user.toString() !== sessionStorage.getItem("user").toString()){
+    if (props.comment_user.toString() !== sessionStorage.getItem("user").toString()){
         return (
             <></>
         );
@@ -148,10 +144,12 @@ const Comment_interaction = (props) => {
                     <button className = {PostPageCSS['comment-delete-button']} onClick={props.ClickDelete}></button>
                     <h6 className = {PostPageCSS['comment-delete-text']}>Delete</h6>
                     <Modal show={props.openModal} onClose={props.toggleModal}>
-                        <div className={PostPageCSS['delete-popup-title']}>Delete Your Comment</div>
-                        <div className={PostPageCSS['popup-buttons']}>
-                            <button className={PostPageCSS['delete-button']} onClick={props.delete}>Delete</button>
-                            <button className={PostPageCSS['cancel-button']} onClick={props.toggleModal}>Cancel</button>
+                        <div>
+                            <div className={PostPageCSS['delete-popup-title']}>Delete Your Comment</div>
+                            <div className={PostPageCSS['popup-buttons']}>
+                                <button className={PostPageCSS['delete-button']} onClick={props.delete}>Delete</button>
+                                <button className={PostPageCSS['cancel-button']} onClick={props.toggleModal}>Cancel</button>
+                            </div>
                         </div>
                     </Modal>
                 </div>

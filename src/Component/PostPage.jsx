@@ -13,7 +13,6 @@ export default class PostPage extends React.Component {
         super(props)
         this.state = {
             // Render buttons states
-            join: "Join",
             notification_text: "Notification ON",
             notification_switch: "ON", 
             notification_color_class: "green-button",
@@ -94,8 +93,8 @@ export default class PostPage extends React.Component {
 
     loadPost() {
         // set the auth token and user ID in the session state
-        sessionStorage.setItem("token", "underachievers|Rec0pI_XOkyJDUt5eDqUlqvT-XKWoqF6LyW7XUS88wQ");
-        sessionStorage.setItem("user", "165");
+        // sessionStorage.setItem("token", "underachievers|Rec0pI_XOkyJDUt5eDqUlqvT-XKWoqF6LyW7XUS88wQ");
+        // sessionStorage.setItem("user", "165");
 
         // if the user is not logged in, we don't want to try loading post, because it will just error out. 
         if (sessionStorage.getItem("token")){
@@ -397,6 +396,7 @@ export default class PostPage extends React.Component {
                 result => {
                     alert("Delete Successfully");
                     console.log("Delete Successfully");
+                    this.props.closePostPageModal(); // close the post page modal
                 },
                 error => {
                     alert("ERROR when deleting post");
@@ -428,15 +428,6 @@ export default class PostPage extends React.Component {
             <div className = {PostPageCSS['post-page']}>
 
                 <div className = {PostPageCSS['postpage-content']}>
-
-                    <div className={PostPageCSS['back-button-bar']}>
-                        <Link to={`/community/${this.state.community_id}`}>
-                            <button className = {PostPageCSS['back-button']}>
-                                <img className = {PostPageCSS['back-button-image']} src={back} alt='back'/>
-                            </button>
-                        </Link>
-                    </div>
-
                     <div className = {PostPageCSS['main-post']}>
                         <div className = {PostPageCSS['post-header']}>
                             <div className = {PostPageCSS['poster-info']}>
@@ -473,8 +464,8 @@ export default class PostPage extends React.Component {
                         <Like_button state={this.state} click_like={this.click_like} click_undo_like={this.click_undo_like}/>
                         <Post_Buttons state={this.state} delete_post={this.DeletePostHandler} ClickDelete={() => this.ClickDeleteButton()} toggleModal={this.toggleModal}/>
                     </div>
-                    <Comment_input join={this.state.join} comment_input={this.CommentHandler} submit={this.CommentSumbitHandler}/>
-                    <CommentList join={this.state.join} comment_list={this.state.comments} loadPost={this.loadPost}/>
+                    <Comment_input comment_input={this.CommentHandler} submit={this.CommentSumbitHandler}/>
+                    <CommentList comment_list={this.state.comments} loadPost={this.loadPost}/>
                 </div>
 
             </div>
@@ -557,10 +548,12 @@ const Post_Buttons = (props) => {
                     <button className = {PostPageCSS['post-delete-button']} onClick={props.ClickDelete}></button>
                     <h5 className = {PostPageCSS['post-delete-text']}>Delete</h5>
                     <Modal show={props.state.openModal} onClose={props.toggleModal}>
-                        <div className={PostPageCSS['delete-popup-title']}>Delete Your Post</div>
-                        <div className={PostPageCSS['popup-buttons']}>
-                            <button className={PostPageCSS['delete-button']} onClick={props.delete_post}>Delete</button>
-                            <button className={PostPageCSS['cancel-button']} onClick={props.toggleModal}>Cancel</button>
+                        <div>
+                            <div className={PostPageCSS['delete-popup-title']}>Delete Your Post</div>
+                            <div className={PostPageCSS['popup-buttons']}>
+                                <button className={PostPageCSS['delete-button']} onClick={props.delete_post}>Delete</button>
+                                <button className={PostPageCSS['cancel-button']} onClick={props.toggleModal}>Cancel</button>
+                            </div>
                         </div>
                     </Modal>
                 </div>

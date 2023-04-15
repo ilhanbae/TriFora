@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
+import Modal from "./Modal";
 import CommunityPageSetting from "./CommunityPageSetting";
+import PostPage from "./PostPage";
 import genericFetch from "../helper/genericFetch";
 import genericDelete from "../helper/genericDelete";
 import genericPost from "../helper/genericPost";
@@ -96,8 +98,6 @@ export default function CommunityPage(props) {
           userCommunityMemberDetails={userCommunityMemberDetails}
           refreshCommunityAndUserMemberDetails={refreshCommunityAndUserMemberDetails}
           refreshCommunityDetails={refreshCommunityDetails}
-          openModal={props.openModal}
-          closeModal={props.closeModal}
         />
 
         {/* Main section */}
@@ -116,6 +116,8 @@ export default function CommunityPage(props) {
 /* This component serves as container for banner contents. Inside the banner, 
 there's community name, community background, community icon, and a join button */
 const CommunityBanner = (props) => {
+  const [isCommunitySettingModalOpen, setIsCommunitySettingModalOpen] = useState(false);
+
   // Set community banner background color
   let bannerBackgroundColor = props.communityDetails.attributes.design.bannerBackgroundColor
     ? props.communityDetails.attributes.design.bannerBackgroundColor
@@ -169,19 +171,15 @@ const CommunityBanner = (props) => {
     }
   }
 
-  // This method opens edit commmunity form modal
-  const openEditCommunityFormModal = () => {
-    const modalContent = <CommunityPageSetting 
-      communityId={props.communityDetails.id}
-      refreshCommunityDetails={props.refreshCommunityDetails}
-      closeModal={props.closeModal}
-    />;
-    const modalTitle = "Community Setting"
-    const modalStyle = {
-      width: '80%',
-      height: '60%',
-    }
-    props.openModal({title: modalTitle, content: modalContent, style: modalStyle});
+  // This method opens commmunity page setting modal
+  const openCommunityPageSettingModal = () => {
+    setIsCommunitySettingModalOpen(true);
+  }
+
+  // This method closes community page setting modal
+  const closeCommunityPageSettingModal = () => {
+    props.refreshCommunityDetails();
+    setIsCommunitySettingModalOpen(false);
   }
 
   return (
@@ -215,7 +213,7 @@ const CommunityBanner = (props) => {
           {(isUserAdmin || isUserMod) && (
             <button 
               className={`${style["button"]} ${style["button__bordered"]}`}
-              onClick={openEditCommunityFormModal}
+              onClick={openCommunityPageSettingModal}
             >
               Setting
             </button>
@@ -241,6 +239,25 @@ const CommunityBanner = (props) => {
           </button>
         </div>
       </div>
+      
+      {/* Community Page Setting Modal*/}
+      <Modal
+        show={isCommunitySettingModalOpen}
+        onClose={closeCommunityPageSettingModal}
+        modalTitle="Community Setting"
+        modalStyle={{
+          width: "80%",
+          height: "60%",
+        }}
+      >
+        <CommunityPageSetting
+          communityId={props.communityDetails.id}
+          refreshCommunityDetails={props.refreshCommunityDetails}
+          closeCommunityPageSettingModal={closeCommunityPageSettingModal}
+        />
+      </Modal>
+
+
     </div>
   );
 };
@@ -311,8 +328,8 @@ const CommunityContentDisplay = (props) => {
           />
           {/* Commmunity Posts List */}
           <CommunityPostsList
-            userCommunityMemberDetails={props.userCommunityMemberDetails}
             communityId={props.communityId}
+            userCommunityMemberDetails={props.userCommunityMemberDetails}
             updateCommunityPostCounts={updateCommunityPostCounts}
             updateCommunityMemberCounts={updateCommunityMemberCounts}
             communityPostSkipOffset={communityPostSkipOffset}
@@ -467,6 +484,7 @@ const CommunityPostsList = (props) => {
             {posts.map((post) => (
               <CommunityPost
                 key={post.id}
+                communityId={props.communityId}
                 post={post}
                 refreshPosts={refreshPosts}
                 userCommunityMemberDetails={props.userCommunityMemberDetails}
@@ -486,6 +504,7 @@ const CommunityPost = (props) => {
   const [isPostPinned, setIsPostPinned] = useState(false);
   const [isPostHidden, setIsPostHidden] = useState(false);
   const [isPostReported, setIsPostReported] = useState(false);
+  const [isCommunityPostModalOpen, setIsCommunityPostModalOpen] = useState(false);
   const postActionSidemenuRef = useRef(null); // Create a ref for post action sidemenu component
 
   /* This hook check if mousedown DOM event occurs outside a post action sidemenu.  */
@@ -506,6 +525,17 @@ const CommunityPost = (props) => {
   const postActionButtonHandler = () => {
     setIsPostActionActive(isPostActionActive ? false : true);
   };
+
+  /* This method opens post page modal */
+  const openPostPageModal = () => {
+    setIsCommunityPostModalOpen(true)
+  }
+
+  /* This method closes post page modal */
+  const closePostPageModal = () => {
+    props.refreshPosts(); // Refresh posts on post page modal close
+    setIsCommunityPostModalOpen(true);
+  }
 
   // Check post author's role
   const isAuthorUser = props.post.authorID === props.userCommunityMemberDetails?.user.id;
@@ -559,71 +589,75 @@ const CommunityPost = (props) => {
     props.refreshPosts();
   };
 
-  formatDateTime(props.post.created);
-
   return (
     <div className={style["community-post"]} key={props.post.id}>
-      {/* Post Thumbnail */}
-      <img
-        className={`${style["image"]} ${style["image__md"]} ${style["image__square"]}`}
-        // src={postThumbnailImage}
-        src={String(props.post.attributes?.images[0])}
-        alt="Post placeholder"
-        onError={(e) => (e.currentTarget.src = defaultPostImage)}
-      />
+      {/* Clickable Div */}
+      <div
+        className={style["community-post__clickable-area"]}
+        onClick={openPostPageModal}
+      >
+        {/* Post Thumbnail */}
+        <img
+          className={`${style["image"]} ${style["image__md"]} ${style["image__square"]}`}
+          // src={postThumbnailImage}
+          src={String(props.post.attributes?.images[0])}
+          alt="Post placeholder"
+          onError={(e) => (e.currentTarget.src = defaultPostImage)}
+        />
 
-      <div className={style["post-summary"]}>
-        <div className={style["post-id-title"]}>
-          <span className={style["inactive-text"]}>{props.post.id}</span>
-          <h5 className={style["active-text"]}>
-            {props.post.attributes.title}
-          </h5>
-        </div>
+        <div className={style["post-summary"]}>
+          <div className={style["post-id-title"]}>
+            <span className={style["inactive-text"]}>{props.post.id}</span>
+            <h5 className={style["active-text"]}>
+              {props.post.attributes.title}
+            </h5>
+          </div>
 
-        <div className={style["post-author-date"]}>
-          <div className={style["post-author"]}>
-            <span className={style["inactive-text"]}>Posted By</span>
-            <p className={style["active-text"]}>
-              <span className={style["bold"]}>
-                {props.post.author?.attributes.profile.username}
+          <div className={style["post-author-date"]}>
+            <div className={style["post-author"]}>
+              <span className={style["inactive-text"]}>Posted By</span>
+              <p className={style["active-text"]}>
+                <span className={style["bold"]}>
+                  {props.post.author?.attributes.profile.username}
+                </span>
+                <span>({postAuthorRoleLabel})</span>
+              </p>
+            </div>
+            <div className={style["post-date"]}>
+              <span className={style["inactive-text"]}>Posted On</span>
+              <span className={`${style["active-text"]} ${style["bold"]}`}>
+                {formatDateTime(props.post.created)}
+                {/* {props.post.created} */}
               </span>
-              <span>({postAuthorRoleLabel})</span>
-            </p>
-          </div>
-          <div className={style["post-date"]}>
-            <span className={style["inactive-text"]}>Posted On</span>
-            <span className={`${style["active-text"]} ${style["bold"]}`}>
-              {formatDateTime(props.post.created)}
-              {/* {props.post.created} */}
-            </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className={style["post-labels"]}>
-        {/* Post Action Labels */}
-        <div className={style["post-action-labels"]}>
-          {isPostReported && (
-            <div
-              className={`${style["post-action-label"]} ${style["post-action-label__bistre"]}`}
-            >
-              <span>Reported</span>
-            </div>
-          )}
-          {isPostHidden && (
-            <div
-              className={`${style["post-action-label"]} ${style["post-action-label__french-bistre"]}`}
-            >
-              <span>Hidden</span>
-            </div>
-          )}
-          {isPostPinned && (
-            <div
-              className={`${style["post-action-label"]} ${style["post-action-label__skobeloff"]}`}
-            >
-              <span>Pinned</span>
-            </div>
-          )}
+        <div className={style["post-labels"]}>
+          {/* Post Action Labels */}
+          <div className={style["post-action-labels"]}>
+            {isPostReported && (
+              <div
+                className={`${style["post-action-label"]} ${style["post-action-label__bistre"]}`}
+              >
+                <span>Reported</span>
+              </div>
+            )}
+            {isPostHidden && (
+              <div
+                className={`${style["post-action-label"]} ${style["post-action-label__french-bistre"]}`}
+              >
+                <span>Hidden</span>
+              </div>
+            )}
+            {isPostPinned && (
+              <div
+                className={`${style["post-action-label"]} ${style["post-action-label__skobeloff"]}`}
+              >
+                <span>Pinned</span>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Post Stats Labels */}
@@ -659,6 +693,23 @@ const CommunityPost = (props) => {
           postActionSidemenuRef={postActionSidemenuRef}
         />
       </div>
+
+      {/* Community Post Modal */}
+      <Modal
+        show={isCommunityPostModalOpen}
+        onClose={closePostPageModal}
+        modalStyle={{
+          width: "90%",
+          height: "90%",
+        }}
+      >
+        <PostPage
+          community_id={props.communityId}
+          post_id={props.post.id}
+          refreshPosts={props.refreshPosts}
+          closePostPageModal={closePostPageModal}
+        />
+      </Modal>
     </div>
   );
 };
