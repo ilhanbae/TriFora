@@ -34,10 +34,10 @@ export default class NotificationBox extends React.Component {
                 result => {
                     console.log(result);
                     console.log("Connection Updated");
-                    alert("Connection Updated")
+                    //alert("Connection Updated")
                 },
                 error => {
-                    alert("ERROR updating Connection");
+                    //alert("ERROR updating Connection");
                     console.log("ERROR updating Connection")
                 }
             );
@@ -64,11 +64,11 @@ export default class NotificationBox extends React.Component {
                 result => {
                     console.log(result);
                     console.log("Connection Created");
-                    alert("Connection Created");
+                    //alert("Connection Created");
                     this.props.load_friend_notification();
                 },
                 error => {
-                    alert("ERROR creating new Connection");
+                    //alert("ERROR creating new Connection");
                     console.log("ERROR creating new Connection")
                 }
             );
@@ -93,12 +93,12 @@ export default class NotificationBox extends React.Component {
             })
             .then(
                 result => {
-                    alert("Delete Friend Request Successfully");
+                    //alert("Delete Friend Request Successfully");
                     console.log("Delete Connection Successfully");
                     this.props.load_friend_notification();
                 },
                 error => {
-                    alert("ERROR when deleting Connection");
+                    //alert("ERROR when deleting Connection");
                     console.log(error);
                     console.log("ERROR when deleting Connection");
                 }

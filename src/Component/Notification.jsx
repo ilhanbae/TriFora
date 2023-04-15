@@ -44,12 +44,12 @@ export default class Notification extends React.Component {
                     this.setState({
                         friend_notification_list: result[0],
                     });
-                    alert("No Notification");
+                    //alert("No Notification");
                     console.log("No Notification");
                 }
                 },
                 error => {
-                    alert("ERROR loading Notifications");
+                    //alert("ERROR loading Notifications");
                     console.log("ERROR loading Notifications")
                 }
             );

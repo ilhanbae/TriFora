@@ -61,7 +61,7 @@ const ProfileHeader = (prop) => {
         <button className="button" onClick={saveActionHandler}>
           Save
         </button>
-        <Link to="/profile">
+        <Link to={`/profile/${sessionStorage.getItem("user")}`}>
           <button className="button">Close</button>
         </Link>
       </div>
