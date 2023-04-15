@@ -38,10 +38,10 @@ export default function Homepage() {
         }
     };
 
-    // want to use generic fetch to get username and their communities
+    // want to use generic fetch to get user communities
     const grabUserCommunities = async () => {
-        let endpoint = `/users/${sessionStorage.getItem('user')}`
-        let query = {}
+        let endpoint = `/group-members/`
+        let query = {userID: sessionStorage.getItem('user')}
         const { data, errorMessage } = await genericFetch(endpoint, query)
 
         if (errorMessage) {
@@ -86,6 +86,7 @@ export default function Homepage() {
     }
 
     function displayUserCommunities() {
+        // console.log(numUserCommunities)
         if (numUserCommunities === 0) {
             // user has joined no communities
             let defaultArray = [];
