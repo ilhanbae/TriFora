@@ -89,16 +89,46 @@ export default function Homepage() {
         )
     }
 
+    function communityLink(props) {
+        // the purpose of this is to display a default community image
+        return (
+            <li className="homepage-communities-item">
+                <Link>
+                    <img
+                        src={group}
+                        className="homepage-community-image"
+                        alt={props.titleAlt}
+                        title={props.titleAlt}
+                    /> {/* placeholder */}
+                </Link>
+            </li>
+        )
+    }
+
     function displayUserCommunities() {
         // console.log(numUserCommunities)
-        if (numUserCommunities === 0) {
+        if (numUserCommunities < displayPerRow) {
             // user has joined no communities
             let defaultArray = [];
             for (let i = 0; i < displayPerRow; i++) {
-                defaultArray[i] = "No communities joined yet";
+                if (i < numUserCommunities) {
+                    defaultArray[i] = {
+                        userJoined: true,
+                        titleAlt: "You've joined this community"
+                    }
+                } else {
+                    defaultArray[i] = {
+                        // no more user communities to display
+                        userJoined: false,
+                        titleAlt: "Communities you've joined go here"
+                    }
+                }
             }
-            const imageList = defaultArray.map((text) =>
-                <DefaultImage titleAlt={text} />
+            const imageList = defaultArray.map((item) =>
+                item.userJoined ?
+                    <DefaultImage titleAlt={item.titleAlt} />
+                    :
+                    <DefaultImage titleAlt={"testing"} />
             )
             return imageList;
         }
@@ -141,12 +171,12 @@ export default function Homepage() {
                         :
                         // user not part of any community
                         displayUserCommunities()
-                        // <>
-                        //     <b> No user communities </b>
-                        //     <DefaultImage titleAlt={"no user communities"} />
-                        //     <DefaultImage />
-                        //     <DefaultImage />
-                        // </>
+                    // <>
+                    //     <b> No user communities </b>
+                    //     <DefaultImage titleAlt={"no user communities"} />
+                    //     <DefaultImage />
+                    //     <DefaultImage />
+                    // </>
                     :
                     /* communities is not loaded */
                     <>
