@@ -113,7 +113,7 @@ export default function Homepage() {
             for (let i = 0; i < displayPerRow; i++) {
                 if (i < numUserCommunities) {
                     defaultArray[i] = {
-                        userJoined: true,
+                        userJoined: true, // let this be the marker to have a link or not
                         titleAlt: "You've joined this community"
                     }
                 } else {
@@ -126,7 +126,7 @@ export default function Homepage() {
             }
             const imageList = defaultArray.map((item) =>
                 item.userJoined ?
-                    <DefaultImage titleAlt={item.titleAlt} />
+                    <communityLink titleAlt={item.titleAlt} />
                     :
                     <DefaultImage titleAlt={"testing"} />
             )
