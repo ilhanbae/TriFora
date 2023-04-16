@@ -20,7 +20,8 @@ export default class CreatePost extends React.Component {
 
     /* Handler for making a post will go here (controller api) */
     submitHandler = event => {
-
+        // console.log(this.state)
+        console.log(this.props)
         // keep the form from actually submitting via HTML - we want to handle it in react
         event.preventDefault();
 
@@ -67,13 +68,11 @@ export default class CreatePost extends React.Component {
                 },
                 body: JSON.stringify({
                     authorID: this.state.currentUser,
-                    // recipientGroupID: 25, // 25 is a placeholder for now until we know how our communities are working
                     recipientGroupID: this.props.communityId,
                     content: this.state.postContent, // if post description can be empty this is just going to have to store an empty string and be tested for post page side I think
                     attributes: {
                         title: this.state.postTitle,
                         public: true, // all post are public for now?
-                        // need to handle images here
                         images: imageUrlArray
                     }
                 })
@@ -81,15 +80,17 @@ export default class CreatePost extends React.Component {
                 .then(res => res.json())
                 .then(
                     result => {
-                        this.setState({
-                            postmessage: result.Status
-                        });
+                        console.log(result)
+                        // this.setState({
+                        //     postmessage: result.Status
+                        // });
                         alert("Post was successful");
                         // the above needs to be changed somehow to not have alert box, refreshing posts might be enough
                         // trying with state variable and Navigate tag
-                        this.setState({
-                            postSuccess: true
-                        });
+                        // this.setState({
+                        //     postSuccess: true
+                        // });
+                        this.props.closeCreatePostPageModal();
                     },
                     error => {
                         alert("error!");
@@ -170,7 +171,8 @@ export default class CreatePost extends React.Component {
         if (this.state.postSuccess) {
             // this section needs to change if modal view is successful
             // return <Navigate to=`/community/${this.props.communityId}` replace={true} />;
-            return <Navigate to="/" replace={true} />;
+            // return <Navigate to="/" replace={true} />;
+            // this.props.closeCreatePostPageModal();
         }
         return (
             /* wrapper for flexbox column layout */
@@ -179,7 +181,7 @@ export default class CreatePost extends React.Component {
                 <div className="return-button-box">
                     {/* Disguising a link as a button to allow navigation, still not sure why we are doing this */}
                     {/* <Link to=`/groups/${this.props.communityId}` className="cancel-post-button">Cancel post</Link> */}
-                    <Link to="/" className="cancel-post-button">Cancel post</Link>
+                    {/* <Link to="/" className="cancel-post-button">Cancel post</Link> */}
                     {/* The above changes to closing modal if modal gets used correctly */}
 
                     {/* spans just being used for button positioning*/}

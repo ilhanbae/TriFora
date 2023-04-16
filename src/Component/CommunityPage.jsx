@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import Modal from "./Modal";
 import CommunityPageSetting from "./CommunityPageSetting";
 import PostPage from "./PostPage";
+import CreatePost from "./CreatePost";
 import genericFetch from "../helper/genericFetch";
 import genericDelete from "../helper/genericDelete";
 import genericPost from "../helper/genericPost";
@@ -12,7 +13,6 @@ import style from "../style/CommunityPage.module.css";
 import defaultProfileImage from "../assets/defaultProfileImage.png";
 import defaultPostImage from "../assets/defaultPostImage.png";
 import defaultCommunityImage from "../assets/defaultCommunityImage.png";
-import CreatePost from "./CreatePost";
 
 /* This component renders a single community page. Inside the community page, 
 there are posts tab and members tab. */
@@ -330,6 +330,7 @@ const CommunityContentDisplay = (props) => {
           <PostControlTool 
             userCommunityMemberDetails={props.userCommunityMemberDetails}
             refreshCommunityDetails={props.refreshCommunityDetails}
+            communityId={props.communityId}
           />
           {/* Commmunity Posts List */}
           <CommunityPostsList
@@ -792,8 +793,8 @@ const PostControlTool = (props) => {
       >
         <CreatePost
           communityId={props.communityId}
-          refreshPosts={props.refreshPosts}
-          closePostPageModal={closeCreatePostPageModal}
+          refreshCommunityDetails={props.refreshCommunityDetails}
+          closeCreatePostPageModal={closeCreatePostPageModal}
         />
       </Modal>
     </div>
