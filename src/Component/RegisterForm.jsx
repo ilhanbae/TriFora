@@ -124,7 +124,7 @@ export default class RegisterForm extends React.Component {
                 this.setState({
                   sessiontoken: result.token,
                 });
-                window.location.href = "/login";
+                window.location.href = "/hci/teams/underachievers/login";
     
               } else {
                 this.setState({

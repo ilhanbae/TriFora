@@ -12,7 +12,7 @@ export default class ProfilePage extends React.Component {
         super(props);
         this.state = {
             // Profile User Infos
-            user_id: window.location.href.split('/')[4],
+            user_id: window.location.href.split('/')[5],
             email: "",
             username: "",
             firstName: "",

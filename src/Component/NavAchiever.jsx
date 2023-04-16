@@ -151,7 +151,7 @@ class NavAchiever extends React.Component {
                             {/* the following line uses ternary statement to allow for the hiding/showing of the drop down via css */}
                             <ul className={this.state.showDropMenu ? "showDrop" : "hideDrop"}>
                                 <li>
-                                    <Link to={`/profile/${sessionStorage.getItem("user")}`} onClick={() => {window.location.assign(`/profile/${sessionStorage.getItem("user")}`)}}> My Profile </Link>
+                                    <Link to={`/hci/teams/underachievers/profile/${sessionStorage.getItem("user")}`} onClick={() => {window.location.assign(`/hci/teams/underachievers/profile/${sessionStorage.getItem("user")}`)}}> My Profile </Link>
                                 </li>
                                 <li>
                                     <Link to="/notification" onClick={this.menuSwitch}> Notifications </Link>
