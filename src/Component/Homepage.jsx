@@ -57,21 +57,21 @@ export default function Homepage() {
      * then maybe do some work to display non-joined communities
      */
     const grabCommunities = async () => {
-        console.log("in grabCommunities")
+        // console.log("in grabCommunities")
         let endpoint = `/groups/`
         let query = {}
         const { data, errorMessage } = await genericFetch(endpoint, query)
 
         if (errorMessage) {
             alert(errorMessage);
-            console.log("in grabCommunities error")
+            // console.log("in grabCommunities error")
         } else {
-            console.log("grabCommunities no error")
+            // console.log("grabCommunities no error")
             setAllCommunities(data[0]); // store all communities
             setNumCommunities(data[1]); // holding the total number of communities might be helpful for referencing
             setCommunitiesLoaded(true); // mark all communities as loaded so bottom row can begin it's renders
-            console.log(data[0])
-            console.log(communitiesLoaded)
+            // console.log(data[0])
+            // console.log(communitiesLoaded)
         }
     };
 
@@ -89,13 +89,13 @@ export default function Homepage() {
         )
     }
 
-    function communityLink(props) {
+    function CommunityLink(props) {
         // the purpose of this is to display a default community image
         return (
             <li className="homepage-communities-item">
-                <Link>
+                <Link to={`/community/:${props.communityId}`}>
                     <img
-                        src={group}
+                        src={props.communityImage}
                         className="homepage-community-image"
                         alt={props.titleAlt}
                         title={props.titleAlt}
@@ -106,32 +106,41 @@ export default function Homepage() {
     }
 
     function displayUserCommunities() {
-        // console.log(numUserCommunities)
-        if (numUserCommunities < displayPerRow) {
-            // user has joined no communities
-            let defaultArray = [];
-            for (let i = 0; i < displayPerRow; i++) {
-                if (i < numUserCommunities) {
-                    defaultArray[i] = {
-                        userJoined: true, // let this be the marker to have a link or not
-                        titleAlt: "You've joined this community"
-                    }
-                } else {
-                    defaultArray[i] = {
-                        // no more user communities to display
-                        userJoined: false,
-                        titleAlt: "Communities you've joined go here"
-                    }
+        // if (numUserCommunities < displayPerRow) {
+        // user has joined no communities
+        let defaultArray = [];
+        for (let i = 0; i < displayPerRow; i++) {
+            // console.log(userCommunities[i].group.name)
+            if (i < numUserCommunities) {
+                defaultArray[i] = {
+                    userJoined: true, // let this be the marker to have a link or not
+                    communityId: userCommunities[i].group.id,
+                    titleAlt: userCommunities[i].group.name,
+                    communityImage: userCommunities[i].group.attributes.bannerProfileImage
+                }
+            } else {
+                defaultArray[i] = {
+                    // no more user communities to display
+                    userJoined: false,
+                    titleAlt: "Communities you've joined go here"
                 }
             }
-            const imageList = defaultArray.map((item) =>
-                item.userJoined ?
-                    <communityLink titleAlt={item.titleAlt} />
-                    :
-                    <DefaultImage titleAlt={"testing"} />
-            )
-            return imageList;
         }
+        // console.log(defaultArray)
+        const imageList = defaultArray.map((item) => {
+            if (item.userJoined) {
+                // console.log(item)
+                return <CommunityLink
+                    communityId={item.communityId}
+                    titleAlt={item.titleAlt}
+                    communityImage={item.communityImage}
+                />
+            } else {
+                return <DefaultImage titleAlt={item.titleAlt} />
+            }
+        }
+        )
+        return imageList;
     }
 
     return (
@@ -159,18 +168,18 @@ export default function Homepage() {
 
                        userDetails.attributes.communitiesJoined.map
                      */
-                    numUserCommunities > 0 ?
-                        // user is part of some communites
-                        <>
-                            {/* <p>{communitiesLoaded ? "true" : "false"}</p> */}
-                            <DefaultImage titleAlt={"loading user communities"} />
-                            <DefaultImage />
-                            <DefaultImage />
-                        </>
-                        // {displayUserCommunities}
-                        :
-                        // user not part of any community
-                        displayUserCommunities()
+                    // numUserCommunities > 0 ?
+                    //     // user is part of some communites
+                    //     <>
+                    //         {/* <p>{communitiesLoaded ? "true" : "false"}</p> */}
+                    //         <DefaultImage titleAlt={"loading user communities"} />
+                    //         <DefaultImage />
+                    //         <DefaultImage />
+                    //     </>
+                    //     // {displayUserCommunities}
+                    //     :
+                    // user not part of any community
+                    displayUserCommunities()
                     // <>
                     //     <b> No user communities </b>
                     //     <DefaultImage titleAlt={"no user communities"} />
