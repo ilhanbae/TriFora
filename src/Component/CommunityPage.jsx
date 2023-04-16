@@ -23,7 +23,7 @@ export default function CommunityPage(props) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  // Fetch the community details when the community page is loaded
+  // Fetch the community and user member details community page is loaded
   useEffect(() => {
     loadCommunityAndUserMemberDetails();
   }, []);
@@ -211,15 +211,6 @@ const CommunityBanner = (props) => {
               Since February 19th, 2023
             </span>
           </div>
-          {/* Setting Button */}
-          {(isUserAdmin || isUserMod) && (
-            <button 
-              className={`${style["button"]} ${style["button__bordered"]}`}
-              onClick={openCommunityPageSettingModal}
-            >
-              Setting
-            </button>
-          )}
         </div>
 
         {/* Community Banner Content Right */}
@@ -232,6 +223,17 @@ const CommunityBanner = (props) => {
               Notfication
             </button>
           )} */}
+
+          {/* Setting Button */}
+          {(isUserAdmin || isUserMod) && (
+            <button 
+              className={`${style["button"]} ${style["button__bordered"]}`}
+              onClick={openCommunityPageSettingModal}
+            >
+              Setting
+            </button>
+          )}
+
           {/* Join Button */}
           <button
             className={`${style["button"]} ${style["button__bordered"]}`}
@@ -596,7 +598,7 @@ const CommunityPost = (props) => {
 
   return (
     <div className={style["community-post"]} key={props.post.id}>
-      {/* Clickable Div */}
+      {/* Clickable Area */}
       <div
         className={style["community-post__clickable-area"]}
         onClick={openPostPageModal}
@@ -610,87 +612,90 @@ const CommunityPost = (props) => {
           onError={(e) => (e.currentTarget.src = defaultPostImage)}
         />
 
-        <div className={style["post-summary"]}>
-          <div className={style["post-id-title"]}>
-            <span className={style["inactive-text"]}>{props.post.id}</span>
-            <h5 className={style["active-text"]}>
-              {props.post.attributes.title}
-            </h5>
+        <div className={style["post-summary-stat-labels-container"]}>
+          {/* Post Summary */}
+          <div className={style["post-summary"]}>
+            <div className={style["post-id-title"]}>
+              <span className={style["inactive-text"]}>{props.post.id}</span>
+              <h5 className={style["active-text"]}>
+                {props.post.attributes.title}
+              </h5>
+            </div>
+
+            <div className={style["post-author-date"]}>
+              <div className={style["post-author"]}>
+                <span className={style["inactive-text"]}>Posted By</span>
+                <Link to={`/profile/${props.post.author.id}`}>
+                  <p
+                    className={`${style["active-text"]} ${style["post-author__link"]}`}
+                  >
+                    {/* Author Username */}
+                    <span className={style["bold"]}>
+                      {props.post.author?.attributes.profile.username}
+                    </span>
+                    {/* Author Role */}
+                    <span>({postAuthorRoleLabel})</span>
+                  </p>
+                </Link>
+              </div>
+              <div className={style["post-date"]}>
+                <span className={style["inactive-text"]}>Posted On</span>
+                <span className={`${style["active-text"]} ${style["bold"]}`}>
+                  {formatDateTime(props.post.created)}
+                  {/* {props.post.created} */}
+                </span>
+              </div>
+            </div>
           </div>
 
-          <div className={style["post-author-date"]}>
-            <div className={style["post-author"]}>
-              <span className={style["inactive-text"]}>Posted By</span>
-
-              <Link to={`/profile/${props.post.author.id}`}>
-                <p className={`${style["active-text"]} ${style["post-author__link"]}`}>
-                  {/* Author Username */}
-                  <span className={style["bold"]}>
-                    {props.post.author?.attributes.profile.username}
-                  </span>
-                  {/* Author Role */}
-                  <span>({postAuthorRoleLabel})</span>
-                </p>
-              </Link>
-          
-            </div>
-            <div className={style["post-date"]}>
-              <span className={style["inactive-text"]}>Posted On</span>
-              <span className={`${style["active-text"]} ${style["bold"]}`}>
-                {formatDateTime(props.post.created)}
-                {/* {props.post.created} */}
+          {/* Post Stat Labels */}
+          <div className={style["post-stat-labels"]}>
+            <div className={style["post-stat-label"]}>
+              <span className={style["active-text"]}>
+                {props.post.reactions.length}
               </span>
+              <span className={style["inactive-text"]}>Likes</span>
+            </div>
+            <div className={style["post-stat-label"]}>
+              <span className={style["active-text"]}>
+                {props.post._count.children}
+              </span>
+              <span className={style["inactive-text"]}>Comments</span>
             </div>
           </div>
         </div>
+      </div>
 
-        <div className={style["post-labels"]}>
-          {/* Post Action Labels */}
-          <div className={style["post-action-labels"]}>
-            {isPostReported && (
-              <div
-                className={`${style["post-action-label"]} ${style["post-action-label__bistre"]}`}
-              >
-                <span>Reported</span>
-              </div>
-            )}
-            {isPostHidden && (
-              <div
-                className={`${style["post-action-label"]} ${style["post-action-label__french-bistre"]}`}
-              >
-                <span>Hidden</span>
-              </div>
-            )}
-            {isPostPinned && (
-              <div
-                className={`${style["post-action-label"]} ${style["post-action-label__skobeloff"]}`}
-              >
-                <span>Pinned</span>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Post Stats Labels */}
-        <div className={style["post-stat-labels"]}>
-          <div className={style["post-stat-label"]}>
-            <span className={style["active-text"]}>
-              {props.post.reactions.length}
-            </span>
-            <span className={style["inactive-text"]}>Likes</span>
-          </div>
-          <div className={style["post-stat-label"]}>
-            <span className={style["active-text"]}>
-              {props.post._count.children}
-            </span>
-            <span className={style["inactive-text"]}>Comments</span>
-          </div>
+      {/* Post Labels */}
+      <div className={style["post-action-labels-container"]}>
+        {/* Post Action Labels */}
+        <div className={style["post-action-labels"]}>
+          {isPostReported && (
+            <div
+              className={`${style["post-action-label"]} ${style["post-action-label__bistre"]}`}
+            >
+              <span>Reported</span>
+            </div>
+          )}
+          {isPostHidden && (
+            <div
+              className={`${style["post-action-label"]} ${style["post-action-label__french-bistre"]}`}
+            >
+              <span>Hidden</span>
+            </div>
+          )}
+          {isPostPinned && (
+            <div
+              className={`${style["post-action-label"]} ${style["post-action-label__skobeloff"]}`}
+            >
+              <span>Pinned</span>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Post Action Sidemenu */}
       <div>
-        {/* This should be replaced with actual icon */}
         <span
           className={style["meatballs-icon"]}
           onClick={postActionButtonHandler}
@@ -765,7 +770,7 @@ const PostControlTool = (props) => {
       {props.userCommunityMemberDetails &&
         <div className={style["right-control-box"]}>
           {/* Create Post Button */}
-          <div className={`${style["right-control-placeholder"]} ${style["inactive-text"]}`}>
+          <div className={`${style["right-control-button-label"]} ${style["inactive-text"]}`}>
             Tell us your story!
           </div>
           <button 
@@ -877,24 +882,24 @@ const PostActionSidemenu = (props) => {
       <div className={style["action-sidemenu"]} ref={props.postActionSidemenuRef}>
         <ul className={style["action-sidemenu-option-list"]}>
           {/* Pin */}
-          <li className={style["action-sidemenu-option"]} onClick={pinActionHandler}>
+          {/* <li className={style["action-sidemenu-option"]} onClick={pinActionHandler}>
             <span className={`${style["square-icon"]} ${style["square-icon__skobeloff"]}`}></span>
             <span className={style["active-text"]}>{pinOptionName}</span>
-          </li>
+          </li> */}
           {/* Hide */}
-          {!isAuthorUser &&
+          {/* {!isAuthorUser &&
             <li className={style["action-sidemenu-option"]} onClick={hideActionHandler}>
               <span className={`${style["square-icon"]} ${style["square-icon__french-bistre"]}`}></span>
               <span className={style["active-text"]}>{hideOptionName}</span>
             </li>
-          }
+          } */}
           {/* Report */}
-          {!isUserVisiter && (!isAuthorUser && !isAuthorAdmin && !isAuthorMod) && (!isUserAdmin) &&
+          {/* {!isUserVisiter && (!isAuthorUser && !isAuthorAdmin && !isAuthorMod) && (!isUserAdmin) &&
             <li className={style["action-sidemenu-option"]} onClick={reportActionHandler}>
               <span className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}></span>
               <span className={style["active-text"]}>{reportOptionName}</span>
             </li>
-          }
+          } */}
           {/* Delete */}
           {(isAuthorUser || (isUserMod && !isAuthorAdmin && !isAuthorMod) || isUserAdmin) && 
             <li className={style["action-sidemenu-option"]} onClick={deleteActionHandler}>
@@ -1156,7 +1161,7 @@ const MemberControlTool = () => {
       </div>
       <div className={style["right-control-box"]}>
         <div
-          className={`${style["right-control-placeholder"]} ${style["inactive-text"]}`}
+          className={`${style["right-control-button-label"]} ${style["inactive-text"]}`}
         >
           Who are you looking for?
         </div>
@@ -1264,17 +1269,17 @@ const MemberActionSidemenu = (props) => {
       <div className={style["action-sidemenu"]} ref={props.memberActionSidemenuRef}>
         <ul className={style["action-sidemenu-option-list"]}>
           {/* View Profile */}
-          <li className={style["action-sidemenu-option"]} onClick={viewProfileActionHandler}>
+          {/* <li className={style["action-sidemenu-option"]} onClick={viewProfileActionHandler}>
             <span className={`${style["square-icon"]} ${style["square-icon__skobeloff"]}`}></span>
             <span className={style["active-text"]}>{viewProfileOptionName}</span>
-          </li>
+          </li> */}
           {/* Report */}
-          {!isUserVisiter && (!isMemberUser && !isMemberAdmin && !isMemberMod) && (!isUserAdmin) &&
+          {/* {!isUserVisiter && (!isMemberUser && !isMemberAdmin && !isMemberMod) && (!isUserAdmin) &&
             <li className={style["action-sidemenu-option"]} onClick={reportActionHandler}>
               <span className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}></span>
               <span className={style["active-text"]}>{reportOptionName}</span>
             </li>
-          }
+          } */}
           {/* Assign Role */}
           {(isUserAdmin && !isMemberUser) &&
             <div>
@@ -1302,7 +1307,6 @@ const MemberActionSidemenu = (props) => {
     );
   }
 };
-
 
 /* [TODO] This component will render a assign role sidemenu that lists options "mod" and "member". This component
 will be triggered when the user clicks on "Assign Role" from member action sidemenu */
@@ -1357,7 +1361,6 @@ const AssignRoleSidemenu = (props) => {
     );
   }
 }
-
 
 /* This component will render a pagination for communityPostList and CommunityMemberList. 
 It contains previous button, next button, and current page indicatior. */
