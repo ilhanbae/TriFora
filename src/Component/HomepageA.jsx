@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import genericFetch from "../helper/genericFetch";
 
-import style from "../style/Homepage.module.css";
+import style from "../style/HomepageA.module.css";
 import group from "../assets/group.png";
 import defaultCommunityImage from "../assets/defaultCommunityImage.png";
 // import community from "../assets/defaultPostImage.png";
