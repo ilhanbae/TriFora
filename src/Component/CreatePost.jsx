@@ -36,27 +36,45 @@ export default class CreatePost extends React.Component {
             // turn the image list into a url list for api
             let imageUrlArray = [];
 
+            console.log("checking form file upload")
+            console.log(this.state.postImages.length)
+            console.log("done checking form file upload")
+
             if (this.state.postImages.length > 0) {
+                console.log("in if statement")
                 // loop through user images if they exist
                 this.state.postImages.forEach(async userImage => {
-                    let formDataParams = { // set up form data params for image upload
+                    console.log("in loop statement")
+                    const formDataParams = { // set up form data params for image upload
                         uploaderID: this.state.currentUser,
                         attributes: { type: "post-image" },
                         file: userImage,
                     };
+                    console.log("calling upload file")
                     const { data: uploadedPostImageFile, errorMessage: uploadFileErrorMessage } = await uploadFile(formDataParams);
+                    console.log(uploadedPostImageFile)
+                    console.log("done calling upload file")
 
                     // Check for upload file error
                     if (uploadFileErrorMessage) {
+                        console.log("where am I")
                         alert(uploadFileErrorMessage)
                     } else {
+                        console.log("in success statement")
                         // add to the url array if successful helper call
                         let postImageLink = `${process.env.REACT_APP_DOMAIN_PATH}${uploadedPostImageFile.path}` // Format server link with app domain
+                        console.log(postImageLink)
                         imageUrlArray.push(postImageLink)
+                        console.log(imageUrlArray.length)
                     }
                 });
+                console.log("in if statement")
                 // if the above throws an error the fetch below would be undefined
             }
+
+            console.log("checking url after if array")
+            console.log(imageUrlArray.length)
+            console.log("done checking url array")
 
             // make the api call to post
             fetch(process.env.REACT_APP_API_PATH + "/posts", {
@@ -74,7 +92,7 @@ export default class CreatePost extends React.Component {
                         title: this.state.postTitle,
                         public: true, // all post are public for now?
                         // need to handle images here
-                        images: imageUrlArray
+                        images: JSON.stringify({ imageUrlArray })
                     }
                 })
             })
