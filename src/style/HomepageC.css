@@ -1,0 +1,77 @@
+.homepageC-wrapper {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 5%;
+}
+
+.homepageC-communities-row {
+    display: flex;
+    justify-content: space-evenly;
+    width: 75%;
+}
+
+@media (max-width: 800px) {
+    .homepageC-communities-row {
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.homepageC-community-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid black;
+    border-radius: 10px;
+    /* padding-left: 20px; */
+    /* padding-right: 20px; */
+    padding-inline: 20px;
+    background: var(--yellow-apricot);
+}
+
+.homepageC-community-wrapper {
+    /* margin-top: 30px; */
+    /* margin-bottom: 30px; */
+    margin-block: 30px;
+    margin-inline: 6rem;
+}
+
+.homepageC-community-button {
+    border: 3px solid black;
+    border-radius: 10px;
+    padding-block: 5px; /* rem or px? .4rem */
+    padding-inline: 25px; /* rem or px? 1.5rem */
+    /* margin-top: 10px; */
+    /* margin-bottom: 10px; */
+    margin-block: 10px;
+    background: var(--light-yellow);
+}
+
+.homepageC-community-name-box {
+    display: flex;
+    justify-content: center;
+    border: 3px solid black;
+    border-radius: 10px;
+    /* padding-top: 10px; */
+    /* padding-bottom: 10px; */
+    padding-block: 10px;
+}
+
+.homepageC-community-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 4px 14px 0 rgb(0 0 0 / 13%);
+    /* margin-top: 10px; */
+    /* margin-bottom: 10px; */
+    margin-block: 10px;
+}
+
+.homepageC-community-image:hover {
+    box-shadow: 0 4px 14px 0 rgb(0 0 0 /50%);
+}

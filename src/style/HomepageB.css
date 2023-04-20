@@ -1,4 +1,4 @@
-.homepage-wrapper {
+.homepageB-wrapper {
     display: flex;
     flex-flow: column wrap;
     justify-content: space-between;
@@ -6,21 +6,21 @@
     padding-top: 5%;
 }
 
-.homepage-communities-row {
+.homepageB-communities-row {
     display: flex;
     justify-content: space-evenly;
     width: 75%;
 }
 
 @media (max-width: 800px) {
-  .homepage-communities-row {
+  .homepageB-communities-row {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
   }
 }
 
-.homepage-community-image {
+.homepageB-community-image {
     border-radius: 50%;
     width: 200px;
     height: 200px;

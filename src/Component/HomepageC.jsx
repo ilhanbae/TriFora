@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import "../style/HomepageB.css";
+import "../style/HomepageC.css";
 import group from "../assets/group.png";
 import community from "../assets/defaultPostImage.png";
 import { Link } from "react-router-dom";
 import genericFetch from "../helper/genericFetch";
 
-export default function HomepageB() {
+export default function HomepageC() {
     const [username, setUsername] = useState();
     const [userCommunities, setUserCommunities] = useState();
     const [numUserCommunities, setNumUserCommunities] = useState();
@@ -84,13 +84,17 @@ export default function HomepageB() {
     // the purpose of this is to display a default image for when there isn't enough communities to display
     function DefaultImage(props) {
         return (
-            <div className="homepageB-image-cropper">
-                <img
-                    src={group}
-                    className="homepage-community-image"
-                    alt={props.titleAlt}
-                    title={props.titleAlt}
-                />
+            <div className="homepageC-community-wrapper">
+                <div className="homepageC-community-box">
+                    <button className="homepageC-community-button">Visit</button>
+                    <img
+                        src={group}
+                        className="homepageC-community-image"
+                        alt={props.titleAlt}
+                        title={props.titleAlt}
+                    />
+                </div>
+                <div className="homepageC-community-name-box">{props.bottomText}</div>
             </div>
         )
     }
@@ -98,16 +102,21 @@ export default function HomepageB() {
     // the purpose of this is to display a real community image that links to that community
     function CommunityLink(props) {
         return (
-            <Link to={`/community/${props.communityId}`}>
-                <div className="homepageB-image-cropper">
+            <div className="homepageC-community-wrapper">
+                <div className="homepageC-community-box">
+                    <Link to={`/community/${props.communityId}`} className="homepageC-community-button">
+                        {/* <button className="homepageC-community-button">Join</button> */}
+                        Join
+                    </Link>
                     <img
                         src={props.communityImage}
-                        className="homepage-community-image"
+                        className="homepageC-community-image"
                         alt={props.titleAlt}
                         title={props.titleAlt}
                     />
                 </div>
-            </Link>
+                <div className="homepageC-community-name-box">{`${props.bottomText}`}</div>
+            </div>
         )
     }
 
@@ -136,13 +145,15 @@ export default function HomepageB() {
                     userJoined: true, // let this be the marker to have a link or not
                     communityId: randomUserCommunities[i].id,
                     titleAlt: randomUserCommunities[i].name,
-                    communityImage: randomUserCommunities[i].attributes.design.bannerProfileImage
+                    communityImage: randomUserCommunities[i].attributes.design.bannerProfileImage,
+                    bottomText: randomUserCommunities[i].name
                 }
             } else {
                 // no more user communities to display so fill the remaining with default images
                 listToDisplay[i] = {
                     userJoined: false,
-                    titleAlt: "Join communities to see them here"
+                    titleAlt: "Join communities to see them here",
+                    bottomText: "See joined communities here",
                 }
             }
         }
@@ -154,9 +165,13 @@ export default function HomepageB() {
                     communityId={item.communityId}
                     titleAlt={item.titleAlt}
                     communityImage={item.communityImage}
+                    bottomText={item.bottomText}
                 />
             } else {
-                return <DefaultImage titleAlt={item.titleAlt} />
+                return <DefaultImage
+                    titleAlt={item.titleAlt}
+                    bottomText={item.bottomText}
+                />
             }
         }
         )
@@ -191,7 +206,8 @@ export default function HomepageB() {
                     availableCommunity: true, // let this be the marker to have a link or not
                     communityId: randomOtherCommunities[i].id,
                     titleAlt: randomOtherCommunities[i].name,
-                    communityImage: randomOtherCommunities[i].attributes.design.bannerProfileImage
+                    communityImage: randomOtherCommunities[i].attributes.design.bannerProfileImage,
+                    bottomText: randomOtherCommunities[i].name,
                 }
             } else {
                 // no more communities to display fill the remaining with default images
@@ -209,6 +225,7 @@ export default function HomepageB() {
                     communityId={item.communityId}
                     titleAlt={item.titleAlt}
                     communityImage={item.communityImage}
+                    bottomText={item.bottomText}
                 />
             } else {
                 return <DefaultImage titleAlt={item.titleAlt} />
@@ -230,9 +247,9 @@ export default function HomepageB() {
             (community) => !joinedCommunityIds.includes(community.id)
         );
         return (
-            <div className="homepage-wrapper">
+            <div className="homepageC-wrapper">
                 {/* user details should be loaded for the welcome message */}
-                <div className="homepage-welcome-message">
+                <div className="homepageC-welcome-message">
                     <h1>
                         {/* userName should appear here from earlier fetch */}
                         Welcome{` ${username}!`}
@@ -241,12 +258,12 @@ export default function HomepageB() {
                     </h1>
                 </div>
                 {/* Display communities randomly mapped from communities user is part of */}
-                <div className="homepage-communities-row">
+                <div className="homepageC-communities-row">
                     {displayUserCommunities()}
                 </div>
 
                 {/* Display communities randomly mapped from communities user is not part of */}
-                <div className="homepage-communities-row">
+                <div className="homepageC-communities-row">
                     {displayOtherCommunities(otherCommunties)}
                 </div>
             </div>
