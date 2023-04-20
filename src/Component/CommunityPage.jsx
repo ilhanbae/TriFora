@@ -1037,6 +1037,7 @@ username, role, etc. */
 const CommunityMember = (props) => {
   const [isMemberActionActive, setIsMemberActionActive] = useState(false);
   const [isMemberReported, setIsMemberReported] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const memberActionSidemenuRef = useRef(null); // Create a ref for memver action sidemenu component
   const navigate = useNavigate(); // For navigation
 
@@ -1108,12 +1109,22 @@ const CommunityMember = (props) => {
     navigate(`/profile/${props.member.user.id}`); // navigate to member profile
   }
 
+  /* This method will open the Profile pop up Window */
+  const openProfilePage = (e) => {
+    setIsProfileModalOpen(true);
+  }
+
+  /* This method will close the Profile pop up Window */
+  const toggleProfile = (e) => {
+    setIsProfileModalOpen(false);
+  }
+
 
   return (
     <div className={commmunityMemberStyle}>
       <div 
         className={style["community-member__clickable-area"]}
-        onClick={openMemberPage}
+        onClick={openProfilePage}
         on
       >
         {/* Community Member Profile Avatar */}
@@ -1164,6 +1175,21 @@ const CommunityMember = (props) => {
           memberActionSidemenuRef={memberActionSidemenuRef}
         />
       </div>
+
+      {/* Profile Page Modal */}
+      <Modal
+        show={isProfileModalOpen}
+        onClose={toggleProfile}
+        modalStyle={{
+        width: "90%",
+        height: "90%",
+        }}
+      >
+        <ProfilePage 
+            profile_id={props.member.user.id}
+            toggleProfile={toggleProfile}
+        />
+      </Modal>
     </div>
   );
 };
