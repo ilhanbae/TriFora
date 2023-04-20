@@ -6,6 +6,10 @@ import downIcon from "../assets/downIcon36.png";
 import upIcon from "../assets/upIcon36.png";
 // import DropMenu from "./DropMenu";
 import defaultProfileImage from "../assets/defaultProfileImage.png";
+import Modal from "./Modal";
+import ProfilePage from "./ProfilePage";
+import Notification from "./Notification";
+
 
 
 class NavAchiever extends React.Component {
@@ -16,6 +20,9 @@ class NavAchiever extends React.Component {
         this.state = {
             showDropMenu: false,
             profile_icon: "",  /* ------ Add Component in Nav ------ */
+
+            openProfile: false,
+            openNotification: false,
         };
     }
 
@@ -24,7 +31,7 @@ class NavAchiever extends React.Component {
         this.render_user();
     }
 
-    // pass a user ID into it, and returns all the infos of the user
+    // This function will get the user image
     render_user = () => {
         console.log("In profile");
         console.log(sessionStorage);
@@ -73,6 +80,36 @@ class NavAchiever extends React.Component {
 
     menuSwitch = () => {
         this.setState(menuState => ({ showDropMenu: !menuState.showDropMenu }));
+    };
+
+    ClickProfile(){
+        this.setState({
+            openProfile: true,
+        });
+    }
+
+    toggleProfile = () => {
+        this.menuSwitch();
+        this.setState({
+            openProfile: !this.state.openProfile,
+        });
+    };
+
+    redirect_community(){
+        this.toggleProfile();
+    }
+
+    ClickNotification(){
+        this.setState({
+            openNotification: true,
+        });
+    }
+
+    toggleNotification = () => {
+        this.menuSwitch();
+        this.setState({
+            openNotification: !this.state.openNotification,
+        });
     };
 
     render() {
@@ -151,10 +188,34 @@ class NavAchiever extends React.Component {
                             {/* the following line uses ternary statement to allow for the hiding/showing of the drop down via css */}
                             <ul className={this.state.showDropMenu ? "showDrop" : "hideDrop"}>
                                 <li>
-                                    <Link to={`/hci/teams/underachievers/profile/${sessionStorage.getItem("user")}`} onClick={() => {window.location.assign(`/hci/teams/underachievers/profile/${sessionStorage.getItem("user")}`)}}> My Profile </Link>
+                                    <Link onClick={() => this.ClickProfile()}> My Profile </Link>
+                                    <Modal
+                                        show={this.state.openProfile}
+                                        onClose={this.toggleProfile}
+                                        modalStyle={{
+                                        width: "100%",
+                                        height: "100%",
+                                        }}
+                                    >
+                                        <ProfilePage 
+                                            profile_id={sessionStorage.getItem("user")}
+                                            redirect_community={this.redirect_community}
+                                            toggleProfile={this.toggleProfile}
+                                        />
+                                    </Modal>
                                 </li>
                                 <li>
-                                    <Link to="/notification" onClick={this.menuSwitch}> Notifications </Link>
+                                    <Link onClick={() => this.ClickNotification()}> Notifications </Link>
+                                    <Modal
+                                        show={this.state.openNotification}
+                                        onClose={this.toggleNotification}
+                                        modalStyle={{
+                                        width: "100%",
+                                        height: "100%",
+                                        }}
+                                    >
+                                        <Notification />
+                                    </Modal>
                                 </li>
                                 <li>
                                     <Link to="/login" onClick={e => {

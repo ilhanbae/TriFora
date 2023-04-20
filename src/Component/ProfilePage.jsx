@@ -5,6 +5,8 @@ import { setEmitFlags } from "typescript";
 import Friend from './Friend';
 import JoinedCommunity from "./JoinedCommunity";
 import defaultProfileImage from "../assets/defaultProfileImage.png";
+import EditProfile from "./EditProfilePage";
+import Modal from "./Modal";
 
 export default class ProfilePage extends React.Component {
 
@@ -12,7 +14,7 @@ export default class ProfilePage extends React.Component {
         super(props);
         this.state = {
             // Profile User Infos
-            user_id: window.location.href.split('/')[5],
+            user_id: props.profile_id,
             email: "",
             username: "",
             firstName: "",
@@ -31,6 +33,9 @@ export default class ProfilePage extends React.Component {
             user_connection: false,
             fromUser_toUser_connection_id: "", /* This connection_id contain the id from Session Storage User to current viewing user */
             toUser_fromUser_connection_id: "", /* This connection_id contain the id from current viewing user to Session Storage User */
+
+            // Show Edit Profile Page
+            openEditProfile: false,
         };
     }
  
@@ -39,8 +44,7 @@ export default class ProfilePage extends React.Component {
         this.load_communties(this.state.user_id);
         this.load_friend(this.state.user_id);
         this.check_user_connection(this.state.user_id);
-        window.scrollTo(0, 0);
-        console.log("profile ID", window.location.href.split('/')[4])
+        console.log("Profile ID: ", this.props.profile_id)
     }
 
     // pass a user ID into it, and returns all the infos of the user
@@ -174,7 +178,7 @@ export default class ProfilePage extends React.Component {
     // pass a user_id, check if the user_id have a connection with the user in sessionStorage 
     check_user_connection = (user_id) => {
         // If the two user ID are equal, this means it is the same person, no need to check connection
-        if (user_id === sessionStorage.getItem("user")){
+        if (user_id.toString() === sessionStorage.getItem("user")){
             this.setState({
                 same_user_profile: true,
             });
@@ -509,6 +513,18 @@ export default class ProfilePage extends React.Component {
         }
     }
 
+    ClickEditProfile = () =>{
+        this.setState({
+            openEditProfile: true,
+        });
+    }
+
+    toggleEditProfile = event => {
+        this.setState({
+            openEditProfile: !this.state.openEditProfile,
+        });
+    }
+
     render() {
         return(
             <div className = {ProfilePageCSS.profile_page}>
@@ -527,9 +543,24 @@ export default class ProfilePage extends React.Component {
                         delete_friend_connection={this.delete_friend_connection}
                         accept_friend={this.accept_friend}
                         reject_friend={this.reject_friend}
+                        ClickEditProfile={this.ClickEditProfile}
                         />
+
+                        <Modal
+                            show={this.state.openEditProfile}
+                            onClose={this.toggleEditProfile}
+                            modalStyle={{
+                            width: "85%",
+                            height: "85%",
+                            }}
+                        >
+                            <EditProfile 
+                            render_user={this.render_user}
+                            toggleProfile={this.props.toggleProfile}
+                            />
+                        </Modal>
     
-                        <Link to={-1} className = {ProfilePageCSS.close_button}>
+                        <Link className = {ProfilePageCSS.close_button}>
                             Close
                         </Link>
                     </div>
@@ -569,7 +600,11 @@ export default class ProfilePage extends React.Component {
                             key={community_list.id}
                             community_id={community_list.groupID}
                             community_name={community_list.group.name}
-                            community_banner_image={community_list.group.attributes.design.bannerProfileImage}/>
+                            community_banner_image={community_list.group.attributes.design.bannerProfileImage}
+                            redirect_community={this.props.redirect_community}
+                            closeProfilePage={this.props.closeProfilePage}
+                            closePostPageModal={this.props.closePostPageModal}
+                            />  
                         ))}
                     </div>
 
@@ -594,7 +629,8 @@ export default class ProfilePage extends React.Component {
                             friend_id={friend.toUserID}
                             view_userID={this.state.user_id}
                             check_user_connection={this.check_user_connection}
-                            load_friend={this.load_friend}/>
+                            load_friend={this.load_friend}
+                            />
                         ))}
                     </div>
     
@@ -609,7 +645,7 @@ const Render_Buttons = (props) => {
     // If it is the same user, render "Edit" button
     if (props.state.same_user_profile === true){
         return (
-            <Link to="/edit-profile" className = {ProfilePageCSS.edit_button}>
+            <Link className = {ProfilePageCSS.edit_button} onClick={() => props.ClickEditProfile()}>
                 Edit
             </Link>
         );

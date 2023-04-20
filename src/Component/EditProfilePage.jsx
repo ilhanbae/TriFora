@@ -7,7 +7,7 @@ import genericPatch from "../helper/genericPatch";
 import validateUserProfileFields from "../helper/validateUserProfileFields";
 import style from "../style/EditProfilePage.module.css"
 
-export default function EditProfile() {
+export default function EditProfile(prop) {
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoaded, setIsLoaded] = useState("false");
   const [user, setUser] = useState(null);
@@ -39,7 +39,11 @@ export default function EditProfile() {
       return (
         <div className={style["container"]}>
           {/* <ProfileHeader username={user.username} /> */}
-          <ProfileMain user={user} />
+          <ProfileMain 
+          user={user} 
+          render_user={prop.render_user} 
+          toggleProfile={prop.toggleProfile}
+          />
         </div>
       );
     }
@@ -51,6 +55,8 @@ const ProfileHeader = (prop) => {
   // Save button nav action
   const saveActionHandler = () => {
     prop.userProfileFormSubmitHandler();
+    prop.render_user(prop.user_id);
+    prop.toggleProfile();
   };
 
   return (
@@ -74,7 +80,11 @@ const ProfileHeader = (prop) => {
 const ProfileMain = (prop) => {
   return (
     <div className={style["profile-main"]}>
-      <UserProfileForm user={prop.user} />
+      <UserProfileForm 
+      user={prop.user} 
+      render_user={prop.render_user} 
+      toggleProfile={prop.toggleProfile}
+      />
     </div>
   );
 };
@@ -207,6 +217,9 @@ const UserProfileForm = (prop) => {
       <ProfileHeader
         username={prop.user.attributes.profile.username}
         userProfileFormSubmitHandler={userProfileFormSubmitHandler}
+        render_user={prop.render_user}
+        user_id={prop.user.id}
+        toggleProfile={prop.toggleProfile}
       />
 
       {/* Main Form */}
@@ -223,7 +236,7 @@ const UserProfileForm = (prop) => {
             type="file"
             onChange={avatarSelectHandler}
           />
-          <label htmlFor="profile-avatar-upload-input" className={style["button"] + " " + style["bold"]}>
+          <label htmlFor={style["profile-avatar-upload-input"]} className={style["button"] + " " + style["bold"]}>
             Upload
           </label>
         </div>

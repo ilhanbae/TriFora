@@ -1,6 +1,8 @@
 import React from "react";
 import ProfilePageCSS from "../style/ProfilePage.module.css";
 import { Link, useParams } from 'react-router-dom';
+import Modal from "./Modal";
+import ProfilePage from "./ProfilePage";
 
 
 /* The Friend is going to load all the Friends related to the current user on profile page.*/
@@ -13,6 +15,8 @@ export default class Friend extends React.Component {
             /* we can get "fromUser_toUser_connection_id" from "this.props.friend.id"*/
             toUser_fromUser_connection_id: "",
             click_friend_id: "",
+
+            openProfile: false,
         };
     }
 
@@ -103,24 +107,53 @@ export default class Friend extends React.Component {
         }
     }
 
+    ClickProfile(){
+        this.setState({
+            openProfile: true,
+        });
+    }
+
+    toggleProfile = event => {
+        this.setState({
+            openProfile: !this.state.openProfile,
+        });
+    }
+
     render() {
         // If view_userID != to the current logged in user, remove the "Remove" button
         if (this.props.view_userID !== sessionStorage.getItem("user")){
             return (
+                <>
                     <div className = {ProfilePageCSS.friend_card}>
-                        <Link to={`/profile/${this.props.friend_id}`} onClick={() => {window.location.assign(`/profile/${this.props.friend_id}`)}}>
+                        <Link onClick={() => this.ClickProfile()}>
                             <img className = {ProfilePageCSS.friend_avatar} src={this.props.friend.toUser.attributes.profile.profileImage}></img>
                             <div className = {ProfilePageCSS.friend_name}>
                                 <h4> {this.props.friend.toUser.attributes.profile.username} </h4>
                             </div>
                         </Link>
                     </div>
+
+                    <Modal
+                        show={this.state.openProfile}
+                        onClose={this.toggleProfile}
+                        modalStyle={{
+                        width: "85%",
+                        height: "85%",
+                        }}
+                    >
+                        <ProfilePage 
+                            profile_id={this.props.friend_id}
+                            toggleProfile={this.toggleProfile}
+                        />
+                    </Modal>
+                </>
             );
         // If view_userID == to the current logged in user, render the "Remove" button
         }else{
             return(
+                <>
                     <div className = {ProfilePageCSS.friend_card}>
-                        <Link to={`/profile/${this.props.friend_id}`} onClick={() => {window.location.assign(`/profile/${this.props.friend_id}`)}}>
+                        <Link onClick={() => this.ClickProfile()}>
                             <img className = {ProfilePageCSS.friend_avatar} src={this.props.friend.toUser.attributes.profile.profileImage}></img>
                             <div className = {ProfilePageCSS.friend_name}>
                                 <h4> {this.props.friend.toUser.attributes.profile.username} </h4>
@@ -130,6 +163,21 @@ export default class Friend extends React.Component {
                             <h5>Remove</h5>
                         </button>
                     </div>
+
+                    <Modal
+                        show={this.state.openProfile}
+                        onClose={this.toggleProfile}
+                        modalStyle={{
+                        width: "85%",
+                        height: "85%",
+                        }}
+                    >
+                        <ProfilePage 
+                            profile_id={this.props.friend_id}
+                            toggleProfile={this.toggleProfile}
+                        />
+                    </Modal>
+                </>
             );
         }
     }
