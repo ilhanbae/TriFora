@@ -106,7 +106,7 @@ export default function HomepageB() {
                 <div className="homepageB-community-box">
                     <Link to={`/community/${props.communityId}`} className="homepageB-community-button">
                         {/* <button className="homepageC-community-button">Join</button> */}
-                        Join
+                        {props.userJoined ? "Visit" : "Join"}
                     </Link>
                     <img
                         src={props.communityImage}
@@ -162,6 +162,7 @@ export default function HomepageB() {
         const imageList = listToDisplay.map((item) => {
             if (item.userJoined) {
                 return <CommunityLink
+                    userJoined={item.userJoined}
                     communityId={item.communityId}
                     titleAlt={item.titleAlt}
                     communityImage={item.communityImage}
