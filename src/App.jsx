@@ -86,8 +86,8 @@ const LoginOrProfile = (props) => {
     console.log("Logged In");
     return (
       // <HomepageA />
-      // <HomepageB />
-      <HomepageC />
+      <HomepageB />
+      // <HomepageC />
       // <ProfilePage />
     );
   }

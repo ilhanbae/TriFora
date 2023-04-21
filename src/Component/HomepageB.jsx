@@ -87,7 +87,7 @@ export default function HomepageB() {
             <div className="homepageB-image-cropper">
                 <img
                     src={group}
-                    className="homepage-community-image"
+                    className="homepageB-community-image"
                     alt={props.titleAlt}
                     title={props.titleAlt}
                 />
@@ -102,7 +102,7 @@ export default function HomepageB() {
                 <div className="homepageB-image-cropper">
                     <img
                         src={props.communityImage}
-                        className="homepage-community-image"
+                        className="homepageB-community-image"
                         alt={props.titleAlt}
                         title={props.titleAlt}
                     />
@@ -230,7 +230,7 @@ export default function HomepageB() {
             (community) => !joinedCommunityIds.includes(community.id)
         );
         return (
-            <div className="homepage-wrapper">
+            <div className="homepageB-wrapper">
                 {/* user details should be loaded for the welcome message */}
                 <div className="homepage-welcome-message">
                     <h1>
@@ -241,12 +241,12 @@ export default function HomepageB() {
                     </h1>
                 </div>
                 {/* Display communities randomly mapped from communities user is part of */}
-                <div className="homepage-communities-row">
+                <div className="homepageB-communities-row">
                     {displayUserCommunities()}
                 </div>
 
                 {/* Display communities randomly mapped from communities user is not part of */}
-                <div className="homepage-communities-row">
+                <div className="homepageB-communities-row">
                     {displayOtherCommunities(otherCommunties)}
                 </div>
             </div>
