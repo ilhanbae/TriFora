@@ -12,7 +12,7 @@ import ProfilePage from "./Component/ProfilePage";
 import EditProfilePage from "./Component/EditProfilePage";
 import CommunityPage from "./Component/CommunityPage";
 import CreatePost from "./Component/CreatePost";
-import HomepageA from "./Component/HomepageA";
+import Homepage from "./Component/Homepage";
 import HomepageB from "./Component/HomepageB";
 import HomepageC from "./Component/HomepageC";
 import Notification from "./Component/Notification";
@@ -85,8 +85,8 @@ const LoginOrProfile = (props) => {
   } else {
     console.log("Logged In");
     return (
-      // <HomepageA />
-      <HomepageB />
+      <Homepage />
+      // <HomepageB />
       // <HomepageC />
       // <ProfilePage />
     );
