@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import "../style/HomepageB.css";
+import "../style/HomepageA.css";
 import group from "../assets/group.png";
 import community from "../assets/defaultPostImage.png";
 import { Link } from "react-router-dom";
 import genericFetch from "../helper/genericFetch";
 
-export default function HomepageB() {
+export default function HomepageA() {
     const [username, setUsername] = useState();
     const [userCommunities, setUserCommunities] = useState();
     const [numUserCommunities, setNumUserCommunities] = useState();
@@ -84,10 +84,10 @@ export default function HomepageB() {
     // the purpose of this is to display a default image for when there isn't enough communities to display
     function DefaultImage(props) {
         return (
-            <div className="homepageB-image-cropper">
+            <div className="homepageA-image-cropper">
                 <img
                     src={group}
-                    className="homepageB-community-image"
+                    className="homepageA-community-image"
                     alt={props.titleAlt}
                     title={props.titleAlt}
                 />
@@ -99,10 +99,10 @@ export default function HomepageB() {
     function CommunityLink(props) {
         return (
             <Link to={`/community/${props.communityId}`}>
-                <div className="homepageB-image-cropper">
+                <div className="homepageA-image-cropper">
                     <img
                         src={props.communityImage}
-                        className="homepageB-community-image"
+                        className="homepageA-community-image"
                         alt={props.titleAlt}
                         title={props.titleAlt}
                     />
@@ -230,9 +230,9 @@ export default function HomepageB() {
             (community) => !joinedCommunityIds.includes(community.id)
         );
         return (
-            <div className="homepageB-wrapper">
+            <div className="homepageA-wrapper">
                 {/* user details should be loaded for the welcome message */}
-                <div className="homepage-welcome-message">
+                <div className="homepageA-welcome-message">
                     <h1>
                         {/* userName should appear here from earlier fetch */}
                         Welcome{` ${username}!`}
@@ -241,12 +241,12 @@ export default function HomepageB() {
                     </h1>
                 </div>
                 {/* Display communities randomly mapped from communities user is part of */}
-                <div className="homepageB-communities-row">
+                <div className="homepageA-communities-row">
                     {displayUserCommunities()}
                 </div>
 
                 {/* Display communities randomly mapped from communities user is not part of */}
-                <div className="homepageB-communities-row">
+                <div className="homepageA-communities-row">
                     {displayOtherCommunities(otherCommunties)}
                 </div>
             </div>
