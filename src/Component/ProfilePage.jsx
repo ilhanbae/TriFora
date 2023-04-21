@@ -560,9 +560,11 @@ export default class ProfilePage extends React.Component {
                             />
                         </Modal>
     
+                        {/*
                         <Link className = {ProfilePageCSS.close_button}>
                             Close
                         </Link>
+                        */}
                     </div>
                 </div>
     

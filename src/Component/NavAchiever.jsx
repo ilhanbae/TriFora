@@ -10,8 +10,6 @@ import Modal from "./Modal";
 import ProfilePage from "./ProfilePage";
 import Notification from "./Notification";
 
-
-
 class NavAchiever extends React.Component {
 
     constructor(props) {
@@ -28,58 +26,48 @@ class NavAchiever extends React.Component {
 
     /* ------ Add Component in Nav ------ */
     componentDidMount() {
-        this.render_user();
+        this.render_user_icon();
     }
 
     // This function will get the user image
-    render_user = () => {
-        console.log("In profile");
-        console.log(sessionStorage);
-
-        // if the user is not logged in, we don't want to try loading the user.
-        if (sessionStorage.getItem("token")){
-            // fetch the user data, and extract out the attributes to load and display
-            fetch(process.env.REACT_APP_API_PATH + "/users/" + sessionStorage.getItem("user"), {
-            method: "get",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-            }
-            })
-            .then(res => res.json())
-            .then(
-                result => {
-                if (result) {
-                    console.log(result);
-                    if (result.attributes){
-                        this.setState({
-                        // IMPORTANT!  You need to guard against any of these values being null.  If they are, it will
-                        // try and make the form component uncontrolled, which plays havoc with react
-                        profile_icon: result.attributes.profile.profileImage || "",
-                        });
-                    // Check if the profileImage is the default value, it is default value set to default image
-                    if (result.attributes.profile.profileImage === ""){
-                        this.setState({
-                            profile_icon: defaultProfileImage
-                        })
-                    }
-                }
-                }
-                },
-                error => {
-                //alert("error!");
-                }
-            );
-        }else{
-            //If user is not logged in, show error message
-            //alert("Not Logged In");
-            console.log("Not Logged In");
+    render_user_icon = () => {
+        // fetch the user data, and extract out the attributes to load and display
+        fetch(process.env.REACT_APP_API_PATH + "/users/" + sessionStorage.getItem("user"), {
+        method: "get",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + sessionStorage.getItem('token')
         }
+        })
+        .then(res => res.json())
+        .then(
+            result => {
+            if (result) {
+                console.log(result);
+                if (result.attributes){
+                    this.setState({
+                    // IMPORTANT!  You need to guard against any of these values being null.  If they are, it will
+                    // try and make the form component uncontrolled, which plays havoc with react
+                    profile_icon: result.attributes.profile.profileImage || "",
+                    });
+                // Check if the profileImage is the default value, it is default value set to default image
+                if (result.attributes.profile.profileImage === ""){
+                    this.setState({
+                        profile_icon: defaultProfileImage
+                    })
+                }
+            }
+            }
+            },
+            error => {
+            //alert("error!");
+            }
+        );
     }
     /* ------ Add Component in Nav ------ */
 
     menuSwitch = () => {
-        this.setState(menuState => ({ showDropMenu: !menuState.showDropMenu }));
+        this.setState(menuState => ({ showDropMenu: !menuState.showDropMenu }), () => this.render_user_icon());
     };
 
     ClickProfile(){
