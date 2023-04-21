@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import "../style/HomepageC.css";
+import "../style/HomepageB.css";
 import group from "../assets/group.png";
 import community from "../assets/defaultPostImage.png";
 import { Link } from "react-router-dom";
 import genericFetch from "../helper/genericFetch";
 
-export default function HomepageC() {
+export default function HomepageB() {
     const [username, setUsername] = useState();
     const [userCommunities, setUserCommunities] = useState();
     const [numUserCommunities, setNumUserCommunities] = useState();
@@ -84,17 +84,17 @@ export default function HomepageC() {
     // the purpose of this is to display a default image for when there isn't enough communities to display
     function DefaultImage(props) {
         return (
-            <div className="homepageC-community-wrapper">
-                <div className="homepageC-community-box">
-                    <button className="homepageC-community-button">Visit</button>
+            <div className="homepageB-community-wrapper">
+                <div className="homepageB-community-box">
+                    <button className="homepageB-community-button">Visit</button>
                     <img
                         src={group}
-                        className="homepageC-community-image"
+                        className="homepageB-community-image"
                         alt={props.titleAlt}
                         title={props.titleAlt}
                     />
                 </div>
-                <div className="homepageC-community-name-box">{props.bottomText}</div>
+                <div className="homepageB-community-name-box">{props.bottomText}</div>
             </div>
         )
     }
@@ -102,20 +102,20 @@ export default function HomepageC() {
     // the purpose of this is to display a real community image that links to that community
     function CommunityLink(props) {
         return (
-            <div className="homepageC-community-wrapper">
-                <div className="homepageC-community-box">
-                    <Link to={`/community/${props.communityId}`} className="homepageC-community-button">
+            <div className="homepageB-community-wrapper">
+                <div className="homepageB-community-box">
+                    <Link to={`/community/${props.communityId}`} className="homepageB-community-button">
                         {/* <button className="homepageC-community-button">Join</button> */}
                         Join
                     </Link>
                     <img
                         src={props.communityImage}
-                        className="homepageC-community-image"
+                        className="homepageB-community-image"
                         alt={props.titleAlt}
                         title={props.titleAlt}
                     />
                 </div>
-                <div className="homepageC-community-name-box">{`${props.bottomText}`}</div>
+                <div className="homepageB-community-name-box">{`${props.bottomText}`}</div>
             </div>
         )
     }
@@ -247,9 +247,9 @@ export default function HomepageC() {
             (community) => !joinedCommunityIds.includes(community.id)
         );
         return (
-            <div className="homepageC-wrapper">
+            <div className="homepageB-wrapper">
                 {/* user details should be loaded for the welcome message */}
-                <div className="homepageC-welcome-message">
+                <div className="homepageB-welcome-message">
                     <h1>
                         {/* userName should appear here from earlier fetch */}
                         Welcome{` ${username}!`}
@@ -258,12 +258,12 @@ export default function HomepageC() {
                     </h1>
                 </div>
                 {/* Display communities randomly mapped from communities user is part of */}
-                <div className="homepageC-communities-row">
+                <div className="homepageB-communities-row">
                     {displayUserCommunities()}
                 </div>
 
                 {/* Display communities randomly mapped from communities user is not part of */}
-                <div className="homepageC-communities-row">
+                <div className="homepageB-communities-row">
                     {displayOtherCommunities(otherCommunties)}
                 </div>
             </div>

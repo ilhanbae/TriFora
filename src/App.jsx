@@ -14,7 +14,7 @@ import CommunityPage from "./Component/CommunityPage";
 import CreatePost from "./Component/CreatePost";
 import Homepage from "./Component/Homepage";
 import HomepageA from "./Component/HomepageA";
-import HomepageC from "./Component/HomepageC";
+import HomepageB from "./Component/HomepageB";
 import Notification from "./Component/Notification";
 
 export default function App() {
@@ -86,8 +86,8 @@ const LoginOrProfile = (props) => {
     console.log("Logged In");
     return (
       // <Homepage />
-      <HomepageA />
-      // <HomepageC />
+      // <HomepageA />
+      <HomepageB />
       // <ProfilePage />
     );
   }
