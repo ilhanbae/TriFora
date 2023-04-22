@@ -84,7 +84,8 @@ export default function HomepageA() {
     // the purpose of this is to display a default image for when there isn't enough communities to display
     function DefaultImage(props) {
         return (
-            <div className="homepageA-image-cropper">
+            <div className="homepageA-community-wrapper">
+                <h4>{props.nameText}</h4>
                 <img
                     src={group}
                     className="homepageA-community-image"
@@ -98,16 +99,17 @@ export default function HomepageA() {
     // the purpose of this is to display a real community image that links to that community
     function CommunityLink(props) {
         return (
-            <Link to={`/community/${props.communityId}`}>
-                <div className="homepageA-image-cropper">
+            <div className="homepageA-community-wrapper">
+                <h4>{props.nameText}</h4>
+                <Link to={`/community/${props.communityId}`}>
                     <img
                         src={props.communityImage}
                         className="homepageA-community-image"
                         alt={props.titleAlt}
                         title={props.titleAlt}
                     />
-                </div>
-            </Link>
+                </Link>
+            </div>
         )
     }
 
@@ -136,13 +138,15 @@ export default function HomepageA() {
                     userJoined: true, // let this be the marker to have a link or not
                     communityId: randomUserCommunities[i].id,
                     titleAlt: randomUserCommunities[i].name,
-                    communityImage: randomUserCommunities[i].attributes.design.bannerProfileImage
+                    communityImage: randomUserCommunities[i].attributes.design.bannerProfileImage,
+                    nameText: randomUserCommunities[i].name
                 }
             } else {
                 // no more user communities to display so fill the remaining with default images
                 listToDisplay[i] = {
                     userJoined: false,
-                    titleAlt: "Join communities to see them here"
+                    titleAlt: "Join communities to see them here",
+                    nameText: "See joined communities here!",
                 }
             }
         }
@@ -154,9 +158,13 @@ export default function HomepageA() {
                     communityId={item.communityId}
                     titleAlt={item.titleAlt}
                     communityImage={item.communityImage}
+                    nameText={item.nameText}
                 />
             } else {
-                return <DefaultImage titleAlt={item.titleAlt} />
+                return <DefaultImage
+                    titleAlt={item.titleAlt}
+                    nameText={item.nameText}
+                />
             }
         }
         )
@@ -191,13 +199,15 @@ export default function HomepageA() {
                     availableCommunity: true, // let this be the marker to have a link or not
                     communityId: randomOtherCommunities[i].id,
                     titleAlt: randomOtherCommunities[i].name,
-                    communityImage: randomOtherCommunities[i].attributes.design.bannerProfileImage
+                    communityImage: randomOtherCommunities[i].attributes.design.bannerProfileImage,
+                    nameText: randomOtherCommunities[i].name,
                 }
             } else {
                 // no more communities to display fill the remaining with default images
                 listToDisplay[i] = {
                     availableCommunity: false,
-                    titleAlt: "More communities coming soon!"
+                    titleAlt: "More communities coming soon!",
+                    nameText: "More communities to come!"
                 }
             }
         }
@@ -209,9 +219,13 @@ export default function HomepageA() {
                     communityId={item.communityId}
                     titleAlt={item.titleAlt}
                     communityImage={item.communityImage}
+                    nameText={item.nameText}
                 />
             } else {
-                return <DefaultImage titleAlt={item.titleAlt} />
+                return <DefaultImage
+                    titleAlt={item.titleAlt}
+                    nameText={item.nameText}
+                />
             }
         }
         )
@@ -236,16 +250,18 @@ export default function HomepageA() {
                     <h1>
                         {/* userName should appear here from earlier fetch */}
                         Welcome{` ${username}!`}
-                        <br />
-                        Jump in to your community!
                     </h1>
+                    <h2>Jump in to your community!</h2>
                 </div>
+                <br />
                 {/* Display communities randomly mapped from communities user is part of */}
+                <h3 className="homepageA-row-intro">Some of your communities:</h3>
                 <div className="homepageA-communities-row">
                     {displayUserCommunities()}
                 </div>
 
                 {/* Display communities randomly mapped from communities user is not part of */}
+                <h3 className="homepageA-row-intro">Some other communities:</h3>
                 <div className="homepageA-communities-row">
                     {displayOtherCommunities(otherCommunties)}
                 </div>

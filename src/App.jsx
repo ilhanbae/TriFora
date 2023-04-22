@@ -20,6 +20,11 @@ import Notification from "./Component/Notification";
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [navStyle, setNavStyle] = useState(2);
+  const [radioValue, setRadiovalue] = useState("server");
+
+  const changeSelection = (e) => {
+    setRadiovalue(e.target.value);
+  }
 
   /* This method changes nav style */
   const navSwitch = (headerStyle) => {
@@ -53,6 +58,12 @@ export default function App() {
           {/* Navigation */}
           <NavAchiever logout={logout} navStyle={navStyle} />
           <div>
+            <input type="radio" value="server" name="homepage-version" onChange={changeSelection} defaultChecked /> Live
+            <input type="radio" value="A" name="homepage-version" onChange={changeSelection} /> version A
+            <input type="radio" value="B" name="homepage-version" onChange={changeSelection} /> Version B
+          </div>
+          <div>{radioValue}</div>
+          <div>
             <Routes>
               {/* Pages */}
               <Route path="/register" element={<RegisterForm login={login} />} />
@@ -63,7 +74,7 @@ export default function App() {
               <Route path="/community/:communityId" element={<CommunityPage />} />
               <Route path="/create-post" element={<CreatePost />} />
               <Route path="/notification" element={<Notification />} />
-              <Route path="/" element={<LoginOrProfile login={login} />} />
+              <Route path="/" element={<LoginOrProfile login={login} radioValue={radioValue} />} />
             </Routes>
           </div>
         </header>
@@ -85,9 +96,14 @@ const LoginOrProfile = (props) => {
   } else {
     console.log("Logged In");
     return (
+      <>
+        {(props.radioValue === "server") && <Homepage />}
+        {(props.radioValue === "A") && <HomepageA />}
+        {(props.radioValue === "B") && <HomepageB />}
+      </>
       // <Homepage />
       // <HomepageA />
-      <HomepageB />
+      // <HomepageB />
       // <ProfilePage />
     );
   }

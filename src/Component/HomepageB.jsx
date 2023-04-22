@@ -94,7 +94,7 @@ export default function HomepageB() {
                         title={props.titleAlt}
                     />
                 </div>
-                <div className="homepageB-community-name-box">{props.bottomText}</div>
+                <div className="homepageB-community-name-box">{props.nameText}</div>
             </div>
         )
     }
@@ -115,7 +115,7 @@ export default function HomepageB() {
                         title={props.titleAlt}
                     />
                 </div>
-                <div className="homepageB-community-name-box">{`${props.bottomText}`}</div>
+                <div className="homepageB-community-name-box">{`${props.nameText}`}</div>
             </div>
         )
     }
@@ -146,14 +146,14 @@ export default function HomepageB() {
                     communityId: randomUserCommunities[i].id,
                     titleAlt: randomUserCommunities[i].name,
                     communityImage: randomUserCommunities[i].attributes.design.bannerProfileImage,
-                    bottomText: randomUserCommunities[i].name
+                    nameText: randomUserCommunities[i].name
                 }
             } else {
                 // no more user communities to display so fill the remaining with default images
                 listToDisplay[i] = {
                     userJoined: false,
                     titleAlt: "Join communities to see them here",
-                    bottomText: "See joined communities here",
+                    nameText: "See joined communities here",
                 }
             }
         }
@@ -166,12 +166,12 @@ export default function HomepageB() {
                     communityId={item.communityId}
                     titleAlt={item.titleAlt}
                     communityImage={item.communityImage}
-                    bottomText={item.bottomText}
+                    nameText={item.nameText}
                 />
             } else {
                 return <DefaultImage
                     titleAlt={item.titleAlt}
-                    bottomText={item.bottomText}
+                    nameText={item.nameText}
                 />
             }
         }
@@ -208,13 +208,14 @@ export default function HomepageB() {
                     communityId: randomOtherCommunities[i].id,
                     titleAlt: randomOtherCommunities[i].name,
                     communityImage: randomOtherCommunities[i].attributes.design.bannerProfileImage,
-                    bottomText: randomOtherCommunities[i].name,
+                    nameText: randomOtherCommunities[i].name,
                 }
             } else {
                 // no more communities to display fill the remaining with default images
                 listToDisplay[i] = {
                     availableCommunity: false,
-                    titleAlt: "More communities coming soon!"
+                    titleAlt: "More communities coming soon!",
+                    nameText: "More communities to come!"
                 }
             }
         }
@@ -226,10 +227,13 @@ export default function HomepageB() {
                     communityId={item.communityId}
                     titleAlt={item.titleAlt}
                     communityImage={item.communityImage}
-                    bottomText={item.bottomText}
+                    nameText={item.nameText}
                 />
             } else {
-                return <DefaultImage titleAlt={item.titleAlt} />
+                return <DefaultImage
+                    titleAlt={item.titleAlt}
+                    nameText={item.nameText}
+                />
             }
         }
         )
