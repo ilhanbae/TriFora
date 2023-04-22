@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import "../style/ForgotPasswordPage.module.css";
+// import "../style/ForgotPasswordPage.module.css";
 import validateEmail from "../helper/validateEmail";
 import style from "../style/ForgotPasswordPage.module.css";
 
@@ -175,6 +175,7 @@ const ResetPasswordForm = (props) => {
   // Update email state on input change
   const passwordInputHandler = (e) => {
     setPassword(e.target.value);
+    console.log(e.target.value)
   };
 
   // Update token state on input change
@@ -186,7 +187,11 @@ const ResetPasswordForm = (props) => {
   const formSubmitHandler = (e) => {
     e.preventDefault(); // prevent default form action
     // setEmail(""); // clear the input text
-    props.sendResetPasswordRequest(password, token); // call POST API from ForgotPasswordPage
+    if (password.length < 6 || password.length > 20) {
+      alert('Password must be between 6-20 characters');
+    } else {
+      props.sendResetPasswordRequest(password, token); // call POST API from ForgotPasswordPage
+    }
   };
 
   return (
@@ -200,7 +205,7 @@ const ResetPasswordForm = (props) => {
         <span className={style['active-text']}>New Password:</span>
         <input
             className={style['data-input'] + ' ' + style['password']}
-          type="text"
+          type="password"
           value={password}
           onChange={passwordInputHandler}
         />
