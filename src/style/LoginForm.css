@@ -72,6 +72,32 @@
     background: none;
 }
 
+/* input1-stuff under 500px */
+@media (max-width: 500px){
+    .input1-stuff {
+        border: 2px solid #000000;
+        border-radius: 10px;
+        display: block;
+        width: 300px;
+        height: 50px;
+        font-size: 15px;
+        background: none;
+    }
+}
+
+/* input1-stuff under 350px */
+@media (max-width: 350px){
+    .input1-stuff {
+        border: 2px solid #000000;
+        border-radius: 10px;
+        display: block;
+        width: 200px;
+        height: 50px;
+        font-size: 15px;
+        background: none;
+    }
+}
+
 /* User */
 .userSpace {
     padding-top: 31px;

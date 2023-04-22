@@ -5,15 +5,20 @@ body {
 }
 
 .wrapper {
-    position: relative;
-    max-width: 758px;
-    margin: auto;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    width: 100%;
 }
 
 .inner {
     max-width: 758px;
     text-align: center;
-    padding: 27px 20px 37px;
+    padding: 60px;
 }
 
 .password {
@@ -95,12 +100,9 @@ body {
 
 /* Back Arrow */
 
-.base-back {
-    position: absolute;
-    top: 1%;
-    left: -10%;
+.register-base-back {
+    margin: 10px;
 }
-
 
 /* Submit Button */
 
@@ -120,6 +122,40 @@ body {
 }
 
 .login-link{
-    font-size: 1.5vw;
+    font-size: 20px;
+}
 
+.signup-form{
+    width: 100%;
+}
+
+/* input-stuff under 600px */
+@media (max-width: 600px){
+    .input-stuff {
+        border: none;
+        border-bottom: 2px solid #C06A30;
+        width: 300px;
+        height: 43px;
+        font-size: 15px;
+        background: none;
+    }
+}
+
+/* input-stuff under 350px */
+@media (max-width: 350px){
+    .h3-inner {
+        font-size: 28px;
+        font-family: "Montserrat-Bold", sans-serif;
+        text-align: center;
+        color: #3D211A;
+    }
+
+    .input-stuff {
+        border: none;
+        border-bottom: 2px solid #C06A30;
+        width: 150px;
+        height: 43px;
+        font-size: 15px;
+        background: none;
+    }
 }

@@ -5,6 +5,8 @@ import groupIcon from "../assets/group.png";
 import downIcon from "../assets/downIcon36.png";
 import upIcon from "../assets/upIcon36.png";
 // import DropMenu from "./DropMenu";
+import defaultProfileImage from "../assets/defaultProfileImage.png";
+
 
 class NavAchiever extends React.Component {
 
@@ -12,10 +14,62 @@ class NavAchiever extends React.Component {
         super(props);
 
         this.state = {
-            showDropMenu: false
+            showDropMenu: false,
+            profile_icon: "",  /* ------ Add Component in Nav ------ */
         };
     }
 
+    /* ------ Add Component in Nav ------ */
+    componentDidMount() {
+        this.render_user();
+    }
+
+    // pass a user ID into it, and returns all the infos of the user
+    render_user = () => {
+        console.log("In profile");
+        console.log(sessionStorage);
+
+        // if the user is not logged in, we don't want to try loading the user.
+        if (sessionStorage.getItem("token")){
+            // fetch the user data, and extract out the attributes to load and display
+            fetch(process.env.REACT_APP_API_PATH + "/users/" + sessionStorage.getItem("user"), {
+            method: "get",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+            }
+            })
+            .then(res => res.json())
+            .then(
+                result => {
+                if (result) {
+                    console.log(result);
+                    if (result.attributes){
+                        this.setState({
+                        // IMPORTANT!  You need to guard against any of these values being null.  If they are, it will
+                        // try and make the form component uncontrolled, which plays havoc with react
+                        profile_icon: result.attributes.profile.profileImage || "",
+                        });
+                    // Check if the profileImage is the default value, it is default value set to default image
+                    if (result.attributes.profile.profileImage === ""){
+                        this.setState({
+                            profile_icon: defaultProfileImage
+                        })
+                    }
+                }
+                }
+                },
+                error => {
+                //alert("error!");
+                }
+            );
+        }else{
+            //If user is not logged in, show error message
+            //alert("Not Logged In");
+            console.log("Not Logged In");
+        }
+    }
+    /* ------ Add Component in Nav ------ */
 
     menuSwitch = () => {
         this.setState(menuState => ({ showDropMenu: !menuState.showDropMenu }));
@@ -68,7 +122,7 @@ class NavAchiever extends React.Component {
                         <li className="pm admin">
                             {/* This icon is a placeholder until maybe profile icon */}
                             <img
-                                src={groupIcon}
+                                src={this.state.profile_icon}  /* ------ Add Component in Nav ------ */
                                 className="profile-icon"
                                 // onClick={this.menuSwitch}
                                 alt="profile icon will go here"
@@ -97,11 +151,11 @@ class NavAchiever extends React.Component {
                             {/* the following line uses ternary statement to allow for the hiding/showing of the drop down via css */}
                             <ul className={this.state.showDropMenu ? "showDrop" : "hideDrop"}>
                                 <li>
-                                    <Link to="/profile" onClick={this.menuSwitch}> My Profile </Link>
+                                    <Link to={`/hci/teams/underachievers/profile/${sessionStorage.getItem("user")}`} onClick={() => {window.location.assign(`/hci/teams/underachievers/profile/${sessionStorage.getItem("user")}`)}}> My Profile </Link>
                                 </li>
-                                {/* <li>
-                                    <Link to="/notifications" onClick={this.menuSwitch}> Notifications </Link>
-                                </li> */}
+                                <li>
+                                    <Link to="/notification" onClick={this.menuSwitch}> Notifications </Link>
+                                </li>
                                 <li>
                                     <Link to="/login" onClick={e => {
                                         {/* this is the only way I could think to do this for logout */}

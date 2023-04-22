@@ -1,0 +1,716 @@
+.profile_page{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100vw;
+    height: 100vh;
+
+    background: #FEFEE2;
+}
+
+/* profile title bar */
+.profile_title_bar{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    padding-left: 40%;
+
+    border: 2px solid #000000;
+}
+
+.profile_title{
+    margin: 10px;
+    display: flex;
+
+    color: #000000;
+}
+
+.title-bar-buttons{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    margin-left: auto;
+}
+
+.edit_button{
+    box-sizing: border-box;
+
+    margin: 10px;
+
+    width: 60px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: black;
+    padding: 5px;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.edit_button:hover {
+    background-color: #3D211A;
+    color: white;
+}
+
+.addfriend_button{
+    box-sizing: border-box;
+
+    margin: 10px;
+
+    width: 150px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    color: black;
+    padding: 5px;
+
+    background: #00FF00;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.addfriend_button:hover {
+    background-color: #3D211A;
+    color: white;
+}
+
+.accept_button {
+    box-sizing: border-box;
+
+    margin: 10px;
+
+    width: 100px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    color: black;
+    padding: 5px;
+
+    background: #00FF00;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.accept_button:hover {
+    background-color: #3D211A;
+    color: white;
+}
+
+.removefriend_button{
+    box-sizing: border-box;
+
+    margin: 10px;
+
+    width: 180px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    color: black;
+    padding: 5px;
+
+    background: #FF0000;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.removefriend_button:hover {
+    background-color: #3D211A;
+    color: white;
+}
+
+.reject_button{
+    box-sizing: border-box;
+
+    margin: 10px;
+
+    width: 100px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    color: black;
+    padding: 5px;
+
+    background: #FF0000;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.reject_button:hover {
+    background-color: #3D211A;
+    color: white;
+}
+
+.RequestSent_button{
+    box-sizing: border-box;
+
+    margin: 10px;
+
+    width: 160px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    color: black;
+    padding: 5px;
+
+    background: gray;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.RequestSent_button:hover {
+    background-color: #3D211A;
+    color: white;
+}
+
+.close_button{
+    box-sizing: border-box;
+
+    margin: 10px;
+    margin-right: 75px; 
+
+    width: 70px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    color: black;
+    padding: 5px;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.close_button:hover {
+    background-color: #3D211A;
+    color: white;
+}
+
+/* title bar under 700px */
+@media (max-width: 700px){
+    .title-bar-buttons{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+    
+        margin-left: auto;
+    }
+}
+
+/* title bar under 500px */
+@media (max-width: 500px){
+    .profile_title_bar{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    
+        width: 100%;
+        padding-left: 20%;
+    
+        border: 2px solid #000000;
+    }
+
+    .title-bar-buttons{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+    
+        margin-left: auto;
+    }
+
+    .close_button{
+        box-sizing: border-box;
+    
+        margin: 10px; 
+    
+        width: 70px;
+        height: 40px;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 20px;
+        display: flex;
+        text-align: center;
+        flex-direction: column;
+        justify-content: center;
+        padding: 5px;
+    
+        background: #F3C26E;
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+}
+
+/* title bar under 350px */
+@media (max-width: 350px){
+    .profile_title_bar{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    
+        width: 100%;
+        padding-left: 0%;
+    
+        border: 2px solid #000000;
+    }
+
+    .title-bar-buttons{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-left: 0%;
+    }
+}
+
+/* title bar under 210px */
+@media (max-width: 210px){
+    .profile_title_bar{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    
+        width: 100%;
+        padding-left: 0%;
+    
+        border: 2px solid #000000;
+    }
+
+    .title-bar-buttons{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-left: 0%;
+    }
+
+    .edit_button{
+        box-sizing: border-box;
+    
+        /* margin: 10px;
+        margin-left: auto; */
+    
+        width: 60px;
+        height: 40px;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 20px;
+        display: flex;
+        text-align: center;
+        flex-direction: column;
+        justify-content: center;
+        padding: 5px;
+    
+        background: #F3C26E;
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+
+    .close_button{
+        box-sizing: border-box;
+    
+        /* margin: 10px; */
+    
+        width: 60px;
+        height: 40px;
+    
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 20px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 5px;
+    
+        background: #F3C26E;
+        border: 2px solid #000000;
+        border-radius: 10px;
+    }
+}
+
+/* Profile Info */
+.profile_info_bar{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    top: 0%;
+
+    border: 2px solid #000000;
+    border-top: 1px solid #000000;
+}
+
+.profile_image{
+    box-sizing: border-box;
+
+    width: 15vw;
+    height: 15vw;
+    margin: 20px;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 50%;
+}
+
+.user_info{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.username{
+    margin: 10px;
+    color: #000000;
+}
+
+.first_name{
+    color: #8E6F52;
+}
+
+.last_name{
+    color: #8E6F52;
+}
+
+.description{
+    box-sizing: border-box;
+
+    width: 30%;
+    margin: 10px;
+    margin-left: auto;
+    margin-right: 60px;
+
+    color:#000000;
+}
+
+/* profile_info under 500px */
+@media (max-width: 500px){
+    .profile_info_bar{
+        box-sizing: border-box;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    
+        width: 100%;
+        top: 0%;
+    
+        border: 2px solid #000000;
+        border-top: 1px solid #000000;
+    }
+
+    .profile_image{
+        box-sizing: border-box;
+    
+        width: 100px;
+        height: 100px;
+        margin: 10px;
+    
+        background: #F3C26E;
+        border: 2px solid #000000;
+        border-radius: 50%;
+    }
+
+    .description{
+        box-sizing: border-box;
+        width: 80%;
+        margin: 10px;
+    
+        color:#000000;
+    }
+}
+
+/* user info bar under 200px */
+@media (max-width: 200px){
+    .description{
+        box-sizing: border-box;
+    
+        width: 80%;
+        font-family: 'Alfa Slab One';
+        font-style: normal;
+        font-weight: bold;
+        font-size: 16px;
+        margin: 10px;
+    
+        color:#000000;
+    }
+}
+
+/* Favorite Communities */
+.favorite_communities_bar{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    top: 0%;
+
+    border: 2px solid #000000;
+    border-top: 1px solid #000000;
+}
+
+.favorite_communities_title_bar{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+}
+
+.favorite_communities_title{
+    color: #000000;
+}
+
+.communities_num{
+    color: #000000;
+}
+
+.communities_bar{
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+}
+
+.community{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+}
+
+.community_image{
+    box-sizing: border-box;
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.community_title{
+    margin: 10px;;
+    color: #000000;
+}
+
+/* Favorite Communities under 430px */
+@media (max-width: 430px){
+    .communities_bar{
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    
+        width: 100%;
+    }
+
+    .community{
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0px;
+    }
+}
+
+/* Friends */
+.my_friend_bar{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    top: 0%;
+
+    border: 2px solid #000000;
+    border-top: 1px solid #000000;
+}
+
+.friend_title_bar{
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+}
+
+.friend_title{
+    color: #000000;
+}
+
+.friend_num{
+    color: #000000;
+}
+
+.friend_card_bar{
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+}
+
+.friend_card{
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.friend_avatar{
+    box-sizing: border-box;
+    width: 80px;
+    height: 80px;
+    margin: 10px;
+
+    background: #FFFFFF;
+    border: 2px solid #000000;
+    border-radius: 50%;
+}
+
+.friend_name{
+    margin: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: center;
+
+    color: #000000;
+}
+
+.friend_remove{
+    box-sizing: border-box;
+
+    width: 80px;
+    height: 30px;
+
+    margin: 10px;
+
+    color: #000000;
+
+    background: #FF0000;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.friend_remove:hover{
+    background-color: #3D211A;
+    color: white;
+}
+
+/* Favorite Communities under 430px */
+@media (max-width: 430px){
+    .friend_card_bar{
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    
+        width: 100%;
+    }
+}
+

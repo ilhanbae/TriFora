@@ -1,6 +1,7 @@
 import React from 'react';
 import "../style/RegisterForm.css";
 import { Link, useNavigate} from "react-router-dom";
+import defaultProfileImage from "../assets/defaultProfileImage.png";
 
 export default class RegisterForm extends React.Component {
     constructor(props) {
@@ -12,7 +13,6 @@ export default class RegisterForm extends React.Component {
           phone: "",
           email: "",
           sessiontoken: "",
-          redirect: false,
         };
         this.refreshPostsFromLogin = this.refreshPostsFromLogin.bind(this);
     }
@@ -121,31 +121,20 @@ export default class RegisterForm extends React.Component {
               console.log("Sign up Successful!")
               
               if (result.userID) {
-                // set the auth token and user ID in the session state
-                sessionStorage.setItem("token", result.token);
-                sessionStorage.setItem("user", result.userID);
-                console.log(sessionStorage);
-                
                 this.setState({
                   sessiontoken: result.token,
-                  alanmessage: result.token
                 });
-
-                // call refresh on the posting list
-                this.refreshPostsFromLogin();
+                window.location.href = "/hci/teams/underachievers/login";
     
               } else {
-                // if the login failed, remove any infomation from the session state
-                sessionStorage.removeItem("token");
-                sessionStorage.removeItem("user");
                 this.setState({
                   sessiontoken: "",
-                  alanmessage: result.message
                 });
               }
             },
           error => {
-              alert("error!");
+              //alert("error!");
+              console.log("error!")
             }
           );
         };
@@ -156,14 +145,13 @@ export default class RegisterForm extends React.Component {
     render() {
         return (
             <div className='wrapper'>
-                <div className='inner'>
                   <Link to='/login'>
-                    <button className='base base-back'>
+                    <button className='base register-base-back'>
                       <b className='login-link'>&#8592; Go to Login</b>
                     </button>
                   </Link>
                     {/*<p>Back to Login</p>*/}
-                    <form>
+                    <form className='signup-form'>
                         <h3 className='h3-inner'>Create an Account</h3>
                         
                         {/*
@@ -193,7 +181,6 @@ export default class RegisterForm extends React.Component {
                         </label>
 
                     </form>
-                </div>
             </div>
         )
     }

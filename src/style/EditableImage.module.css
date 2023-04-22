@@ -1,0 +1,84 @@
+/* Container */
+.container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Edit Image Display */
+.edit-image-display {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Edit Image Preview */
+.edit-image-preview {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  border: 2px solid var(--french-bistre);
+}
+.edit-image-preview:hover,
+.edit-image-preview:focus {
+  cursor: pointer;
+  border: 2px solid var(--bistre);
+}
+
+
+/**** Start of Generic Components ****/
+/* Icons */
+.edit-icon::before {
+  cursor: pointer;
+  content: "\270E";
+  text-align: center;
+}
+.save-icon::before {
+  cursor: pointer;
+  content: "\2713";
+  font-weight: bold;
+  text-align: center;
+}
+.cancel-icon::before {
+  cursor: pointer;
+  font-weight: bold;
+  content: "\2715";
+  text-align: center;
+}
+
+/* Button */
+.button {
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+.button__bordered {
+  border: 2px solid var(--bistre);
+  border-radius: 10px;
+}
+.button__filled {
+  background-color: var(--yellow-apricot);
+}
+.button__outlined {
+  outline: 2px solid var(--bistre);;
+}
+.button__danger {
+  background-color: var(--red-orange);
+}
+.button:disabled {
+  background-color: var(--french-bistre);
+  border-color: var(--french-bistre);
+  cursor: not-allowed;
+}
+.button:hover:not([disabled]) {
+  box-shadow: 0 4px 14px 0 rgb(0 0 0 /50%);
+}
+/**** End of Generic Components ****/
