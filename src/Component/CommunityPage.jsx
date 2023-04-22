@@ -119,6 +119,7 @@ export default function CommunityPage(props) {
 there's community name, community background, community icon, and a join button */
 const CommunityBanner = (props) => {
   const [isCommunitySettingModalOpen, setIsCommunitySettingModalOpen] = useState(false);
+  const [isCommunityLeaveModalOpen, setIsCommunityLeaveModalOpen] = useState(false);
 
   // Set community banner background color
   let bannerBackgroundColor = props.communityDetails.attributes.design.bannerBackgroundColor
@@ -134,7 +135,8 @@ const CommunityBanner = (props) => {
   const joinButtonHandler = async () => {
     // Check if user is already a community member
     if (props.userCommunityMemberDetails) {
-      await removeUserFromCommunity();
+      openCommunityLeaveModal()
+      // await removeUserFromCommunity();
     }
     else {
       await addUserToCommunity();
@@ -184,22 +186,44 @@ const CommunityBanner = (props) => {
     setIsCommunitySettingModalOpen(false);
   }
 
+  // This method opens commmunity leave modal
+  const openCommunityLeaveModal = () => {
+    setIsCommunityLeaveModalOpen(true);
+  }
+
+  // This method closes community leave modal
+  const closeCommunityLeaveModal = () => {
+    // props.refreshCommunityDetails();
+    setIsCommunityLeaveModalOpen(false);
+  }
+
+  console.log(bannerBackgroundColor)
+
   return (
     <div className={style["community-banner"]}>
       {/* Community Banner Background */}
-      <div className={style["community-banner-background"]} style={{ backgroundColor: bannerBackgroundColor }}></div>
+      {/* Background Color Layer */}
+      <div
+        className={style["community-banner-background"]}
+        style={{ backgroundColor: bannerBackgroundColor }}
+      >
+        {/* Background Image Layer */}
+        {/* <div
+          className={style["community-banner-background-image"]}
+          style={{ backgroundImage: `url(${defaultCommunityImage})` }}
+        >
+        </div> */}
+      </div>
 
       {/* Commnity Banner Content*/}
-      <div
-        className={style["community-banner-content"]}
-      >
+      <div className={style["community-banner-content"]}>
         {/* Community Banner Content Left */}
         <div className={style["community-banner-content-left"]}>
           {/* Community Avatar Image */}
           <img
             className={`${style["image"]} ${style["image__sm"]} ${style["image__square"]}`}
             src={props.communityDetails.attributes.design.bannerProfileImage}
-            alt="Community background"
+            alt="Community avatar"
             onError={(e) => (e.currentTarget.src = defaultCommunityImage)}
           />
           {/* Community Info */}
@@ -215,18 +239,9 @@ const CommunityBanner = (props) => {
 
         {/* Community Banner Content Right */}
         <div className={style["community-banner-content-right"]}>
-          {/* Notification Button */}
-          {/* {isUserJoined && (
-            <button
-              className={`${style["button"]} ${style["button__bordered"]}`}
-            >
-              Notfication
-            </button>
-          )} */}
-
           {/* Setting Button */}
           {(isUserAdmin || isUserMod) && (
-            <button 
+            <button
               className={`${style["button"]} ${style["button__bordered"]}`}
               onClick={openCommunityPageSettingModal}
             >
@@ -243,7 +258,7 @@ const CommunityBanner = (props) => {
           </button>
         </div>
       </div>
-      
+
       {/* Community Page Setting Modal*/}
       <Modal
         show={isCommunitySettingModalOpen}
@@ -261,7 +276,35 @@ const CommunityBanner = (props) => {
         />
       </Modal>
 
-
+      {/* Community Leave Modal */}
+      <Modal
+        show={isCommunityLeaveModalOpen}
+        onClose={closeCommunityLeaveModal}
+        modalStyle={{
+          width: "30%",
+          height: "30%",
+        }}
+      >
+        <div className={style["community-leave-modal"]}>
+          <span className={style["community-leave-modal-headline"]}>
+            Leave?
+          </span>
+          <div className={style["community-leave-modal-buttons"]}>
+            <button
+              className={`${style["button"]} ${style["button__bordered"]} ${style["button__danger"]}`}
+              onClick={() => removeUserFromCommunity()}
+            >
+              Yes
+            </button>
+            <button
+              className={`${style["button"]} ${style["button__bordered"]}`}
+              onClick={() => closeCommunityLeaveModal()}
+            >
+              No
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
@@ -381,20 +424,48 @@ const CommunityContentDisplay = (props) => {
 and number of members. Each stat also serves as a navigation tab between CommunityPostsList 
 and CommunityMembersList */
 const CommunityStats = (props) => {
+  const [isCommunityPostsTabActive, setIsCommunityPostsTabActive] = useState(true);
+  const [isCommunityMembersTabActive, setIsCommunityMembersTabActive] = useState(false);
+
+  /* This method handles posts tab click action */
+  const communityPostsTabHandler = () => {
+    setIsCommunityMembersTabActive(false);
+    setIsCommunityPostsTabActive(true);
+    props.postContentDisplayHandler("posts");
+  }
+  // Change the style
+  const communityPostsTabStyle = isCommunityPostsTabActive
+    ? "community-stats-tab__active"
+    : "community-stats-tab"; 
+
+  /* This method handles members tab click action */
+  const communityMembersTabHandler = () => {
+    setIsCommunityPostsTabActive(false);
+    setIsCommunityMembersTabActive(true);
+    props.postContentDisplayHandler("members");
+  }
+  // Change the style
+  const communityMembersTabStyle = isCommunityMembersTabActive
+    ? "community-stats-tab__active"
+    : "community-stats-tab"; 
+
+
   return (
     <div className={style["community-stats"]}>
+      {/* Posts Tab */}
       <div
-        className={style["community-stats-tab"]}
-        onClick={() => props.postContentDisplayHandler("posts")}
+        className={style[communityPostsTabStyle]}
+        onClick={communityPostsTabHandler}
       >
         <span className={style["active-text"]}>
           {props.communityPostCounts}
         </span>
         <span className={style["inactive-text"]}>Posts</span>
       </div>
+      {/* Members Tab */}
       <div
-        className={style["community-stats-tab"]}
-        onClick={() => props.postContentDisplayHandler("members")}
+        className={style[communityMembersTabStyle]}
+        onClick={communityMembersTabHandler}
       >
         <span className={style["active-text"]}>
           {props.communityMemberCounts}
@@ -414,6 +485,13 @@ const CommunityPostsList = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [communityPostAuthorRoles, setCommunityPostAuthorRoles] = useState({});
+
+  // Check current user's community role & post author's role
+  const isUserAdmin = props.userCommunityMemberDetails?.attributes.role === "admin";
+  const isUserMod = props.userCommunityMemberDetails?.attributes.role === "mod";
+  const isUserVisiter = props.userCommunityMemberDetails == null;
+
+  console.log(`Is user visiter? ${isUserVisiter}`)
 
   // Fetch both posts and members when the component is loaded.
   useEffect(() => {
@@ -463,7 +541,14 @@ const CommunityPostsList = (props) => {
     if (errorMessage) {
       setErrorMessage(errorMessage);
     } else {
-      setPosts(data[0]);
+      console.log(data[0])
+      if (isUserVisiter) {
+        // Only show public posts
+        setPosts(data[0].filter(post => post.attributes.public))
+      } else {
+        // Show both public + private posts
+        setPosts(data[0]);
+      }
       props.updateCommunityPostCounts(data[1]);
     }
     setIsLoaded(true);
@@ -1348,15 +1433,23 @@ const AssignRoleSidemenu = (props) => {
       <div className={style["nested-action-sidemenu"]} ref={props.assignRoleSidemenuRef}>
         <ul className={style["action-sidemenu-option-list"]}>
           {/* Assign Member Role */}
-          <li className={style["action-sidemenu-option"]} onClick={() => memberRoleOptionHandler('member')}>
-            <span className={`${style["square-icon"]} ${style["square-icon__french-bistre"]}`}></span>
-            <span className={style["active-text"]}>Member</span>
-          </li>
+          {currentMemberRole === "mod" && (
+            <div>
+              <li className={style["action-sidemenu-option"]} onClick={() => memberRoleOptionHandler('member')}>
+                <span className={`${style["square-icon"]} ${style["square-icon__french-bistre"]}`}></span>
+                <span className={style["active-text"]}>Member</span>
+              </li>
+            </div>
+          )}
           {/* Assign Mod Role */}
-          <li className={style["action-sidemenu-option"]} onClick={() => memberRoleOptionHandler('mod')}>
-            <span className={`${style["square-icon"]} ${style["square-icon__french-bistre"]}`}></span>
-            <span className={style["active-text"]}>Mod</span>
-          </li>
+          {currentMemberRole === "member" && (
+            <div>
+              <li className={style["action-sidemenu-option"]} onClick={() => memberRoleOptionHandler('mod')}>
+                <span className={`${style["square-icon"]} ${style["square-icon__french-bistre"]}`}></span>
+                <span className={style["active-text"]}>Mod</span>
+              </li>
+            </div>
+          )}
         </ul>
       </div>
     );
@@ -1398,7 +1491,9 @@ const Pagination = (props) => {
       )}
 
       {/* Current Page Number */}
-      <span className={style["page-number"]}>{currentPage}</span>
+      <span className={style["page-number"]}>
+        {lastPage !== 1 ? currentPage : ""}
+      </span>
 
       {/* Next Button */}
       {currentPage < lastPage && (
