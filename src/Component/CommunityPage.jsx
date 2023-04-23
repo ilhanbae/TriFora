@@ -555,6 +555,7 @@ const CommunityPost = (props) => {
 
   /* This method will close the Profile pop up Window */
   const toggleProfile = (e) => {
+    props.refreshPosts(); // Refresh posts on post page modal close
     setIsProfileModalOpen(false);
   }
 
