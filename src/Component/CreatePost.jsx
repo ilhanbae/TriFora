@@ -19,7 +19,7 @@ export default class CreatePost extends React.Component {
     }
 
     /* Handler for making a post will go here (controller api) */
-    submitHandler = event => {
+    submitHandler = async event => {
 
         // keep the form from actually submitting via HTML - we want to handle it in react
         event.preventDefault();
@@ -43,7 +43,8 @@ export default class CreatePost extends React.Component {
             if (this.state.postImages.length > 0) {
                 console.log("in if statement")
                 // loop through user images if they exist
-                this.state.postImages.forEach(async userImage => {
+                // this.state.postImages.forEach(async userImage => {
+                for (const userImage of this.state.postImages) {
                     console.log("in loop statement")
                     const formDataParams = { // set up form data params for image upload
                         uploaderID: this.state.currentUser,
@@ -67,8 +68,8 @@ export default class CreatePost extends React.Component {
                         imageUrlArray.push(postImageLink)
                         console.log(imageUrlArray.length)
                     }
-                });
-                console.log("in if statement")
+                };//);
+                console.log("end of if statement")
                 // if the above throws an error the fetch below would be undefined
             }
 
@@ -85,14 +86,14 @@ export default class CreatePost extends React.Component {
                 },
                 body: JSON.stringify({
                     authorID: this.state.currentUser,
-                    // recipientGroupID: 25, // 25 is a placeholder for now until we know how our communities are working
-                    recipientGroupID: this.props.communityId,
+                    recipientGroupID: 25, // 25 is a placeholder for now until we know how our communities are working
+                    // recipientGroupID: this.props.communityId,
                     content: this.state.postContent, // if post description can be empty this is just going to have to store an empty string and be tested for post page side I think
                     attributes: {
                         title: this.state.postTitle,
                         public: true, // all post are public for now?
                         // need to handle images here
-                        images: JSON.stringify({ imageUrlArray })
+                        images: imageUrlArray//JSON.stringify( imageUrlArray )
                     }
                 })
             })
