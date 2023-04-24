@@ -31,38 +31,40 @@ class NavAchiever extends React.Component {
 
     // This function will get the user image
     render_user_icon = () => {
-        // fetch the user data, and extract out the attributes to load and display
-        fetch(process.env.REACT_APP_API_PATH + "/users/" + sessionStorage.getItem("user"), {
-        method: "get",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-        }
-        })
-        .then(res => res.json())
-        .then(
-            result => {
-            if (result) {
-                console.log(result);
-                if (result.attributes){
-                    this.setState({
-                    // IMPORTANT!  You need to guard against any of these values being null.  If they are, it will
-                    // try and make the form component uncontrolled, which plays havoc with react
-                    profile_icon: result.attributes.profile.profileImage || "",
-                    });
-                // Check if the profileImage is the default value, it is default value set to default image
-                if (result.attributes.profile.profileImage === ""){
-                    this.setState({
-                        profile_icon: defaultProfileImage
-                    })
+        if (sessionStorage.getItem("user")){
+            // fetch the user data, and extract out the attributes to load and display
+            fetch(process.env.REACT_APP_API_PATH + "/users/" + sessionStorage.getItem("user"), {
+            method: "get",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+            }
+            })
+            .then(res => res.json())
+            .then(
+                result => {
+                if (result) {
+                    console.log(result);
+                    if (result.attributes){
+                        this.setState({
+                        // IMPORTANT!  You need to guard against any of these values being null.  If they are, it will
+                        // try and make the form component uncontrolled, which plays havoc with react
+                        profile_icon: result.attributes.profile.profileImage || "",
+                        });
+                    // Check if the profileImage is the default value, it is default value set to default image
+                    if (result.attributes.profile.profileImage === ""){
+                        this.setState({
+                            profile_icon: defaultProfileImage
+                        })
+                    }
                 }
-            }
-            }
-            },
-            error => {
-            //alert("error!");
-            }
-        );
+                }
+                },
+                error => {
+                //alert("error!");
+                }
+            );
+        }
     }
     /* ------ Add Component in Nav ------ */
 

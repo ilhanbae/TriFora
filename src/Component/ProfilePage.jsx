@@ -120,6 +120,7 @@ export default class ProfilePage extends React.Component {
                     this.setState({
                         community_list: result[0]
                     });
+                    console.log(this.state.community_list)
                     console.log("Got communities");
                 }
                 },

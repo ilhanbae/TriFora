@@ -6,6 +6,7 @@ import uploadFile from "../helper/uploadFile";
 import genericPatch from "../helper/genericPatch";
 import validateUserProfileFields from "../helper/validateUserProfileFields";
 import style from "../style/EditProfilePage.module.css"
+import { isNonNullChain } from "typescript";
 
 export default function EditProfile(prop) {
   const [errorMessage, setErrorMessage] = useState(null);
@@ -93,7 +94,7 @@ const ProfileMain = (prop) => {
 
 /* User Profile */
 const UserProfileForm = (prop) => {
-  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarFile, setAvatarFile] = useState(prop.user.attributes.profile.profileImage);
   const [avatarLink, setAvatarLink] = useState(prop.user.attributes.profile.profileImage);
   const [username, setUsername] = useState(prop.user.attributes.profile.username);
   const [firstname, setFirstname] = useState(prop.user.attributes.profile.firstName);
@@ -102,11 +103,14 @@ const UserProfileForm = (prop) => {
 
   // Perform user profile form submission.
   const userProfileFormSubmitHandler = async () => {
-    let serverAvaterLink = "";
+    let serverAvaterLink = avatarLink;
 
-    // 1. Upload image to the server first, to get a static link for avatar
-    // console.log(serverAvaterLink)
-    serverAvaterLink = await uploadUserAvatar(serverAvaterLink)
+    // If the 'avatarFile' is not the same as 'avatarLink', this means user does not upload a new image, keep the old image
+    if (avatarFile !== avatarLink){
+      // 1. Upload image to the server first, to get a static link for avatar
+      // console.log(serverAvaterLink)
+      serverAvaterLink = await uploadUserAvatar(serverAvaterLink)
+    }
     
     // 2. Update user profile using the based on the form data fields, including
     // serverAvatarLink
