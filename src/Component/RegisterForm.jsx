@@ -181,10 +181,10 @@ export default class RegisterForm extends React.Component {
                             <input type="text" placeholder='Email' className='input-stuff' onChange={this.emailHandler}/>
                         </label>
                         <label className='input'>
-                            <input type="text" placeholder='Password' className='input-stuff password' onChange={this.passwordHandler}/>
+                            <input type="password" placeholder='Password' className='input-stuff password' onChange={this.passwordHandler}/>
                         </label>
                         <label className='input'>
-                            <input type="text" placeholder='Confirm Password' className='input-stuff password' onChange={this.confirm_passwordHandler}/>
+                            <input type="password" placeholder='Confirm Password' className='input-stuff password' onChange={this.confirm_passwordHandler}/>
                         </label>
                         <label className='input'>
                             <input type="text" placeholder="Username" className='input-stuff' onChange={this.usernameHandler}/>
