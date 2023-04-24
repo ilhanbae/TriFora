@@ -1,0 +1,83 @@
+/* Toast */
+.toast {
+  background-color: var(--light-yellow);
+  /* width: 20%; */
+  /* height: 20%; */
+  width: fit-content;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  /* margin: 10px; */
+  visibility: visible;
+  box-shadow: 0 4px 14px 0 rgb(0 0 0 /50%);
+  animation: toast-slide .3s;
+}
+
+/* Toast Types */
+.error {
+  background-color: var(--red-orange);
+  color: var(--light-yellow);
+  border: 2px solid var(--light-yellow);
+}
+.success {
+  background-color: var(--skobeloff);
+  color: var(--light-yellow);
+  border: 2px solid var(--light-yellow);
+}
+.info {
+  background-color: var(--light-periwinkle);
+  color: var(--bistre);
+  border: 2px solid var(--bistre);
+}
+
+/* Toast Header */
+.toast-header {
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
+  /* background-color: red; */
+}
+
+/* Toast Title */
+.toast-title {
+  font-family: 'Alfa Slab One', cursive;
+  font-size: 1.313rem;
+  letter-spacing: 0.1px;
+  font-weight: 300;
+  text-transform: uppercase;
+  /* text-decoration: underline overline; */
+}
+
+/* Toast Content */
+.toast-content {
+  flex: 1;
+  display: flex;
+  /* align-items: center; */
+  /* justify-content: center; */
+  overflow: auto;
+  /* background-color: green; */
+}
+
+/* Close Button */
+.close {
+  margin-left: auto;
+  font-size: 35px;
+  font-weight: bold;
+}
+.close:hover,
+.close:focus {
+  mix-blend-mode: difference;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Animation */
+@keyframes toast-slide {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}

@@ -1,3 +1,16 @@
+/* Typography */
+.inactive-text {
+  display: block;
+  color: var(--french-bistre);
+}
+.active-text {
+  display: block;
+  color: var(--bistre);
+}
+.bold {
+  font-weight: bold;
+}
+
 /* Container */
 .container {
   width: 100%;
@@ -9,11 +22,12 @@
   /* border: 2px solid var(--bistre); */
 }
 
-
 /* Sections */
 .edit-community-section-body,
 .delete-commmunity-section-body {
+  gap: 30px;
   display: flex;
+  /* flex-direction: column; */
   justify-content: space-between;
   align-items: flex-start;
 }
@@ -21,7 +35,7 @@
 /* Section Title */
 .section-title {
   font-family: 'Alfa Slab One', cursive;
-
+  color: var(--french-bistre);
 }
 
 /* Responsive */
@@ -34,7 +48,6 @@
     gap: 10px
   }
 }
-
 
 /**** Start of Generic Components ****/
 /* Icons */

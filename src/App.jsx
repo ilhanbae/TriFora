@@ -1,7 +1,7 @@
 /* This is our starting point of our application. This is the level that will handle
 the routing of requests, and also the one that will manage communication between sibling
 components at a lower level. */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import NavAchiever from "./Component/NavAchiever";
@@ -14,10 +14,13 @@ import CommunityPage from "./Component/CommunityPage";
 import CreatePost from "./Component/CreatePost";
 import Homepage from "./Component/Homepage";
 import Notification from "./Component/Notification";
+import Toast from "./Component/Toast";
+import ToastList from "./Component/ToastList";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [navStyle, setNavStyle] = useState(2);
+  const [toastList, setToastList] = useState([]);
 
   /* This method changes nav style */
   const navSwitch = (headerStyle) => {
@@ -41,6 +44,18 @@ export default function App() {
     setIsLoggedIn(true);
   }
 
+  /* This method opens a new toast by adding it to the toast list. */
+  const openToast = ({type, message, duration}) => {
+    setToastList([...toastList, {id: Date.now(), type, message, duration}])
+  }
+
+  /* This method closes a particular toast by removing it from the toast list. */
+  const closeToast = (toastIndex) => {
+    setToastList((prevToastList) =>
+      prevToastList.filter((toast, index) => toast.id !== toastIndex)
+    );
+  }
+
   return (
     /* The app is wrapped in a router component, that will render the appropriate
     content based on the URL path. Since this is a single page app, it allows some
@@ -58,14 +73,15 @@ export default function App() {
               <Route path="/login" element={<LoginOrProfile login={login} />} />
               <Route path="/profile/:profileId" element={<ProfilePage />} />
               <Route path="/edit-profile" element={<EditProfilePage />} />
-              <Route path="/community/:communityId" element={<CommunityPage />} />
+              <Route path="/community/:communityId" element={<CommunityPage openToast={openToast} />} />
               <Route path="/create-post" element={<CreatePost />} />
               <Route path="/notification" element={<Notification />} />
               <Route path="/" element={<LoginOrProfile login={login} />} />
             </Routes>
           </div>
         </header>
-
+        {/* Toast List */}
+        <ToastList toastList={toastList} closeToast={closeToast}></ToastList>
       </div>
     </Router>
   );

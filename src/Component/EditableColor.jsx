@@ -20,13 +20,13 @@ export default function EditableColor(props) {
     colorPickerRef.current.click();
   }
 
-  /* This method updates edit text state. */
+  /* This method updates edit color state. */
   const editButtonHandler = () => {
     setIsEditColor(true);
     // colorPickerRef.current.click();
   }
 
-  /* This method updates edit text state. */
+  /* This method updates edit color state. */
   const cancelButtonHandler = () => {
     setIsEditColor(false);
     setNewColor(originalColor);
@@ -65,7 +65,7 @@ export default function EditableColor(props) {
             type="color"
             value={newColor}
             onChange={colorInputChangeHandler}
-            style={{ visibility: "hidden" }}
+            style={{ visibility: "hidden", width: "0", height: "0", margin: "-3px" }}
             // style={{ display: "none" }}
             ref={colorPickerRef}
           />

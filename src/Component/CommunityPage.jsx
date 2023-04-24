@@ -108,6 +108,7 @@ export default function CommunityPage(props) {
             communityId={communityId}
             userCommunityMemberDetails={userCommunityMemberDetails}
             refreshCommunityDetails={refreshCommunityDetails}
+            openToast={props.openToast}
           />
         </div>
       </div>
@@ -197,8 +198,6 @@ const CommunityBanner = (props) => {
     setIsCommunityLeaveModalOpen(false);
   }
 
-  console.log(bannerBackgroundColor)
-
   return (
     <div className={style["community-banner"]}>
       {/* Community Banner Background */}
@@ -229,7 +228,7 @@ const CommunityBanner = (props) => {
           {/* Community Info */}
           <div className={style["community-info"]}>
             {/* Community Name */}
-            <h2>{props.communityDetails.name}</h2>
+            <h2 className={style["community-name"]}>{props.communityDetails.name}</h2>
             {/* Community Created Date */}
             <span className={style["inactive-text"]}>
               Since February 19th, 2023
@@ -265,8 +264,10 @@ const CommunityBanner = (props) => {
         onClose={closeCommunityPageSettingModal}
         modalTitle="Community Setting"
         modalStyle={{
-          width: "80%",
-          height: "60%",
+          width: "fit-content",
+          blockSize: "fit-content",
+          // width: "50%",
+          // height: "60%",
         }}
       >
         <CommunityPageSetting
@@ -287,7 +288,7 @@ const CommunityBanner = (props) => {
       >
         <div className={style["community-leave-modal"]}>
           <span className={style["community-leave-modal-headline"]}>
-            Leave?
+            Leave Community?
           </span>
           <div className={style["community-leave-modal-buttons"]}>
             <button
@@ -297,7 +298,7 @@ const CommunityBanner = (props) => {
               Yes
             </button>
             <button
-              className={`${style["button"]} ${style["button__bordered"]}`}
+              className={`${style["button"]} ${style["button__bordered"]} ${style["button__filled"]}`}
               onClick={() => closeCommunityLeaveModal()}
             >
               No
@@ -374,6 +375,7 @@ const CommunityContentDisplay = (props) => {
             userCommunityMemberDetails={props.userCommunityMemberDetails}
             refreshCommunityDetails={props.refreshCommunityDetails}
             communityId={props.communityId}
+            openToast={props.openToast}
           />
           {/* Commmunity Posts List */}
           <CommunityPostsList
@@ -383,6 +385,7 @@ const CommunityContentDisplay = (props) => {
             updateCommunityMemberCounts={updateCommunityMemberCounts}
             communityPostSkipOffset={communityPostSkipOffset}
             communityPostTakeCount={communityPostTakeCount}
+            openToast={props.openToast}
           />
           {/* Pagination */}
           <Pagination
@@ -407,6 +410,7 @@ const CommunityContentDisplay = (props) => {
             updateCommunityMemberCounts={updateCommunityMemberCounts}
             communityMemberSkipOffset={communityMemberSkipOffset}
             communityMemberTakeCount={communityMembersCount}
+            openToast={props.openToast}
           />
           {/* Pagination */}
           <Pagination
@@ -449,7 +453,6 @@ const CommunityStats = (props) => {
     ? "community-stats-tab__active"
     : "community-stats-tab"; 
 
-
   return (
     <div className={style["community-stats"]}>
       {/* Posts Tab */}
@@ -490,8 +493,6 @@ const CommunityPostsList = (props) => {
   const isUserAdmin = props.userCommunityMemberDetails?.attributes.role === "admin";
   const isUserMod = props.userCommunityMemberDetails?.attributes.role === "mod";
   const isUserVisiter = props.userCommunityMemberDetails == null;
-
-  console.log(`Is user visiter? ${isUserVisiter}`)
 
   // Fetch both posts and members when the component is loaded.
   useEffect(() => {
@@ -541,7 +542,7 @@ const CommunityPostsList = (props) => {
     if (errorMessage) {
       setErrorMessage(errorMessage);
     } else {
-      console.log(data[0])
+      // console.log(data[0])
       if (isUserVisiter) {
         // Only show public posts
         setPosts(data[0].filter(post => post.attributes.public))
@@ -582,6 +583,7 @@ const CommunityPostsList = (props) => {
                 refreshPosts={refreshPosts}
                 userCommunityMemberDetails={props.userCommunityMemberDetails}
                 communityPostAuthorRoles={communityPostAuthorRoles}
+                openToast={props.openToast}
               />
             ))}
           </div>
@@ -679,6 +681,7 @@ const CommunityPost = (props) => {
       alert(errorMessage);
     }
     // Call refreshPosts method tell its parent component - CommunityPostList to refresh the post list
+    props.openToast({type: "success", message: "Post Deleted Successfully!"})
     props.refreshPosts();
   };
 
@@ -810,6 +813,7 @@ const CommunityPost = (props) => {
           post_id={props.post.id}
           refreshPosts={props.refreshPosts}
           closePostPageModal={closePostPageModal}
+          openToast={props.openToast}
         />
       </Modal>
     </div>
@@ -820,7 +824,6 @@ const CommunityPost = (props) => {
 const PostControlTool = (props) => {
   const [isPostSortActive, setIsPostSortActive] = useState(false);
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
-  
 
   // Toggles between post sort active and inactive
   const sortButtonToggleHandler = () => {
@@ -830,8 +833,11 @@ const PostControlTool = (props) => {
   /* This method opens create post page modal */
   const openCreatePostPageModal = () => {
     setIsCreatePostModalOpen(true)
+    // props.openToast({type: "info", message: "Join the community first!"})
+    // props.openToast({type: "success", message: "Successfully Created the Post!"})
+    // props.openToast({type: "error", message: <div>Server error, please contact <Link to="neil.html">developers</Link></div>, duration: null})
   }
-
+  
   /* This method closes create post page modal */
   const closeCreatePostPageModal = () => {
     props.refreshCommunityDetails(); // Refresh the community details on post page modal close
@@ -880,6 +886,7 @@ const PostControlTool = (props) => {
           communityId={props.communityId}
           refreshCommunityDetails={props.refreshCommunityDetails}
           closeCreatePostPageModal={closeCreatePostPageModal}
+          openToast={props.openToast}
         />
       </Modal>
     </div>
@@ -1170,7 +1177,6 @@ const CommunityMember = (props) => {
       <div 
         className={style["community-member__clickable-area"]}
         onClick={openMemberPage}
-        on
       >
         {/* Community Member Profile Avatar */}
         <img

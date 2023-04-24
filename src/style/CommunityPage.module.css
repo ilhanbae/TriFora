@@ -214,16 +214,17 @@
   gap: 10px
 }
 .community-info {
-  /* border: 1px solid var(--bistre); */
   /* width: 370px; */
-  max-width: calc(80% - 30px);
+  /* max-width: calc(80% - 30px); */
+  max-width: calc(100%);
   padding: 0 10px;
-  white-space: nowrap;
 }
 .community-name {
-  white-space: nowrap;
+  line-height: 1em;
+  /* white-space: nowrap; */
   overflow: hidden;
   text-overflow: ellipsis;
+  overflow-wrap: break-word;
 }
 
 /* Main section */
@@ -514,10 +515,6 @@
   }
   .main-section {
    margin: 0 1%; 
-  }
-  /* Community Info */
-  .community-info {
-    padding: 0;
   }
   /* Banner Buttons */
   .community-banner-content-right {
