@@ -13,6 +13,7 @@ import style from "../style/CommunityPage.module.css";
 import defaultProfileImage from "../assets/defaultProfileImage.png";
 import defaultPostImage from "../assets/defaultPostImage.png";
 import defaultCommunityImage from "../assets/defaultCommunityImage.png";
+import ProfilePage from "./ProfilePage";
 
 /* This component renders a single community page. Inside the community page, 
 there are posts tab and members tab. */
@@ -518,7 +519,7 @@ const CommunityPostsList = (props) => {
   // such as pinning, hiding, reporting, or deleting. It can also be passed on to Pagination
   // component with skip and take query.
   const refreshPosts = () => {
-    // console.log("refreshing posts");
+    console.log("refreshing posts");
     loadPosts(); // Fetch the posts again
   };
 
@@ -592,6 +593,7 @@ const CommunityPost = (props) => {
   const [isPostHidden, setIsPostHidden] = useState(false);
   const [isPostReported, setIsPostReported] = useState(false);
   const [isCommunityPostModalOpen, setIsCommunityPostModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const postActionSidemenuRef = useRef(null); // Create a ref for post action sidemenu component
 
   /* This hook check if mousedown DOM event occurs outside a post action sidemenu.  */
@@ -622,6 +624,18 @@ const CommunityPost = (props) => {
   const closePostPageModal = () => {
     props.refreshPosts(); // Refresh posts on post page modal close
     setIsCommunityPostModalOpen(true);
+  }
+
+  /* This method will open the Profile pop up Window */
+  const openProfilePage = (e) => {
+    e.stopPropagation();
+    setIsProfileModalOpen(true);
+  }
+
+  /* This method will close the Profile pop up Window */
+  const toggleProfile = (e) => {
+    props.refreshPosts(); // Refresh posts on post page modal close
+    setIsProfileModalOpen(false);
   }
 
   // Check post author's role
@@ -705,7 +719,7 @@ const CommunityPost = (props) => {
             <div className={style["post-author-date"]}>
               <div className={style["post-author"]}>
                 <span className={style["inactive-text"]}>Posted By</span>
-                <Link to={`/profile/${props.post.author.id}`}>
+                <Link onClick={openProfilePage}>
                   <p
                     className={`${style["active-text"]} ${style["post-author__link"]}`}
                   >
@@ -812,6 +826,22 @@ const CommunityPost = (props) => {
           refreshPosts={props.refreshPosts}
           closePostPageModal={closePostPageModal}
         />
+      </Modal>
+
+      {/* Profile Page Modal */}
+      <Modal
+        show={isProfileModalOpen}
+        onClose={toggleProfile}
+        modalStyle={{
+        width: "90%",
+        height: "90%",
+        }}
+      >
+          <ProfilePage 
+              profile_id={props.post.author.id}
+              toggleProfile={toggleProfile}
+              closePostPageModal={closePostPageModal}
+          />
       </Modal>
     </div>
   );
@@ -1094,6 +1124,7 @@ username, role, etc. */
 const CommunityMember = (props) => {
   const [isMemberActionActive, setIsMemberActionActive] = useState(false);
   const [isMemberReported, setIsMemberReported] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const memberActionSidemenuRef = useRef(null); // Create a ref for memver action sidemenu component
   const navigate = useNavigate(); // For navigation
 
@@ -1165,12 +1196,22 @@ const CommunityMember = (props) => {
     navigate(`/profile/${props.member.user.id}`); // navigate to member profile
   }
 
+  /* This method will open the Profile pop up Window */
+  const openProfilePage = (e) => {
+    setIsProfileModalOpen(true);
+  }
+
+  /* This method will close the Profile pop up Window */
+  const toggleProfile = (e) => {
+    setIsProfileModalOpen(false);
+  }
+
 
   return (
     <div className={commmunityMemberStyle}>
       <div 
         className={style["community-member__clickable-area"]}
-        onClick={openMemberPage}
+        onClick={openProfilePage}
         on
       >
         {/* Community Member Profile Avatar */}
@@ -1221,6 +1262,21 @@ const CommunityMember = (props) => {
           memberActionSidemenuRef={memberActionSidemenuRef}
         />
       </div>
+
+      {/* Profile Page Modal */}
+      <Modal
+        show={isProfileModalOpen}
+        onClose={toggleProfile}
+        modalStyle={{
+        width: "90%",
+        height: "90%",
+        }}
+      >
+        <ProfilePage 
+            profile_id={props.member.user.id}
+            toggleProfile={toggleProfile}
+        />
+      </Modal>
     </div>
   );
 };

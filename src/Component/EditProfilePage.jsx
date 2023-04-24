@@ -6,8 +6,9 @@ import uploadFile from "../helper/uploadFile";
 import genericPatch from "../helper/genericPatch";
 import validateUserProfileFields from "../helper/validateUserProfileFields";
 import style from "../style/EditProfilePage.module.css"
+import { isNonNullChain } from "typescript";
 
-export default function EditProfile() {
+export default function EditProfile(prop) {
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoaded, setIsLoaded] = useState("false");
   const [user, setUser] = useState(null);
@@ -39,7 +40,11 @@ export default function EditProfile() {
       return (
         <div className={style["container"]}>
           {/* <ProfileHeader username={user.username} /> */}
-          <ProfileMain user={user} />
+          <ProfileMain 
+          user={user} 
+          render_user={prop.render_user} 
+          toggleProfile={prop.toggleProfile}
+          />
         </div>
       );
     }
@@ -51,6 +56,8 @@ const ProfileHeader = (prop) => {
   // Save button nav action
   const saveActionHandler = () => {
     prop.userProfileFormSubmitHandler();
+    prop.render_user(prop.user_id);
+    prop.toggleProfile();
   };
 
   return (
@@ -62,9 +69,11 @@ const ProfileHeader = (prop) => {
         <button className={style["button"]} onClick={saveActionHandler}>
           Save
         </button>
+        {/*
         <Link to={`/profile/${sessionStorage.getItem("user")}`}>
           <button className={style["button"]}>Close</button>
         </Link>
+        */}
       </div>
     </div>
   );
@@ -74,14 +83,18 @@ const ProfileHeader = (prop) => {
 const ProfileMain = (prop) => {
   return (
     <div className={style["profile-main"]}>
-      <UserProfileForm user={prop.user} />
+      <UserProfileForm 
+      user={prop.user} 
+      render_user={prop.render_user} 
+      toggleProfile={prop.toggleProfile}
+      />
     </div>
   );
 };
 
 /* User Profile */
 const UserProfileForm = (prop) => {
-  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarFile, setAvatarFile] = useState(prop.user.attributes.profile.profileImage);
   const [avatarLink, setAvatarLink] = useState(prop.user.attributes.profile.profileImage);
   const [username, setUsername] = useState(prop.user.attributes.profile.username);
   const [firstname, setFirstname] = useState(prop.user.attributes.profile.firstName);
@@ -90,11 +103,14 @@ const UserProfileForm = (prop) => {
 
   // Perform user profile form submission.
   const userProfileFormSubmitHandler = async () => {
-    let serverAvaterLink = "";
+    let serverAvaterLink = avatarLink;
 
-    // 1. Upload image to the server first, to get a static link for avatar
-    // console.log(serverAvaterLink)
-    serverAvaterLink = await uploadUserAvatar(serverAvaterLink)
+    // If the 'avatarFile' is not the same as 'avatarLink', this means user does not upload a new image, keep the old image
+    if (avatarFile !== avatarLink){
+      // 1. Upload image to the server first, to get a static link for avatar
+      // console.log(serverAvaterLink)
+      serverAvaterLink = await uploadUserAvatar(serverAvaterLink)
+    }
     
     // 2. Update user profile using the based on the form data fields, including
     // serverAvatarLink
@@ -207,6 +223,9 @@ const UserProfileForm = (prop) => {
       <ProfileHeader
         username={prop.user.attributes.profile.username}
         userProfileFormSubmitHandler={userProfileFormSubmitHandler}
+        render_user={prop.render_user}
+        user_id={prop.user.id}
+        toggleProfile={prop.toggleProfile}
       />
 
       {/* Main Form */}
@@ -223,7 +242,7 @@ const UserProfileForm = (prop) => {
             type="file"
             onChange={avatarSelectHandler}
           />
-          <label htmlFor="profile-avatar-upload-input" className={style["button"] + " " + style["bold"]}>
+          <label htmlFor={style["profile-avatar-upload-input"]} className={style["button"] + " " + style["bold"]}>
             Upload
           </label>
         </div>

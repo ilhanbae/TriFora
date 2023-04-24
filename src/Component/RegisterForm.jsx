@@ -13,8 +13,35 @@ export default class RegisterForm extends React.Component {
           phone: "",
           email: "",
           sessiontoken: "",
+
+          defaultProfileImage_path: "", 
         };
         this.refreshPostsFromLogin = this.refreshPostsFromLogin.bind(this);
+    }
+
+    componentDidMount(){
+      this.get_defaultProfileImage_path()
+    }
+
+    get_defaultProfileImage_path(){
+      // make an api call to get the default-image path
+      fetch(process.env.REACT_APP_API_PATH+"/file-uploads/296", {
+        method: "GET",
+        headers: {
+        },
+      })
+      .then(res => res.json())
+      .then(result => {
+        console.log(result)
+        console.log(result.path)
+        this.setState({
+          defaultProfileImage_path: process.env.REACT_APP_DOMAIN_PATH + result.path, 
+        })
+      },
+      error => {
+        //alert("error!");
+        console.log("error when upload user image!")
+      }) 
     }
 
     // once a user has successfully logged in, we want to refresh the post
@@ -75,14 +102,6 @@ export default class RegisterForm extends React.Component {
         } else if (this.state.password.length < 6 || this.state.password.length > 20){
           alert("Password must between 6 to 20 characters!");
 
-        // Check if the phone number length is correct
-        //} else if (this.state.phone.length === 0){
-        //  alert("Phone number can't be empty!");
-
-        // Check if the phone number contains any letters
-        //} else if (/[a-zA-Z]/g.test(this.state.phone) === true){
-        //  alert("Phone number can only contains digits!")
-
         // Check if the email length is correct
         } else if (this.state.email.length === 0){
           alert("Email can't be empty!");
@@ -94,7 +113,7 @@ export default class RegisterForm extends React.Component {
         } else {
           //keep the form from actually submitting
           event.preventDefault();
-          //make the api call to the authentication page
+          //make the api call to signup a user
           fetch(process.env.REACT_APP_API_PATH+"/auth/signup", {
             method: "POST",
             headers: {
@@ -109,36 +128,33 @@ export default class RegisterForm extends React.Component {
                   firstName: "",
                   lastName: "",
                   description: "",
-                  profileImage: "",
+                  profileImage: this.state.defaultProfileImage_path,
                   phone: ""
                 },
               },
             })
           })
-            .then(res => res.json())
-            .then(result => {
-              console.log(result);
-              console.log("Sign up Successful!")
-              
-              if (result.userID) {
-                this.setState({
-                  sessiontoken: result.token,
-                });
-                window.location.href = "/hci/teams/underachievers/login";
-    
-              } else {
-                this.setState({
-                  sessiontoken: "",
-                });
-              }
-            },
+          .then(res => res.json())
+          .then(result => {
+            console.log(result);
+            console.log("Sign up Successful!")
+            if (result.userID) {
+              this.setState({
+                sessiontoken: result.token,
+              });
+              window.location.href = "/hci/teams/underachievers/login";
+            } else {
+              this.setState({
+                sessiontoken: "",
+              });
+            }
+          },
           error => {
               //alert("error!");
-              console.log("error!")
+              console.log("error when sign up!")
             }
           );
         };
-
       }
 
 
@@ -165,10 +181,10 @@ export default class RegisterForm extends React.Component {
                             <input type="text" placeholder='Email' className='input-stuff' onChange={this.emailHandler}/>
                         </label>
                         <label className='input'>
-                            <input type="text" placeholder='Password' className='input-stuff password' onChange={this.passwordHandler}/>
+                            <input type="password" placeholder='Password' className='input-stuff password' onChange={this.passwordHandler}/>
                         </label>
                         <label className='input'>
-                            <input type="text" placeholder='Confirm Password' className='input-stuff password' onChange={this.confirm_passwordHandler}/>
+                            <input type="password" placeholder='Confirm Password' className='input-stuff password' onChange={this.confirm_passwordHandler}/>
                         </label>
                         <label className='input'>
                             <input type="text" placeholder="Username" className='input-stuff' onChange={this.usernameHandler}/>

@@ -6,6 +6,7 @@ import formatDateTime from "../helper/formatDateTime";
 import Modal from "./Modal";
 import { Link } from "react-router-dom";
 import defaultProfileImage from "../assets/defaultProfileImage.png";
+import ProfilePage from "../Component/ProfilePage";
 
 
 // Post Page will render a single post with all the related compontents (user, content, comments)
@@ -43,9 +44,11 @@ export default class PostPage extends React.Component {
             comments: [],
 
             // pop up window state
-            openModal: false,
+            openModal: false, /* This will control the pop up for Delete Buttons */
+            openProfile: false, /* This will control the pop up for User Profile */
         }
         this.loadPost = this.loadPost.bind(this);
+        this.ClickProfile = this.ClickProfile.bind(this);
     }
 
     // the first thing we do when the component is ready is load the posts.  This updates the props, which will render the posts  
@@ -443,6 +446,19 @@ export default class PostPage extends React.Component {
         });
     }
 
+    ClickProfile(){
+        this.setState({
+            openProfile: true,
+        });
+    }
+
+    toggleProfile = event => {
+        this.props.closePostPageModal();
+        this.setState({
+            openProfile: !this.state.openProfile,
+        });
+    }
+
     render() {
         return (
             <div className = {PostPageCSS['post-page']}>
@@ -451,16 +467,25 @@ export default class PostPage extends React.Component {
                     <div className = {PostPageCSS['main-post']}>
                         <div className = {PostPageCSS['post-header']}>
                             <div className = {PostPageCSS['poster-info']}>
-                                <Link to={`/profile/${this.state.authorID}`}>
-                                    <img alt="post-avater" className={PostPageCSS['post-avater']} src={this.state.user_image} />
-                                </Link>
+                                <img alt="post-avater" className={PostPageCSS['post-avater']} src={this.state.user_image} onClick={() => this.ClickProfile()}/> 
+                                <Modal
+                                    show={this.state.openProfile}
+                                    onClose={this.toggleProfile}
+                                    modalStyle={{
+                                    width: "85%",
+                                    height: "85%",
+                                    }}
+                                >
+                                    <ProfilePage 
+                                        profile_id={this.state.authorID}
+                                        toggleProfile={this.toggleProfile}
+                                    />
+                                </Modal>
                                 <div className = {PostPageCSS['post-by']}>
                                     <h5> Posted By </h5>
-                                    <Link to={`/profile/${this.state.authorID}`}>
-                                        <div className = {PostPageCSS['post-username']}>
-                                            <h5> {this.state.username} </h5>
-                                        </div>
-                                    </Link>
+                                    <div className = {PostPageCSS['post-username']} onClick={() => this.ClickProfile()}>
+                                        <h5> {this.state.username} </h5>
+                                    </div>
                                 </div>
                                 <div className = {PostPageCSS['post-on']}>
                                     <h5> Posted On </h5>
@@ -487,7 +512,7 @@ export default class PostPage extends React.Component {
                         <Post_Buttons state={this.state} delete_post={this.DeletePostHandler} ClickDelete={() => this.ClickDeleteButton()} toggleModal={this.toggleModal}/>
                     </div>
                     <Comment_input comment_input={this.CommentHandler} submit={this.CommentSumbitHandler}/>
-                    <CommentList comment_list={this.state.comments} loadPost={this.loadPost}/>
+                    <CommentList comment_list={this.state.comments} loadPost={this.loadPost} />
                 </div>
 
             </div>
