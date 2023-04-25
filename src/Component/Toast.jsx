@@ -3,16 +3,13 @@ import PropTypes from "prop-types";
 import style from "../style/Toast.module.css";
 
 export default function Toast(props) {
-  const [progress, setProgress] = useState(0);
-
-
   /* This hook controls the toast's lifecycle. By default, the toast will automatically disappear after 5 seconds.
   You can pass in duration (in milliseconds) to change the toast's lifecycle, and you can also manually close the 
   toast by clicking on x icon */
   useEffect(() => {
     const timer = setTimeout(() => {
       props.closeToast(props.id);
-    }, props.duration ? props.duration : 5000)
+    }, props.duration ? props.duration : 500000)
     return () => clearTimeout(timer);
   },[])
 
