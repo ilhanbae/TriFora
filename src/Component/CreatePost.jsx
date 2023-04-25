@@ -19,9 +19,8 @@ export default class CreatePost extends React.Component {
     }
 
     /* Handler for making a post will go here (controller api) */
-    submitHandler = event => {
-        // console.log(this.state)
-        console.log(this.props)
+    submitHandler = async event => {
+
         // keep the form from actually submitting via HTML - we want to handle it in react
         event.preventDefault();
 
@@ -39,8 +38,8 @@ export default class CreatePost extends React.Component {
 
             if (this.state.postImages.length > 0) {
                 // loop through user images if they exist
-                this.state.postImages.forEach(async userImage => {
-                    let formDataParams = { // set up form data params for image upload
+                for (const userImage of this.state.postImages) {
+                    const formDataParams = { // set up form data params for image upload
                         uploaderID: this.state.currentUser,
                         attributes: { type: "post-image" },
                         file: userImage,
@@ -55,8 +54,8 @@ export default class CreatePost extends React.Component {
                         let postImageLink = `${process.env.REACT_APP_DOMAIN_PATH}${uploadedPostImageFile.path}` // Format server link with app domain
                         imageUrlArray.push(postImageLink)
                     }
-                });
-                // if the above throws an error the fetch below would be undefined
+                };//);
+                // if the above throws an error the fetch below would likely be undefined behavior
             }
 
             // make the api call to post
@@ -73,7 +72,8 @@ export default class CreatePost extends React.Component {
                     attributes: {
                         title: this.state.postTitle,
                         public: true, // all post are public for now?
-                        images: imageUrlArray
+                        // need to handle images here
+                        images: imageUrlArray //JSON.stringify( imageUrlArray )
                     }
                 })
             })
@@ -84,7 +84,7 @@ export default class CreatePost extends React.Component {
                         // this.setState({
                         //     postmessage: result.Status
                         // });
-                        alert("Post was successful");
+                        alert("Post was successful"); // toast would go here
                         // the above needs to be changed somehow to not have alert box, refreshing posts might be enough
                         // trying with state variable and Navigate tag
                         // this.setState({

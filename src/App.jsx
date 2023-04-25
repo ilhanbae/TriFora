@@ -65,13 +65,13 @@ export default function App() {
         <header>
           {/* Navigation */}
           <NavAchiever logout={logout} navStyle={navStyle} />
+          
           <div>
             <Routes>
               {/* Pages */}
               <Route path="/register" element={<RegisterForm login={login} />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/login" element={<LoginOrProfile login={login} />} />
-              <Route path="/profile/:profileId" element={<ProfilePage />} />
               <Route path="/edit-profile" element={<EditProfilePage />} />
               <Route path="/community/:communityId" element={<CommunityPage openToast={openToast} />} />
               <Route path="/create-post" element={<CreatePost />} />

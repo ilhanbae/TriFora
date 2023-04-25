@@ -13,11 +13,17 @@ export default class JoinedCommunity extends React.Component {
         };
     }
 
+    switch_community(){
+        this.props.closePostPageModal();
+        this.props.closeProfilePage();
+        this.props.redirect_community();
+    }
+
     render() {
         return(
             <div className = {ProfilePageCSS.community}>
-                <Link to={`/community/${this.props.community_id}`}>
-                    <div className = {ProfilePageCSS.community_image}></div>
+                <Link to={`/community/${this.props.community_id}`} onClick={() => this.switch_community()}>
+                    <img className = {ProfilePageCSS.community_image} src={this.props.community_banner_image}></img>
                 </Link>
                 <div className = {ProfilePageCSS.community_title}>
                     <h4> {this.props.community_name} </h4>

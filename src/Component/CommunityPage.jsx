@@ -13,6 +13,7 @@ import style from "../style/CommunityPage.module.css";
 import defaultProfileImage from "../assets/defaultProfileImage.png";
 import defaultPostImage from "../assets/defaultPostImage.png";
 import defaultCommunityImage from "../assets/defaultCommunityImage.png";
+import ProfilePage from "./ProfilePage";
 
 /* This component renders a single community page. Inside the community page, 
 there are posts tab and members tab. */
@@ -493,9 +494,11 @@ const CommunityPostsList = (props) => {
   const isUserAdmin = props.userCommunityMemberDetails?.attributes.role === "admin";
   const isUserMod = props.userCommunityMemberDetails?.attributes.role === "mod";
   const isUserVisiter = props.userCommunityMemberDetails == null;
+  const [friends, setFriends] = useState([]);
 
   // Fetch both posts and members when the component is loaded.
   useEffect(() => {
+    loadFriends();
     loadPosts();
     loadMembers();
   }, []);
@@ -521,6 +524,47 @@ const CommunityPostsList = (props) => {
       props.updateCommunityMemberCounts(data[1]);
     }
   };
+
+  // This method will load all the Friends
+  const loadFriends = async () => {
+    const friends_array = []
+    setIsLoaded(false);
+    let endpoint = "/connections";
+    let query = {
+      fromUserID: sessionStorage.getItem("user"),
+    };
+    const { data, errorMessage } = await genericFetch(endpoint, query);
+    // console.log(data, errorMessage)
+    if (errorMessage) {
+      setErrorMessage(errorMessage);
+    } else {
+      console.log(data[0])
+      for (let i = 0; i < data[0].length; i++){
+        friends_array.push(data[0][i].toUserID);
+      }
+      setFriends(friends_array);
+      console.log(friends_array);
+    }
+  }
+
+  // This method loads all the Friends Posts using genericFetch
+  /*
+  const loadFriendPosts = async () => {
+    setIsLoaded(false);
+    let endpoint = "/posts";
+    let query = {
+      authorIDIn: [165],
+      recipientGroupID: props.communityId,
+    };
+    const { data, errorMessage } = await genericFetch(endpoint, query);
+    // console.log(data, errorMessage)
+    if (errorMessage) {
+      setErrorMessage(errorMessage);
+    } else {
+      console.log(data[0])
+    }
+  }
+  */
 
   // This methods loads the community posts using genericFetch & update the community posts count stat
   const loadPosts = async () => {
@@ -548,7 +592,7 @@ const CommunityPostsList = (props) => {
         setPosts(data[0].filter(post => post.attributes.public))
       } else {
         // Show both public + private posts
-        setPosts(data[0]);
+      setPosts(data[0]);
       }
       props.updateCommunityPostCounts(data[1]);
     }
@@ -560,7 +604,7 @@ const CommunityPostsList = (props) => {
   // such as pinning, hiding, reporting, or deleting. It can also be passed on to Pagination
   // component with skip and take query.
   const refreshPosts = () => {
-    // console.log("refreshing posts");
+    console.log("refreshing posts");
     loadPosts(); // Fetch the posts again
   };
 
@@ -583,6 +627,7 @@ const CommunityPostsList = (props) => {
                 refreshPosts={refreshPosts}
                 userCommunityMemberDetails={props.userCommunityMemberDetails}
                 communityPostAuthorRoles={communityPostAuthorRoles}
+                isFriendPost={friends.includes(post.authorID)}
                 openToast={props.openToast}
               />
             ))}
@@ -600,6 +645,7 @@ const CommunityPost = (props) => {
   const [isPostHidden, setIsPostHidden] = useState(false);
   const [isPostReported, setIsPostReported] = useState(false);
   const [isCommunityPostModalOpen, setIsCommunityPostModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const postActionSidemenuRef = useRef(null); // Create a ref for post action sidemenu component
 
   /* This hook check if mousedown DOM event occurs outside a post action sidemenu.  */
@@ -630,6 +676,18 @@ const CommunityPost = (props) => {
   const closePostPageModal = () => {
     props.refreshPosts(); // Refresh posts on post page modal close
     setIsCommunityPostModalOpen(true);
+  }
+
+  /* This method will open the Profile pop up Window */
+  const openProfilePage = (e) => {
+    e.stopPropagation();
+    setIsProfileModalOpen(true);
+  }
+
+  /* This method will close the Profile pop up Window */
+  const toggleProfile = (e) => {
+    props.refreshPosts(); // Refresh posts on post page modal close
+    setIsProfileModalOpen(false);
   }
 
   // Check post author's role
@@ -680,7 +738,6 @@ const CommunityPost = (props) => {
     if (errorMessage) {
       alert(errorMessage);
     }
-    // Call refreshPosts method tell its parent component - CommunityPostList to refresh the post list
     props.openToast({type: "success", message: "Post Deleted Successfully!"})
     props.refreshPosts();
   };
@@ -714,7 +771,7 @@ const CommunityPost = (props) => {
             <div className={style["post-author-date"]}>
               <div className={style["post-author"]}>
                 <span className={style["inactive-text"]}>Posted By</span>
-                <Link to={`/profile/${props.post.author.id}`}>
+                <Link onClick={openProfilePage}>
                   <p
                     className={`${style["active-text"]} ${style["post-author__link"]}`}
                   >
@@ -780,6 +837,13 @@ const CommunityPost = (props) => {
               <span>Pinned</span>
             </div>
           )}
+          {props.isFriendPost && (
+            <div
+              className={`${style["post-action-label"]} ${style["post-action-label__skobeloff"]}`}
+            >
+              <span>Friend</span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -815,6 +879,38 @@ const CommunityPost = (props) => {
           closePostPageModal={closePostPageModal}
           openToast={props.openToast}
         />
+      </Modal>
+
+      {/* Profile Page Modal */}
+      <Modal
+        show={isProfileModalOpen}
+        onClose={toggleProfile}
+        modalStyle={{
+        width: "90%",
+        height: "90%",
+        }}
+      >
+          <ProfilePage 
+              profile_id={props.post.author.id}
+              toggleProfile={toggleProfile}
+              closePostPageModal={closePostPageModal}
+          />
+      </Modal>
+
+      {/* Profile Page Modal */}
+      <Modal
+        show={isProfileModalOpen}
+        onClose={toggleProfile}
+        modalStyle={{
+        width: "90%",
+        height: "90%",
+        }}
+      >
+          <ProfilePage 
+              profile_id={props.post.author.id}
+              toggleProfile={toggleProfile}
+              closePostPageModal={closePostPageModal}
+          />
       </Modal>
     </div>
   );
@@ -1100,6 +1196,7 @@ username, role, etc. */
 const CommunityMember = (props) => {
   const [isMemberActionActive, setIsMemberActionActive] = useState(false);
   const [isMemberReported, setIsMemberReported] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const memberActionSidemenuRef = useRef(null); // Create a ref for memver action sidemenu component
   const navigate = useNavigate(); // For navigation
 
@@ -1171,12 +1268,22 @@ const CommunityMember = (props) => {
     navigate(`/profile/${props.member.user.id}`); // navigate to member profile
   }
 
+  /* This method will open the Profile pop up Window */
+  const openProfilePage = (e) => {
+    setIsProfileModalOpen(true);
+  }
+
+  /* This method will close the Profile pop up Window */
+  const toggleProfile = (e) => {
+    setIsProfileModalOpen(false);
+  }
+
 
   return (
     <div className={commmunityMemberStyle}>
       <div 
         className={style["community-member__clickable-area"]}
-        onClick={openMemberPage}
+        onClick={openProfilePage}
       >
         {/* Community Member Profile Avatar */}
         <img
@@ -1226,6 +1333,21 @@ const CommunityMember = (props) => {
           memberActionSidemenuRef={memberActionSidemenuRef}
         />
       </div>
+
+      {/* Profile Page Modal */}
+      <Modal
+        show={isProfileModalOpen}
+        onClose={toggleProfile}
+        modalStyle={{
+        width: "90%",
+        height: "90%",
+        }}
+      >
+        <ProfilePage 
+            profile_id={props.member.user.id}
+            toggleProfile={toggleProfile}
+        />
+      </Modal>
     </div>
   );
 };
