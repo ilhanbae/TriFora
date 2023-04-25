@@ -461,6 +461,8 @@ const CommunityPostsList = (props) => {
     } else {
       console.log(data[0])
       for (let i = 0; i < data[0].length; i++){
+        // Check if the friend connection is "active"
+        if (data[0][i].attributes.status === 'active')
         friends_array.push(data[0][i].toUserID);
       }
       setFriends(friends_array);
