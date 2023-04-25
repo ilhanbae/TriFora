@@ -416,6 +416,7 @@ const CommunityPostsList = (props) => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [communityPostAuthorRoles, setCommunityPostAuthorRoles] = useState({});
   const [friends, setFriends] = useState([]);
+  const [blocked_friends, setBlockedFriends] = useState([]);
 
   // Fetch both posts and members when the component is loaded.
   useEffect(() => {
@@ -449,6 +450,7 @@ const CommunityPostsList = (props) => {
   // This method will load all the Friends
   const loadFriends = async () => {
     const friends_array = []
+    const blocked_friends_array = []
     setIsLoaded(false);
     let endpoint = "/connections";
     let query = {
@@ -462,11 +464,16 @@ const CommunityPostsList = (props) => {
       console.log(data[0])
       for (let i = 0; i < data[0].length; i++){
         // Check if the friend connection is "active"
-        if (data[0][i].attributes.status === 'active')
-        friends_array.push(data[0][i].toUserID);
+        if (data[0][i].attributes.status === 'active'){
+          friends_array.push(data[0][i].toUserID);
+        } else if (data[0][i].attributes.status === 'blocked'){
+          blocked_friends_array.push(data[0][i].toUserID);
+        }
       }
       setFriends(friends_array);
       console.log(friends_array);
+      setBlockedFriends(blocked_friends_array);
+      console.log(blocked_friends_array);
     }
   }
 
@@ -563,17 +570,23 @@ const CommunityPostsList = (props) => {
               console.log(post.authorID);
               console.log(friends.includes(post.authorID))
               if (friends.includes(post.authorID) === false){
-                return (
-                  <CommunityPost
-                  key={post.id}
-                  communityId={props.communityId}
-                  post={post}
-                  refreshPosts={refreshPosts}
-                  userCommunityMemberDetails={props.userCommunityMemberDetails}
-                  communityPostAuthorRoles={communityPostAuthorRoles}
-                  isFriendPost={false}
-                  />
-                );
+                if (blocked_friends.includes(post.authorID) === true){
+                  return (
+                    <></>
+                  );
+                } else {
+                  return (
+                    <CommunityPost
+                    key={post.id}
+                    communityId={props.communityId}
+                    post={post}
+                    refreshPosts={refreshPosts}
+                    userCommunityMemberDetails={props.userCommunityMemberDetails}
+                    communityPostAuthorRoles={communityPostAuthorRoles}
+                    isFriendPost={false}
+                    />
+                  );
+                }
               } else {
                 return (
                   <></>
