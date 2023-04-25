@@ -415,9 +415,11 @@ const CommunityPostsList = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [communityPostAuthorRoles, setCommunityPostAuthorRoles] = useState({});
+  const [friends, setFriends] = useState([]);
 
   // Fetch both posts and members when the component is loaded.
   useEffect(() => {
+    loadFriends();
     loadPosts();
     loadMembers();
   }, []);
@@ -444,6 +446,49 @@ const CommunityPostsList = (props) => {
     }
   };
 
+  // This method will load all the Friends
+  const loadFriends = async () => {
+    const friends_array = []
+    setIsLoaded(false);
+    let endpoint = "/connections";
+    let query = {
+      fromUserID: sessionStorage.getItem("user"),
+    };
+    const { data, errorMessage } = await genericFetch(endpoint, query);
+    // console.log(data, errorMessage)
+    if (errorMessage) {
+      setErrorMessage(errorMessage);
+    } else {
+      console.log(data[0])
+      for (let i = 0; i < data[0].length; i++){
+        // Check if the friend connection is "active"
+        if (data[0][i].attributes.status === 'active')
+        friends_array.push(data[0][i].toUserID);
+      }
+      setFriends(friends_array);
+      console.log(friends_array);
+    }
+  }
+
+  // This method loads all the Friends Posts using genericFetch
+  /*
+  const loadFriendPosts = async () => {
+    setIsLoaded(false);
+    let endpoint = "/posts";
+    let query = {
+      authorIDIn: [165],
+      recipientGroupID: props.communityId,
+    };
+    const { data, errorMessage } = await genericFetch(endpoint, query);
+    // console.log(data, errorMessage)
+    if (errorMessage) {
+      setErrorMessage(errorMessage);
+    } else {
+      console.log(data[0])
+    }
+  }
+  */
+
   // This methods loads the community posts using genericFetch & update the community posts count stat
   const loadPosts = async () => {
     setIsLoaded(false);
@@ -464,6 +509,7 @@ const CommunityPostsList = (props) => {
     if (errorMessage) {
       setErrorMessage(errorMessage);
     } else {
+      console.log(data)
       setPosts(data[0]);
       props.updateCommunityPostCounts(data[1]);
     }
@@ -490,16 +536,51 @@ const CommunityPostsList = (props) => {
         <div>
           {/* Posts */}
           <div className={style["community-post-list"]}>
-            {posts.map((post) => (
-              <CommunityPost
-                key={post.id}
-                communityId={props.communityId}
-                post={post}
-                refreshPosts={refreshPosts}
-                userCommunityMemberDetails={props.userCommunityMemberDetails}
-                communityPostAuthorRoles={communityPostAuthorRoles}
-              />
-            ))}
+            {/* Load All Friend Posts */}
+            {posts.map((post) =>{
+              console.log(friends);
+              console.log(post.authorID);
+              console.log(friends.includes(post.authorID))
+              if (friends.includes(post.authorID) === true){
+                return (
+                  <CommunityPost
+                  key={post.id}
+                  communityId={props.communityId}
+                  post={post}
+                  refreshPosts={refreshPosts}
+                  userCommunityMemberDetails={props.userCommunityMemberDetails}
+                  communityPostAuthorRoles={communityPostAuthorRoles}
+                  isFriendPost={true}
+                  />
+                );
+              }
+            }
+            )}
+
+            {/* Load All Non-Friend Posts */}
+            {posts.map((post) =>{
+              console.log(friends);
+              console.log(post.authorID);
+              console.log(friends.includes(post.authorID))
+              if (friends.includes(post.authorID) === false){
+                return (
+                  <CommunityPost
+                  key={post.id}
+                  communityId={props.communityId}
+                  post={post}
+                  refreshPosts={refreshPosts}
+                  userCommunityMemberDetails={props.userCommunityMemberDetails}
+                  communityPostAuthorRoles={communityPostAuthorRoles}
+                  isFriendPost={false}
+                  />
+                );
+              } else {
+                return (
+                  <></>
+                );
+              }
+            }
+            )}
           </div>
         </div>
       );
@@ -704,6 +785,13 @@ const CommunityPost = (props) => {
               className={`${style["post-action-label"]} ${style["post-action-label__skobeloff"]}`}
             >
               <span>Pinned</span>
+            </div>
+          )}
+          {props.isFriendPost && (
+            <div
+              className={`${style["post-action-label"]} ${style["post-action-label__skobeloff"]}`}
+            >
+              <span>Friend</span>
             </div>
           )}
         </div>
