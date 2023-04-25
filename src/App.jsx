@@ -14,6 +14,7 @@ import CommunityPage from "./Component/CommunityPage";
 import CreatePost from "./Component/CreatePost";
 import Homepage from "./Component/Homepage";
 import Notification from "./Component/Notification";
+import OtherCommunitiesPage from "./Component/OtherCommunitiesPage";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -59,6 +60,7 @@ export default function App() {
               <Route path="/login" element={<LoginOrProfile login={login} />} />
               <Route path="/edit-profile" element={<EditProfilePage />} />
               <Route path="/community/:communityId" element={<CommunityPage />} />
+              <Route path="/communities" element={<OtherCommunitiesPage />} />
               <Route path="/create-post" element={<CreatePost />} />
               <Route path="/notification" element={<Notification />} />
               <Route path="/" element={<LoginOrProfile login={login} />} />
