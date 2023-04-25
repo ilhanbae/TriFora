@@ -9,7 +9,7 @@ export default function Toast(props) {
   useEffect(() => {
     const timer = setTimeout(() => {
       props.closeToast(props.id);
-    }, props.duration ? props.duration : 500000)
+    }, props.duration ? props.duration : 5000)
     return () => clearTimeout(timer);
   },[])
 

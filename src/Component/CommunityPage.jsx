@@ -100,6 +100,7 @@ export default function CommunityPage(props) {
           userCommunityMemberDetails={userCommunityMemberDetails}
           refreshCommunityAndUserMemberDetails={refreshCommunityAndUserMemberDetails}
           refreshCommunityDetails={refreshCommunityDetails}
+          openToast={props.openToast}
         />
 
         {/* Main section */}
@@ -137,8 +138,7 @@ const CommunityBanner = (props) => {
   const joinButtonHandler = async () => {
     // Check if user is already a community member
     if (props.userCommunityMemberDetails) {
-      openCommunityLeaveModal()
-      // await removeUserFromCommunity();
+      openCommunityLeaveModal();
     }
     else {
       await addUserToCommunity();
@@ -159,8 +159,10 @@ const CommunityBanner = (props) => {
       const { data, errorMessage } = await genericPost(endpoint, body);
       // console.log(data, errorMessage)
       if (errorMessage) {
+        props.openToast({type: "error", message: <span>Uh oh, sorry you can't join our community at the moment. Please contact <Link to="neil.html"> our developers</Link></span>})
         alert(errorMessage);
       } else {
+        props.openToast({type: "success", message: "Community joined successfully!"});
         props.refreshCommunityAndUserMemberDetails();
       }
   }
@@ -171,8 +173,9 @@ const CommunityBanner = (props) => {
     const { data, errorMessage } = await genericDelete(endpoint);
     // console.log(data, errorMessage)
     if (errorMessage) {
-      alert(errorMessage);
+      props.openToast({type: "error", message: <span>Uh oh, sorry you can't leave our community at the moment. Please contact <Link to="neil.html"> our developers</Link></span>})
     } else {
+      props.openToast({type: "success", message: "Community left successfully!"});
       props.refreshCommunityAndUserMemberDetails();
     }
   }
@@ -498,9 +501,11 @@ const CommunityPostsList = (props) => {
 
   // Fetch both posts and members when the component is loaded.
   useEffect(() => {
+    setIsLoaded(false);
     loadFriends();
     loadPosts();
     loadMembers();
+    setIsLoaded(true);
   }, []);
 
   // Refresh posts whenever the community post skip offset has changed. The offset is changed by the Pagination component.
@@ -523,12 +528,13 @@ const CommunityPostsList = (props) => {
       setCommunityPostAuthorRoles(postAuthorRoles);
       props.updateCommunityMemberCounts(data[1]);
     }
+    setIsLoaded(true);
   };
 
   // This method will load all the Friends
   const loadFriends = async () => {
-    const friends_array = []
     setIsLoaded(false);
+    const friends_array = []
     let endpoint = "/connections";
     let query = {
       fromUserID: sessionStorage.getItem("user"),
@@ -545,6 +551,7 @@ const CommunityPostsList = (props) => {
       setFriends(friends_array);
       console.log(friends_array);
     }
+    setIsLoaded(true);
   }
 
   // This method loads all the Friends Posts using genericFetch
@@ -589,7 +596,8 @@ const CommunityPostsList = (props) => {
       // console.log(data[0])
       if (isUserVisiter) {
         // Only show public posts
-        setPosts(data[0].filter(post => post.attributes.public))
+        // props.openToast({type: "info", message: "Hello there! Join the community to view other posts."});
+        setPosts(data[0].filter(post => post.attributes.public));
       } else {
         // Show both public + private posts
       setPosts(data[0]);
@@ -604,9 +612,12 @@ const CommunityPostsList = (props) => {
   // such as pinning, hiding, reporting, or deleting. It can also be passed on to Pagination
   // component with skip and take query.
   const refreshPosts = () => {
-    console.log("refreshing posts");
+    // console.log("refreshing posts");
     loadPosts(); // Fetch the posts again
   };
+
+  // Sort posts by the friends connection
+  const friendsFirstPosts = posts.sort((postA, postB) => friends.includes(postB.authorID) - friends.includes(postA.authorID))
 
   // Render Component
   if (errorMessage) {
@@ -619,7 +630,7 @@ const CommunityPostsList = (props) => {
         <div>
           {/* Posts */}
           <div className={style["community-post-list"]}>
-            {posts.map((post) => (
+            {friendsFirstPosts.map((post) => (
               <CommunityPost
                 key={post.id}
                 communityId={props.communityId}
@@ -738,7 +749,7 @@ const CommunityPost = (props) => {
     if (errorMessage) {
       alert(errorMessage);
     }
-    props.openToast({type: "success", message: "Post Deleted Successfully!"})
+    props.openToast({type: "success", message: "Post deleted successfully!"})
     props.refreshPosts();
   };
 
@@ -928,10 +939,10 @@ const PostControlTool = (props) => {
 
   /* This method opens create post page modal */
   const openCreatePostPageModal = () => {
-    setIsCreatePostModalOpen(true)
+    setIsCreatePostModalOpen(true);
     // props.openToast({type: "info", message: "Join the community first!"})
     // props.openToast({type: "success", message: "Successfully Created the Post!"})
-    // props.openToast({type: "error", message: <div>Server error, please contact <Link to="neil.html">developers</Link></div>, duration: null})
+    // props.openToast({type: "error", message: <span>Server error, please contact <Link to="neil.html">developers</Link></span>, duration: 999})
   }
   
   /* This method closes create post page modal */
