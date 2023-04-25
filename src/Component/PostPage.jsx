@@ -453,7 +453,7 @@ export default class PostPage extends React.Component {
     }
 
     toggleProfile = event => {
-        this.props.closePostPageModal();
+        //this.props.closePostPageModal();
         this.setState({
             openProfile: !this.state.openProfile,
         });
