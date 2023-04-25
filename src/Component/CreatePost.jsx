@@ -14,6 +14,7 @@ export default class CreatePost extends React.Component {
             postContent: "",
             postImages: [],
             postmessage: "",
+            postVisibility: "public",
             postSuccess: false,
         };
     }
@@ -71,8 +72,7 @@ export default class CreatePost extends React.Component {
                     content: this.state.postContent, // if post description can be empty this is just going to have to store an empty string and be tested for post page side I think
                     attributes: {
                         title: this.state.postTitle,
-                        public: true, // all post are public for now?
-                        // need to handle images here
+                        public: this.state.postVisibility === "public" ? true : false,
                         images: imageUrlArray //JSON.stringify( imageUrlArray )
                     }
                 })
@@ -80,16 +80,7 @@ export default class CreatePost extends React.Component {
                 .then(res => res.json())
                 .then(
                     result => {
-                        console.log(result)
-                        // this.setState({
-                        //     postmessage: result.Status
-                        // });
-                        alert("Post was successful"); // toast would go here
-                        // the above needs to be changed somehow to not have alert box, refreshing posts might be enough
-                        // trying with state variable and Navigate tag
-                        // this.setState({
-                        //     postSuccess: true
-                        // });
+                        this.props.openToast({type: "success", message: "Post created successfully!"});
                         this.props.closeCreatePostPageModal();
                     },
                     error => {
@@ -163,16 +154,16 @@ export default class CreatePost extends React.Component {
         }
     };
 
+    visibilityInputChangeHandler = event => {
+        this.setState({
+            postVisibility: event.target.value
+        });
+    };
+
     render() {
         if (!sessionStorage.getItem("token")) {
             console.log("NO TOKEN");
             return ("Please log in to make and view posts");
-        }
-        if (this.state.postSuccess) {
-            // this section needs to change if modal view is successful
-            // return <Navigate to=`/community/${this.props.communityId}` replace={true} />;
-            // return <Navigate to="/" replace={true} />;
-            // this.props.closeCreatePostPageModal();
         }
         return (
             /* wrapper for flexbox column layout */
@@ -253,6 +244,32 @@ export default class CreatePost extends React.Component {
                                     alt="Upload"
                                     title="Upload image(s)" />
                             </label>
+                        </div>
+
+                        <div>
+                            <h1>Visibility</h1>
+                            <div style={{display: "flex", gap: "10px"}}>
+                                {/* Public */}
+                                <label>
+                                    <input 
+                                        type="radio"
+                                        value="public"
+                                        checked={this.state.postVisibility === "public"}
+                                        onChange={this.visibilityInputChangeHandler}
+                                    />
+                                    Public
+                                </label>
+                                {/* Private */}
+                                <label>
+                                    <input 
+                                        type="radio" 
+                                        value="private"
+                                        checked={this.state.postVisibility === "private"}
+                                        onChange={this.visibilityInputChangeHandler}
+                                    />
+                                    Private
+                                </label>
+                            </div>
                         </div>
 
                         <br />
