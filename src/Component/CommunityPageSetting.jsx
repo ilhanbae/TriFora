@@ -42,6 +42,26 @@ export default function CommunityPageSetting(props) {
     await loadCommunityDetails();
   };
 
+  // This method uploads the image file to the server
+  const uploadImageFile = async (imageFile) => {
+    let serverImageUrl = "";
+    const formDataParams = {
+      // set up form data params for image upload
+      uploaderID: sessionStorage.getItem("user"),
+      attributes: { type: "community-profile" },
+      file: imageFile,
+    };
+    const { data, errorMessage } = await uploadFile(formDataParams);
+    // console.log(data, errorMessage)
+    if (errorMessage) {
+      alert(errorMessage);
+    } else {
+      // console.log(uploadedServerAvatarFile, uploadFileErrorMessage);
+      serverImageUrl = `${process.env.REACT_APP_DOMAIN_PATH}${data.path}`; // Format server link with app domain
+    }
+    return serverImageUrl;
+  };
+
   // This method updates community name by sending PATCH request to the API server.
   // [TODO] Should check if the name is taken.
   const updateCommunityName = async (name) => {
@@ -56,9 +76,9 @@ export default function CommunityPageSetting(props) {
       alert(errorMessage);
     } else {
       alert(`Successfully Updated Community Name to "${name}"`);
-      refreshCommunityDetails();
-      props.refreshCommunityDetails();
-      // props.closeCommunityPageSettingModal();
+      setCommunityDetails(data);
+      // refreshCommunityDetails();
+      // props.refreshCommunityDetails();
     }
   };
 
@@ -80,32 +100,11 @@ export default function CommunityPageSetting(props) {
     if (errorMessage) {
       alert(errorMessage);
     } else {
-      alert(
-        `Successfully Updated Community Banner Background Color to "${color}"`
-      );
-      refreshCommunityDetails();
-      props.refreshCommunityDetails();
+      alert(`Successfully Updated Community Banner Background Color to "${color}"`);
+      setCommunityDetails(data);
+      // refreshCommunityDetails();
+      // props.refreshCommunityDetails();
     }
-  };
-
-  // This method uploads the image file to the server
-  const uploadImageFile = async (imageFile) => {
-    let serverImageUrl = "";
-    const formDataParams = {
-      // set up form data params for image upload
-      uploaderID: sessionStorage.getItem("user"),
-      attributes: { type: "community-profile" },
-      file: imageFile,
-    };
-    const { data, errorMessage } = await uploadFile(formDataParams);
-    // console.log(data, errorMessage)
-    if (errorMessage) {
-      alert(errorMessage);
-    } else {
-      // console.log(uploadedServerAvatarFile, uploadFileErrorMessage);
-      serverImageUrl = `${process.env.REACT_APP_DOMAIN_PATH}${data.path}`; // Format server link with app domain
-    }
-    return serverImageUrl;
   };
 
   // This method updates community banner profile image by sending PATCH request to the API server.
@@ -129,9 +128,9 @@ export default function CommunityPageSetting(props) {
       alert(errorMessage);
     } else {
       alert(`Successfully Updated Community Banner to "${serverImageUrl}"`);
-      refreshCommunityDetails();
-      props.refreshCommunityDetails();
-      // props.closeCommunityPageSettingModal();
+      setCommunityDetails(data);
+      // refreshCommunityDetails();
+      // props.refreshCommunityDetails();
     }
   };
 
@@ -173,7 +172,7 @@ export default function CommunityPageSetting(props) {
           <div className={style["edit-community-section-body"]}>
             {/* Community Name */}
             <div className={style["edit-community-subsection"]}>
-              <span className={style["section-title"]}>Community Name:</span>
+              <span className={style["section-title"]}>Name:</span>
               <EditableText
                 updateTextHandler={updateCommunityName}
                 showEditButton={true}
@@ -185,7 +184,7 @@ export default function CommunityPageSetting(props) {
 
             {/* Community Banner Background Color */}
             <div className={style["edit-community-subsection"]}>
-              <span className={style["section-title"]}>Community Background:</span>
+              <span className={style["section-title"]}>Background:</span>
               <EditableColor
                 updateColorHandler={updateCommunityBannerBackgroundColor}
                 showEditButton={true}
@@ -203,7 +202,7 @@ export default function CommunityPageSetting(props) {
 
             {/* Community Banner Profile Image */}
             <div className={style["edit-community-subsection"]}>
-              <span className={style["section-title"]}>Community Profile:</span>
+              <span className={style["section-title"]}>Profile:</span>
               <EditableImage
                 updateImageHandler={updateCommunityBannerProfileImage}
                 showEditButton={true}
@@ -225,7 +224,7 @@ export default function CommunityPageSetting(props) {
 
         {/* Delete Community Button */}
         <div className={style["delete-community-section"]}>
-          <span className={style["section-title"]}>Delete Community</span>
+          {/* <span className={style["section-title"]}>Delete Community</span> */}
           <div className={style["delete-commmunity-section-body"]}>
             <button
               className={`${style["button"]} ${style["button__bordered"]} ${style["button__danger"]}`}

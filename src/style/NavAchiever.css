@@ -106,11 +106,12 @@ ul.showDrop {
 ul.showDrop li {
     padding: 5px;
     margin: 0;
-    color: #8E6F52;
+    color: black;
 }
 
 ul.showDrop li a:hover {
     background: #3D211A ;
+    color: white;
 }
 
 .input {

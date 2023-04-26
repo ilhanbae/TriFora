@@ -14,14 +14,14 @@ export default class CreatePost extends React.Component {
             postContent: "",
             postImages: [],
             postmessage: "",
+            postVisibility: "public",
             postSuccess: false,
         };
     }
 
     /* Handler for making a post will go here (controller api) */
-    submitHandler = event => {
-        // console.log(this.state)
-        console.log(this.props)
+    submitHandler = async event => {
+
         // keep the form from actually submitting via HTML - we want to handle it in react
         event.preventDefault();
 
@@ -39,8 +39,8 @@ export default class CreatePost extends React.Component {
 
             if (this.state.postImages.length > 0) {
                 // loop through user images if they exist
-                this.state.postImages.forEach(async userImage => {
-                    let formDataParams = { // set up form data params for image upload
+                for (const userImage of this.state.postImages) {
+                    const formDataParams = { // set up form data params for image upload
                         uploaderID: this.state.currentUser,
                         attributes: { type: "post-image" },
                         file: userImage,
@@ -55,8 +55,8 @@ export default class CreatePost extends React.Component {
                         let postImageLink = `${process.env.REACT_APP_DOMAIN_PATH}${uploadedPostImageFile.path}` // Format server link with app domain
                         imageUrlArray.push(postImageLink)
                     }
-                });
-                // if the above throws an error the fetch below would be undefined
+                };//);
+                // if the above throws an error the fetch below would likely be undefined behavior
             }
 
             // make the api call to post
@@ -72,24 +72,15 @@ export default class CreatePost extends React.Component {
                     content: this.state.postContent, // if post description can be empty this is just going to have to store an empty string and be tested for post page side I think
                     attributes: {
                         title: this.state.postTitle,
-                        public: true, // all post are public for now?
-                        images: imageUrlArray
+                        public: this.state.postVisibility === "public" ? true : false,
+                        images: imageUrlArray //JSON.stringify( imageUrlArray )
                     }
                 })
             })
                 .then(res => res.json())
                 .then(
                     result => {
-                        console.log(result)
-                        // this.setState({
-                        //     postmessage: result.Status
-                        // });
-                        alert("Post was successful");
-                        // the above needs to be changed somehow to not have alert box, refreshing posts might be enough
-                        // trying with state variable and Navigate tag
-                        // this.setState({
-                        //     postSuccess: true
-                        // });
+                        this.props.openToast({type: "success", message: "Post created successfully!"});
                         this.props.closeCreatePostPageModal();
                     },
                     error => {
@@ -163,16 +154,16 @@ export default class CreatePost extends React.Component {
         }
     };
 
+    visibilityInputChangeHandler = event => {
+        this.setState({
+            postVisibility: event.target.value
+        });
+    };
+
     render() {
         if (!sessionStorage.getItem("token")) {
             console.log("NO TOKEN");
             return ("Please log in to make and view posts");
-        }
-        if (this.state.postSuccess) {
-            // this section needs to change if modal view is successful
-            // return <Navigate to=`/community/${this.props.communityId}` replace={true} />;
-            // return <Navigate to="/" replace={true} />;
-            // this.props.closeCreatePostPageModal();
         }
         return (
             /* wrapper for flexbox column layout */
@@ -253,6 +244,32 @@ export default class CreatePost extends React.Component {
                                     alt="Upload"
                                     title="Upload image(s)" />
                             </label>
+                        </div>
+
+                        <div>
+                            <h1>Visibility</h1>
+                            <div style={{display: "flex", gap: "10px"}}>
+                                {/* Public */}
+                                <label>
+                                    <input 
+                                        type="radio"
+                                        value="public"
+                                        checked={this.state.postVisibility === "public"}
+                                        onChange={this.visibilityInputChangeHandler}
+                                    />
+                                    Public
+                                </label>
+                                {/* Private */}
+                                <label>
+                                    <input 
+                                        type="radio" 
+                                        value="private"
+                                        checked={this.state.postVisibility === "private"}
+                                        onChange={this.visibilityInputChangeHandler}
+                                    />
+                                    Private
+                                </label>
+                            </div>
                         </div>
 
                         <br />

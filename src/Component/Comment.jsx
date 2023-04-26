@@ -7,6 +7,7 @@ import Modal from "./Modal";
 import { Link } from 'react-router-dom';
 import PostPage from "./PostPage";
 import defaultProfileImage from "../assets/defaultProfileImage.png";
+import ProfilePage from "./ProfilePage";
 
 /* The Comment is going to render a single comment related to that post.*/
 
@@ -21,7 +22,9 @@ export default class Comment extends React.Component {
             comment_content: this.props.post.content,
             edit_comment: false,
             edit_comment_input: "",
+
             openModal: false,
+            openProfile: false,
         };
     }
     
@@ -114,20 +117,41 @@ export default class Comment extends React.Component {
         });
     }
 
+    ClickProfile(){
+        this.setState({
+            openProfile: true,
+        });
+    }
+
+    toggleProfile = event => {
+        this.setState({
+            openProfile: !this.state.openProfile,
+        });
+    }
+
     render() {
         //console.log("Each comment in Comment");
         //console.log(this.props.post.content);
         return (
             <div className = {PostPageCSS['individual-comment']}>
                 <div className = {PostPageCSS['comment-user-info']}>
-                    <Link to={`/profile/${this.state.comment_userid}`}>
-                        <img className = {PostPageCSS['comment-user-avater']} src={this.state.comment_userimage} alt="Comment-img"></img>
-                    </Link>
-                    <Link to={`/profile/${this.state.comment_userid}`}>
-                        <div className = {PostPageCSS['comment-user-username']}>
-                            <h4> {this.state.comment_username} </h4>
-                        </div>
-                    </Link>
+                    <img className = {PostPageCSS['comment-user-avater']} src={this.state.comment_userimage} alt="Comment-img" onClick={() => this.ClickProfile()}></img>
+                    <div className = {PostPageCSS['comment-user-username']} onClick={() => this.ClickProfile()}>
+                        <h4> {this.state.comment_username} </h4>
+                    </div>
+                    <Modal
+                        show={this.state.openProfile}
+                        onClose={this.toggleProfile}
+                        modalStyle={{
+                        width: "85%",
+                        height: "85%",
+                        }}
+                    >
+                        <ProfilePage 
+                            profile_id={this.props.post.author.id}
+                            toggleProfile={this.toggleProfile}
+                        />
+                    </Modal>
                     <div className = {PostPageCSS['comment-user-date']}>
                         <h6> {this.state.comment_date} </h6>
                     </div>

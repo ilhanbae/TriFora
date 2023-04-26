@@ -21,7 +21,7 @@ export default class CommentList extends React.Component {
         return(
             <div className = {PostPageCSS['comment-section']}>
                 {this.props.comment_list.map(post => (
-                    <Comment key={post.id} post={post} loadPost={this.props.loadPost}/>
+                    <Comment key={post.id} post={post} loadPost={this.props.loadPost} />
                 ))}
             </div>
         );

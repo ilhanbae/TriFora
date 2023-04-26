@@ -6,7 +6,9 @@ import downIcon from "../assets/downIcon36.png";
 import upIcon from "../assets/upIcon36.png";
 // import DropMenu from "./DropMenu";
 import defaultProfileImage from "../assets/defaultProfileImage.png";
-
+import Modal from "./Modal";
+import ProfilePage from "./ProfilePage";
+import Notification from "./Notification";
 
 class NavAchiever extends React.Component {
 
@@ -16,21 +18,20 @@ class NavAchiever extends React.Component {
         this.state = {
             showDropMenu: false,
             profile_icon: "",  /* ------ Add Component in Nav ------ */
+
+            openProfile: false,
+            openNotification: false,
         };
     }
 
     /* ------ Add Component in Nav ------ */
     componentDidMount() {
-        this.render_user();
+        this.render_user_icon();
     }
 
-    // pass a user ID into it, and returns all the infos of the user
-    render_user = () => {
-        console.log("In profile");
-        console.log(sessionStorage);
-
-        // if the user is not logged in, we don't want to try loading the user.
-        if (sessionStorage.getItem("token")){
+    // This function will get the user image
+    render_user_icon = () => {
+        if (sessionStorage.getItem("user")){
             // fetch the user data, and extract out the attributes to load and display
             fetch(process.env.REACT_APP_API_PATH + "/users/" + sessionStorage.getItem("user"), {
             method: "get",
@@ -63,16 +64,42 @@ class NavAchiever extends React.Component {
                 //alert("error!");
                 }
             );
-        }else{
-            //If user is not logged in, show error message
-            //alert("Not Logged In");
-            console.log("Not Logged In");
         }
     }
     /* ------ Add Component in Nav ------ */
 
     menuSwitch = () => {
-        this.setState(menuState => ({ showDropMenu: !menuState.showDropMenu }));
+        this.setState(menuState => ({ showDropMenu: !menuState.showDropMenu }), () => this.render_user_icon());
+    };
+
+    ClickProfile(){
+        this.setState({
+            openProfile: true,
+        });
+    }
+
+    toggleProfile = () => {
+        this.menuSwitch();
+        this.setState({
+            openProfile: !this.state.openProfile,
+        });
+    };
+
+    redirect_community(){
+        this.toggleProfile();
+    }
+
+    ClickNotification(){
+        this.setState({
+            openNotification: true,
+        });
+    }
+
+    toggleNotification = () => {
+        this.menuSwitch();
+        this.setState({
+            openNotification: !this.state.openNotification,
+        });
     };
 
     render() {
@@ -151,10 +178,34 @@ class NavAchiever extends React.Component {
                             {/* the following line uses ternary statement to allow for the hiding/showing of the drop down via css */}
                             <ul className={this.state.showDropMenu ? "showDrop" : "hideDrop"}>
                                 <li>
-                                    <Link to={`/hci/teams/underachievers/profile/${sessionStorage.getItem("user")}`} onClick={() => {window.location.assign(`/hci/teams/underachievers/profile/${sessionStorage.getItem("user")}`)}}> My Profile </Link>
+                                    <Link onClick={() => this.ClickProfile()}> My Profile </Link>
+                                    <Modal
+                                        show={this.state.openProfile}
+                                        onClose={this.toggleProfile}
+                                        modalStyle={{
+                                        width: "100%",
+                                        height: "100%",
+                                        }}
+                                    >
+                                        <ProfilePage 
+                                            profile_id={sessionStorage.getItem("user")}
+                                            redirect_community={this.redirect_community}
+                                            toggleProfile={this.toggleProfile}
+                                        />
+                                    </Modal>
                                 </li>
                                 <li>
-                                    <Link to="/notification" onClick={this.menuSwitch}> Notifications </Link>
+                                    <Link onClick={() => this.ClickNotification()}> Notifications </Link>
+                                    <Modal
+                                        show={this.state.openNotification}
+                                        onClose={this.toggleNotification}
+                                        modalStyle={{
+                                        width: "100%",
+                                        height: "100%",
+                                        }}
+                                    >
+                                        <Notification />
+                                    </Modal>
                                 </li>
                                 <li>
                                     <Link to="/login" onClick={e => {

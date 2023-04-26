@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import React, {useEffect, useRef, useState} from "react";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import Modal from "./Modal";
 import CommunityPageSetting from "./CommunityPageSetting";
 import PostPage from "./PostPage";
@@ -13,6 +13,7 @@ import style from "../style/CommunityPage.module.css";
 import defaultProfileImage from "../assets/defaultProfileImage.png";
 import defaultPostImage from "../assets/defaultPostImage.png";
 import defaultCommunityImage from "../assets/defaultCommunityImage.png";
+import ProfilePage from "./ProfilePage";
 import report from "../helper/report";
 
 /* This component renders a single community page. Inside the community page, 
@@ -100,6 +101,7 @@ export default function CommunityPage(props) {
           userCommunityMemberDetails={userCommunityMemberDetails}
           refreshCommunityAndUserMemberDetails={refreshCommunityAndUserMemberDetails}
           refreshCommunityDetails={refreshCommunityDetails}
+          openToast={props.openToast}
         />
 
         {/* Main section */}
@@ -109,6 +111,7 @@ export default function CommunityPage(props) {
             communityId={communityId}
             userCommunityMemberDetails={userCommunityMemberDetails}
             refreshCommunityDetails={refreshCommunityDetails}
+            openToast={props.openToast}
           />
         </div>
       </div>
@@ -120,6 +123,7 @@ export default function CommunityPage(props) {
 there's community name, community background, community icon, and a join button */
 const CommunityBanner = (props) => {
   const [isCommunitySettingModalOpen, setIsCommunitySettingModalOpen] = useState(false);
+  const [isCommunityLeaveModalOpen, setIsCommunityLeaveModalOpen] = useState(false);
 
   // Set community banner background color
   let bannerBackgroundColor = props.communityDetails.attributes.design.bannerBackgroundColor
@@ -135,7 +139,7 @@ const CommunityBanner = (props) => {
   const joinButtonHandler = async () => {
     // Check if user is already a community member
     if (props.userCommunityMemberDetails) {
-      await removeUserFromCommunity();
+      openCommunityLeaveModal();
     }
     else {
       await addUserToCommunity();
@@ -156,8 +160,10 @@ const CommunityBanner = (props) => {
       const { data, errorMessage } = await genericPost(endpoint, body);
       // console.log(data, errorMessage)
       if (errorMessage) {
+        props.openToast({type: "error", message: <span>Uh oh, sorry you can't join our community at the moment. Please contact <Link to="neil.html"> our developers</Link></span>})
         alert(errorMessage);
       } else {
+        props.openToast({type: "success", message: "Community joined successfully!"});
         props.refreshCommunityAndUserMemberDetails();
       }
   }
@@ -168,8 +174,9 @@ const CommunityBanner = (props) => {
     const { data, errorMessage } = await genericDelete(endpoint);
     // console.log(data, errorMessage)
     if (errorMessage) {
-      alert(errorMessage);
+      props.openToast({type: "error", message: <span>Uh oh, sorry you can't leave our community at the moment. Please contact <Link to="neil.html"> our developers</Link></span>})
     } else {
+      props.openToast({type: "success", message: "Community left successfully!"});
       props.refreshCommunityAndUserMemberDetails();
     }
   }
@@ -185,28 +192,48 @@ const CommunityBanner = (props) => {
     setIsCommunitySettingModalOpen(false);
   }
 
+  // This method opens commmunity leave modal
+  const openCommunityLeaveModal = () => {
+    setIsCommunityLeaveModalOpen(true);
+  }
+
+  // This method closes community leave modal
+  const closeCommunityLeaveModal = () => {
+    // props.refreshCommunityDetails();
+    setIsCommunityLeaveModalOpen(false);
+  }
+
   return (
     <div className={style["community-banner"]}>
       {/* Community Banner Background */}
-      <div className={style["community-banner-background"]} style={{ backgroundColor: bannerBackgroundColor }}></div>
+      {/* Background Color Layer */}
+      <div
+        className={style["community-banner-background"]}
+        style={{ backgroundColor: bannerBackgroundColor }}
+      >
+        {/* Background Image Layer */}
+        {/* <div
+          className={style["community-banner-background-image"]}
+          style={{ backgroundImage: `url(${defaultCommunityImage})` }}
+        >
+        </div> */}
+      </div>
 
       {/* Commnity Banner Content*/}
-      <div
-        className={style["community-banner-content"]}
-      >
+      <div className={style["community-banner-content"]}>
         {/* Community Banner Content Left */}
         <div className={style["community-banner-content-left"]}>
           {/* Community Avatar Image */}
           <img
             className={`${style["image"]} ${style["image__sm"]} ${style["image__square"]}`}
             src={props.communityDetails.attributes.design.bannerProfileImage}
-            alt="Community background"
+            alt="Community avatar"
             onError={(e) => (e.currentTarget.src = defaultCommunityImage)}
           />
           {/* Community Info */}
           <div className={style["community-info"]}>
             {/* Community Name */}
-            <h2>{props.communityDetails.name}</h2>
+            <h2 className={style["community-name"]}>{props.communityDetails.name}</h2>
             {/* Community Created Date */}
             <span className={style["inactive-text"]}>
               Since February 19th, 2023
@@ -216,18 +243,9 @@ const CommunityBanner = (props) => {
 
         {/* Community Banner Content Right */}
         <div className={style["community-banner-content-right"]}>
-          {/* Notification Button */}
-          {/* {isUserJoined && (
-            <button
-              className={`${style["button"]} ${style["button__bordered"]}`}
-            >
-              Notfication
-            </button>
-          )} */}
-
           {/* Setting Button */}
           {(isUserAdmin || isUserMod) && (
-            <button 
+            <button
               className={`${style["button"]} ${style["button__bordered"]}`}
               onClick={openCommunityPageSettingModal}
             >
@@ -244,15 +262,17 @@ const CommunityBanner = (props) => {
           </button>
         </div>
       </div>
-      
+
       {/* Community Page Setting Modal*/}
       <Modal
         show={isCommunitySettingModalOpen}
         onClose={closeCommunityPageSettingModal}
         modalTitle="Community Setting"
         modalStyle={{
-          width: "80%",
-          height: "60%",
+          width: "fit-content",
+          blockSize: "fit-content",
+          // width: "50%",
+          // height: "60%",
         }}
       >
         <CommunityPageSetting
@@ -262,7 +282,35 @@ const CommunityBanner = (props) => {
         />
       </Modal>
 
-
+      {/* Community Leave Modal */}
+      <Modal
+        show={isCommunityLeaveModalOpen}
+        onClose={closeCommunityLeaveModal}
+        modalStyle={{
+          width: "30%",
+          height: "30%",
+        }}
+      >
+        <div className={style["community-leave-modal"]}>
+          <span className={style["community-leave-modal-headline"]}>
+            Leave Community?
+          </span>
+          <div className={style["community-leave-modal-buttons"]}>
+            <button
+              className={`${style["button"]} ${style["button__bordered"]} ${style["button__danger"]}`}
+              onClick={() => removeUserFromCommunity()}
+            >
+              Yes
+            </button>
+            <button
+              className={`${style["button"]} ${style["button__bordered"]} ${style["button__filled"]}`}
+              onClick={() => closeCommunityLeaveModal()}
+            >
+              No
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
@@ -332,6 +380,7 @@ const CommunityContentDisplay = (props) => {
             userCommunityMemberDetails={props.userCommunityMemberDetails}
             refreshCommunityDetails={props.refreshCommunityDetails}
             communityId={props.communityId}
+            openToast={props.openToast}
           />
           {/* Commmunity Posts List */}
           <CommunityPostsList
@@ -341,6 +390,7 @@ const CommunityContentDisplay = (props) => {
             updateCommunityMemberCounts={updateCommunityMemberCounts}
             communityPostSkipOffset={communityPostSkipOffset}
             communityPostTakeCount={communityPostTakeCount}
+            openToast={props.openToast}
           />
           {/* Pagination */}
           <Pagination
@@ -365,6 +415,7 @@ const CommunityContentDisplay = (props) => {
             updateCommunityMemberCounts={updateCommunityMemberCounts}
             communityMemberSkipOffset={communityMemberSkipOffset}
             communityMemberTakeCount={communityMembersCount}
+            openToast={props.openToast}
           />
           {/* Pagination */}
           <Pagination
@@ -382,20 +433,47 @@ const CommunityContentDisplay = (props) => {
 and number of members. Each stat also serves as a navigation tab between CommunityPostsList 
 and CommunityMembersList */
 const CommunityStats = (props) => {
+  const [isCommunityPostsTabActive, setIsCommunityPostsTabActive] = useState(true);
+  const [isCommunityMembersTabActive, setIsCommunityMembersTabActive] = useState(false);
+
+  /* This method handles posts tab click action */
+  const communityPostsTabHandler = () => {
+    setIsCommunityMembersTabActive(false);
+    setIsCommunityPostsTabActive(true);
+    props.postContentDisplayHandler("posts");
+  }
+  // Change the style
+  const communityPostsTabStyle = isCommunityPostsTabActive
+    ? "community-stats-tab__active"
+    : "community-stats-tab"; 
+
+  /* This method handles members tab click action */
+  const communityMembersTabHandler = () => {
+    setIsCommunityPostsTabActive(false);
+    setIsCommunityMembersTabActive(true);
+    props.postContentDisplayHandler("members");
+  }
+  // Change the style
+  const communityMembersTabStyle = isCommunityMembersTabActive
+    ? "community-stats-tab__active"
+    : "community-stats-tab"; 
+
   return (
     <div className={style["community-stats"]}>
+      {/* Posts Tab */}
       <div
-        className={style["community-stats-tab"]}
-        onClick={() => props.postContentDisplayHandler("posts")}
+        className={style[communityPostsTabStyle]}
+        onClick={communityPostsTabHandler}
       >
         <span className={style["active-text"]}>
           {props.communityPostCounts}
         </span>
         <span className={style["inactive-text"]}>Posts</span>
       </div>
+      {/* Members Tab */}
       <div
-        className={style["community-stats-tab"]}
-        onClick={() => props.postContentDisplayHandler("members")}
+        className={style[communityMembersTabStyle]}
+        onClick={communityMembersTabHandler}
       >
         <span className={style["active-text"]}>
           {props.communityMemberCounts}
@@ -416,10 +494,19 @@ const CommunityPostsList = (props) => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [communityPostAuthorRoles, setCommunityPostAuthorRoles] = useState({});
 
+  // Check current user's community role & post author's role
+  const isUserAdmin = props.userCommunityMemberDetails?.attributes.role === "admin";
+  const isUserMod = props.userCommunityMemberDetails?.attributes.role === "mod";
+  const isUserVisiter = props.userCommunityMemberDetails == null;
+  const [friends, setFriends] = useState([]);
+
   // Fetch both posts and members when the component is loaded.
   useEffect(() => {
+    setIsLoaded(false);
+    loadFriends();
     loadPosts();
     loadMembers();
+    setIsLoaded(true);
   }, []);
 
   // Refresh posts whenever the community post skip offset has changed. The offset is changed by the Pagination component.
@@ -442,7 +529,52 @@ const CommunityPostsList = (props) => {
       setCommunityPostAuthorRoles(postAuthorRoles);
       props.updateCommunityMemberCounts(data[1]);
     }
+    setIsLoaded(true);
   };
+
+  // This method will load all the Friends
+  const loadFriends = async () => {
+    setIsLoaded(false);
+    const friends_array = []
+    let endpoint = "/connections";
+    let query = {
+      fromUserID: sessionStorage.getItem("user"),
+    };
+    const { data, errorMessage } = await genericFetch(endpoint, query);
+    // console.log(data, errorMessage)
+    if (errorMessage) {
+      setErrorMessage(errorMessage);
+    } else {
+      console.log(data[0])
+      for (let i = 0; i < data[0].length; i++){
+        // Check if the friend connection is "active"
+        if (data[0][i].attributes.status === 'active')
+        friends_array.push(data[0][i].toUserID);
+      }
+      setFriends(friends_array);
+      console.log(friends_array);
+    }
+    setIsLoaded(true);
+  }
+
+  // This method loads all the Friends Posts using genericFetch
+  /*
+  const loadFriendPosts = async () => {
+    setIsLoaded(false);
+    let endpoint = "/posts";
+    let query = {
+      authorIDIn: [165],
+      recipientGroupID: props.communityId,
+    };
+    const { data, errorMessage } = await genericFetch(endpoint, query);
+    // console.log(data, errorMessage)
+    if (errorMessage) {
+      setErrorMessage(errorMessage);
+    } else {
+      console.log(data[0])
+    }
+  }
+  */
 
   // This methods loads the community posts using genericFetch & update the community posts count stat
   const loadPosts = async () => {
@@ -464,7 +596,15 @@ const CommunityPostsList = (props) => {
     if (errorMessage) {
       setErrorMessage(errorMessage);
     } else {
+      // console.log(data[0])
+      if (isUserVisiter) {
+        // Only show public posts
+        // props.openToast({type: "info", message: "Hello there! Join the community to view other posts."});
+        setPosts(data[0].filter(post => post.attributes.public));
+      } else {
+        // Show both public + private posts
       setPosts(data[0]);
+      }
       props.updateCommunityPostCounts(data[1]);
     }
     setIsLoaded(true);
@@ -479,6 +619,9 @@ const CommunityPostsList = (props) => {
     loadPosts(); // Fetch the posts again
   };
 
+  // Sort posts by the friends connection
+  const friendsFirstPosts = posts.sort((postA, postB) => friends.includes(postB.authorID) - friends.includes(postA.authorID))
+
   // Render Component
   if (errorMessage) {
     return <div>Error: {errorMessage}</div>;
@@ -490,7 +633,7 @@ const CommunityPostsList = (props) => {
         <div>
           {/* Posts */}
           <div className={style["community-post-list"]}>
-            {posts.map((post) => (
+            {friendsFirstPosts.map((post) => (
               <CommunityPost
                 key={post.id}
                 communityId={props.communityId}
@@ -498,6 +641,8 @@ const CommunityPostsList = (props) => {
                 refreshPosts={refreshPosts}
                 userCommunityMemberDetails={props.userCommunityMemberDetails}
                 communityPostAuthorRoles={communityPostAuthorRoles}
+                isFriendPost={friends.includes(post.authorID)}
+                openToast={props.openToast}
               />
             ))}
           </div>
@@ -514,6 +659,7 @@ const CommunityPost = (props) => {
   const [isPostHidden, setIsPostHidden] = useState(false);
   const [isPostReported, setIsPostReported] = useState(false);
   const [isCommunityPostModalOpen, setIsCommunityPostModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const postActionSidemenuRef = useRef(null); // Create a ref for post action sidemenu component
 
   /* This hook check if mousedown DOM event occurs outside a post action sidemenu.  */
@@ -546,6 +692,18 @@ const CommunityPost = (props) => {
     setIsCommunityPostModalOpen(true);
   }
 
+  /* This method will open the Profile pop up Window */
+  const openProfilePage = (e) => {
+    e.stopPropagation();
+    setIsProfileModalOpen(true);
+  }
+
+  /* This method will close the Profile pop up Window */
+  const toggleProfile = (e) => {
+    props.refreshPosts(); // Refresh posts on post page modal close
+    setIsProfileModalOpen(false);
+  }
+
   // Check post author's role
   const isAuthorUser = props.post.authorID === props.userCommunityMemberDetails?.user.id;
   const isAuthorAdmin = props.communityPostAuthorRoles[props.post.authorID] === "admin";
@@ -558,6 +716,19 @@ const CommunityPost = (props) => {
     isAuthorMod ? "Mod" :
     isAuthorMember ? "Member" :
     "Departed"
+
+  function reports(props) { // gets the unique number of people that reported a post
+    const reactions = props.post.reactions;
+    // const report_count = reactions.filter(reaction => reaction.name === 'report').length;
+    // console.log(reactions)
+    return new Set(reactions
+        .map(item => {
+          if (item.name === "report") {
+            return item.reactorID;
+          }
+        })
+        .filter(item => item !== null && item !== undefined)).size
+  }
 
   /* This method handles post actions such as pinning, hiding, reporting, or deleting.
   It's passed on to its child component - postActionSidemenu, where the action options are selected. */
@@ -572,8 +743,13 @@ const CommunityPost = (props) => {
         setIsPostHidden(isPostHidden ? false : true);
         break;
       case "report":
+        props.openToast({type: "success",
+          message:
+              <span>Post has been reported</span>})
+          setIsPostReported(reports(props) >= 2)
         // console.log(option);
-        setIsPostReported(isPostReported ? false : true);
+        // reports(props.post.id)
+        // setIsPostReported(reports(props) >= 2);
         break;
       case "delete":
         // console.log(option);
@@ -594,30 +770,9 @@ const CommunityPost = (props) => {
     if (errorMessage) {
       alert(errorMessage);
     }
-    // Call refreshPosts method tell its parent component - CommunityPostList to refresh the post list
+    props.openToast({type: "success", message: "Post deleted successfully!"})
     props.refreshPosts();
   };
-
-  // Returns number of reports on a post
-  function reports(props) { // gets the unique number of people that reported a post
-    const reactions = props.post.reactions;
-    // const report_count = reactions.filter(reaction => reaction.name === 'report').length;
-    // console.log(reactions)
-    const report_count = new Set(reactions
-        .map(item => {
-          if (item.name === "report") {
-            return item.reactorID;
-          }
-        })
-        .filter(item => item !== null && item !== undefined)).size
-    // console.log(new Set(reactions.map(item => item.reactorID)).size)
-    return report_count
-    // return (
-    //     <div>
-    //       <p>{report_count}</p>
-    //     </div>
-    // );
-  }
 
   // Returns the number of likes on a post
   function likes(props){
@@ -638,11 +793,8 @@ const CommunityPost = (props) => {
   }
 
   return (
-                                                                                                    // can change to 3 for demo purposes
-    <div className={style["community-post"]} key={props.post.id} style={{ backgroundColor: reports(props) > 10 ? '#ff4700' : '#fefee2' }}>
+    <div className={style["community-post"]} key={props.post.id}>
       {/* Clickable Area */}
-      {/*{console.log(props.post.id)}*/}
-      {console.log(reports(props))}
       <div
         className={style["community-post__clickable-area"]}
         onClick={openPostPageModal}
@@ -669,7 +821,7 @@ const CommunityPost = (props) => {
             <div className={style["post-author-date"]}>
               <div className={style["post-author"]}>
                 <span className={style["inactive-text"]}>Posted By</span>
-                <Link to={`/profile/${props.post.author.id}`}>
+                <Link onClick={openProfilePage}>
                   <p
                     className={`${style["active-text"]} ${style["post-author__link"]}`}
                   >
@@ -696,7 +848,6 @@ const CommunityPost = (props) => {
           <div className={style["post-stat-labels"]}>
             <div className={style["post-stat-label"]}>
               <span className={style["active-text"]}>
-                {/*{likes(props)}*/}
                 {likes(props)}
               </span>
               <span className={style["inactive-text"]}>Likes</span>
@@ -715,11 +866,11 @@ const CommunityPost = (props) => {
       <div className={style["post-action-labels-container"]}>
         {/* Post Action Labels */}
         <div className={style["post-action-labels"]}>
-          {isPostReported && (
+          {reports(props) >= 2 && (
             <div
-              className={`${style["post-action-label"]} ${style["post-action-label__bistre"]}`}
+              className={`${style["post-action-label"]} ${style["post-action-label__red-orange"]}`}
             >
-              <span>Reported</span>
+              <span>Warning!</span>
             </div>
           )}
           {isPostHidden && (
@@ -734,6 +885,13 @@ const CommunityPost = (props) => {
               className={`${style["post-action-label"]} ${style["post-action-label__skobeloff"]}`}
             >
               <span>Pinned</span>
+            </div>
+          )}
+          {props.isFriendPost && (
+            <div
+              className={`${style["post-action-label"]} ${style["post-action-label__skobeloff"]}`}
+            >
+              <span>Friend</span>
             </div>
           )}
         </div>
@@ -769,7 +927,40 @@ const CommunityPost = (props) => {
           post_id={props.post.id}
           refreshPosts={props.refreshPosts}
           closePostPageModal={closePostPageModal}
+          openToast={props.openToast}
         />
+      </Modal>
+
+      {/* Profile Page Modal */}
+      <Modal
+        show={isProfileModalOpen}
+        onClose={toggleProfile}
+        modalStyle={{
+        width: "90%",
+        height: "90%",
+        }}
+      >
+          <ProfilePage 
+              profile_id={props.post.author.id}
+              toggleProfile={toggleProfile}
+              closePostPageModal={closePostPageModal}
+          />
+      </Modal>
+
+      {/* Profile Page Modal */}
+      <Modal
+        show={isProfileModalOpen}
+        onClose={toggleProfile}
+        modalStyle={{
+        width: "90%",
+        height: "90%",
+        }}
+      >
+          <ProfilePage 
+              profile_id={props.post.author.id}
+              toggleProfile={toggleProfile}
+              closePostPageModal={closePostPageModal}
+          />
       </Modal>
     </div>
   );
@@ -779,7 +970,6 @@ const CommunityPost = (props) => {
 const PostControlTool = (props) => {
   const [isPostSortActive, setIsPostSortActive] = useState(false);
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
-  
 
   // Toggles between post sort active and inactive
   const sortButtonToggleHandler = () => {
@@ -788,9 +978,12 @@ const PostControlTool = (props) => {
 
   /* This method opens create post page modal */
   const openCreatePostPageModal = () => {
-    setIsCreatePostModalOpen(true)
+    setIsCreatePostModalOpen(true);
+    // props.openToast({type: "info", message: "Join the community first!"})
+    // props.openToast({type: "success", message: "Successfully Created the Post!"})
+    // props.openToast({type: "error", message: <span>Server error, please contact <Link to="neil.html">developers</Link></span>, duration: 999})
   }
-
+  
   /* This method closes create post page modal */
   const closeCreatePostPageModal = () => {
     props.refreshCommunityDetails(); // Refresh the community details on post page modal close
@@ -839,6 +1032,7 @@ const PostControlTool = (props) => {
           communityId={props.communityId}
           refreshCommunityDetails={props.refreshCommunityDetails}
           closeCreatePostPageModal={closeCreatePostPageModal}
+          openToast={props.openToast}
         />
       </Modal>
     </div>
@@ -897,6 +1091,19 @@ const PostActionSidemenu = (props) => {
   // console.log(isUserVisiter)
   // console.log(props.post.id, props.post.authorID, isAuthorUser, isAuthorAdmin, isAuthorMod)
 
+  function reports(props) { // gets the unique number of people that reported a post
+    const reactions = props.post.reactions;
+    // const report_count = reactions.filter(reaction => reaction.name === 'report').length;
+    // console.log(reactions)
+    return new Set(reactions
+        .map(item => {
+          if (item.name === "report") {
+            return item.reactorID;
+          }
+        })
+        .filter(item => item !== null && item !== undefined)).size
+  }
+
   // These methods update the option labels and send the chosen action option to its parent component - CommunityPost.
   const pinActionHandler = () => {
     setIsPinned(isPinned ? false : true); // update the option status
@@ -911,11 +1118,11 @@ const PostActionSidemenu = (props) => {
   let hideOptionName = isHidden ? "Show" : "Hide"; // update the hide option label based on the state
 
   const reportActionHandler = () => {
-    setIsReported(isReported ? false : true); // update the option status
+    setIsReported(reports(props) >= 2 ? false : true); // update the option status
     report(props.post.id)
     props.postActionOptionsHandler("report"); // tell CommunityPost component that 'report' option was chosen
   };
-  let reportOptionName = isReported ? "Reported" : "Report"; // update the report option label based on the state
+  let reportOptionName = isReported ? "Report Again" : "Report"; // update the report option label based on the state
 
   const deleteActionHandler = () => {
     setIsDeleted(isDeleted ? false : true); // update the option status
@@ -927,26 +1134,26 @@ const PostActionSidemenu = (props) => {
     return (
       <div className={style["action-sidemenu"]} ref={props.postActionSidemenuRef}>
         <ul className={style["action-sidemenu-option-list"]}>
-           {/*Pin*/}
-          <li className={style["action-sidemenu-option"]} onClick={pinActionHandler}>
+          {/* Pin */}
+          {/* <li className={style["action-sidemenu-option"]} onClick={pinActionHandler}>
             <span className={`${style["square-icon"]} ${style["square-icon__skobeloff"]}`}></span>
             <span className={style["active-text"]}>{pinOptionName}</span>
-          </li>
-           {/*Hide*/}
-          {!isAuthorUser &&
+          </li> */}
+          {/* Hide */}
+          {/* {!isAuthorUser &&
             <li className={style["action-sidemenu-option"]} onClick={hideActionHandler}>
               <span className={`${style["square-icon"]} ${style["square-icon__french-bistre"]}`}></span>
               <span className={style["active-text"]}>{hideOptionName}</span>
             </li>
-          }
-           {/*Report*/}
-          {/*{!isUserVisiter && (!isAuthorUser && !isAuthorAdmin && !isAuthorMod) && (!isUserAdmin) &&*/}
+          } */}
+          {/* Report */}
+          {!isUserVisiter && (!isAuthorUser && !isAuthorAdmin && !isAuthorMod) && (!isUserAdmin) &&
             <li className={style["action-sidemenu-option"]} onClick={reportActionHandler}>
               <span className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}></span>
               <span className={style["active-text"]}>{reportOptionName}</span>
             </li>
-          {/*}*/}
-           {/*Delete*/}
+          }
+          {/* Delete */}
           {(isAuthorUser || (isUserMod && !isAuthorAdmin && !isAuthorMod) || isUserAdmin) && 
             <li className={style["action-sidemenu-option"]} onClick={deleteActionHandler}>
               <span className={`${style["square-icon"]} ${style["square-icon__red-orange"]}`}></span>
@@ -1053,6 +1260,7 @@ username, role, etc. */
 const CommunityMember = (props) => {
   const [isMemberActionActive, setIsMemberActionActive] = useState(false);
   const [isMemberReported, setIsMemberReported] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const memberActionSidemenuRef = useRef(null); // Create a ref for memver action sidemenu component
   const navigate = useNavigate(); // For navigation
 
@@ -1124,13 +1332,22 @@ const CommunityMember = (props) => {
     navigate(`/profile/${props.member.user.id}`); // navigate to member profile
   }
 
+  /* This method will open the Profile pop up Window */
+  const openProfilePage = (e) => {
+    setIsProfileModalOpen(true);
+  }
+
+  /* This method will close the Profile pop up Window */
+  const toggleProfile = (e) => {
+    setIsProfileModalOpen(false);
+  }
+
 
   return (
     <div className={commmunityMemberStyle}>
       <div 
         className={style["community-member__clickable-area"]}
-        onClick={openMemberPage}
-        on
+        onClick={openProfilePage}
       >
         {/* Community Member Profile Avatar */}
         <img
@@ -1180,6 +1397,21 @@ const CommunityMember = (props) => {
           memberActionSidemenuRef={memberActionSidemenuRef}
         />
       </div>
+
+      {/* Profile Page Modal */}
+      <Modal
+        show={isProfileModalOpen}
+        onClose={toggleProfile}
+        modalStyle={{
+        width: "90%",
+        height: "90%",
+        }}
+      >
+        <ProfilePage 
+            profile_id={props.member.user.id}
+            toggleProfile={toggleProfile}
+        />
+      </Modal>
     </div>
   );
 };
@@ -1393,15 +1625,23 @@ const AssignRoleSidemenu = (props) => {
       <div className={style["nested-action-sidemenu"]} ref={props.assignRoleSidemenuRef}>
         <ul className={style["action-sidemenu-option-list"]}>
           {/* Assign Member Role */}
-          <li className={style["action-sidemenu-option"]} onClick={() => memberRoleOptionHandler('member')}>
-            <span className={`${style["square-icon"]} ${style["square-icon__french-bistre"]}`}></span>
-            <span className={style["active-text"]}>Member</span>
-          </li>
+          {currentMemberRole === "mod" && (
+            <div>
+              <li className={style["action-sidemenu-option"]} onClick={() => memberRoleOptionHandler('member')}>
+                <span className={`${style["square-icon"]} ${style["square-icon__french-bistre"]}`}></span>
+                <span className={style["active-text"]}>Member</span>
+              </li>
+            </div>
+          )}
           {/* Assign Mod Role */}
-          <li className={style["action-sidemenu-option"]} onClick={() => memberRoleOptionHandler('mod')}>
-            <span className={`${style["square-icon"]} ${style["square-icon__french-bistre"]}`}></span>
-            <span className={style["active-text"]}>Mod</span>
-          </li>
+          {currentMemberRole === "member" && (
+            <div>
+              <li className={style["action-sidemenu-option"]} onClick={() => memberRoleOptionHandler('mod')}>
+                <span className={`${style["square-icon"]} ${style["square-icon__french-bistre"]}`}></span>
+                <span className={style["active-text"]}>Mod</span>
+              </li>
+            </div>
+          )}
         </ul>
       </div>
     );
@@ -1443,7 +1683,9 @@ const Pagination = (props) => {
       )}
 
       {/* Current Page Number */}
-      <span className={style["page-number"]}>{currentPage}</span>
+      <span className={style["page-number"]}>
+        {lastPage !== 1 ? currentPage : ""}
+      </span>
 
       {/* Next Button */}
       {currentPage < lastPage && (
