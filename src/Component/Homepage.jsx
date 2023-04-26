@@ -85,7 +85,8 @@ export default function Homepage() {
     function DefaultImage(props) {
         return (
             <div className="homepage-community-wrapper">
-                <h4>{props.nameText}</h4>
+                {/* <b>{props.nameText}</b> */}
+                <h3>{props.nameText}</h3>
                 <img
                     src={group}
                     className="homepage-community-image"
@@ -100,7 +101,8 @@ export default function Homepage() {
     function CommunityLink(props) {
         return (
             <div className="homepage-community-wrapper">
-                <h4>{props.nameText}</h4>
+                {/* <b>{props.nameText}</b> */}
+                <h3>{props.nameText}</h3>
                 <Link to={`/community/${props.communityId}`}>
                     <img
                         src={props.communityImage}
@@ -115,12 +117,12 @@ export default function Homepage() {
 
     function displayUserCommunities() {
         // want to be able to display random user communities if they have enough
-        let randomUserCommunities = (numUserCommunities > displayPerRow) ?
+        let randomUserCommunities = (numUserCommunities >= displayPerRow) ?
             [] // if they have enough let this be empty to build
             : userCommunities // otherwise just use what they have
 
         // should only get in here if they had enough to build random images
-        if (numUserCommunities > displayPerRow) {
+        if (numUserCommunities >= displayPerRow) {
             // call the function to get array of random indices
             let randomIndices = generateRandomCommunityIndices(displayPerRow, numUserCommunities)
             for (let i = 0; i < displayPerRow; i++) {
@@ -176,12 +178,12 @@ export default function Homepage() {
         let numOtherCommunities = otherCommunties.length // establish a length for loops
 
         // want to be able to display random communities if there is enough
-        let randomOtherCommunities = (otherCommunties.length > displayPerRow) ?
+        let randomOtherCommunities = (otherCommunties.length >= displayPerRow) ?
             [] // if there is enough let this be empty to build
             : otherCommunties // otherwise just use what they have
 
         // should only get in here if enough communities remain to build random images
-        if (numOtherCommunities > displayPerRow) {
+        if (numOtherCommunities >= displayPerRow) {
             // call the function to get array of random indices
             let randomIndices = generateRandomCommunityIndices(displayPerRow, numOtherCommunities)
             for (let i = 0; i < displayPerRow; i++) {
@@ -251,17 +253,21 @@ export default function Homepage() {
                         {/* userName should appear here from earlier fetch */}
                         Welcome{` ${username}!`}
                     </h1>
-                    <h2>Jump in to your community!</h2>
+                    {/* <h2>Jump in to your community!</h2> */}
                 </div>
                 <br />
                 {/* Display communities randomly mapped from communities user is part of */}
-                <h3 className="homepage-row-intro">Some of your communities:</h3>
+                <div className="homepage-row-intro">
+                    <h2>Jump back into some of your communities:</h2>
+                </div>
                 <div className="homepage-communities-row">
                     {displayUserCommunities()}
                 </div>
 
                 {/* Display communities randomly mapped from communities user is not part of */}
-                <h3 className="homepage-row-intro">Some other communities:</h3>
+                <div className="homepage-row-intro">
+                    <h2>Jump into some other random communities:</h2>
+                </div>
                 <div className="homepage-communities-row">
                     {displayOtherCommunities(otherCommunties)}
                 </div>
