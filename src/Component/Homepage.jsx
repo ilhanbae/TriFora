@@ -271,6 +271,7 @@ export default function Homepage() {
                 <div className="homepage-communities-row">
                     {displayOtherCommunities(otherCommunties)}
                 </div>
+                <Link className="hyperlink" to="/communities">Click here to view all communities you are not part of</Link>
             </div>
         )
     }

@@ -84,25 +84,25 @@ export default function OtherCommunitiesPage() {
             <div className="homepage-wrapper">
                 {/* Display communities randomly mapped from communities user is not part of */}
                 <div className="homepage-row-intro">
-                    <h1>Communities you are not a part of:</h1>
+                    <h1>Here are all the communities you haven't joined:</h1>
                 </div>
-                    {rows.map(row => (
-                        <div className="homepage-communities-row">
-                            {row.map(community => (
-                                <div className="homepage-community-wrapper">
-                                    <h2>{community.name}</h2>
-                                    <Link to={`/community/${community.id}`}>
-                                        <img
-                                            src={community.attributes.design.bannerProfileImage}
-                                            className="homepage-community-image"
-                                            alt={community.name}
-                                            title={community.name}
-                                        />
-                                    </Link>
-                                </div>
-                            ))}
-                        </div>
-                    ))}
+                {rows.map(row => (
+                    <div className="homepage-communities-row">
+                        {row.map(community => (
+                            <div className="homepage-community-wrapper">
+                                <h2>{community.name}</h2>
+                                <Link to={`/community/${community.id}`}>
+                                    <img
+                                        src={community.attributes.design.bannerProfileImage}
+                                        className="homepage-community-image"
+                                        alt={community.name}
+                                        title={community.name}
+                                    />
+                                </Link>
+                            </div>
+                        ))}
+                    </div>
+                ))}
             </div>
         )
     }

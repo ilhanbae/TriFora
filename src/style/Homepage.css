@@ -46,6 +46,27 @@
   }
 }
 
+.hyperlink {
+  text-decoration: underline;
+  font-size: 1.125rem;
+}
+
+/* unvisited link */
+.hyperlink:link {
+  color: blue;
+}
+
+/* visited link */
+.hyperlink:visited {
+  color: purple;
+  text-decoration: underline;
+}
+
+/* mouse over link */
+.hyperlink:hover {
+  cursor: pointer;
+}
+
 .homepage-community-wrapper {
     /* margin-top: 30px; */
     /* margin-bottom: 30px; */
