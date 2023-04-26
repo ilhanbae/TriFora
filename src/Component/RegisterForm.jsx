@@ -69,25 +69,12 @@ export default class RegisterForm extends React.Component {
         this.setState({
             password: event.target.value
         })
-        // const passwordInput = event.target;
-        // const password = passwordInput.value;
-        // if (password.length < 6 || password.length > 20){
-        //     event.target.setCustomValidity("Password must be between 6 to 20 characters")
-        // } else {
-        //     event.target.setCustomValidity("")
-        // }
       };
 
     confirm_passwordHandler = event => {
         this.setState({
           confirm_password: event.target.value
         });
-        // const password = document.getElementById("password1").value;
-        // if (event.target.value !== password) {
-        //     event.target.setCustomValidity("Passwords are not the same");
-        // } else {
-        //     event.target.setCustomValidity("");
-        // }
     };
 
 
@@ -101,21 +88,6 @@ export default class RegisterForm extends React.Component {
         this.setState({
             email: event.target.value
         });
-        // const emailInput = event.target;
-        // const email = emailInput.value;
-        // if (email.length === 0){
-        //     emailInput.setCustomValidity("Email Detected");
-        //     emailInput.reportValidity();
-        // } else if (email.includes("@") === false) {
-        //     emailInput.setCustomValidity("Email is in an incorrect format");
-        //     emailInput.reportValidity();
-        // } else {
-        //     emailInput.setCustomValidity("");
-        //     emailInput.reportValidity();
-        // }
-        // this.setState({
-        //     email: email
-        // });
     };
 
     upload_img = event => {

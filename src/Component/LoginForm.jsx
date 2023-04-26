@@ -38,9 +38,24 @@ export default class LoginForm extends React.Component {
         event.preventDefault();
 
         if (this.state.email.length === 0) {
-            alert("Username can not be empty");
+            console.log(this.state.email.value)
+            const emailInput = document.getElementById('email')
+            emailInput.setCustomValidity("Email Missing")
+            emailInput.reportValidity()
+            event.preventDefault();
+        } else if (this.state.email.includes("@") === false || this.state.email.includes(".com") === false){
+            const emailInput = document.getElementById('email')
+            console.log(this.state.email.value)
+
+            emailInput.setCustomValidity("Check Email Formatting")
+            emailInput.reportValidity()
+            event.preventDefault();
         } else if (this.state.password.length < 5 || this.state.password.length > 20) {
-            alert("Password must be between 5 and 20 characters")
+            const passwordInput = document.getElementById('password')
+            passwordInput.setCustomValidity("Invalid Email and Password Combination")
+            passwordInput.reportValidity()
+            event.preventDefault();
+
         } else {
 
             //make the api call to the authentication page
@@ -102,10 +117,12 @@ export default class LoginForm extends React.Component {
                         </Link> */}
 
                         <label className='input1'>
-                            <input type="text" placeholder="Email: " className='input1-stuff' onChange={this.EmailHandler} />
+                            <input id='email' type="text" placeholder="Email: " className='input1-stuff'
+                                   onChange={this.EmailHandler} required/>
                         </label>
                         <label className='input1'>
-                            <input type="password" placeholder="Password: " className='input1-stuff' onChange={this.PasswordHandler} />
+                            <input id='password' type="password" placeholder="Password: " className='input1-stuff'
+                                   onChange={this.PasswordHandler} required/>
                         </label>
                         <label className='input1'>
                         </label>
