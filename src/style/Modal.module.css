@@ -30,8 +30,6 @@
 .modal-header {
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
-  /* background-color: red; */
 }
 
 /* Modal Title */
@@ -40,19 +38,19 @@
   font-size: 1.313rem;
   letter-spacing: 0.1px;
   font-weight: 300;
-  text-decoration: underline overline;
+  /* text-decoration: underline overline; */
 }
 
 /* Close Button */
 .close {
+  color: rgba(61, 33, 26, 0.5);
   margin-left: auto;
-  color: #aaa;
   font-size: 35px;
   font-weight: bold;
 }
 .close:hover,
 .close:focus {
-  color: black;
+  color: var(--bistre);
   text-decoration: none;
   cursor: pointer;
 }
@@ -64,5 +62,4 @@
   align-items: center;
   justify-content: center;
   overflow: auto;
-  /* background-color: green; */
 }
