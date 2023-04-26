@@ -148,7 +148,7 @@ export default class RegisterForm extends React.Component {
             event.preventDefault();
         } else if (this.state.username.length < 3 || this.state.username.length > 20){
             const usernameInput = document.getElementById('username')
-            usernameInput.setCustomValidity("Username should be between 6 to 20 characters");
+            usernameInput.setCustomValidity("Username should be between 3 to 20 characters");
             usernameInput.reportValidity()
             event.preventDefault();
 
