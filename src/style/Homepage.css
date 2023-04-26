@@ -1,6 +1,7 @@
 .homepage-wrapper {
     display: flex;
-    flex-flow: column wrap;
+    /* flex-flow: column wrap; */
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     padding-top: 2%;

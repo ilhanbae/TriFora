@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import genericFetch from "../helper/genericFetch";
+import "../style/Homepage.css"; // can just use the homepage formatting I think
 
 export default function OtherCommunitiesPage() {
     const [joinedIds, setJoinedIds] = useState();
@@ -80,23 +81,28 @@ export default function OtherCommunitiesPage() {
                 : rows[rows.length - 1].push(key)) && rows;
         }, []);
         return (
-            <div className="homepageA-wrapper">
+            <div className="homepage-wrapper">
                 {/* Display communities randomly mapped from communities user is not part of */}
-                <h3 className="homepageA-row-intro">Communities you are not a part of:</h3>
-                <div className="homepageA-communities-row">
+                <div className="homepage-row-intro">
+                    <h1>Communities you are not a part of:</h1>
+                </div>
                     {rows.map(row => (
-                        <div >
+                        <div className="homepage-communities-row">
                             {row.map(community => (
-                                <img height="200px" width={"200px"}
-                                    src={community.attributes.design.bannerProfileImage}
-                                    // className="homepageA-community-image"
-                                    alt={community.name}
-                                    title={community.name}
-                                />
+                                <div className="homepage-community-wrapper">
+                                    <h2>{community.name}</h2>
+                                    <Link to={`/community/${community.id}`}>
+                                        <img
+                                            src={community.attributes.design.bannerProfileImage}
+                                            className="homepage-community-image"
+                                            alt={community.name}
+                                            title={community.name}
+                                        />
+                                    </Link>
+                                </div>
                             ))}
                         </div>
                     ))}
-                </div>
             </div>
         )
     }
