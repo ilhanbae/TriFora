@@ -99,7 +99,14 @@ const LoginOrProfile = (props) => {
   } else {
     console.log("Logged In");
     return (
+      // <>
+      //   {(props.radioValue === "server") && <Homepage />}
+      //   {(props.radioValue === "A") && <HomepageA />}
+      //   {(props.radioValue === "B") && <HomepageB />}
+      // </>
+      // <Homepage />
       <Homepage />
+      // <HomepageB />
       // <ProfilePage />
     );
   }
