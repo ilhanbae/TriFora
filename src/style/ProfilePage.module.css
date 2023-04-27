@@ -641,6 +641,64 @@
     color: #000000;
 }
 
+.show_BlockedFriend{
+    box-sizing: border-box;
+
+    margin: 10px;
+
+    width: 180px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: black;
+    padding: 5px;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.show_BlockedFriend:hover{
+    background-color: #3D211A;
+    color: white;
+}
+
+.show_Friend{
+    box-sizing: border-box;
+
+    margin: 10px;
+
+    width: 120px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: black;
+    padding: 5px;
+
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.show_Friend:hover{
+    background-color: #3D211A;
+    color: white;
+}
+
 .friend_card_bar{
     box-sizing: border-box;
     display: flex;
@@ -702,6 +760,26 @@
 }
 
 .friend_remove:hover{
+    background-color: #3D211A;
+    color: white;
+}
+
+.friend_block{
+    box-sizing: border-box;
+
+    width: 80px;
+    height: 30px;
+
+    margin: 10px;
+
+    color: #000000;
+
+    background: #FF0000;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.friend_block:hover{
     background-color: #3D211A;
     color: white;
 }

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import React, {useEffect, useRef, useState} from "react";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import Modal from "./Modal";
 import CommunityPageSetting from "./CommunityPageSetting";
 import PostPage from "./PostPage";
@@ -14,6 +14,7 @@ import defaultProfileImage from "../assets/defaultProfileImage.png";
 import defaultPostImage from "../assets/defaultPostImage.png";
 import defaultCommunityImage from "../assets/defaultCommunityImage.png";
 import ProfilePage from "./ProfilePage";
+import report from "../helper/report";
 
 /* This component renders a single community page. Inside the community page, 
 there are posts tab and members tab. */
@@ -498,6 +499,7 @@ const CommunityPostsList = (props) => {
   const isUserMod = props.userCommunityMemberDetails?.attributes.role === "mod";
   const isUserVisiter = props.userCommunityMemberDetails == null;
   const [friends, setFriends] = useState([]);
+  const [blocked_friends, setBlockedFriends] = useState([]);
 
   // Fetch both posts and members when the component is loaded.
   useEffect(() => {
@@ -533,6 +535,7 @@ const CommunityPostsList = (props) => {
 
   // This method will load all the Friends
   const loadFriends = async () => {
+    const friends_array = []
     setIsLoaded(false);
     const friends_array = []
     let endpoint = "/connections";
@@ -547,11 +550,16 @@ const CommunityPostsList = (props) => {
       console.log(data[0])
       for (let i = 0; i < data[0].length; i++){
         // Check if the friend connection is "active"
-        if (data[0][i].attributes.status === 'active')
-        friends_array.push(data[0][i].toUserID);
+        if (data[0][i].attributes.status === 'active'){
+          friends_array.push(data[0][i].toUserID);
+        } else if (data[0][i].attributes.status === 'blocked'){
+          blocked_friends_array.push(data[0][i].toUserID);
+        }
       }
       setFriends(friends_array);
       console.log(friends_array);
+      setBlockedFriends(blocked_friends_array);
+      console.log(blocked_friends_array);
     }
     setIsLoaded(true);
   }
@@ -632,18 +640,51 @@ const CommunityPostsList = (props) => {
         <div>
           {/* Posts */}
           <div className={style["community-post-list"]}>
-            {friendsFirstPosts.map((post) => (
-              <CommunityPost
-                key={post.id}
-                communityId={props.communityId}
-                post={post}
-                refreshPosts={refreshPosts}
-                userCommunityMemberDetails={props.userCommunityMemberDetails}
-                communityPostAuthorRoles={communityPostAuthorRoles}
-                isFriendPost={friends.includes(post.authorID)}
-                openToast={props.openToast}
-              />
-            ))}
+            {/* Load All Friend Posts */}
+            {posts.map((post) =>{
+              console.log(friends);
+              console.log(post.authorID);
+              console.log(friends.includes(post.authorID))
+              if (friends.includes(post.authorID) === true){
+                return (
+                  <CommunityPost
+                  key={post.id}
+                  communityId={props.communityId}
+                  post={post}
+                  refreshPosts={refreshPosts}
+                  userCommunityMemberDetails={props.userCommunityMemberDetails}
+                  communityPostAuthorRoles={communityPostAuthorRoles}
+                  isFriendPost={true}
+                  />
+                );
+              }
+            }
+            )}
+
+            {/* Load All Non-Friend Posts */}
+            {posts.map((post) =>{
+              console.log(friends);
+              console.log(post.authorID);
+              console.log(friends.includes(post.authorID))
+              if (friends.includes(post.authorID) === false){
+                return (
+                  <CommunityPost
+                  key={post.id}
+                  communityId={props.communityId}
+                  post={post}
+                  refreshPosts={refreshPosts}
+                  userCommunityMemberDetails={props.userCommunityMemberDetails}
+                  communityPostAuthorRoles={communityPostAuthorRoles}
+                  isFriendPost={false}
+                  />
+                );
+              } else {
+                return (
+                  <></>
+                );
+              }
+            }
+            )}
           </div>
         </div>
       );
@@ -716,6 +757,19 @@ const CommunityPost = (props) => {
     isAuthorMember ? "Member" :
     "Departed"
 
+  function reports(props) { // gets the unique number of people that reported a post
+    const reactions = props.post.reactions;
+    // const report_count = reactions.filter(reaction => reaction.name === 'report').length;
+    // console.log(reactions)
+    return new Set(reactions
+        .map(item => {
+          if (item.name === "report") {
+            return item.reactorID;
+          }
+        })
+        .filter(item => item !== null && item !== undefined)).size
+  }
+
   /* This method handles post actions such as pinning, hiding, reporting, or deleting.
   It's passed on to its child component - postActionSidemenu, where the action options are selected. */
   const postActionOptionsHandler = (option) => {
@@ -729,8 +783,13 @@ const CommunityPost = (props) => {
         setIsPostHidden(isPostHidden ? false : true);
         break;
       case "report":
+        props.openToast({type: "success",
+          message:
+              <span>Post has been reported</span>})
+          setIsPostReported(reports(props) >= 2)
         // console.log(option);
-        setIsPostReported(isPostReported ? false : true);
+        // reports(props.post.id)
+        // setIsPostReported(reports(props) >= 2);
         break;
       case "delete":
         // console.log(option);
@@ -754,6 +813,24 @@ const CommunityPost = (props) => {
     props.openToast({type: "success", message: "Post deleted successfully!"})
     props.refreshPosts();
   };
+
+  // Returns the number of likes on a post
+  function likes(props){
+    const reactions = props.post.reactions;
+    console.log(reactions)
+    const like_count = new Set(reactions
+        .map(item => {
+          if (item.name === "like") {
+            return item.reactorID;
+          }
+        })
+        .filter(item => item !== null && item !== undefined)).size
+    return (
+        <div>
+          <p>{like_count}</p>
+        </div>
+    );
+  }
 
   return (
     <div className={style["community-post"]} key={props.post.id}>
@@ -811,7 +888,7 @@ const CommunityPost = (props) => {
           <div className={style["post-stat-labels"]}>
             <div className={style["post-stat-label"]}>
               <span className={style["active-text"]}>
-                {props.post.reactions.length}
+                {likes(props)}
               </span>
               <span className={style["inactive-text"]}>Likes</span>
             </div>
@@ -829,11 +906,11 @@ const CommunityPost = (props) => {
       <div className={style["post-action-labels-container"]}>
         {/* Post Action Labels */}
         <div className={style["post-action-labels"]}>
-          {isPostReported && (
+          {reports(props) >= 2 && (
             <div
-              className={`${style["post-action-label"]} ${style["post-action-label__bistre"]}`}
+              className={`${style["post-action-label"]} ${style["post-action-label__red-orange"]}`}
             >
-              <span>Reported</span>
+              <span>Warning!</span>
             </div>
           )}
           {isPostHidden && (
@@ -1054,6 +1131,19 @@ const PostActionSidemenu = (props) => {
   // console.log(isUserVisiter)
   // console.log(props.post.id, props.post.authorID, isAuthorUser, isAuthorAdmin, isAuthorMod)
 
+  function reports(props) { // gets the unique number of people that reported a post
+    const reactions = props.post.reactions;
+    // const report_count = reactions.filter(reaction => reaction.name === 'report').length;
+    // console.log(reactions)
+    return new Set(reactions
+        .map(item => {
+          if (item.name === "report") {
+            return item.reactorID;
+          }
+        })
+        .filter(item => item !== null && item !== undefined)).size
+  }
+
   // These methods update the option labels and send the chosen action option to its parent component - CommunityPost.
   const pinActionHandler = () => {
     setIsPinned(isPinned ? false : true); // update the option status
@@ -1068,10 +1158,11 @@ const PostActionSidemenu = (props) => {
   let hideOptionName = isHidden ? "Show" : "Hide"; // update the hide option label based on the state
 
   const reportActionHandler = () => {
-    setIsReported(isReported ? false : true); // update the option status
+    setIsReported(reports(props) >= 2 ? false : true); // update the option status
+    report(props.post.id)
     props.postActionOptionsHandler("report"); // tell CommunityPost component that 'report' option was chosen
   };
-  let reportOptionName = isReported ? "Reported" : "Report"; // update the report option label based on the state
+  let reportOptionName = isReported ? "Report Again" : "Report"; // update the report option label based on the state
 
   const deleteActionHandler = () => {
     setIsDeleted(isDeleted ? false : true); // update the option status
@@ -1096,12 +1187,12 @@ const PostActionSidemenu = (props) => {
             </li>
           } */}
           {/* Report */}
-          {/* {!isUserVisiter && (!isAuthorUser && !isAuthorAdmin && !isAuthorMod) && (!isUserAdmin) &&
+          {!isUserVisiter && (!isAuthorUser && !isAuthorAdmin && !isAuthorMod) && (!isUserAdmin) &&
             <li className={style["action-sidemenu-option"]} onClick={reportActionHandler}>
               <span className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}></span>
               <span className={style["active-text"]}>{reportOptionName}</span>
             </li>
-          } */}
+          }
           {/* Delete */}
           {(isAuthorUser || (isUserMod && !isAuthorAdmin && !isAuthorMod) || isUserAdmin) && 
             <li className={style["action-sidemenu-option"]} onClick={deleteActionHandler}>
