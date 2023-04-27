@@ -535,9 +535,9 @@ const CommunityPostsList = (props) => {
 
   // This method will load all the Friends
   const loadFriends = async () => {
-    const friends_array = []
     setIsLoaded(false);
-    const friends_array = []
+    const friends_array = [];
+    const blocked_friends_array = [];
     let endpoint = "/connections";
     let query = {
       fromUserID: sessionStorage.getItem("user"),
@@ -563,25 +563,6 @@ const CommunityPostsList = (props) => {
     }
     setIsLoaded(true);
   }
-
-  // This method loads all the Friends Posts using genericFetch
-  /*
-  const loadFriendPosts = async () => {
-    setIsLoaded(false);
-    let endpoint = "/posts";
-    let query = {
-      authorIDIn: [165],
-      recipientGroupID: props.communityId,
-    };
-    const { data, errorMessage } = await genericFetch(endpoint, query);
-    // console.log(data, errorMessage)
-    if (errorMessage) {
-      setErrorMessage(errorMessage);
-    } else {
-      console.log(data[0])
-    }
-  }
-  */
 
   // This methods loads the community posts using genericFetch & update the community posts count stat
   const loadPosts = async () => {
@@ -642,9 +623,9 @@ const CommunityPostsList = (props) => {
           <div className={style["community-post-list"]}>
             {/* Load All Friend Posts */}
             {posts.map((post) =>{
-              console.log(friends);
-              console.log(post.authorID);
-              console.log(friends.includes(post.authorID))
+              //console.log(friends);
+              //console.log(post.authorID);
+              //console.log(friends.includes(post.authorID))
               if (friends.includes(post.authorID) === true){
                 return (
                   <CommunityPost
@@ -663,9 +644,9 @@ const CommunityPostsList = (props) => {
 
             {/* Load All Non-Friend Posts */}
             {posts.map((post) =>{
-              console.log(friends);
-              console.log(post.authorID);
-              console.log(friends.includes(post.authorID))
+              //console.log(friends);
+              //console.log(post.authorID);
+              //console.log(friends.includes(post.authorID))
               if (friends.includes(post.authorID) === false){
                 return (
                   <CommunityPost

@@ -31,7 +31,7 @@ export default class ProfilePage extends React.Component {
             // Blocked Friend List
             blocked_friend_list: [],
 
-            // Others
+            // Used for Friend Connections
             same_user_profile: false,
             user_connection: false,
             fromUser_toUser_connection_id: "", /* This connection_id contain the id from Session Storage User to current viewing user */
@@ -42,6 +42,10 @@ export default class ProfilePage extends React.Component {
 
             // Switch for Friend bar
             show_BlockedFriend: false,
+
+            // Used for block connections
+            user_block_connection: false,
+
         };
     }
  
@@ -51,6 +55,7 @@ export default class ProfilePage extends React.Component {
         this.load_friend(this.state.user_id);
         this.load_blocked_friend(this.state.user_id);
         this.check_user_connection(this.state.user_id);
+        this.check_user_block_connection(this.state.user_id);
         console.log("Profile ID: ", this.props.profile_id)
     }
 
@@ -326,7 +331,55 @@ export default class ProfilePage extends React.Component {
                     console.log("ERROR loading Friends")
                 }
             );
+        }
+    }
 
+    // pass a user_id, check if the user_id have a block connection with the user in sessionStorage 
+    check_user_block_connection = (user_id) => {
+        // If the two user ID are equal, this means it is the same person, no need to check connection
+        if (user_id.toString() === sessionStorage.getItem("user")){
+            this.setState({
+                same_user_profile: true,
+            });
+        } else {
+            // Get the connection from "the user of Session Storage" to "the user_id"
+            let url_1 = process.env.REACT_APP_API_PATH+"/connections?fromUserID=" + sessionStorage.getItem("user") + "&" + "toUserID=" + user_id;
+            fetch(url_1, {
+            method: "get",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+sessionStorage.getItem("token")
+            },
+            })
+            .then(res => res.json())
+            .then(
+                result => {
+                console.log(result);
+                if (result[0].length !== 0){
+                    //console.log("Have Connection (Friend or Block)!!!");
+                    if (result[0][0].attributes.status === 'active' || result[0][0].attributes.status === 'inactive'){
+                        //console.log("Have Friend Connection!!!");
+                        this.setState({
+                            user_block_connection: false
+                        })
+                    } else if (result[0][0].attributes.status === 'blocked') {
+                        //console.log("Have Block Connection!!!");
+                        this.setState({
+                            user_block_connection: true
+                        })
+                    }
+                } else {
+                    //console.log("No Connection!!!")
+                    this.setState({
+                        user_block_connection: false
+                    })
+                }
+                },
+                error => {
+                    //alert("ERROR loading Friends");
+                    console.log("ERROR loading Block user")
+                }
+            );
         }
     }
 
@@ -347,7 +400,7 @@ export default class ProfilePage extends React.Component {
                 toUserID: user_id,
                 attributes: {
                     status: "inactive",
-                    type: "friend"
+                    type: "pending"
                 },
             })
             })
@@ -560,6 +613,242 @@ export default class ProfilePage extends React.Component {
         }
     }
 
+    // This function will block a user or a friend
+    // If the user is not a friend, create a new one way connection with "status" set to "blocked"
+    // If the user is a friend, update the one way connection with "status" set to "blocked"
+    block_user = (user_id) => {
+        // If user logged in, block the user
+        if (sessionStorage.getItem("user")){
+            // Check the connection between two users
+            let url_1 = process.env.REACT_APP_API_PATH+"/connections?fromUserID=" + sessionStorage.getItem("user") + "&" + "toUserID=" + user_id;
+            fetch(url_1, {
+            method: "get",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+sessionStorage.getItem("token")
+            },
+            })
+            .then(res => res.json())
+            .then(
+                result => {
+                console.log(result);
+                if (result[0].length !== 0){
+                    //console.log("Have Connection (Friend or Block)!!!");
+                    if (result[0][0].attributes.status === 'active'){
+                        // Update the one way connection with "status" set to "blocked"
+                        //console.log("Have Friend Connection!!!");
+                        fetch(process.env.REACT_APP_API_PATH+"/connections/" + result[0][0].id, {
+                            method: "PATCH",
+                            headers: {
+                              'Content-Type': 'application/json',
+                              'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                            },
+                            body: JSON.stringify({
+                                attributes: {
+                                    status: "blocked",
+                                    type: "friend"
+                                }
+                            })
+                            })
+                            .then(res => res.json())
+                            .then(
+                              result => {
+                                console.log(result)
+                                this.check_user_connection(user_id);
+                                this.check_user_block_connection(user_id);
+                              },
+                              error => {
+                                //alert("error!");
+                                console.log("error!")
+                              }
+                            );
+                    } else if (result[0][0].attributes.status === 'inactive'){
+                        // Update the one way connection with "status" set to "blocked"
+                        //console.log("Have Friend Connection!!!");
+                        fetch(process.env.REACT_APP_API_PATH+"/connections/" + result[0][0].id, {
+                            method: "PATCH",
+                            headers: {
+                              'Content-Type': 'application/json',
+                              'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                            },
+                            body: JSON.stringify({
+                                attributes: {
+                                    status: "blocked",
+                                    type: "pending"
+                                }
+                            })
+                            })
+                            .then(res => res.json())
+                            .then(
+                              result => {
+                                console.log(result)
+                                this.check_user_connection(user_id);
+                                this.check_user_block_connection(user_id);
+                              },
+                              error => {
+                                //alert("error!");
+                                console.log("error!")
+                              }
+                            );
+                    }
+                } else {
+                    // Create a new connection between users, set "status" to "blocked"
+                    //console.log("No Connection!!!")
+                    let url = process.env.REACT_APP_API_PATH+"/connections";
+                    fetch(url, {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                    },
+                    body: JSON.stringify({
+                        fromUserID: sessionStorage.getItem("user"),
+                        toUserID: user_id,
+                        attributes: {
+                            status: "blocked",
+                            type: "not-friend",
+                        },
+                    })
+                    })
+                    .then(res => res.json())
+                    .then(
+                        result => {
+                        console.log(result);
+                        this.check_user_connection(user_id);
+                        this.check_user_block_connection(user_id);
+                        },
+                        error => {
+                            //alert("ERROR sending Friend Request");
+                            console.log("ERROR loading Friend Request")
+                        }
+                    );
+                }
+                },
+                error => {
+                    //alert("ERROR loading Friends");
+                    console.log("ERROR loading Block user")
+                }
+            );
+
+        // Check if user not logged in, Login First
+        } else {
+            console.log("Please Login First!")
+        }
+    }
+
+    // This function will unblock a user 
+    // If the blocked user is a friend, update the one way block connection by setting "status" to "active"
+    // If the blocked user is not a friend, delete the one way block connection
+    unblock_user = (user_id) => {
+        // If user logged in, block the user
+        if (sessionStorage.getItem("user")){
+            // Check the connection between two users
+            let url_1 = process.env.REACT_APP_API_PATH+"/connections?fromUserID=" + sessionStorage.getItem("user") + "&" + "toUserID=" + user_id;
+            fetch(url_1, {
+            method: "get",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+sessionStorage.getItem("token")
+            },
+            })
+            .then(res => res.json())
+            .then(
+                result => {
+                console.log(result);
+                // If the blocked user is a 'friend'
+                if (result[0][0].attributes.type === 'friend'){
+                    // Update the one way connection with "status" set to "active"
+                    //console.log("Have Friend Connection!!!");
+                    fetch(process.env.REACT_APP_API_PATH+"/connections/" + result[0][0].id, {
+                        method: "PATCH",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                        },
+                        body: JSON.stringify({
+                            attributes: {
+                                status: "active",
+                                type: "friend"
+                            }
+                        })
+                        })
+                        .then(res => res.json())
+                        .then(
+                            result => {
+                            console.log(result)
+                            this.check_user_connection(user_id);
+                            this.check_user_block_connection(user_id);
+                            },
+                            error => {
+                            //alert("error!");
+                            console.log("error!")
+                            }
+                        );
+                } else if (result[0][0].attributes.type === 'pending'){
+                    // Update the one way connection with "status" set to "inactive"
+                    //console.log("Have Friend Connection!!!");
+                    fetch(process.env.REACT_APP_API_PATH+"/connections/" + result[0][0].id, {
+                        method: "PATCH",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                        },
+                        body: JSON.stringify({
+                            attributes: {
+                                status: "inactive",
+                                type: "pending"
+                            }
+                        })
+                        })
+                        .then(res => res.json())
+                        .then(
+                            result => {
+                            console.log(result)
+                            this.check_user_connection(user_id);
+                            this.check_user_block_connection(user_id);
+                            },
+                            error => {
+                            //alert("error!");
+                            console.log("error!")
+                            }
+                        );
+                } else if (result[0][0].attributes.type === 'not-friend'){
+                    // Delete the one way connection between users
+                    //console.log("Have Friend Connection!!!");
+                    fetch(process.env.REACT_APP_API_PATH+"/connections/" + result[0][0].id, {
+                        method: "Delete",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                        },
+                        })
+                        .then(res => res.json())
+                        .then(
+                            result => {
+                            console.log(result)
+                            this.check_user_connection(user_id);
+                            this.check_user_block_connection(user_id);
+                            },
+                            error => {
+                            //alert("error!");
+                            console.log("error!")
+                            }
+                        );
+                }
+            },
+            error => {
+                //alert("ERROR loading Friends");
+                console.log("ERROR loading Block user")
+            });
+
+        // Check if user not logged in, Login First
+        } else {
+            console.log("Please Login First!")
+        }
+
+
+    }
+
     swtich_friendbar = () =>{
         this.setState({
             show_BlockedFriend: !this.state.show_BlockedFriend,
@@ -597,6 +886,12 @@ export default class ProfilePage extends React.Component {
                         accept_friend={this.accept_friend}
                         reject_friend={this.reject_friend}
                         ClickEditProfile={this.ClickEditProfile}
+                        />
+
+                        <Render_Block_Button 
+                        state={this.state}
+                        block_user={this.block_user}
+                        unblock_user={this.unblock_user}
                         />
 
                         <Modal
@@ -714,6 +1009,23 @@ const Render_Buttons = (props) => {
                 <button className={ProfilePageCSS.accept_button} onClick={() => props.accept_friend(props.state.user_id)} >Accept</button>
                 <button className={ProfilePageCSS.reject_button} onClick={() => props.reject_friend(props.state.user_id)} >Reject</button>
             </div>
+        );
+    }
+}
+
+const Render_Block_Button = (props) => {
+    if (props.state.same_user_profile === true){
+        return (
+            <></>
+        );
+    } else if (props.state.user_block_connection === false){
+        return (
+            <button className={ProfilePageCSS.Block_button} onClick={() => props.block_user(props.state.user_id)} >Block</button>
+        );
+
+    } else if (props.state.user_block_connection === true) {
+        return (
+            <button className={ProfilePageCSS.Unblock_button} onClick={() => props.unblock_user(props.state.user_id)} >Unblock</button>
         );
     }
 }

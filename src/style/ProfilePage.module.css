@@ -230,6 +230,56 @@
     color: white;
 }
 
+.Block_button{
+    box-sizing: border-box;
+
+    margin: 10px;
+
+    width: 100px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    color: black;
+    padding: 5px;
+
+    background: red;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.Block_button:hover {
+    background-color: #3D211A;
+    color: white;
+}
+
+.Unblock_button{
+    box-sizing: border-box;
+
+    margin: 10px;
+
+    width: 100px;
+    height: 40px;
+
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    color: black;
+    padding: 5px;
+
+    background: red;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.Unblock_button:hover {
+    background-color: #3D211A;
+    color: white;
+}
+
 /* title bar under 700px */
 @media (max-width: 700px){
     .title-bar-buttons{
