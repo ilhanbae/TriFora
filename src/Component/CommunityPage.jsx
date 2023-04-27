@@ -609,7 +609,7 @@ const CommunityPostsList = (props) => {
 
   // Sort posts by the friends connection
   const friendsFirstPosts = posts.sort((postA, postB) => friends.includes(postB.authorID) - friends.includes(postA.authorID))
-
+  const remove_BlockedPosts = friendsFirstPosts.filter((post) => blocked_friends.includes(post.authorID) !== true)
   // Render Component
   if (errorMessage) {
     return <div>Error: {errorMessage}</div>;
@@ -621,51 +621,18 @@ const CommunityPostsList = (props) => {
         <div>
           {/* Posts */}
           <div className={style["community-post-list"]}>
-            {/* Load All Friend Posts */}
-            {posts.map((post) =>{
-              //console.log(friends);
-              //console.log(post.authorID);
-              //console.log(friends.includes(post.authorID))
-              if (friends.includes(post.authorID) === true){
-                return (
-                  <CommunityPost
-                  key={post.id}
-                  communityId={props.communityId}
-                  post={post}
-                  refreshPosts={refreshPosts}
-                  userCommunityMemberDetails={props.userCommunityMemberDetails}
-                  communityPostAuthorRoles={communityPostAuthorRoles}
-                  isFriendPost={true}
-                  />
-                );
-              }
-            }
-            )}
-
-            {/* Load All Non-Friend Posts */}
-            {posts.map((post) =>{
-              //console.log(friends);
-              //console.log(post.authorID);
-              //console.log(friends.includes(post.authorID))
-              if (friends.includes(post.authorID) === false){
-                return (
-                  <CommunityPost
-                  key={post.id}
-                  communityId={props.communityId}
-                  post={post}
-                  refreshPosts={refreshPosts}
-                  userCommunityMemberDetails={props.userCommunityMemberDetails}
-                  communityPostAuthorRoles={communityPostAuthorRoles}
-                  isFriendPost={false}
-                  />
-                );
-              } else {
-                return (
-                  <></>
-                );
-              }
-            }
-            )}
+            {remove_BlockedPosts.map((post) => (
+              <CommunityPost
+                key={post.id}
+                communityId={props.communityId}
+                post={post}
+                refreshPosts={refreshPosts}
+                userCommunityMemberDetails={props.userCommunityMemberDetails}
+                communityPostAuthorRoles={communityPostAuthorRoles}
+                isFriendPost={friends.includes(post.authorID)}
+                openToast={props.openToast}
+              />
+            ))}
           </div>
         </div>
       );
