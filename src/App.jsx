@@ -16,6 +16,7 @@ import Homepage from "./Component/Homepage";
 import Notification from "./Component/Notification";
 import Toast from "./Component/Toast";
 import ToastList from "./Component/ToastList";
+import AboutUs from "./Component/AboutUs";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -69,6 +70,7 @@ export default function App() {
           <div>
             <Routes>
               {/* Pages */}
+              <Route path="/about" element={<AboutUs />} /> {/* shouldn't need login? */}
               <Route path="/register" element={<RegisterForm login={login} />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/login" element={<LoginOrProfile login={login} />} />

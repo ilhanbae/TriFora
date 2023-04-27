@@ -537,7 +537,7 @@ const CommunityPostsList = (props) => {
   const loadFriends = async () => {
     const friends_array = []
     setIsLoaded(false);
-    const friends_array = []
+    const blocked_friends_array = []
     let endpoint = "/connections";
     let query = {
       fromUserID: sessionStorage.getItem("user"),
