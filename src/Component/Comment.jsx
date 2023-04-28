@@ -84,7 +84,7 @@ export default class Comment extends React.Component {
                     body: JSON.stringify({
                       content: this.state.edit_comment_input,
                     })
-                  })
+                    })
                     .then(res => res.json())
                     .then(
                       result => {

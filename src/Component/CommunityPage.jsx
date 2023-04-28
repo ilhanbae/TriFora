@@ -499,6 +499,7 @@ const CommunityPostsList = (props) => {
   const isUserMod = props.userCommunityMemberDetails?.attributes.role === "mod";
   const isUserVisiter = props.userCommunityMemberDetails == null;
   const [friends, setFriends] = useState([]);
+  const [blocked_friends, setBlockedFriends] = useState([]);
 
   // Fetch both posts and members when the component is loaded.
   useEffect(() => {
@@ -535,7 +536,8 @@ const CommunityPostsList = (props) => {
   // This method will load all the Friends
   const loadFriends = async () => {
     setIsLoaded(false);
-    const friends_array = []
+    const friends_array = [];
+    const blocked_friends_array = [];
     let endpoint = "/connections";
     let query = {
       fromUserID: sessionStorage.getItem("user"),
@@ -548,33 +550,19 @@ const CommunityPostsList = (props) => {
       console.log(data[0])
       for (let i = 0; i < data[0].length; i++){
         // Check if the friend connection is "active"
-        if (data[0][i].attributes.status === 'active')
-        friends_array.push(data[0][i].toUserID);
+        if (data[0][i].attributes.status === 'active'){
+          friends_array.push(data[0][i].toUserID);
+        } else if (data[0][i].attributes.status === 'blocked'){
+          blocked_friends_array.push(data[0][i].toUserID);
+        }
       }
       setFriends(friends_array);
       console.log(friends_array);
+      setBlockedFriends(blocked_friends_array);
+      console.log(blocked_friends_array);
     }
     setIsLoaded(true);
   }
-
-  // This method loads all the Friends Posts using genericFetch
-  /*
-  const loadFriendPosts = async () => {
-    setIsLoaded(false);
-    let endpoint = "/posts";
-    let query = {
-      authorIDIn: [165],
-      recipientGroupID: props.communityId,
-    };
-    const { data, errorMessage } = await genericFetch(endpoint, query);
-    // console.log(data, errorMessage)
-    if (errorMessage) {
-      setErrorMessage(errorMessage);
-    } else {
-      console.log(data[0])
-    }
-  }
-  */
 
   // This methods loads the community posts using genericFetch & update the community posts count stat
   const loadPosts = async () => {
@@ -621,7 +609,7 @@ const CommunityPostsList = (props) => {
 
   // Sort posts by the friends connection
   const friendsFirstPosts = posts.sort((postA, postB) => friends.includes(postB.authorID) - friends.includes(postA.authorID))
-
+  const remove_BlockedPosts = friendsFirstPosts.filter((post) => blocked_friends.includes(post.authorID) !== true)
   // Render Component
   if (errorMessage) {
     return <div>Error: {errorMessage}</div>;
@@ -633,7 +621,7 @@ const CommunityPostsList = (props) => {
         <div>
           {/* Posts */}
           <div className={style["community-post-list"]}>
-            {friendsFirstPosts.map((post) => (
+            {remove_BlockedPosts.map((post) => (
               <CommunityPost
                 key={post.id}
                 communityId={props.communityId}
