@@ -20,6 +20,21 @@
   width: 15px;
   height: 15px;
   text-align: center;
+  line-height: 15px;
+  font-family: 'Alfa Slab One', cursive;
+  border-radius: 5px;
+}
+.meatballs-icon__active::before {
+  cursor: pointer;
+  content: '...';
+  display: block;
+  width: 15px;
+  height: 15px;
+  text-align: center;
+  line-height: 15px;
+  font-family: 'Alfa Slab One', cursive;
+  border-radius: 5px;
+  background-color: var(--yellow-apricot);
 }
 .square-icon::before {
   content: '';
@@ -100,22 +115,32 @@
 .nested-action-sidemenu {
   position: absolute;
   top: 0;
-  left: 100%;
+  /* left: 100%; */
+  right: 100%;
   background-color: var(--light-yellow);
-  border: 2px solid var(--bistre);
-  border-radius: 10px;
+  outline: 2px solid var(--bistre);
+  border-radius: 5px;
 }
 
 .action-sidemenu {
   position: absolute;
+  /* top: 20px; */
+  right: 0;
+  /* right: calc(100% - 20px); */
   background-color: var(--light-yellow);
-  border: 2px solid var(--bistre);
-  border-radius: 10px;
+  outline: 2px solid var(--bistre);
+  border-radius: 5px;
+}
+.action-sidemenu__active {
+  background-color: var(--light-yellow);
 }
 .action-sidemenu-option-list {
   list-style: none;
+  width: fit-content;
 }
 .action-sidemenu-option {
+  /* width: max-content; */
+  width: 100%;
   border-radius: 5px;
   padding: 5px;
   cursor: pointer;

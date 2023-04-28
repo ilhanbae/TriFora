@@ -492,12 +492,12 @@ const CommunityPostsList = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [communityPostAuthorRoles, setCommunityPostAuthorRoles] = useState({});
+  const [friends, setFriends] = useState([]);
 
   // Check current user's community role & post author's role
   const isUserAdmin = props.userCommunityMemberDetails?.attributes.role === "admin";
   const isUserMod = props.userCommunityMemberDetails?.attributes.role === "mod";
   const isUserVisiter = props.userCommunityMemberDetails == null;
-  const [friends, setFriends] = useState([]);
 
   // Fetch both posts and members when the component is loaded.
   useEffect(() => {
@@ -556,25 +556,6 @@ const CommunityPostsList = (props) => {
     setIsLoaded(true);
   }
 
-  // This method loads all the Friends Posts using genericFetch
-  /*
-  const loadFriendPosts = async () => {
-    setIsLoaded(false);
-    let endpoint = "/posts";
-    let query = {
-      authorIDIn: [165],
-      recipientGroupID: props.communityId,
-    };
-    const { data, errorMessage } = await genericFetch(endpoint, query);
-    // console.log(data, errorMessage)
-    if (errorMessage) {
-      setErrorMessage(errorMessage);
-    } else {
-      console.log(data[0])
-    }
-  }
-  */
-
   // This methods loads the community posts using genericFetch & update the community posts count stat
   const loadPosts = async () => {
     setIsLoaded(false);
@@ -618,8 +599,19 @@ const CommunityPostsList = (props) => {
     loadPosts(); // Fetch the posts again
   };
 
+  /* Thie method checks whether the post is pinned or not */
+  const isPinnedPost = (post) => {
+    if (post?.reactions.filter(reaction => reaction.name === "pin").length) {
+      return true
+    }
+    return false
+  }
+
   // Sort posts by the friends connection
   const friendsFirstPosts = posts.sort((postA, postB) => friends.includes(postB.authorID) - friends.includes(postA.authorID))
+
+  // The order of the posts: Pin > Friend > Other 
+
 
   // Render Component
   if (errorMessage) {
@@ -641,6 +633,7 @@ const CommunityPostsList = (props) => {
                 userCommunityMemberDetails={props.userCommunityMemberDetails}
                 communityPostAuthorRoles={communityPostAuthorRoles}
                 isFriendPost={friends.includes(post.authorID)}
+                isPinnedPost={isPinnedPost(post)}
                 openToast={props.openToast}
               />
             ))}
@@ -654,7 +647,7 @@ const CommunityPostsList = (props) => {
 /* This component will render a single post on community post list with all attributes like author, summary, reaction, post-action-menu, etc. */
 const CommunityPost = (props) => {
   const [isPostActionActive, setIsPostActionActive] = useState(false);
-  const [isPostPinned, setIsPostPinned] = useState(false);
+  const [isPostPinned, setIsPostPinned] = useState(props.isPinnedPost);
   const [isPostHidden, setIsPostHidden] = useState(false);
   const [isPostReported, setIsPostReported] = useState(false);
   const [isCommunityPostModalOpen, setIsCommunityPostModalOpen] = useState(false);
@@ -674,6 +667,22 @@ const CommunityPost = (props) => {
       document.removeEventListener('mousedown', outSideClickHandler)
     }
   })
+
+  // gets the unique number of people that reported a post
+  function reports(props) {
+    const reactions = props.post.reactions;
+// const report_count = reactions.filter(reaction => reaction.name === 'report').length;
+    // console.log(reactions)
+    return new Set(
+      reactions
+        .map((item) => {
+          if (item.name === "report") {
+            return item.reactorID;
+          }
+        })
+        .filter((item) => item !== null && item !== undefined)
+    ).size;
+  }
 
   /* This method toggles between post action active and inactive */
   const postActionButtonHandler = () => {
@@ -714,15 +723,22 @@ const CommunityPost = (props) => {
     isAuthorAdmin ? "Admin" :
     isAuthorMod ? "Mod" :
     isAuthorMember ? "Member" :
-    "Departed"
+    "Departed";
+
+  // Set post action icon style
+  const postActionIconStyle = isPostActionActive ? style["meatballs-icon__active"] : style["meatballs-icon"]
 
   /* This method handles post actions such as pinning, hiding, reporting, or deleting.
   It's passed on to its child component - postActionSidemenu, where the action options are selected. */
-  const postActionOptionsHandler = (option) => {
+  const postActionOptionsHandler = async (option) => {
     switch (option) {
       case "pin":
         // console.log(option);
-        setIsPostPinned(isPostPinned ? false : true);
+        // setIsPostPinned(isPostPinned ? false : true);
+        await pinPost();
+        break;
+      case "unpin":
+        await unpinPost();
         break;
       case "hide":
         // console.log(option);
@@ -754,6 +770,52 @@ const CommunityPost = (props) => {
     props.openToast({type: "success", message: "Post deleted successfully!"})
     props.refreshPosts();
   };
+
+  /* This method handles pin post action by sending POST request to API server. */
+  const pinPost = async () => {
+    let endpoint = `/post-reactions`;
+    let body = {
+      postID: props.post.id,
+      reactorID: parseInt(sessionStorage.getItem('user')),
+      name: "pin",
+      value: 2,
+      attributes: {}
+    };
+    const { data, errorMessage } = await genericPost(endpoint, body);
+    console.log(data, errorMessage);
+    if (errorMessage) {
+      props.openToast({type: "error", message: <span>Uh oh, sorry you can't pin this post at the moment. Please contact <Link to="neil.html"> our developers</Link></span>});
+    } else {
+      props.openToast({type: "success", message: "Post pinned successfully!"});
+      props.refreshPosts();
+    }
+  }
+
+  /* This method hanldes unpin post action by sending DELETE request */
+  const unpinPost = async () => {
+    // Retrieve the pin post reaction
+    let endpoint = `/post-reactions`;
+    let query = {
+      postID: props.post.id,
+      reactorID: parseInt(sessionStorage.getItem('user')),
+      name: "pin",
+    };
+    const { data, errorMessage} = await genericFetch(endpoint, query);
+    if (errorMessage) {
+      props.openToast({type: "error", message: <span>Uh oh, sorry you can't unpin this post at the moment. Please contact <Link to="neil.html"> our developers</Link></span>});
+    } else {
+      // Delete the pin post reaction
+      let pinPostReactionId = data[0][0].id;
+      let endpoint = `/post-reactions/${pinPostReactionId}`;
+      const { data: deleteData, errorMessage: deleteErrorMessage } = await genericDelete(endpoint)
+      if (deleteErrorMessage) {
+        props.openToast({type: "error", message: <span>Uh oh, sorry you can't unpin this post at the moment. Please contact <Link to="neil.html"> our developers</Link></span>});
+      } else {
+        props.openToast({type: "success", message: "Post unpinned successfully!"});
+        props.refreshPosts();
+      }
+    }
+  }
 
   return (
     <div className={style["community-post"]} key={props.post.id}>
@@ -801,7 +863,6 @@ const CommunityPost = (props) => {
                 <span className={style["inactive-text"]}>Posted On</span>
                 <span className={`${style["active-text"]} ${style["bold"]}`}>
                   {formatDateTime(props.post.created)}
-                  {/* {props.post.created} */}
                 </span>
               </div>
             </div>
@@ -861,9 +922,9 @@ const CommunityPost = (props) => {
       </div>
 
       {/* Post Action Sidemenu */}
-      <div>
+      <div style={{position: "relative"}} ref={postActionSidemenuRef}>
         <span
-          className={style["meatballs-icon"]}
+          className={postActionIconStyle}
           onClick={postActionButtonHandler}
         ></span>
         <PostActionSidemenu
@@ -872,7 +933,8 @@ const CommunityPost = (props) => {
           post={props.post}
           userCommunityMemberDetails={props.userCommunityMemberDetails}
           communityPostAuthorRoles={props.communityPostAuthorRoles}
-          postActionSidemenuRef={postActionSidemenuRef}
+          isPostPinned={isPostPinned}
+          isPostReported={isPostReported}
         />
       </div>
 
@@ -899,31 +961,15 @@ const CommunityPost = (props) => {
         show={isProfileModalOpen}
         onClose={toggleProfile}
         modalStyle={{
-        width: "90%",
-        height: "90%",
+          width: "90%",
+          height: "90%",
         }}
       >
-          <ProfilePage 
-              profile_id={props.post.author.id}
-              toggleProfile={toggleProfile}
-              closePostPageModal={closePostPageModal}
-          />
-      </Modal>
-
-      {/* Profile Page Modal */}
-      <Modal
-        show={isProfileModalOpen}
-        onClose={toggleProfile}
-        modalStyle={{
-        width: "90%",
-        height: "90%",
-        }}
-      >
-          <ProfilePage 
-              profile_id={props.post.author.id}
-              toggleProfile={toggleProfile}
-              closePostPageModal={closePostPageModal}
-          />
+        <ProfilePage
+          profile_id={props.post.author.id}
+          toggleProfile={toggleProfile}
+          closePostPageModal={closePostPageModal}
+        />
       </Modal>
     </div>
   );
@@ -1038,7 +1084,7 @@ to posts that belongs to the user or to all posts if the user's a admin or a mod
 * Pin & Hide are user-specific actions, and they should persist to only user's post list.
 * Report & Delete are global actions, and they should persist to all users' post lists. */
 const PostActionSidemenu = (props) => {
-  const [isPinned, setIsPinned] = useState(false);
+  const [isPinned, setIsPinned] = useState(props.isPostPinned);
   const [isHidden, setIsHidden] = useState(false);
   const [isReported, setIsReported] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
@@ -1057,7 +1103,11 @@ const PostActionSidemenu = (props) => {
   // These methods update the option labels and send the chosen action option to its parent component - CommunityPost.
   const pinActionHandler = () => {
     setIsPinned(isPinned ? false : true); // update the option status
-    props.postActionOptionsHandler("pin"); // tell CommunityPost component that 'pin' option was chosen
+    if (props.isPostPinned) {
+      props.postActionOptionsHandler("unpin");
+    } else {
+      props.postActionOptionsHandler("pin");
+    }
   };
   let pinOptionName = isPinned ? "Unpin" : "Pin to top"; // update the pin option label based on the state
 
@@ -1081,13 +1131,15 @@ const PostActionSidemenu = (props) => {
 
   if (props.isActive) {
     return (
-      <div className={style["action-sidemenu"]} ref={props.postActionSidemenuRef}>
+      <div className={style["action-sidemenu"]}>
         <ul className={style["action-sidemenu-option-list"]}>
           {/* Pin */}
-          {/* <li className={style["action-sidemenu-option"]} onClick={pinActionHandler}>
-            <span className={`${style["square-icon"]} ${style["square-icon__skobeloff"]}`}></span>
-            <span className={style["active-text"]}>{pinOptionName}</span>
-          </li> */}
+          {(isUserAdmin || isUserMod) &&
+            <li className={style["action-sidemenu-option"]} onClick={pinActionHandler}>
+              <span className={`${style["square-icon"]} ${style["square-icon__skobeloff"]}`}></span>
+              <span className={style["active-text"]}>{pinOptionName}</span>
+            </li>
+          }
           {/* Hide */}
           {/* {!isAuthorUser &&
             <li className={style["action-sidemenu-option"]} onClick={hideActionHandler}>
@@ -1174,7 +1226,7 @@ const CommunityMembersList = (props) => {
 
   // This method refresh the members by sending the request to API again using genricFetch.
   const refreshMembers = () => {
-    // console.log("refreshing members");
+    console.log("refreshing members");
     loadMembers(); // Fetch the members again
   };
 
@@ -1212,7 +1264,6 @@ const CommunityMember = (props) => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const memberActionSidemenuRef = useRef(null); // Create a ref for memver action sidemenu component
   const navigate = useNavigate(); // For navigation
-
 
   // Check if member is current user 
   const isMemberUser = props.member?.userID === props.userCommunityMemberDetails?.userID;
@@ -1276,10 +1327,6 @@ const CommunityMember = (props) => {
     props.refreshMembers();
   };
 
-  /* This method opens selected member page */
-  const openMemberPage = () => {
-    navigate(`/profile/${props.member.user.id}`); // navigate to member profile
-  }
 
   /* This method will open the Profile pop up Window */
   const openProfilePage = (e) => {
@@ -1289,12 +1336,15 @@ const CommunityMember = (props) => {
   /* This method will close the Profile pop up Window */
   const toggleProfile = (e) => {
     setIsProfileModalOpen(false);
+    props.refreshMembers();
   }
 
+  // Set member action icon style
+  const memberActionIconStyle = isMemberActionActive ? style["meatballs-icon__active"] : style["meatballs-icon"]
 
   return (
     <div className={commmunityMemberStyle}>
-      <div 
+      <div
         className={style["community-member__clickable-area"]}
         onClick={openProfilePage}
       >
@@ -1331,10 +1381,10 @@ const CommunityMember = (props) => {
       </div>
 
       {/* Member Action Side Menu */}
-      <div>
+      <div style={{position: "relative"}} ref={memberActionSidemenuRef}>
         {/* This should be replaced with actual icon */}
         <span
-          className={style["meatballs-icon"]}
+          className={memberActionIconStyle}
           onClick={memberActionButtonHandler}
         ></span>
         <MemberActionSidemenu
@@ -1343,7 +1393,6 @@ const CommunityMember = (props) => {
           member={props.member}
           userCommunityMemberDetails={props.userCommunityMemberDetails}
           refreshMembers={props.refreshMembers}
-          memberActionSidemenuRef={memberActionSidemenuRef}
         />
       </div>
 
@@ -1352,13 +1401,13 @@ const CommunityMember = (props) => {
         show={isProfileModalOpen}
         onClose={toggleProfile}
         modalStyle={{
-        width: "90%",
-        height: "90%",
+          width: "90%",
+          height: "90%",
         }}
       >
-        <ProfilePage 
-            profile_id={props.member.user.id}
-            toggleProfile={toggleProfile}
+        <ProfilePage
+          profile_id={props.member.user.id}
+          toggleProfile={toggleProfile}
         />
       </Modal>
     </div>
@@ -1493,7 +1542,7 @@ const MemberActionSidemenu = (props) => {
 
   if (props.isActive) {
     return (
-      <div className={style["action-sidemenu"]} ref={props.memberActionSidemenuRef}>
+      <div className={style["action-sidemenu"]}>
         <ul className={style["action-sidemenu-option-list"]}>
           {/* View Profile */}
           {/* <li className={style["action-sidemenu-option"]} onClick={viewProfileActionHandler}>
@@ -1509,7 +1558,7 @@ const MemberActionSidemenu = (props) => {
           } */}
           {/* Assign Role */}
           {(isUserAdmin && !isMemberUser) &&
-            <div>
+            <div ref={assignRoleSidemenuRef}>
               <li className={style["action-sidemenu-option"]} onClick={assignRoleActionHandler}>
                 <span className={`${style["square-icon"]} ${style["square-icon__french-bistre"]}`}></span>
                 <span className={style["active-text"]}>{assignOptionName}</span>
@@ -1518,7 +1567,6 @@ const MemberActionSidemenu = (props) => {
                 isActive={isAssignRole}
                 member={props.member}
                 refreshMembers={props.refreshMembers}
-                assignRoleSidemenuRef={assignRoleSidemenuRef}
               />
             </div>
           }
@@ -1571,7 +1619,7 @@ const AssignRoleSidemenu = (props) => {
 
   if (props.isActive) {
     return (
-      <div className={style["nested-action-sidemenu"]} ref={props.assignRoleSidemenuRef}>
+      <div className={style["nested-action-sidemenu"]}>
         <ul className={style["action-sidemenu-option-list"]}>
           {/* Assign Member Role */}
           {currentMemberRole === "mod" && (
