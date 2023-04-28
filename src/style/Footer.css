@@ -1,0 +1,15 @@
+.footer {
+    display: flex;
+    justify-content: space-evenly;
+    background-color: var(--yellow-apricot);
+    padding-block: 2%;
+    font-size: 1.125rem;
+}
+
+.footer a {
+    text-decoration: underline;
+}
+
+.footer a:hover {
+    cursor: pointer;
+}

@@ -17,6 +17,7 @@ import Notification from "./Component/Notification";
 import Toast from "./Component/Toast";
 import ToastList from "./Component/ToastList";
 import AboutUs from "./Component/AboutUs";
+import Footer from "./Component/Footer";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -81,6 +82,7 @@ export default function App() {
               <Route path="/" element={<LoginOrProfile login={login} />} />
             </Routes>
           </div>
+          <Footer />
         </header>
         {/* Toast List */}
         <ToastList toastList={toastList} closeToast={closeToast}></ToastList>
