@@ -7,6 +7,7 @@ import JoinedCommunity from "./JoinedCommunity";
 import defaultProfileImage from "../assets/defaultProfileImage.png";
 import EditProfile from "./EditProfilePage";
 import Modal from "./Modal";
+import BlockedFriend from "./BlockedFriend";
 
 export default class ProfilePage extends React.Component {
 
@@ -27,8 +28,10 @@ export default class ProfilePage extends React.Component {
 
             // Friend Infos
             friend_list: [],
+            // Blocked Friend List
+            blocked_friend_list: [],
 
-            // Others
+            // Used for Friend Connections
             same_user_profile: false,
             user_connection: false,
             fromUser_toUser_connection_id: "", /* This connection_id contain the id from Session Storage User to current viewing user */
@@ -36,6 +39,12 @@ export default class ProfilePage extends React.Component {
 
             // Show Edit Profile Page
             openEditProfile: false,
+
+            // Switch for Friend bar
+            show_BlockedFriend: false,
+
+            // Used for block connections
+            user_block_connection: false,
         };
     }
  
@@ -43,7 +52,9 @@ export default class ProfilePage extends React.Component {
         this.render_user(this.state.user_id);
         this.load_communties(this.state.user_id);
         this.load_friend(this.state.user_id);
+        this.load_blocked_friend(this.state.user_id);
         this.check_user_connection(this.state.user_id);
+        this.check_user_block_connection(this.state.user_id);
         console.log("Profile ID: ", this.props.profile_id)
     }
 
@@ -176,6 +187,45 @@ export default class ProfilePage extends React.Component {
         }
     }
 
+    // load_blocked_friend will load all the blocked friends
+    load_blocked_friend = (user_id) => {
+        // if the user is not logged in, we don't want to try loading blocked friends.
+        if (sessionStorage.getItem("token")){
+            // get all connections using fromUserID
+            let url = process.env.REACT_APP_API_PATH+"/connections?fromUserID=" + user_id + "&" + "attributes=%7B%0A%20%20%22path%22%3A%20%22status%22%2C%0A%20%20%22equals%22%3A%20%22blocked%22%2C%0A%20%20%22stringContains%22%3A%20%22blocked%22%2C%0A%20%20%22stringStartsWith%22%3A%20%22blocked%22%2C%0A%20%20%22stringEndsWith%22%3A%20%22blocked%22%2C%0A%20%20%22arrayContains%22%3A%20%22blocked%22%0A%7D";
+            fetch(url, {
+            method: "get",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+sessionStorage.getItem("token")
+            },
+            })
+            .then(res => res.json())
+            .then(
+                result => {
+                console.log(result);
+                if (result) {
+                    this.setState({
+                        blocked_friend_list: result[0],
+                    });
+                    console.log(this.state.blocked_friend_list);
+                    console.log("Got Blocked Friends");
+                }
+                },
+                error => {
+                    //alert("ERROR loading Friends");
+                    console.log("ERROR loading Friends")
+                }
+            );
+
+        } else {
+            //If user is not logged in, show error message
+            //alert("Not Logged In");
+            console.log("Not Logged In");
+        }
+
+    }
+
     // pass a user_id, check if the user_id have a connection with the user in sessionStorage 
     check_user_connection = (user_id) => {
         // If the two user ID are equal, this means it is the same person, no need to check connection
@@ -280,7 +330,55 @@ export default class ProfilePage extends React.Component {
                     console.log("ERROR loading Friends")
                 }
             );
+        }
+    }
 
+    // pass a user_id, check if the user_id have a block connection with the user in sessionStorage 
+    check_user_block_connection = (user_id) => {
+        // If the two user ID are equal, this means it is the same person, no need to check connection
+        if (user_id.toString() === sessionStorage.getItem("user")){
+            this.setState({
+                same_user_profile: true,
+            });
+        } else {
+            // Get the connection from "the user of Session Storage" to "the user_id"
+            let url_1 = process.env.REACT_APP_API_PATH+"/connections?fromUserID=" + sessionStorage.getItem("user") + "&" + "toUserID=" + user_id;
+            fetch(url_1, {
+            method: "get",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+sessionStorage.getItem("token")
+            },
+            })
+            .then(res => res.json())
+            .then(
+                result => {
+                console.log(result);
+                if (result[0].length !== 0){
+                    //console.log("Have Connection (Friend or Block)!!!");
+                    if (result[0][0].attributes.status === 'active' || result[0][0].attributes.status === 'inactive'){
+                        //console.log("Have Friend Connection!!!");
+                        this.setState({
+                            user_block_connection: false
+                        })
+                    } else if (result[0][0].attributes.status === 'blocked') {
+                        //console.log("Have Block Connection!!!");
+                        this.setState({
+                            user_block_connection: true
+                        })
+                    }
+                } else {
+                    //console.log("No Connection!!!")
+                    this.setState({
+                        user_block_connection: false
+                    })
+                }
+                },
+                error => {
+                    //alert("ERROR loading Friends");
+                    console.log("ERROR loading Block user")
+                }
+            );
         }
     }
 
@@ -301,7 +399,7 @@ export default class ProfilePage extends React.Component {
                 toUserID: user_id,
                 attributes: {
                     status: "inactive",
-                    type: "friend"
+                    type: "pending"
                 },
             })
             })
@@ -514,6 +612,135 @@ export default class ProfilePage extends React.Component {
         }
     }
 
+    // This function will block a user or a friend
+    // If the user is not a friend, create a new one way connection with "status" set to "blocked"
+    // If the user is a friend, update the one way connection with "status" set to "blocked"
+    block_user = (user_id) => {
+        // If user logged in, block the user
+        if (sessionStorage.getItem("user")){
+            // Check the connection between two users
+            let url_1 = process.env.REACT_APP_API_PATH+"/connections?fromUserID=" + sessionStorage.getItem("user") + "&" + "toUserID=" + user_id;
+            fetch(url_1, {
+            method: "get",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+sessionStorage.getItem("token")
+            },
+            })
+            .then(res => res.json())
+            .then(
+                result => {
+                console.log(result);
+                if (result[0].length !== 0){
+                    //console.log("Have Connection (Friend or Block)!!!");
+                    if (result[0][0].attributes.status === 'active'){
+                        // Update the one way connection with "status" set to "blocked"
+                        //console.log("Have Friend Connection!!!");
+                        fetch(process.env.REACT_APP_API_PATH+"/connections/" + result[0][0].id, {
+                            method: "PATCH",
+                            headers: {
+                              'Content-Type': 'application/json',
+                              'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                            },
+                            body: JSON.stringify({
+                                attributes: {
+                                    status: "blocked",
+                                    type: "friend"
+                                }
+                            })
+                            })
+                            .then(res => res.json())
+                            .then(
+                              result => {
+                                console.log(result)
+                                this.check_user_connection(user_id);
+                                this.check_user_block_connection(user_id);
+                              },
+                              error => {
+                                //alert("error!");
+                                console.log("error!")
+                              }
+                            );
+                    } else if (result[0][0].attributes.status === 'inactive'){
+                        // Update the one way connection with "status" set to "blocked"
+                        //console.log("Have Friend Connection!!!");
+                        fetch(process.env.REACT_APP_API_PATH+"/connections/" + result[0][0].id, {
+                            method: "PATCH",
+                            headers: {
+                              'Content-Type': 'application/json',
+                              'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                            },
+                            body: JSON.stringify({
+                                attributes: {
+                                    status: "blocked",
+                                    type: "pending"
+                                }
+                            })
+                            })
+                            .then(res => res.json())
+                            .then(
+                              result => {
+                                console.log(result)
+                                this.check_user_connection(user_id);
+                                this.check_user_block_connection(user_id);
+                              },
+                              error => {
+                                //alert("error!");
+                                console.log("error!")
+                              }
+                            );
+                    }
+                } else {
+                    // Create a new connection between users, set "status" to "blocked"
+                    //console.log("No Connection!!!")
+                    let url = process.env.REACT_APP_API_PATH+"/connections";
+                    fetch(url, {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                    },
+                    body: JSON.stringify({
+                        fromUserID: sessionStorage.getItem("user"),
+                        toUserID: user_id,
+                        attributes: {
+                            status: "blocked",
+                            type: "not-friend",
+                        },
+                    })
+                    })
+                    .then(res => res.json())
+                    .then(
+                        result => {
+                        console.log(result);
+                        this.check_user_connection(user_id);
+                        this.check_user_block_connection(user_id);
+                        },
+                        error => {
+                            //alert("ERROR sending Friend Request");
+                            console.log("ERROR loading Friend Request")
+                        }
+                    );
+                }
+                },
+                error => {
+                    //alert("ERROR loading Friends");
+                    console.log("ERROR loading Block user")
+                }
+            );
+
+        // Check if user not logged in, Login First
+        } else {
+            console.log("Please Login First!")
+        }
+    }
+
+    swtich_friendbar = () =>{
+        this.setState({
+            show_BlockedFriend: !this.state.show_BlockedFriend,
+        })
+    }
+
     ClickEditProfile = () =>{
         this.setState({
             openEditProfile: true,
@@ -527,120 +754,119 @@ export default class ProfilePage extends React.Component {
     }
 
     render() {
-        return(
-            <div className = {ProfilePageCSS.profile_page}>
+        if (this.state.user_block_connection === false){
+            return(
+                <div className = {ProfilePageCSS.profile_page}>
+        
+                    <div className = {ProfilePageCSS.profile_title_bar}> 
+                        <div className = {ProfilePageCSS.profile_title}>
+                            <h1> {this.state.username}&prime;s Profile Page </h1>
+                        </div>
+        
+                        <div className = {ProfilePageCSS['title-bar-buttons']}>
     
-                <div className = {ProfilePageCSS.profile_title_bar}> 
-                    <div className = {ProfilePageCSS.profile_title}>
-                        <h1> {this.state.username}&prime;s Profile Page </h1>
+                            <Render_Buttons 
+                            state={this.state}
+                            send_friend_request={this.send_friend_request}
+                            undo_friend_request={this.undo_friend_request}
+                            delete_friend_connection={this.delete_friend_connection}
+                            accept_friend={this.accept_friend}
+                            reject_friend={this.reject_friend}
+                            ClickEditProfile={this.ClickEditProfile}
+                            />
+    
+                            <Render_Block_Button 
+                            state={this.state}
+                            block_user={this.block_user}
+                            unblock_user={this.unblock_user}
+                            />
+    
+                            <Modal
+                                show={this.state.openEditProfile}
+                                onClose={this.toggleEditProfile}
+                                modalStyle={{
+                                width: "85%",
+                                height: "85%",
+                                }}
+                            >
+                                <EditProfile 
+                                render_user={this.render_user}
+                                toggleProfile={this.props.toggleProfile}
+                                />
+                            </Modal>
+        
+                            {/*
+                            <Link className = {ProfilePageCSS.close_button}>
+                                Close
+                            </Link>
+                            */}
+                        </div>
                     </div>
+        
+                    <div className ={ProfilePageCSS.profile_info_bar}>
+                        <div>
+                            <img className={ProfilePageCSS.profile_image} src={this.state.profileImage} alt="profile-img"/>
+                        </div>
+                        <div className = {ProfilePageCSS.user_info}>
+                            <div className = {ProfilePageCSS.username}>
+                                <h1> {this.state.username} </h1>
+                            </div>
+                            <div className = {ProfilePageCSS.first_name}>
+                                <h3> First Name: {this.state.firstName} </h3>
+                            </div>
+                            <div className = {ProfilePageCSS.last_name}>
+                                <h3> Last Name: {this.state.lastName} </h3>
+                            </div>
+                        </div>
+                        <div className = {ProfilePageCSS.description}>
+                            <h4> {this.state.description} </h4>
+                        </div>
+                    </div>
+        
+                    <div className = {ProfilePageCSS.favorite_communities_bar}>
+                        <div className = {ProfilePageCSS.favorite_communities_title_bar}>
+                            <h2 className = {ProfilePageCSS.favorite_communities_title}>Joined Communities</h2>
+                            <div className = {ProfilePageCSS.communities_num}>
+                                <h3> &#40;{this.state.community_list.length}&#41; </h3>
+                            </div>
+                        </div>
     
-                    <div className = {ProfilePageCSS['title-bar-buttons']}>
-
-                        <Render_Buttons 
+                        <div className = {ProfilePageCSS.communities_bar}>
+                            {this.state.community_list.map(community_list => (
+                                <JoinedCommunity 
+                                key={community_list.id}
+                                community_id={community_list.groupID}
+                                community_name={community_list.group.name}
+                                community_banner_image={community_list.group.attributes.design.bannerProfileImage}
+                                redirect_community={this.props.redirect_community}
+                                closeProfilePage={this.props.closeProfilePage}
+                                closePostPageModal={this.props.closePostPageModal}
+                                />  
+                            ))}
+                        </div>
+    
+                    </div>
+        
+                    <div className = {ProfilePageCSS.my_friend_bar}>
+                        <Render_FriendBar 
                         state={this.state}
-                        send_friend_request={this.send_friend_request}
-                        undo_friend_request={this.undo_friend_request}
-                        delete_friend_connection={this.delete_friend_connection}
-                        accept_friend={this.accept_friend}
-                        reject_friend={this.reject_friend}
-                        ClickEditProfile={this.ClickEditProfile}
+                        swtich_friendbar={this.swtich_friendbar}
+                        check_user_connection={this.check_user_connection}
+                        load_friend={this.load_friend}
+                        load_blocked_friend={this.load_blocked_friend}
                         />
-
-                        <Modal
-                            show={this.state.openEditProfile}
-                            onClose={this.toggleEditProfile}
-                            modalStyle={{
-                            width: "85%",
-                            height: "85%",
-                            }}
-                        >
-                            <EditProfile 
-                            render_user={this.render_user}
-                            toggleProfile={this.props.toggleProfile}
-                            />
-                        </Modal>
-    
-                        {/*
-                        <Link className = {ProfilePageCSS.close_button}>
-                            Close
-                        </Link>
-                        */}
-                    </div>
+        
+                    </div> 
+        
                 </div>
-    
-                <div className ={ProfilePageCSS.profile_info_bar}>
-                    <div>
-                        <img className={ProfilePageCSS.profile_image} src={this.state.profileImage} alt="profile-img"/>
-                    </div>
-                    <div className = {ProfilePageCSS.user_info}>
-                        <div className = {ProfilePageCSS.username}>
-                            <h1> {this.state.username} </h1>
-                        </div>
-                        <div className = {ProfilePageCSS.first_name}>
-                            <h3> First Name: {this.state.firstName} </h3>
-                        </div>
-                        <div className = {ProfilePageCSS.last_name}>
-                            <h3> Last Name: {this.state.lastName} </h3>
-                        </div>
-                    </div>
-                    <div className = {ProfilePageCSS.description}>
-                        <h4> {this.state.description} </h4>
-                    </div>
+            );
+        } else {
+            return(
+                <div className = {ProfilePageCSS.profile_page}>
+                    <h1>User has been blocked!</h1>
                 </div>
-    
-                <div className = {ProfilePageCSS.favorite_communities_bar}>
-                    <div className = {ProfilePageCSS.favorite_communities_title_bar}>
-                        <h2 className = {ProfilePageCSS.favorite_communities_title}>Joined Communities</h2>
-                        <div className = {ProfilePageCSS.communities_num}>
-                            <h3> &#40;{this.state.community_list.length}&#41; </h3>
-                        </div>
-                    </div>
-
-                    <div className = {ProfilePageCSS.communities_bar}>
-                        {this.state.community_list.map(community_list => (
-                            <JoinedCommunity 
-                            key={community_list.id}
-                            community_id={community_list.groupID}
-                            community_name={community_list.group.name}
-                            community_banner_image={community_list.group.attributes.design.bannerProfileImage}
-                            redirect_community={this.props.redirect_community}
-                            closeProfilePage={this.props.closeProfilePage}
-                            closePostPageModal={this.props.closePostPageModal}
-                            />  
-                        ))}
-                    </div>
-
-                </div>
-    
-                <div className = {ProfilePageCSS.my_friend_bar}>
-                    <div className = {ProfilePageCSS.friend_title_bar}>
-                        <div className = {ProfilePageCSS.friend_title}>
-                            <h2> My Friends </h2>
-                        </div>
-                        <div className = {ProfilePageCSS.friend_num}>
-                            <h3> &#40;{this.state.friend_list.length}&#41; </h3>
-                        </div>
-                    </div>
-    
-                    <div className = {ProfilePageCSS.friend_card_bar}>
-                        {this.state.friend_list.map(friend => (
-                            console.log(friend),
-                            <Friend 
-                            key={friend.id} 
-                            friend={friend} 
-                            friend_id={friend.toUserID}
-                            view_userID={this.state.user_id}
-                            check_user_connection={this.check_user_connection}
-                            load_friend={this.load_friend}
-                            />
-                        ))}
-                    </div>
-    
-                </div> 
-    
-            </div>
-        );
+            );
+        }
     };
 }
 
@@ -679,5 +905,109 @@ const Render_Buttons = (props) => {
             </div>
         );
     }
-    
+}
+
+const Render_Block_Button = (props) => {
+    if (props.state.same_user_profile === true){
+        return (
+            <></>
+        );
+    } else if (props.state.user_block_connection === false){
+        return (
+            <button className={ProfilePageCSS.Block_button} onClick={() => props.block_user(props.state.user_id)} >Block</button>
+        );
+
+    }
+}
+
+const Render_FriendBar = (props) => {
+    if (props.state.user_id !== sessionStorage.getItem("user")){
+        return(
+            <>
+            <div className = {ProfilePageCSS.friend_title_bar}>
+                <div className = {ProfilePageCSS.friend_title}>
+                    <h2> My Friends </h2>
+                </div>
+                <div className = {ProfilePageCSS.friend_num}>
+                    <h3> &#40;{props.state.friend_list.length}&#41; </h3>
+                </div>
+            </div>
+
+            <div className = {ProfilePageCSS.friend_card_bar}>
+                {props.state.friend_list.map(friend => (
+                    console.log(friend),
+                    <Friend 
+                    key={friend.id} 
+                    friend={friend} 
+                    friend_id={friend.toUserID}
+                    view_userID={props.state.user_id}
+                    check_user_connection={props.check_user_connection}
+                    load_friend={props.load_friend}
+                    />
+                ))}
+            </div>
+            </>
+        );
+
+    } else if (props.state.show_BlockedFriend === false){
+        return(
+            <>
+            <div className = {ProfilePageCSS.friend_title_bar}>
+                <div className = {ProfilePageCSS.friend_title}>
+                    <h2> My Friends </h2>
+                </div>
+                <div className = {ProfilePageCSS.friend_num}>
+                    <h3> &#40;{props.state.friend_list.length}&#41; </h3>
+                </div>
+            </div>
+            <button className = {ProfilePageCSS['show_BlockedFriend']} onClick={() => props.swtich_friendbar()}>Show Blocked Friends</button>
+
+            <div className = {ProfilePageCSS.friend_card_bar}>
+                {props.state.friend_list.map(friend => (
+                    console.log(friend),
+                    <Friend 
+                    key={friend.id} 
+                    friend={friend} 
+                    friend_id={friend.toUserID}
+                    view_userID={props.state.user_id}
+                    check_user_connection={props.check_user_connection}
+                    load_friend={props.load_friend}
+                    load_blocked_friend={props.load_blocked_friend}
+                    />
+                ))}
+            </div>
+            </>
+        );
+
+    } else {
+        return(
+            <>
+            <div className = {ProfilePageCSS.friend_title_bar}>
+                <div className = {ProfilePageCSS.friend_title}>
+                    <h2> My Blocked Friends </h2>
+                </div>
+                <div className = {ProfilePageCSS.friend_num}>
+                    <h3> &#40;{props.state.blocked_friend_list.length}&#41; </h3>
+                </div>
+            </div>
+            <button className = {ProfilePageCSS['show_Friend']} onClick={() => props.swtich_friendbar()}>Show Friends</button>
+
+            <div className = {ProfilePageCSS.friend_card_bar}>
+                {props.state.blocked_friend_list.map(blocked_friend => (
+                    console.log(blocked_friend),
+                    <BlockedFriend 
+                    key={blocked_friend.id} 
+                    blocked_friend={blocked_friend} 
+                    blocked_friend_id={blocked_friend.toUserID}
+                    view_userID={props.state.user_id}
+                    check_user_connection={props.check_user_connection}
+                    load_friend={props.load_friend}
+                    load_blocked_friend={props.load_blocked_friend}
+                    />
+                ))} 
+            </div>
+            </>
+        );
+    }
+
 }
