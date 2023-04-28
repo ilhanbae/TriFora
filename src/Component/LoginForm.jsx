@@ -99,7 +99,10 @@ export default class LoginForm extends React.Component {
                         }
                     },
                     error => {
-                        alert("error!");
+                        const passwordInput = document.getElementById('password')
+                        passwordInput.setCustomValidity("Invalid Email and Password Combination")
+                        passwordInput.reportValidity()
+                        event.preventDefault();
                     }
                 );
         }
