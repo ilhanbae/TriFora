@@ -22,6 +22,7 @@ export default class ProfilePage extends React.Component {
             lastName: "",
             description: "",
             profileImage: "",
+            render_user: false,
 
             // Community Infos
             community_list: [],
@@ -55,7 +56,7 @@ export default class ProfilePage extends React.Component {
         this.load_blocked_friend(this.state.user_id);
         this.check_user_connection(this.state.user_id);
         this.check_user_block_connection(this.state.user_id);
-        console.log("Profile ID: ", this.props.profile_id)
+        console.log("Profile ID: ", this.props.profile_id);
     }
 
     // pass a user ID into it, and returns all the infos of the user
@@ -85,6 +86,7 @@ export default class ProfilePage extends React.Component {
                     lastName: result.attributes.profile.lastName || "",
                     description: result.attributes.profile.description || "",
                     profileImage: result.attributes.profile.profileImage || defaultProfileImage,
+                    render_user: true,
                     });
                     // Check if the profileImage is the default value, it is default value set to default image
                     if (result.attributes.profile.profileImage === ""){
@@ -227,7 +229,6 @@ export default class ProfilePage extends React.Component {
             this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Not Logged In");
         }
-
     }
 
     // pass a user_id, check if the user_id have a connection with the user in sessionStorage 
@@ -787,7 +788,11 @@ export default class ProfilePage extends React.Component {
     }
 
     render() {
-        if (this.state.user_block_connection === false){
+        if (this.state.render_user === false){
+            return (
+                <h1>Loading......</h1>
+            );
+        } else if (this.state.user_block_connection === false){
             return(
                 <div className = {ProfilePageCSS.profile_page}>
         
@@ -896,7 +901,7 @@ export default class ProfilePage extends React.Component {
         } else {
             return(
                 <div className = {ProfilePageCSS.profile_page}>
-                    <h1>User has been blocked!</h1>
+                    <h1 className = {ProfilePageCSS.blocked_message}>User has been blocked!</h1>
                 </div>
             );
         }

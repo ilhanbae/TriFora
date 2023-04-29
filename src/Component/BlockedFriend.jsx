@@ -136,8 +136,10 @@ export default class BlockedFriend extends React.Component {
         return(
             <>
                 <div className = {ProfilePageCSS.friend_card}>
-                    <Link onClick={() => this.ClickProfile()}>
+                    <Link className={ProfilePageCSS['friend_link']} onClick={() => this.ClickProfile()}>
                         <img className = {ProfilePageCSS.friend_avatar} src={this.props.blocked_friend.toUser.attributes.profile.profileImage}></img>
+                    </Link>
+                    <Link onClick={() => this.ClickProfile()}>
                         <div className = {ProfilePageCSS.friend_name}>
                             <h4> {this.props.blocked_friend.toUser.attributes.profile.username} </h4>
                         </div>

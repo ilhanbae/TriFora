@@ -12,6 +12,10 @@
     background: #FEFEE2;
 }
 
+.blocked_message{
+    color:#000000
+}
+
 .profile_page{
     box-sizing: border-box;
 
@@ -631,6 +635,11 @@
     margin: 10px;
 }
 
+.community_link:hover{
+    background-color: #8E6F52;
+    border-radius: 10px;
+}
+
 .community_image{
     box-sizing: border-box;
     width: 100px;
@@ -645,6 +654,11 @@
 .community_title{
     margin: 10px;;
     color: #000000;
+}
+
+.community_title:hover{
+    color: #F3C26E;
+    text-decoration: underline;
 }
 
 /* Favorite Communities under 430px */
@@ -782,10 +796,16 @@
     align-items: center;
     justify-content: center;
     margin: 20px;
+    padding: 10px;
 
     background: #F3C26E;
     border: 2px solid #000000;
     border-radius: 10px;
+}
+
+.friend_link:hover{
+    background-color: #8E6F52;
+    border-radius: 50px;
 }
 
 .friend_avatar{
@@ -804,8 +824,12 @@
     margin-top: 0;
     margin-bottom: 0;
     text-align: center;
-
     color: #000000;
+}
+
+.friend_name:hover{
+    color:#FEFEE2;
+    text-decoration: underline;
 }
 
 .friend_remove{

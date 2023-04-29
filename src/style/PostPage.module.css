@@ -445,6 +445,10 @@ body {
     color: #127475;
 }
 
+.post-username:hover{
+    text-decoration: underline;
+}
+
 .post-on{
     box-sizing: border-box;
 
