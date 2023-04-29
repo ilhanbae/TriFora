@@ -135,7 +135,7 @@ export default class Comment extends React.Component {
         return (
             <div className = {PostPageCSS['individual-comment']}>
                 <div className = {PostPageCSS['comment-user-info']}>
-                    <img className = {PostPageCSS['comment-user-avater']} src={this.state.comment_userimage} alt="Comment-img" onClick={() => this.ClickProfile()}></img>
+                    <img className = {PostPageCSS['comment-user-avater']} src={this.state.comment_userimage} alt="show-user-profile" onClick={() => this.ClickProfile()}></img>
                     <div className = {PostPageCSS['comment-user-username']} onClick={() => this.ClickProfile()}>
                         <h4> {this.state.comment_username} </h4>
                     </div>
@@ -211,8 +211,12 @@ const Comment_text = (props) => {
         return (
             <div className = {PostPageCSS['comment-text']} onSubmit={props.submit}>
                 <form className = {PostPageCSS["edit-form"]}>
-                    <input className= {PostPageCSS['edit-inputbox']} type='text' id='comment' name='comment' placeholder='Edit Comment' onChange={props.edit_comment_handler}></input>
-                    <input className= {PostPageCSS['edit-button']} type='submit' value='Edit'></input>
+                    <label className= {PostPageCSS['edit-inputbox']}>
+                        <input type='text' id='comment' name='comment' placeholder='Edit Comment' onChange={props.edit_comment_handler}></input>
+                    </label>
+                    <label className= {PostPageCSS['edit-button']}>
+                        <input type='submit' value='Edit'></input>
+                    </label>
                 </form>
             </div>
         );

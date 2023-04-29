@@ -436,12 +436,16 @@ body {
     margin-top: 10px;
     margin-bottom: 10px;
     margin-right: 10px;
+    font-family: 'Alfa Slab One';
+    font-size: 16px;
 
     color: #000000;
 }
 
 .post-username{
     margin: 10px;
+    font-family: 'Alfa Slab One';
+    font-size: 16px;
     color: #127475;
 }
 
@@ -460,12 +464,16 @@ body {
     margin-top: 10px;
     margin-bottom: 10px;
     margin-left: 10px;
+    font-family: 'Alfa Slab One';
+    font-size: 16px;
 
     color: #000000;
 }
 
 .post-date{
     margin: 10px;
+    font-family: 'Alfa Slab One';
+    font-size: 16px;
     color: #000000;
 }
 
@@ -507,6 +515,8 @@ body {
 
 .post-id{
     margin: 10px;
+    font-family: 'Alfa Slab One';
+    font-size: 16px;
     color: #000000;
 }
 
@@ -530,6 +540,8 @@ body {
 }
 
 .post-content-text{
+    font-family: 'Alfa Slab One';
+    font-size: 16px;
     color: #000000;
 }
 
@@ -622,6 +634,8 @@ body {
         align-items: center;
         justify-content: flex-start;
         margin: 10px;
+        font-family: 'Alfa Slab One';
+        font-size: 16px;
     
         color: #000000;
     }
@@ -630,6 +644,8 @@ body {
         margin: 10px;
         margin-left: 0;
         margin-right: 0;
+        font-family: 'Alfa Slab One';
+        font-size: 16px;
     
         color: #127475;
     }
@@ -642,6 +658,8 @@ body {
         align-items: center;
         justify-content: flex-start;
         margin: 10px;
+        font-family: 'Alfa Slab One';
+        font-size: 16px;
     
         color: #000000;
     }
@@ -650,6 +668,8 @@ body {
         margin: 10px;
         margin-left: 0;
         margin-right: 0;
+        font-family: 'Alfa Slab One';
+        font-size: 16px;
     
         color: #000000;
     }
@@ -709,6 +729,8 @@ body {
         align-items: flex-start;
         justify-content: flex-start;
         margin: 10px;
+        font-family: 'Alfa Slab One';
+        font-size: 16px;
     
         color: #000000;
     }
@@ -905,6 +927,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: 'Alfa Slab One';
+    font-size: 16px;
 
     color: #8E6F52;
 }
@@ -916,6 +940,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: 'Alfa Slab One';
+    font-size: 16px;
 
     color: #3D211A;
 }
@@ -951,10 +977,13 @@ body {
     border-radius: 50%;
 }
 
-
-
 .post-delete-button:hover{
     background-color: #F3C26E;
+}
+
+.post-delete-text{
+    font-family: 'Alfa Slab One';
+    font-size: 16px;
 }
 
 .post-report{
@@ -1164,11 +1193,18 @@ body {
     left: 2%;
 }
 
-.comment-inputbox{
+.comment-label{
     box-sizing: border-box;
 
     height: 100%;
     width: 95%;
+}
+
+.comment-inputbox{
+    box-sizing: border-box;
+
+    height: 100%;
+    width: 100%;
 
     background: #F3C26E;
     border: 2px solid #000000;

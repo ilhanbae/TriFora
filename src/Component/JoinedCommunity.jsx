@@ -23,7 +23,7 @@ export default class JoinedCommunity extends React.Component {
         return(
             <div className = {ProfilePageCSS.community}>
                 <Link className={ProfilePageCSS.community_link} to={`/community/${this.props.community_id}`} onClick={() => this.switch_community()}>
-                    <img className = {ProfilePageCSS.community_image} src={this.props.community_banner_image}></img>
+                    <img className = {ProfilePageCSS.community_image} src={this.props.community_banner_image} alt="redirect-to-community"></img>
                 </Link>
                 <Link to={`/community/${this.props.community_id}`} onClick={() => this.switch_community()}>
                     <div className = {ProfilePageCSS.community_title}>

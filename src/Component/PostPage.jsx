@@ -483,27 +483,27 @@ export default class PostPage extends React.Component {
                                     />
                                 </Modal>
                                 <div className = {PostPageCSS['post-by']}>
-                                    <h5> Posted By </h5>
+                                    <span> Posted By </span>
                                     <div className = {PostPageCSS['post-username']} onClick={() => this.ClickProfile()}>
-                                        <h5> {this.state.username} </h5>
+                                        <span> {this.state.username} </span>
                                     </div>
                                 </div>
                                 <div className = {PostPageCSS['post-on']}>
-                                    <h5> Posted On </h5>
+                                    <span> Posted On </span>
                                     <div className = {PostPageCSS['post-date']}>
-                                        <h5> {this.state.post_date} </h5>
+                                        <span> {this.state.post_date} </span>
                                     </div>
                                 </div>
                             </div>
 
                         </div>
                         <div className = {PostPageCSS['post-title']}>
-                            <h5 className = {PostPageCSS['post-id']}> #{this.state.post_id} </h5>
+                            <span className = {PostPageCSS['post-id']}> #{this.state.post_id} </span>
                             <h1 className = {PostPageCSS['post-title-text']}> {this.state.title} </h1>
                         </div>
                         <div className = {PostPageCSS['post-content']}>
                             <div className = {PostPageCSS['post-content-text']}>
-                                <h5> {this.state.content} </h5>
+                                <span> {this.state.content} </span>
                             </div>
                         </div>
                         <Post_Image post_image_list={this.state.post_images} state={this.state}/>
@@ -559,14 +559,14 @@ const Like_button = (props) => {
         return (
             <div className = {PostPageCSS['upvote']}>
                 <input className = {PostPageCSS['upvote-button-before']} type='image' onClick={() => props.click_like()}/>
-                <h5 className = {PostPageCSS['upvote-number-before']}>{props.state.likes}</h5>
+                <span className = {PostPageCSS['upvote-number-before']}>{props.state.likes}</span>
             </div>
         );
     } else if (props.state.upvote_set === true) {
         return (
             <div className = {PostPageCSS['upvote']}>
                 <input className = {PostPageCSS['upvote-button-after']} type='image' onClick={() => props.click_undo_like()}/>
-                <h5 className = {PostPageCSS['upvote-number-after']}>{props.state.likes}</h5>
+                <span className = {PostPageCSS['upvote-number-after']}>{props.state.likes}</span>
             </div>
         );
     }   
@@ -594,7 +594,7 @@ const Post_Buttons = (props) => {
 
                 <div className = {PostPageCSS['post-delete']}>
                     <button className = {PostPageCSS['post-delete-button']} onClick={props.ClickDelete}></button>
-                    <h5 className = {PostPageCSS['post-delete-text']}>Delete</h5>
+                    <span className = {PostPageCSS['post-delete-text']}>Delete</span>
                     <Modal show={props.state.openModal} onClose={props.toggleModal}>
                         <div>
                             <div className={PostPageCSS['delete-popup-title']}>Delete Your Post</div>
@@ -618,8 +618,12 @@ const Post_Buttons = (props) => {
 const Comment_input = (props) => {
     return(
         <form className = {PostPageCSS['send-comment']} onSubmit={props.submit}>
-            <input className= {PostPageCSS['comment-inputbox']} type='text' id='comment' name='comment' placeholder='Write Comment' onChange={props.comment_input}></input>
-            <input className= {PostPageCSS['send-button']} type='submit' value='Send'></input>
+            <label className= {PostPageCSS['comment-label']}>
+                <input className= {PostPageCSS['comment-inputbox']} type='text' id='comment' name='comment' placeholder='Write Comment' onChange={props.comment_input}></input>
+            </label>
+            <label className= {PostPageCSS['send-button-label']}>
+                <input className= {PostPageCSS['send-button']} type='submit' value='Send'></input>
+            </label>
         </form>
     );
 }

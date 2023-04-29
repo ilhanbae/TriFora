@@ -40,10 +40,10 @@
     justify-content: center;
 
     width: 100%;
-    padding-left: 35%;
+    padding-left: 40%;
 
     border-radius: 10px 10px 0px 0px;
-    border: 2px solid #000000;
+    border: 6px solid #3D211A;
 }
 
 .profile_title{
@@ -326,7 +326,7 @@
         padding-left: 20%;
     
         border-radius: 10px 10px 0px 0px;
-        border: 2px solid #000000;
+        border: 6px solid #3D211A;
     }
 
     .title-bar-buttons{
@@ -378,7 +378,7 @@
         padding-left: 0%;
     
         border-radius: 10px 10px 0px 0px;
-        border: 2px solid #000000;
+        border: 6px solid #3D211A;
     }
 
     .title-bar-buttons{
@@ -406,7 +406,7 @@
         padding-left: 0%;
     
         border-radius: 10px 10px 0px 0px;
-        border: 2px solid #000000;
+        border: 6px solid #3D211A;
     }
 
     .title-bar-buttons{
@@ -478,8 +478,9 @@
 
     width: 100%;
     top: 0%;
+    padding: 10px;
 
-    border: 2px solid #000000;
+    border: 6px solid #3D211A;
     border-top: 1px solid #000000;
 }
 
@@ -539,8 +540,9 @@
     
         width: 100%;
         top: 0%;
+        padding: 10px;
     
-        border: 2px solid #000000;
+        border: 6px solid #3D211A;
         border-top: 1px solid #000000;
     }
 
@@ -592,8 +594,9 @@
 
     width: 100%;
     top: 0%;
+    padding: 10px;
 
-    border: 2px solid #000000;
+    border: 6px solid #3D211A;
     border-top: 1px solid #000000;
 }
 
@@ -694,9 +697,10 @@
 
     width: 100%;
     top: 0%;
+    padding: 10px;
 
     border-radius: 0px 0px 10px 10px;
-    border: 2px solid #000000;
+    border: 6px solid #3D211A;
     border-top: 1px solid #000000;
 }
 
@@ -870,18 +874,5 @@
 .friend_block:hover{
     background-color: #3D211A;
     color: white;
-}
-
-/* Favorite Communities under 430px */
-@media (max-width: 430px){
-    .friend_card_bar{
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    
-        width: 100%;
-    }
 }
 

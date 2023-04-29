@@ -850,14 +850,14 @@ export default class ProfilePage extends React.Component {
                                 <h1> {this.state.username} </h1>
                             </div>
                             <div className = {ProfilePageCSS.first_name}>
-                                <h3> First Name: {this.state.firstName} </h3>
+                                <h2> First Name: {this.state.firstName} </h2>
                             </div>
                             <div className = {ProfilePageCSS.last_name}>
-                                <h3> Last Name: {this.state.lastName} </h3>
+                                <h2> Last Name: {this.state.lastName} </h2>
                             </div>
                         </div>
                         <div className = {ProfilePageCSS.description}>
-                            <h4> {this.state.description} </h4>
+                            <h3> {this.state.description} </h3>
                         </div>
                     </div>
         

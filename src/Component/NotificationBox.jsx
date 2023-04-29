@@ -117,7 +117,7 @@ export default class NotificationBox extends React.Component {
                 <div className={NotificationCSS["notification-user-content"]}>
                     <div className={NotificationCSS["notification-user"]}>
                         <Link to={`/profile/${this.props.notification.fromUserID}`}>
-                            <img className={NotificationCSS["notification-image"]} src={this.state.notification_image} alt="notification-img"></img>
+                            <img className={NotificationCSS["notification-image"]} src={this.state.notification_image} alt="show-user-profile"></img>
                         </Link>
                     </div>
                     <div className={NotificationCSS["notification-content"]}>

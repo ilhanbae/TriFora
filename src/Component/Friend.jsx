@@ -164,7 +164,7 @@ export default class Friend extends React.Component {
                 <>
                     <div className = {ProfilePageCSS.friend_card}>
                         <Link className={ProfilePageCSS['friend_link']} onClick={() => this.ClickProfile()}>
-                            <img className = {ProfilePageCSS.friend_avatar} src={this.props.friend.toUser.attributes.profile.profileImage}></img>
+                            <img className = {ProfilePageCSS.friend_avatar} src={this.props.friend.toUser.attributes.profile.profileImage} alt="show-user-profile"></img>
                         </Link>
                         <Link onClick={() => this.ClickProfile()}>
                             <div className = {ProfilePageCSS.friend_name}>
@@ -194,7 +194,7 @@ export default class Friend extends React.Component {
                 <>
                     <div className = {ProfilePageCSS.friend_card}>
                         <Link className={ProfilePageCSS['friend_link']} onClick={() => this.ClickProfile()}>
-                            <img className = {ProfilePageCSS.friend_avatar} src={this.props.friend.toUser.attributes.profile.profileImage}></img>
+                            <img className = {ProfilePageCSS.friend_avatar} src={this.props.friend.toUser.attributes.profile.profileImage} alt="show-user-profile"></img>
                         </Link>
                         <Link onClick={() => this.ClickProfile()}>
                             <div className = {ProfilePageCSS.friend_name}>
