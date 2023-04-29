@@ -932,6 +932,7 @@ const CommunityPost = (props) => {
               profile_id={props.post.author.id}
               toggleProfile={toggleProfile}
               closePostPageModal={closePostPageModal}
+              openToast={props.openToast}
           />
       </Modal>
 
@@ -948,6 +949,7 @@ const CommunityPost = (props) => {
               profile_id={props.post.author.id}
               toggleProfile={toggleProfile}
               closePostPageModal={closePostPageModal}
+              openToast={props.openToast}
           />
       </Modal>
     </div>
@@ -1398,6 +1400,7 @@ const CommunityMember = (props) => {
         <ProfilePage 
             profile_id={props.member.user.id}
             toggleProfile={toggleProfile}
+            openToast={props.openToast}
         />
       </Modal>
     </div>
