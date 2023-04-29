@@ -479,6 +479,7 @@ export default class PostPage extends React.Component {
                                     <ProfilePage 
                                         profile_id={this.state.authorID}
                                         toggleProfile={this.toggleProfile}
+                                        openToast={this.props.openToast}
                                     />
                                 </Modal>
                                 <div className = {PostPageCSS['post-by']}>
@@ -512,7 +513,7 @@ export default class PostPage extends React.Component {
                         <Post_Buttons state={this.state} delete_post={this.DeletePostHandler} ClickDelete={() => this.ClickDeleteButton()} toggleModal={this.toggleModal}/>
                     </div>
                     <Comment_input comment_input={this.CommentHandler} submit={this.CommentSumbitHandler}/>
-                    <CommentList comment_list={this.state.comments} loadPost={this.loadPost} />
+                    <CommentList comment_list={this.state.comments} loadPost={this.loadPost} openToast={this.props.openToast}/>
                 </div>
 
             </div>

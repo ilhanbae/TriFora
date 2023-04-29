@@ -64,7 +64,7 @@ export default function App() {
       <div>
         <header>
           {/* Navigation */}
-          <NavAchiever logout={logout} navStyle={navStyle} />
+          <NavAchiever logout={logout} navStyle={navStyle} openToast={openToast} />
           
           <div>
             <Routes>

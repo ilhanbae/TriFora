@@ -557,9 +557,9 @@ const CommunityPostsList = (props) => {
         }
       }
       setFriends(friends_array);
-      console.log(friends_array);
+      //console.log(friends_array);
       setBlockedFriends(blocked_friends_array);
-      console.log(blocked_friends_array);
+      //console.log(blocked_friends_array);
     }
     setIsLoaded(true);
   }
@@ -604,6 +604,7 @@ const CommunityPostsList = (props) => {
   // component with skip and take query.
   const refreshPosts = () => {
     // console.log("refreshing posts");
+    loadFriends(); // Fetch the new Friend List and Blocked User List
     loadPosts(); // Fetch the posts again
   };
 
@@ -1236,6 +1237,7 @@ const CommunityMembersList = (props) => {
                 member={member}
                 refreshMembers={refreshMembers}
                 userCommunityMemberDetails={props.userCommunityMemberDetails}
+                openToast={props.openToast}
               />
             ))}
           </div>

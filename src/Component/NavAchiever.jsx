@@ -80,6 +80,7 @@ class NavAchiever extends React.Component {
 
     toggleProfile = () => {
         this.menuSwitch();
+        this.props.update_post_switch();
         this.setState({
             openProfile: !this.state.openProfile,
         });
@@ -191,6 +192,7 @@ class NavAchiever extends React.Component {
                                             profile_id={sessionStorage.getItem("user")}
                                             redirect_community={this.redirect_community}
                                             toggleProfile={this.toggleProfile}
+                                            openToast={this.props.openToast}
                                         />
                                     </Modal>
                                 </li>

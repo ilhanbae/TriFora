@@ -150,6 +150,7 @@ export default class Comment extends React.Component {
                         <ProfilePage 
                             profile_id={this.props.post.author.id}
                             toggleProfile={this.toggleProfile}
+                            openToast={this.props.openToast}
                         />
                     </Modal>
                     <div className = {PostPageCSS['comment-user-date']}>
