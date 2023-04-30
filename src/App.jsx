@@ -63,12 +63,12 @@ export default function App() {
     content based on the URL path. Since this is a single page app, it allows some
     degree of direct linking via the URL rather than by parameters. */
     <Router basename={process.env.PUBLIC_URL}>
-      <div>
+      <div className="testing">
         <header>
           {/* Navigation */}
           <NavAchiever logout={logout} navStyle={navStyle} />
           
-          <div>
+          <div className="test2">
             <Routes>
               {/* Pages */}
               <Route path="/about" element={<AboutUs />} /> {/* shouldn't need login? */}

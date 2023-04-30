@@ -36,6 +36,10 @@ body {
   font-family: 'Montserrat', sans-serif;
 }
 
+.test2 {
+  min-height: 90vh;
+}
+
 /* Relative Font Size using Root Font Size (REM). On most browsers, 
 the default root font size is 16px. But depending on the user, the 
 root font size may vary. */
