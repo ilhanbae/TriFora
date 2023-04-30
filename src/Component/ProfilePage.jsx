@@ -790,7 +790,7 @@ export default class ProfilePage extends React.Component {
     render() {
         if (this.state.render_user === false){
             return (
-                <h1>Loading......</h1>
+                <h1 className={ProfilePageCSS.loading}>Loading......</h1>
             );
         } else if (this.state.user_block_connection === false){
             return(

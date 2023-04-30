@@ -5,8 +5,8 @@ import NotificationBox from "./NotificationBox";
 
 export default class Notification extends React.Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             notification_number: 0,
             friend_notification_list: [],
@@ -75,7 +75,12 @@ export default class Notification extends React.Component {
 
                 <div className={NotificationCSS["notification-body"]}>
                     {this.state.friend_notification_list.map(notification => (
-                        <NotificationBox key={notification.id} notification={notification} load_friend_notification={this.load_friend_notification}/>
+                        <NotificationBox 
+                        key={notification.id} 
+                        notification={notification} 
+                        load_friend_notification={this.load_friend_notification}
+                        openToast={this.props.openToast}
+                        />
                     ))}
                 </div>
             </div>

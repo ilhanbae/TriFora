@@ -2,13 +2,20 @@ import React from "react";
 import NotificationCSS from "../style/Notification.module.css";
 import { Link } from 'react-router-dom';
 import defaultProfileImage from "../assets/defaultProfileImage.png";
+import Modal from "./Modal";
+import ProfilePage from "../Component/ProfilePage";
 
 export default class NotificationBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            notification_image: this.props.notification.fromUser.attributes.profile.profileImage === "" ? defaultProfileImage : this.props.notification.fromUser.attributes.profile.profileImage
+            notification_image: this.props.notification.fromUser.attributes.profile.profileImage === "" ? defaultProfileImage : this.props.notification.fromUser.attributes.profile.profileImage,
+            openProfile: false,
         };
+    }
+
+    componentDidMount(){
+        console.log(this.props.notification);
     }
 
     // This function will accept a friend request, this will also create two way connection between two users
@@ -111,19 +118,33 @@ export default class NotificationBox extends React.Component {
         }
     }
 
+    ClickProfile(){
+        this.setState({
+            openProfile: true,
+        });
+    }
+
+    toggleProfile = event => {
+        //this.props.closePostPageModal();
+        this.setState({
+            openProfile: !this.state.openProfile,
+        });
+    }
+
     render() {
         return(
+            <>
             <div className={NotificationCSS["notification-box"]}>
                 <div className={NotificationCSS["notification-user-content"]}>
                     <div className={NotificationCSS["notification-user"]}>
-                        <Link to={`/profile/${this.props.notification.fromUserID}`}>
+                        <Link onClick={() => this.ClickProfile()}>
                             <img className={NotificationCSS["notification-image"]} src={this.state.notification_image} alt="show-user-profile"></img>
                         </Link>
                     </div>
                     <div className={NotificationCSS["notification-content"]}>
-                        <h4>
-                            You Received a Friend Request from {this.props.notification.fromUser.attributes.profile.username}
-                        </h4>
+                        <h2>
+                            You Received a Friend Request from <h2 className={NotificationCSS["notification-sender"]}>{this.props.notification.fromUser.attributes.profile.username}</h2>
+                        </h2>
                     </div>
                 </div>
                 <div className={NotificationCSS["notification-action"]}>
@@ -131,6 +152,22 @@ export default class NotificationBox extends React.Component {
                     <button className={NotificationCSS["notification-reject"]} onClick={() => this.reject_friend()}>Reject</button>
                 </div>
             </div>
+
+            <Modal
+                show={this.state.openProfile}
+                onClose={this.toggleProfile}
+                modalStyle={{
+                width: "85%",
+                height: "85%",
+                }}
+            >
+                <ProfilePage 
+                    profile_id={this.props.notification.fromUser.id}
+                    toggleProfile={this.toggleProfile}
+                    openToast={this.props.openToast}
+                />
+            </Modal>
+            </>
         );
     }
 
