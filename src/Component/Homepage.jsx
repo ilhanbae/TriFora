@@ -256,6 +256,7 @@ export default function Homepage() {
                     {/* <h2>Jump in to your community!</h2> */}
                 </div>
                 <br />
+
                 {/* Display communities randomly mapped from communities user is part of */}
                 <div className="homepage-row-intro">
                     <h2>Jump back into some of your communities:</h2>
@@ -263,7 +264,8 @@ export default function Homepage() {
                 <div className="homepage-communities-row">
                     {displayUserCommunities()}
                 </div>
-                <Link className="hyperlink" to="/my-communities">Click here to see all your communities</Link>
+                <Link className="hyperlink" to="/my-communities">View all of your communities here</Link>
+                <br />
 
                 {/* Display communities randomly mapped from communities user is not part of */}
                 <div className="homepage-row-intro">
