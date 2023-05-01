@@ -76,10 +76,3 @@
 .homepage-community-image:hover {
   box-shadow: 0 4px 14px 0 rgb(0 0 0 /50%);
 }
-
-/* Responsive */
-@media (max-width: 800px) {
-  .communities-display {
-    flex-direction: column;
-  }
-}

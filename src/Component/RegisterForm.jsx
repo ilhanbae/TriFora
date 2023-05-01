@@ -54,21 +54,29 @@ export default class RegisterForm extends React.Component {
 
     usernameHandler = event => {
         this.setState({
-          username: event.target.value
-        });
+            username: event.target.value
+        })
+        // const usernameInput = event.target;
+        // const username = usernameInput.value;
+        // if (username.length < 3 || username.length > 20){
+        //     event.target.setCustomValidity("Usernames can be 3 to 20 characters long")
+        // } else {
+        //     event.target.setCustomValidity("")
+        // }
       };
 
     passwordHandler = event => {
         this.setState({
-          password: event.target.value
-        });
+            password: event.target.value
+        })
       };
 
     confirm_passwordHandler = event => {
         this.setState({
           confirm_password: event.target.value
         });
-      };
+    };
+
 
     phoneHandler = event => {
         this.setState({
@@ -78,9 +86,9 @@ export default class RegisterForm extends React.Component {
 
     emailHandler = event => {
         this.setState({
-          email: event.target.value
+            email: event.target.value
         });
-      };
+    };
 
     upload_img = event => {
       console.log(URL.createObjectURL(event.target.files[0]))
@@ -90,25 +98,31 @@ export default class RegisterForm extends React.Component {
     }
 
     submitHandler = event => {
-        // Check if the password match with the confirm_password
-        if (this.state.password !== this.state.confirm_password){
-          alert("Password does not match with Confirm_password!");
-
-        // Check if the username length is correct
+        if (this.state.email.length === 0) {
+            const emailInput = document.getElementById('email')
+            emailInput.setCustomValidity("No Input Detected");
+            emailInput.reportValidity()
+            event.preventDefault();
+        } else if (this.state.email.includes("@") === false || this.state.email.includes(".com") === false){
+            const emailInputted = document.getElementById('email')
+            emailInputted.setCustomValidity("Incorrect format");
+            emailInputted.reportValidity()
+            event.preventDefault();
+        } else if (this.state.password.length < 5 || this.state.password.length > 20){
+            const passwordLength = document.getElementById('password1')
+            passwordLength.setCustomValidity("Password should be between 6 to 20 characters");
+            passwordLength.reportValidity()
+            event.preventDefault();
+        } else if (this.state.password !== this.state.confirm_password) {
+            const passwordInput = document.getElementById('password2')
+            passwordInput.setCustomValidity("Your passwords do not match.");
+            passwordInput.reportValidity()
+            event.preventDefault();
         } else if (this.state.username.length < 3 || this.state.username.length > 20){
-          alert("Username must between 3 to 20 characters!");
-        
-        // Check if the password length is correct
-        } else if (this.state.password.length < 6 || this.state.password.length > 20){
-          alert("Password must between 6 to 20 characters!");
-
-        // Check if the email length is correct
-        } else if (this.state.email.length === 0){
-          alert("Email can't be empty!");
-        
-        // Check if the email contains @
-        } else if (this.state.email.includes("@") === false){
-          alert("Email must be incorrect format!");
+            const usernameInput = document.getElementById('username')
+            usernameInput.setCustomValidity("Username should be between 3 to 20 characters");
+            usernameInput.reportValidity()
+            event.preventDefault();
 
         } else {
           //keep the form from actually submitting
@@ -154,7 +168,7 @@ export default class RegisterForm extends React.Component {
               console.log("error when sign up!")
             }
           );
-        };
+        }
       }
 
 
@@ -178,26 +192,27 @@ export default class RegisterForm extends React.Component {
                         */}
 
                         <label className='input'>
-                            <input type="text" placeholder='Email' className='input-stuff' onChange={this.emailHandler}/>
+                            <input id='email' type="text" placeholder='Email' className='input-stuff'
+                                   onChange={this.emailHandler} required/>
                         </label>
                         <label className='input'>
-                            <input type="password" placeholder='Password' className='input-stuff password' onChange={this.passwordHandler}/>
+                            <input id='password1' type="password" placeholder='Password' className='input-stuff password'
+                                   onChange={this.passwordHandler} required/>
                         </label>
                         <label className='input'>
-                            <input type="password" placeholder='Confirm Password' className='input-stuff password' onChange={this.confirm_passwordHandler}/>
+                            <input id='password2' type="password" placeholder='Confirm Password' className='input-stuff password'
+                                   onChange={this.confirm_passwordHandler} required/>
                         </label>
                         <label className='input'>
-                            <input type="text" placeholder="Username" className='input-stuff' onChange={this.usernameHandler}/>
+                            <input id='username' type="text" placeholder="Username" className='input-stuff'
+                                   onChange={this.usernameHandler} required/>
                         </label>
-                        {/* <label className='input'>
-                            <input type="text" placeholder='Phone Number' className='input-stuff' onChange={this.phoneHandler}/>
-                        </label> */}
                         <label className='input'>
                             <button className='base base-submit' onClick={this.submitHandler}>Register</button>
                         </label>
-
                     </form>
             </div>
         )
     }
 }
+
