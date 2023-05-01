@@ -60,7 +60,7 @@ export default function OtherCommunitiesPage() {
             <div className="homepage-wrapper">
                 {/* Display communities randomly mapped from communities user is not part of */}
                 <div className="homepage-row-intro">
-                    <h1>Here are all the communities you can join:</h1>
+                    <h1>Here are all the communities you are part of:</h1>
                 </div>
                 {/* <select>
                     <option value="date created">Date created: oldest</option>
