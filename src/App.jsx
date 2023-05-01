@@ -16,6 +16,8 @@ import Homepage from "./Component/Homepage";
 import Notification from "./Component/Notification";
 import Toast from "./Component/Toast";
 import ToastList from "./Component/ToastList";
+import AboutUs from "./Component/AboutUs";
+import Footer from "./Component/Footer";
 import OtherCommunitiesPage from "./Component/OtherCommunitiesPage";
 
 export default function App() {
@@ -67,9 +69,10 @@ export default function App() {
           {/* Navigation */}
           <NavAchiever logout={logout} navStyle={navStyle} />
           
-          <div>
+          <div className="app-content">
             <Routes>
               {/* Pages */}
+              <Route path="/about" element={<AboutUs />} /> {/* shouldn't need login? */}
               <Route path="/register" element={<RegisterForm login={login} />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/login" element={<LoginOrProfile login={login} />} />
@@ -81,6 +84,7 @@ export default function App() {
               <Route path="/" element={<LoginOrProfile login={login} />} />
             </Routes>
           </div>
+          <Footer />
         </header>
         {/* Toast List */}
         <ToastList toastList={toastList} closeToast={closeToast}></ToastList>
