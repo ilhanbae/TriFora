@@ -1,9 +1,11 @@
 .footer {
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
     background-color: var(--yellow-apricot);
-    padding-block: 2%;
+    /* padding-block: 2%; */
     font-size: 1.125rem;
+    min-height: 8vh;
 }
 
 .footer a {
