@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import genericFetch from "../helper/genericFetch";
 import "../style/Homepage.css"; // can just use the homepage formatting I think
+import CreateCommunity from "./CreateCommunity";
+import Modal from "./Modal";
 
 export default function OtherCommunitiesPage() {
     const [joinedIds, setJoinedIds] = useState();
     const [allCommunities, setAllCommunities] = useState();
     const [displayPerRow, setDisplayPerRow] = useState(3); // same as homepageA
     const [isLoaded, setIsLoaded] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     // Fetch unjoined communities
     useEffect(() => {
@@ -63,6 +66,11 @@ export default function OtherCommunitiesPage() {
         }
     };
 
+    /* This method toggles that modal to create a community */
+    const toggleModal = () => {
+        setIsModalOpen(!isModalOpen);
+    }
+
 
     if (!isLoaded) {
         return <div>Loading...</div>;
@@ -112,6 +120,24 @@ export default function OtherCommunitiesPage() {
                         ))}
                     </div>
                 ))}
+                <div className="homepage-row-intro">
+                    <h1>Don't see a community you're interest in? Create it here:</h1>
+                    <button onClick={toggleModal}>Create Community</button>
+                </div>
+                {/* Create Community as modal */}
+                <Modal
+                    show={isModalOpen}
+                    onClose={toggleModal}
+                    modalStyle={{
+                        width: "50%",
+                        height: "50%",
+                    }}
+                >
+                    <CreateCommunity
+                        toggleModal={toggleModal}
+                        // openToast={props.openToast}
+                    />
+                </Modal>
             </div>
         )
     }
