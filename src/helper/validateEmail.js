@@ -21,6 +21,8 @@ export default function validateEmail(email) {
 
   // check username field exists
   if (!username) {
+    console.log(username)
+
     errorMessage = "Username field can't be empty";
     return [isValid, errorMessage];
   }
@@ -64,6 +66,16 @@ export default function validateEmail(email) {
   if (!alphanumeric_pattern.test(topLevelDomain)){
     errorMessage = "Top Level Domain should only contain alphanumeric characters";
     return [isValid, errorMessage];    
+  }
+
+  const emailInput = document.getElementById('email')
+  if (errorMessage) {
+    emailInput.setCustomValidity(errorMessage);
+    emailInput.reportValidity();
+  } else {
+    emailInput.setCustomValidity("");
+    emailInput.reportValidity();
+
   }
 
   // No error

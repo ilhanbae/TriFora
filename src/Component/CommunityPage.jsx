@@ -535,9 +535,9 @@ const CommunityPostsList = (props) => {
 
   // This method will load all the Friends
   const loadFriends = async () => {
-    const friends_array = []
     setIsLoaded(false);
-    const friends_array = []
+    const friends_array = [];
+    const blocked_friends_array = [];
     let endpoint = "/connections";
     let query = {
       fromUserID: sessionStorage.getItem("user"),
@@ -563,25 +563,6 @@ const CommunityPostsList = (props) => {
     }
     setIsLoaded(true);
   }
-
-  // This method loads all the Friends Posts using genericFetch
-  /*
-  const loadFriendPosts = async () => {
-    setIsLoaded(false);
-    let endpoint = "/posts";
-    let query = {
-      authorIDIn: [165],
-      recipientGroupID: props.communityId,
-    };
-    const { data, errorMessage } = await genericFetch(endpoint, query);
-    // console.log(data, errorMessage)
-    if (errorMessage) {
-      setErrorMessage(errorMessage);
-    } else {
-      console.log(data[0])
-    }
-  }
-  */
 
   // This methods loads the community posts using genericFetch & update the community posts count stat
   const loadPosts = async () => {
@@ -628,7 +609,7 @@ const CommunityPostsList = (props) => {
 
   // Sort posts by the friends connection
   const friendsFirstPosts = posts.sort((postA, postB) => friends.includes(postB.authorID) - friends.includes(postA.authorID))
-
+  const remove_BlockedPosts = friendsFirstPosts.filter((post) => blocked_friends.includes(post.authorID) !== true)
   // Render Component
   if (errorMessage) {
     return <div>Error: {errorMessage}</div>;
@@ -640,51 +621,18 @@ const CommunityPostsList = (props) => {
         <div>
           {/* Posts */}
           <div className={style["community-post-list"]}>
-            {/* Load All Friend Posts */}
-            {posts.map((post) =>{
-              console.log(friends);
-              console.log(post.authorID);
-              console.log(friends.includes(post.authorID))
-              if (friends.includes(post.authorID) === true){
-                return (
-                  <CommunityPost
-                  key={post.id}
-                  communityId={props.communityId}
-                  post={post}
-                  refreshPosts={refreshPosts}
-                  userCommunityMemberDetails={props.userCommunityMemberDetails}
-                  communityPostAuthorRoles={communityPostAuthorRoles}
-                  isFriendPost={true}
-                  />
-                );
-              }
-            }
-            )}
-
-            {/* Load All Non-Friend Posts */}
-            {posts.map((post) =>{
-              console.log(friends);
-              console.log(post.authorID);
-              console.log(friends.includes(post.authorID))
-              if (friends.includes(post.authorID) === false){
-                return (
-                  <CommunityPost
-                  key={post.id}
-                  communityId={props.communityId}
-                  post={post}
-                  refreshPosts={refreshPosts}
-                  userCommunityMemberDetails={props.userCommunityMemberDetails}
-                  communityPostAuthorRoles={communityPostAuthorRoles}
-                  isFriendPost={false}
-                  />
-                );
-              } else {
-                return (
-                  <></>
-                );
-              }
-            }
-            )}
+            {remove_BlockedPosts.map((post) => (
+              <CommunityPost
+                key={post.id}
+                communityId={props.communityId}
+                post={post}
+                refreshPosts={refreshPosts}
+                userCommunityMemberDetails={props.userCommunityMemberDetails}
+                communityPostAuthorRoles={communityPostAuthorRoles}
+                isFriendPost={friends.includes(post.authorID)}
+                openToast={props.openToast}
+              />
+            ))}
           </div>
         </div>
       );

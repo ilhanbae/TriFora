@@ -15,27 +15,96 @@ export default class BlockedFriend extends React.Component {
         };
     }
 
-    // unblock_friend will update the connection status back to "active"
-    unblock_friend = () => {
+    // unblock_user will update the connection status back to "active"
+    // First get the current connection, check the type of the connection
+    unblock_user = () => {
+        // get the current connection, check the type of the connection
         fetch(process.env.REACT_APP_API_PATH+"/connections/" + this.props.blocked_friend.id, {
-            method: "PATCH",
+            method: "get",
             headers: {
               'Content-Type': 'application/json',
               'Authorization': 'Bearer '+sessionStorage.getItem("token")
             },
-            body: JSON.stringify({
-                attributes: {
-                    status: "active",
-                    type: "friend"
-                }
-            })
             })
             .then(res => res.json())
             .then(
               result => {
                 console.log(result)
-                this.props.load_friend(this.props.view_userID);
-                this.props.load_blocked_friend(this.props.view_userID);
+                if (result.attributes.type === 'friend'){
+                    fetch(process.env.REACT_APP_API_PATH+"/connections/" + this.props.blocked_friend.id, {
+                        method: "PATCH",
+                        headers: {
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                        },
+                        body: JSON.stringify({
+                            attributes: {
+                                status: "active",
+                                type: "friend"
+                            }
+                        })
+                        })
+                        .then(res => res.json())
+                        .then(
+                          result => {
+                            console.log(result)
+                            this.props.load_friend(this.props.view_userID);
+                            this.props.load_blocked_friend(this.props.view_userID);
+                          },
+                          error => {
+                            //alert("error!");
+                            console.log("error!")
+                          }
+                        );
+                } else if (result.attributes.type === 'pending'){
+                    fetch(process.env.REACT_APP_API_PATH+"/connections/" + this.props.blocked_friend.id, {
+                        method: "PATCH",
+                        headers: {
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                        },
+                        body: JSON.stringify({
+                            attributes: {
+                                status: "inactive",
+                                type: "pending"
+                            }
+                        })
+                        })
+                        .then(res => res.json())
+                        .then(
+                          result => {
+                            console.log(result)
+                            this.props.load_friend(this.props.view_userID);
+                            this.props.load_blocked_friend(this.props.view_userID);
+                          },
+                          error => {
+                            //alert("error!");
+                            console.log("error!")
+                          }
+                        );
+                } else if (result.attributes.type === 'not-friend'){
+                    console.log(this.props.blocked_friend.id)
+                    console.log(this.props.view_userID)
+                    // Delete the one way connection between users
+                    fetch(process.env.REACT_APP_API_PATH+"/connections/" + this.props.blocked_friend.id, {
+                        method: "DELETE",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                        },
+                        })
+                        .then(
+                            result => {
+                            console.log(result)
+                            this.props.load_friend(this.props.view_userID);
+                            this.props.load_blocked_friend(this.props.view_userID);
+                            },
+                            error => {
+                                //alert("error!");
+                                console.log("error!")
+                            }
+                        );
+                }
               },
               error => {
                 //alert("error!");
@@ -66,7 +135,7 @@ export default class BlockedFriend extends React.Component {
                             <h4> {this.props.blocked_friend.toUser.attributes.profile.username} </h4>
                         </div>
                     </Link>
-                    <button className = {ProfilePageCSS.friend_block} onClick={() => this.unblock_friend()}>
+                    <button className = {ProfilePageCSS.friend_block} onClick={() => this.unblock_user()}>
                         <h5>Unblock</h5>
                     </button>
                 </div>

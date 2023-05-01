@@ -60,6 +60,22 @@ body {
     margin-bottom: 25px;
 }
 
+/* Style invalid inputs with red border */
+/*input:invalid {*/
+/*    border-color: red;*/
+/*}*/
+
+/* Style error messages for invalid inputs with red text */
+/*input:invalid + .error-message {*/
+/*    display: block;*/
+/*    color: red;*/
+/*}*/
+
+/* Hide error messages by default */
+/*.error-message {*/
+/*    display: none;*/
+/*}*/
+
 .input-stuff {
     border: none;
     border-bottom: 2px solid #C06A30;
