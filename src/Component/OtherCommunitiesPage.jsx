@@ -5,7 +5,7 @@ import "../style/Homepage.css"; // can just use the homepage formatting I think
 
 export default function OtherCommunitiesPage() {
     const [joinedIds, setJoinedIds] = useState();
-    const [unjoinedCommunities, setUnjoinedCommunities] = useState();
+    const [allCommunities, setAllCommunities] = useState();
     const [displayPerRow, setDisplayPerRow] = useState(3); // same as homepageA
     const [isLoaded, setIsLoaded] = useState(false);
 
@@ -21,7 +21,7 @@ export default function OtherCommunitiesPage() {
     const loadAll = async () => {
         setIsLoaded(false);
         await getJoinedIds();
-        await getUnjoinedCommunities();
+        await getAllCommunities();
         setIsLoaded(true);
     };
 
@@ -47,7 +47,7 @@ export default function OtherCommunitiesPage() {
     /* want to use generic fetch to get all communities
      * then maybe do some work to display non-joined communities
      */
-    const getUnjoinedCommunities = async () => {
+    const getAllCommunities = async () => {
         let endpoint = `/groups/`
         let query = {}
         const { data, errorMessage } = await genericFetch(endpoint, query);
@@ -57,7 +57,7 @@ export default function OtherCommunitiesPage() {
         } else {
             // console.log("unjoined else")
 
-            setUnjoinedCommunities(data[0]); // store all communities
+            setAllCommunities(data[0]); // store all communities
             // setNumCommunities(data[1]); // holding the total number of communities might be helpful for referencing
             // setCommunitiesLoaded(true); // mark all communities as loaded so bottom row can begin it's renders
         }
@@ -68,24 +68,33 @@ export default function OtherCommunitiesPage() {
         return <div>Loading...</div>;
     } else {
         // Filter communites that user's not part of
-        const otherCommunties = unjoinedCommunities.filter(
+        const unjoinedCommunities = allCommunities.filter(
             (community) => !joinedIds.includes(community.id)
         );
+        // The above is currently sorted by date created
+
         /*
         unjoinedCommunities communities should be an array, and turning it into a matrix should hopefully allow row building
         source for turning to matrix:
         https://stackoverflow.com/questions/62880615/how-do-i-map-for-every-two-elements-for-react
         */
-        const rows = otherCommunties.reduce(function (rows, key, index) {
+        const rows = unjoinedCommunities.reduce(function (rows, key, index) {
             return (index % displayPerRow == 0 ? rows.push([key])
                 : rows[rows.length - 1].push(key)) && rows;
         }, []);
+
         return (
             <div className="homepage-wrapper">
                 {/* Display communities randomly mapped from communities user is not part of */}
                 <div className="homepage-row-intro">
-                    <h1>Here are all the communities you haven't joined:</h1>
+                    <h1>Here are all the communities you can join:</h1>
                 </div>
+                {/* <select>
+                    <option value="date created">Date created: oldest</option>
+                    <option value="date created">Date created: newest</option>
+                    <option value="a-z">Alphabetical: A-Z</option>
+                    <option value="z-a">Alphabetical: Z-A</option>
+                </select> */}
                 {rows.map(row => (
                     <div className="homepage-communities-row">
                         {row.map(community => (
