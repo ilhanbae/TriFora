@@ -528,6 +528,8 @@
     margin: 10px;
     margin-left: auto;
     margin-right: 60px;
+    font-family: 'Alfa Slab One';
+    font-size: 20px;
 
     color:#000000;
 }
@@ -566,6 +568,8 @@
         box-sizing: border-box;
         width: 80%;
         margin: 10px;
+        font-family: 'Alfa Slab One';
+        font-size: 20px;
     
         color:#000000;
     }
