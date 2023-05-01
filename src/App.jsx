@@ -18,6 +18,7 @@ import Toast from "./Component/Toast";
 import ToastList from "./Component/ToastList";
 import AboutUs from "./Component/AboutUs";
 import Footer from "./Component/Footer";
+import MyCommunities from "./Component/MyCommunities";
 import OtherCommunitiesPage from "./Component/OtherCommunitiesPage";
 
 export default function App() {
@@ -78,6 +79,7 @@ export default function App() {
               <Route path="/login" element={<LoginOrProfile login={login} />} />
               <Route path="/edit-profile" element={<EditProfilePage />} />
               <Route path="/community/:communityId" element={<CommunityPage openToast={openToast} />} />
+              <Route path="/my-communities" element={<MyCommunities />} />
               <Route path="/other-communities" element={<OtherCommunitiesPage />} />
               <Route path="/create-post" element={<CreatePost />} />
               <Route path="/notification" element={<Notification openToast={openToast}/>} />
