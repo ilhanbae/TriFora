@@ -43,10 +43,12 @@ export default class Comment extends React.Component {
                     //alert("Delete Successfully");
                     console.log("Delete Successfully");
                     this.props.loadPost();
+                    this.props.openToast({type: "success", message: <span>Delete Comment Successful!</span>})
                 },
                 error => {
                     //alert("error!"+error);
                     console.log("error!"+error)
+                    this.props.openToast({type: "error", message: <span>Error When Deleting the Comment!</span>})
                 }
                 );
         }
@@ -95,10 +97,12 @@ export default class Comment extends React.Component {
                             edit_comment: false,
                         });
                         this.props.loadPost();
+                        this.props.openToast({type: "success", message: <span>Edit Comment Successful!</span>})
                       },
                       error => {
                         //alert("error!");
                         console.log("error!")
+                        this.props.openToast({type: "error", message: <span>Error When Editing the Comment!</span>})
                       }
                     );
             }

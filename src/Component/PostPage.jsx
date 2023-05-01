@@ -206,7 +206,6 @@ export default class PostPage extends React.Component {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer '+sessionStorage.getItem("token")
             },
-        
             })
             .then(res => res.json())
             .then(
@@ -282,15 +281,18 @@ export default class PostPage extends React.Component {
                         //alert("Post Reaction was successful");
                         // once Post reaction is complete, reload the all reaction
                         this.loadPost_reaction();
+                        this.props.openToast({type: "success", message: <span>Like Successful!</span>})
                     },
                     error => {
                         //alert("ERROR when submit Reaction");
                         console.log("ERROR when submit Reaction");
+                        this.props.openToast({type: "error", message: <span>Error When Like the Post!</span>})
                     }
                 );
         }else{
             //If user is not logged in, show error message
             //alert("Not Logged In");
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Not Logged In");
         }
     }
@@ -327,22 +329,27 @@ export default class PostPage extends React.Component {
                             upvote_set: false,
                         });
                         this.loadPost_reaction();
+                        this.props.openToast({type: "success", message: <span>Undo Like Successful!</span>})
                     },
                     error => {
                         //alert("ERROR when deleting Like");
                         console.log(error);
                         console.log("ERROR when deleting Like");
+                        this.props.openToast({type: "error", message: <span>Error When Undo Like!</span>})
                     }
                 );
                 },
                 error => {
                     //alert("ERROR loading Reactions");
                     console.log("ERROR loading Reactions")
+                    this.props.openToast({type: "error", message: <span>Error When Loading Post Reactions!</span>})
+
                 }
             );
         }else{
             //If user is not logged in, show error message
             //alert("Not Logged In");
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Not Logged In");
         }
     }
@@ -386,18 +393,20 @@ export default class PostPage extends React.Component {
                             console.log(result);
                             // once a edit is complete, reload the all comments
                             this.loadPost();
-                            //alert("Post was successful");
                             console.log("Post was successful");
+                            this.props.openToast({type: "success", message: <span>Comment Submit Successful!</span>})
                         },
                         error => {
                             //alert("ERROR when submit comment");
                             console.log("ERROR when submit comment");
+                            this.props.openToast({type: "error", message: <span>Error when submit comment!</span>})
                         }
                     );
             }
         } else {
             //If user is not logged in, show error message
             //alert("Not Logged In");
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Not Logged In");
         }
     }
@@ -419,17 +428,20 @@ export default class PostPage extends React.Component {
                     //alert("Delete Successfully");
                     console.log("Delete Successfully");
                     this.props.closePostPageModal(); // close the post page modal
+                    this.props.openToast({type: "success", message: <span>Post Delete Successful!</span>})
                 },
                 error => {
                     //alert("ERROR when deleting post");
                     console.log(error);
                     console.log("ERROR when deleting post");
+                    this.props.openToast({type: "error", message: <span>Error when Deleting the Post!</span>})
                 }
             );
 
         }else{
             //If user is not logged in, show error message
             //alert("Not Logged In");
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Not Logged In");
         }
     }

@@ -205,7 +205,9 @@ class NavAchiever extends React.Component {
                                         height: "100%",
                                         }}
                                     >
-                                        <Notification />
+                                        <Notification 
+                                        openToast={this.props.openToast}
+                                        />
                                     </Modal>
                                 </li>
                                 <li>

@@ -589,6 +589,9 @@ export default class ProfilePage extends React.Component {
                     this.props.openToast({type: "success", message: <span>Friend Request Accepted!</span>})
                     this.check_user_connection(user_id);
                     this.load_friend(user_id);
+                    if (this.props.load_friend_notification){
+                        this.props.load_friend_notification();
+                    }
                 },
                 error => {
                     //alert("ERROR creating new Connection");
@@ -622,6 +625,9 @@ export default class ProfilePage extends React.Component {
                     console.log("Delete Connection Successfully");
                     this.props.openToast({type: "success", message: <span>Friend Request Rejected!</span>})
                     this.check_user_connection(user_id);
+                    if (this.props.load_friend_notification){
+                        this.props.load_friend_notification();
+                    }
                 },
                 error => {
                     //alert("ERROR when deleting Connection");

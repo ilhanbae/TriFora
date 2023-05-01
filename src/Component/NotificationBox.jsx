@@ -43,9 +43,11 @@ export default class NotificationBox extends React.Component {
                     console.log(result);
                     console.log("Connection Updated");
                     //alert("Connection Updated")
+                    this.props.openToast({type: "success", message: <span>Friend Request Accepted!</span>})
                 },
                 error => {
                     //alert("ERROR updating Connection");
+                    this.props.openToast({type: "error", message: <span>Error When Accepting Friend Request!</span>})
                     console.log("ERROR updating Connection")
                 }
             );
@@ -77,11 +79,13 @@ export default class NotificationBox extends React.Component {
                 },
                 error => {
                     //alert("ERROR creating new Connection");
+                    this.props.openToast({type: "error", message: <span>Error When Accepting Friend Request!</span>})
                     console.log("ERROR creating new Connection")
                 }
             );
 
         }else{
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Please Login First!")
         }
     }
@@ -104,16 +108,19 @@ export default class NotificationBox extends React.Component {
                     //alert("Delete Friend Request Successfully");
                     console.log("Delete Connection Successfully");
                     this.props.load_friend_notification();
+                    this.props.openToast({type: "success", message: <span>Friend Request Rejected!</span>})
                 },
                 error => {
                     //alert("ERROR when deleting Connection");
                     console.log(error);
                     console.log("ERROR when deleting Connection");
+                    this.props.openToast({type: "error", message: <span>Error When rejecting Friend Request!</span>})
                 }
             );
 
         // Check if user not logged in, Login First
         }else{
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Please Login First!")
         }
     }
@@ -165,6 +172,7 @@ export default class NotificationBox extends React.Component {
                     profile_id={this.props.notification.fromUser.id}
                     toggleProfile={this.toggleProfile}
                     openToast={this.props.openToast}
+                    load_friend_notification={this.props.load_friend_notification}
                 />
             </Modal>
             </>
