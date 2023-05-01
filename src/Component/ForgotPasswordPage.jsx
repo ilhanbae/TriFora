@@ -10,6 +10,10 @@ export default function ForgotPasswordPage(props) {
   const [isTokenRequestSuccess, setIsTokenRequestSuccess] = useState(false);
   const [isResetRequestSuccess, setIsResetRequestSuccess] = useState(false);
 
+  useEffect(() => {
+    document.title = "Forgot Password Page";
+  }, []);
+
   // Send password reset token request
   const sendResetTokenRequest = async (email) => {
     // Set Base API Variables

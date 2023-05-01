@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import "../style/AboutUs.css";
 
 export default function AboutUs() {
+    useEffect(() => {
+        document.title = "About Us Page";
+      }, []);
+
     return (
         <div className="about-page-wrapper"> {/* wrapper */}
             <div className="about-description-box">

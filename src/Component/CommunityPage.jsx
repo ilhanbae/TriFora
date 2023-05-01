@@ -27,6 +27,7 @@ export default function CommunityPage(props) {
 
   // Fetch the community and user member details community page is loaded
   useEffect(() => {
+    document.title = "Community Page";
     loadCommunityAndUserMemberDetails();
   }, []);
 

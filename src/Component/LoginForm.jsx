@@ -15,6 +15,10 @@ export default class LoginForm extends React.Component {
         this.refreshPostsFromLogin = this.refreshPostsFromLogin.bind(this);
     }
 
+    componentDidMount(){
+        document.title = "Login Page";
+    }
+
     refreshPostsFromLogin() {
         console.log("CALLING LOGIN IN LOGINFORM");
         this.props.login();

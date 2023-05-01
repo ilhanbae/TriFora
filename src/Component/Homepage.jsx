@@ -19,6 +19,7 @@ export default function Homepage() {
 
     // Fetch user details, joined communities, and not other communities when the page is loaded.
     useEffect(() => {
+        document.title = "Home Page";
         loadAll();
     }, []);
 
