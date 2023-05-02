@@ -117,9 +117,8 @@ class NavAchiever extends React.Component {
                 {/* items that appear to the left side of the navbar */}
                 <ul id="leftItems">
                     <li className={NavCSS["logo"]}>
-                        {/* <Link to="/"> Logo </Link> */}
+                        <Link to="/"> Trifora </Link>
                         {/* Temporarily non clickable text since destination unknown */}
-                        <div> Trifora </div>
                     </li>
 
                     {/* commented out as lacking functionality for now */}

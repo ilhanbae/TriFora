@@ -21,15 +21,8 @@ import OtherCommunitiesPage from "./Component/OtherCommunitiesPage";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [navStyle, setNavStyle] = useState(2);
   const [toastList, setToastList] = useState([]);
 
-  /* This method changes nav style */
-  const navSwitch = (headerStyle) => {
-    if (headerStyle !== navStyle) {
-      setNavStyle(headerStyle)
-    }
-  }
 
   /* On logout, pull the session token and user from session storage and update the 
   user's logged in status. This can be called from the header component where the user can 
@@ -66,7 +59,7 @@ export default function App() {
       <div>
         <header>
           {/* Navigation */}
-          <NavAchiever logout={logout} navStyle={navStyle} openToast={openToast} />
+          <NavAchiever logout={logout} openToast={openToast} />
           
           <div className="app-content">
             <Routes>
