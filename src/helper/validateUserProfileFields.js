@@ -48,10 +48,10 @@ export default function validateUserProfileFields(userProfileFields) {
     return [isValid, errorMessage]
   }
 
-  if (!alphabet_pattern.test(description)) {
-    errorMessage = "Description should only contain alphanumeric characters"
-    return [isValid, errorMessage]
-  }
+  // if (!alphabet_pattern.test(description)) {
+  //   errorMessage = "Description should only contain alphanumeric characters"
+  //   return [isValid, errorMessage]
+  // }
 
   /* No error */
   return [!isValid, errorMessage]
