@@ -162,19 +162,19 @@ const UserProfileForm = (prop) => {
     
     if(!isUserProfileFieldsValid) {
       console.log(userProfileFieldsErrorMessage)
-      if(userProfileFieldsErrorMessage=="First Name can't be empty"){
-        prop.openToast({type: "error", message: <span>First Name can't be empty</span>})
-      }
-      else if(userProfileFieldsErrorMessage=="Last Name can't be empty") {
-        prop.openToast({type: "error", message: <span>Last Name can't be empty</span>})
-      }
-      else if(userProfileFieldsErrorMessage=="First name should only contain alphanumeric characters") {
-        prop.openToast({type: "error", message: <span>First name should only contain alphanumeric characters</span>})
-      }
-      else if(userProfileFieldsErrorMessage=="Last name should only contain alphanumeric characters") {
-        prop.openToast({type: "error", message: <span>Last name should only contain alphanumeric characters</span>})
-      }
-      else if(userProfileFieldsErrorMessage=="Username can't be empty") {
+      // if(userProfileFieldsErrorMessage=="First Name can't be empty"){
+      //   prop.openToast({type: "error", message: <span>First Name can't be empty</span>})
+      // }
+      // else if(userProfileFieldsErrorMessage=="Last Name can't be empty") {
+      //   prop.openToast({type: "error", message: <span>Last Name can't be empty</span>})
+      // }
+      // else if(userProfileFieldsErrorMessage=="First name should only contain alphanumeric characters") {
+      //   prop.openToast({type: "error", message: <span>First name should only contain alphanumeric characters</span>})
+      // }
+      // else if(userProfileFieldsErrorMessage=="Last name should only contain alphanumeric characters") {
+      //   prop.openToast({type: "error", message: <span>Last name should only contain alphanumeric characters</span>})
+      // }
+      if(userProfileFieldsErrorMessage=="Username can't be empty") {
         prop.openToast({type: "error", message: <span>Username can't be empty</span>})
       }
       else if(userProfileFieldsErrorMessage=="Description can't be empty") {
@@ -183,9 +183,9 @@ const UserProfileForm = (prop) => {
       else if(userProfileFieldsErrorMessage=="Username should only contain alphanumeric characters") {
         prop.openToast({type: "error", message: <span>Username should only contain alphanumeric characters</span>})
       }
-      else if(userProfileFieldsErrorMessage=="Description should only contain alphanumeric characters") {
-        prop.openToast({type: "error", message: <span>Description should only contain alphanumeric characters</span>})
-      }
+      // else if(userProfileFieldsErrorMessage=="Description should only contain alphanumeric characters") {
+      //   prop.openToast({type: "error", message: <span>Description should only contain alphanumeric characters</span>})
+      // }
       
     } else {
       const { data: updatedUser, errorMessage: updateUserErrorMessage} = await genericPatch(endpoint, body);
