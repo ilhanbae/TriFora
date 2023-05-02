@@ -50,7 +50,7 @@ export default function CreateCommunity(props) {
                 // upload image
                 let communityImageLink = await uploadCommunityImage();
                 // create community
-
+                await createCommunity(communityImageLink);
                 // set this user as admin
 
                 // close modal
@@ -75,6 +75,31 @@ export default function CreateCommunity(props) {
             // add to the url array if successful helper call
             let communityImageLink = `${process.env.REACT_APP_DOMAIN_PATH}${uploadedPostImageFile.path}` // Format server link with app domain
             return communityImageLink;
+        }
+    }
+
+    const createCommunity = async (communityImageLink) => {
+        let endpoint = '/groups';
+        let body = {
+            name: communityName,
+            attributes: {
+                design: {
+                    bannerBackgroundColor: "#5da7b6",
+                    bannerProfileImage: communityImageLink
+                }
+            }
+        };
+        const { data, errorMessage } = await genericPost(endpoint, body);
+
+        // Check for upload file error
+        if (errorMessage) {
+            // this really should have been a modal
+            props.openToast({ type: "error", message: <span>There was a server error when creating your community please contact support so we can work to fix the error</span> })
+        } else {
+            // else continue to making admin
+            props.openToast({ type: "success", message: "Community successfully created!" });
+            // props.refreshCommunityAndUserMemberDetails();
+            props.toggleModaal();
         }
     }
 
