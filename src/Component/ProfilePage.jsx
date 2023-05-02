@@ -1002,7 +1002,7 @@ const Render_FriendBar = (props) => {
                     <h3> &#40;{props.state.friend_list.length}&#41; </h3>
                 </div>
             </div>
-            <button className = {ProfilePageCSS['show_BlockedFriend']} onClick={() => props.swtich_friendbar()}>Show Blocked Friends</button>
+            <button className = {ProfilePageCSS['show_BlockedFriend']} onClick={() => props.swtich_friendbar()}>Show Blocked Users</button>
 
             <div className = {ProfilePageCSS.friend_card_bar}>
                 {props.state.friend_list.map(friend => (
@@ -1027,7 +1027,7 @@ const Render_FriendBar = (props) => {
             <>
             <div className = {ProfilePageCSS.friend_title_bar}>
                 <div className = {ProfilePageCSS.friend_title}>
-                    <h2> My Blocked Friends </h2>
+                    <h2> My Blocked Users </h2>
                 </div>
                 <div className = {ProfilePageCSS.friend_num}>
                     <h3> &#40;{props.state.blocked_friend_list.length}&#41; </h3>
