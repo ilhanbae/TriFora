@@ -12,4 +12,6 @@
   padding: 10px;
   gap: 5px;
   visibility: hidden;
+  z-index: 11;
+
 }

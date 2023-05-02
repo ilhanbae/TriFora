@@ -104,7 +104,7 @@ export default class RegisterForm extends React.Component {
             emailInput.setCustomValidity("No Input Detected");
             emailInput.reportValidity()
             event.preventDefault();
-        } else if (this.state.email.includes("@") === false || this.state.email.includes(".com") === false){
+        } else if (this.state.email.includes("@") === false || this.state.email.includes(".edu") === false){
             const emailInputted = document.getElementById('email')
             emailInputted.setCustomValidity("Incorrect format");
             emailInputted.reportValidity()

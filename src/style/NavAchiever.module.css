@@ -1,8 +1,3 @@
-/* default stuff*/
-* {
-    box-sizing: border-box;
-}
-
 .headerNav {
     background-color: #F3C26E;
     color: black;
@@ -16,11 +11,12 @@
     left: 0;
     align-items: center;
     min-height: 8vh;
+    z-index: 5;
 }
 
 /* using a instead of Link seems to be correct */
 .headerNav a {
-    color: black;
+    color: var(--french-bistre);
     text-decoration: none;
     height: 100%;
     display: flex;
@@ -29,7 +25,8 @@
 }
 
 .headerNav a:hover {
-    color: white;
+    /* color: white; */
+    color: var(--bistre);
 }
 
 .headerNav ul {
@@ -41,8 +38,14 @@
 }
 
 .logo {
+    font-family: 'Alfa Slab One', cursive;
     font-size: 3.5rem;
-    color: #3D211A;
+    color: var(--french-bistre)
+}
+.logo:focus,
+.logo:hover {
+    cursor: pointer;
+    color: var(--bistre)
 }
 
 /* logo under 500px */
