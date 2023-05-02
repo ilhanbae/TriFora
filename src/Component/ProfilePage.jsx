@@ -836,6 +836,7 @@ export default class ProfilePage extends React.Component {
                                 <EditProfile 
                                 render_user={this.render_user}
                                 toggleProfile={this.props.toggleProfile}
+                                openToast = {this.props.openToast}
                                 />
                             </Modal>
         

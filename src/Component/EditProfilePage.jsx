@@ -44,6 +44,7 @@ export default function EditProfile(prop) {
           user={user} 
           render_user={prop.render_user} 
           toggleProfile={prop.toggleProfile}
+          openToast = {prop.openToast}
           />
         </div>
       );
@@ -57,7 +58,6 @@ const ProfileHeader = (prop) => {
   const saveActionHandler = () => {
     prop.userProfileFormSubmitHandler();
     prop.render_user(prop.user_id);
-    prop.toggleProfile();
   };
 
   return (
@@ -87,6 +87,7 @@ const ProfileMain = (prop) => {
       user={prop.user} 
       render_user={prop.render_user} 
       toggleProfile={prop.toggleProfile}
+      openToast = {prop.openToast}
       />
     </div>
   );
@@ -160,7 +161,7 @@ const UserProfileForm = (prop) => {
     // console.log(isUserProfileFieldsValid, userProfileFieldsErrorMessage)
     
     if(!isUserProfileFieldsValid) {
-      alert(userProfileFieldsErrorMessage)
+      prop.openToast({type: "error", message: <span>Error!</span>})
     } else {
       const { data: updatedUser, errorMessage: updateUserErrorMessage} = await genericPatch(endpoint, body);
       
@@ -169,6 +170,7 @@ const UserProfileForm = (prop) => {
         alert(updateUserErrorMessage)
       } else {
         alert("Profile edit successfully")
+        prop.toggleProfile();
       }
     }
   }
