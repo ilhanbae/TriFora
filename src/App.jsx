@@ -80,7 +80,7 @@ export default function App() {
               <Route path="/edit-profile" element={<EditProfilePage />} />
               <Route path="/community/:communityId" element={<CommunityPage openToast={openToast} />} />
               <Route path="/my-communities" element={<MyCommunities />} />
-              <Route path="/other-communities" element={<OtherCommunitiesPage />} />
+              <Route path="/other-communities" element={<OtherCommunitiesPage openToast={openToast} />} />
               <Route path="/create-post" element={<CreatePost />} />
               <Route path="/notification" element={<Notification openToast={openToast}/>} />
               <Route path="/" element={<LoginOrProfile login={login} />} />
