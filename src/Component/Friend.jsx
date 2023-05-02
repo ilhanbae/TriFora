@@ -107,6 +107,36 @@ export default class Friend extends React.Component {
         }
     }
 
+    // This function will block another user by change one way connection status to "blocked"
+    // This function is for the "Block" button on each friend card
+    block_friend = () => {
+        fetch(process.env.REACT_APP_API_PATH+"/connections/" + this.props.friend.id, {
+            method: "PATCH",
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer '+sessionStorage.getItem("token")
+            },
+            body: JSON.stringify({
+                attributes: {
+                    status: "blocked",
+                    type: "friend"
+                }
+            })
+            })
+            .then(res => res.json())
+            .then(
+              result => {
+                console.log(result)
+                this.props.load_friend(this.props.view_userID);
+                this.props.load_blocked_friend(this.props.view_userID);
+              },
+              error => {
+                //alert("error!");
+                console.log("error!")
+              }
+            );
+    }
+
     ClickProfile(){
         this.setState({
             openProfile: true,
@@ -161,6 +191,9 @@ export default class Friend extends React.Component {
                         </Link>
                         <button className = {ProfilePageCSS.friend_remove} onClick={() => this.remove_friend_connection()}>
                             <h5>Remove</h5>
+                        </button>
+                        <button className = {ProfilePageCSS.friend_block} onClick={() => this.block_friend()}>
+                            <h5>Block</h5>
                         </button>
                     </div>
 
