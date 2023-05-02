@@ -438,6 +438,7 @@
 
 /* Post Action Labels */
 .post-action-labels {
+  /* width: max-content; */
   width: 100%;
   position: absolute;
   /* border: 1px solid var(--bistre); */
@@ -446,6 +447,8 @@
   gap: 10px;
 }
 .post-action-label {
+  /* width: max-content; */
+  white-space: nowrap;
   margin-top: -8px;
   padding: 5px;
   border-radius: 0px 0px 5px 5px;

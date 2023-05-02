@@ -107,6 +107,7 @@ export default function CommunityPage(props) {
         <div className={style["main-section"]}>
           {/* Main Content Display */}
           <CommunityContentDisplay
+            communityDetails={communityDetails}
             communityId={communityId}
             userCommunityMemberDetails={userCommunityMemberDetails}
             refreshCommunityDetails={refreshCommunityDetails}
@@ -324,9 +325,9 @@ const CommunityContentDisplay = (props) => {
   const [contentDisplayType, setContentDisplayType] = useState("posts");
   const [communityPostCounts, setCommunityPostCounts] = useState(0);
   const [communityMemberCounts, setCommunityMemberCounts] = useState(0);
-  const [communityPostSkipOffset, setCommunityPostSkipOffset] = useState(null);
+  const [communityPostSkipOffset, setCommunityPostSkipOffset] = useState(0);
   const [communityPostTakeCount, setCommunityPostTakeCount] = useState(10);
-  const [communityMemberSkipOffset, setCommunityMemberSkipOffset] = useState(null);
+  const [communityMemberSkipOffset, setCommunityMemberSkipOffset] = useState(0);
   const [communityMembersCount, setCommunityMembersTakeCount] = useState(15);
 
   // This method updates the current content display type as either posts or members.
@@ -349,7 +350,6 @@ const CommunityContentDisplay = (props) => {
   const updateCommunityMemberCounts = (newCount) => {
     setCommunityMemberCounts(newCount);
   };
-
 
   // This method updates community member skip offset
   // It will be called whenever the user interacts with pagination buttons on community members display view
@@ -387,6 +387,7 @@ const CommunityContentDisplay = (props) => {
           />
           {/* Commmunity Posts List */}
           <CommunityPostsList
+            communityDetails={props.communityDetails}
             communityId={props.communityId}
             userCommunityMemberDetails={props.userCommunityMemberDetails}
             updateCommunityPostCounts={updateCommunityPostCounts}
@@ -409,9 +410,11 @@ const CommunityContentDisplay = (props) => {
           {/* Member Control Tool */}
           <MemberControlTool 
             refreshCommunityDetails={props.refreshCommunityDetails}
+            openToast={props.openToast}
           />
           {/* Comunity Members List */}
           <CommunityMembersList
+            communityDetails={props.communityDetails}
             userCommunityMemberDetails={props.userCommunityMemberDetails}
             communityId={props.communityId}
             updateCommunityPostCounts={updateCommunityPostCounts}
@@ -493,6 +496,7 @@ reporting the post, and removing the post. This component also include post cont
 and pagination */
 const CommunityPostsList = (props) => {
   const [posts, setPosts] = useState([]);
+  const [pinnedPosts, setPinnedPosts] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [communityPostAuthorRoles, setCommunityPostAuthorRoles] = useState({});
@@ -509,16 +513,17 @@ const CommunityPostsList = (props) => {
     setIsLoaded(false);
     loadFriends();
     loadPosts();
+    loadPinnedPosts();
     loadMembers();
     setIsLoaded(true);
   }, []);
 
-  // Refresh posts whenever the community post skip offset has changed. The offset is changed by the Pagination component.
+  /* Refresh posts whenever the community post skip offset has changed. The offset is changed by the Pagination component. */
   useEffect(() => {
     refreshPosts();
   }, [props.communityPostSkipOffset]);
 
-  // This methods loads the community members using genericFetch & update the community members count stat
+  /* This methods loads the community members using genericFetch & update the community members count stat */
   const loadMembers = async () => {
     setIsLoaded(false);
     let endpoint = `/group-members`;
@@ -536,7 +541,7 @@ const CommunityPostsList = (props) => {
     setIsLoaded(true);
   };
 
-  // This method will load all the Friends
+  /* This method will load all the Friends */
   const loadFriends = async () => {
     setIsLoaded(false);
     const friends_array = [];
@@ -567,7 +572,7 @@ const CommunityPostsList = (props) => {
     setIsLoaded(true);
   };
 
-  // This methods loads the community posts using genericFetch & update the community posts count stat
+  /* This methods loads the community posts using genericFetch & update the community posts count stat */
   const loadPosts = async () => {
     setIsLoaded(false);
     let endpoint = "/posts";
@@ -601,6 +606,25 @@ const CommunityPostsList = (props) => {
     setIsLoaded(true);
   };
 
+  /* This method loads all pinned posts */
+  const loadPinnedPosts = async () => {
+    setIsLoaded(false);
+    let endpoint = "/posts";
+    let query = {
+      sort: "newest",
+      parentID: "",
+      recipientGroupID: props.communityId
+    }
+    const { data, errorMessage } = await genericFetch(endpoint, query);
+    // console.log(data, errorMessage)
+    if (data) {
+      let pinnedPosts = data[0].filter(post => isPinnedPost(post))
+      // console.log(data[0])
+      setPinnedPosts(pinnedPosts)
+    }
+    setIsLoaded(true);
+  }
+
   // This method refresh the posts by sending the request to API again using genricFetch.
   // It can be passed on to each CommunityPost component to handle changes,
   // such as pinning, hiding, reporting, or deleting. It can also be passed on to Pagination
@@ -608,6 +632,7 @@ const CommunityPostsList = (props) => {
   const refreshPosts = () => {
     // console.log("refreshing posts");
     loadPosts(); // Fetch the posts again
+    loadPinnedPosts(); // Fetch the pinned posts again
   };
 
   /* This method checks whether the post is pinned or not */
@@ -632,11 +657,14 @@ const CommunityPostsList = (props) => {
     return false;
   }
 
-  // Sort posts by following order: Pinned > Friend > Other
-  const sortedPosts = posts.sort(
+  // Filter posts that are pinned
+  const filteredPosts = posts.filter(post => !isPinnedPost(post))
+
+  // Sort posts by friend
+  const sortedPosts = filteredPosts.sort(
     (postA, postB) =>
-      isPinnedPost(postB) - isPinnedPost(postA) ||
-      isFriendPost(postB) - isFriendPost(postA)
+    // isPinnedPost(postB) - isPinnedPost(postA) ||
+    isFriendPost(postB) - isFriendPost(postA)
   );
 
   // Render
@@ -644,13 +672,16 @@ const CommunityPostsList = (props) => {
     return <div>Error: {errorMessage}</div>;
   } else if (!isLoaded) {
     return <div>Loading...</div>;
+  } else if (!posts.length) {
+    return <div>There're no posts.</div>
   } else {
-    if (posts) {
-      return (
-        <div>
-          {/* Posts */}
-          <div className={style["community-post-list"]}>
-            {sortedPosts.map((post) => (
+    return (
+      <div>
+        {/* Posts */}
+        <div className={style["community-post-list"]}>
+          {/* Pinned Posts */}
+          {pinnedPosts.length > props.communityPostSkipOffset && (
+            pinnedPosts.map((post) => (
               <CommunityPost
                 key={post.id}
                 communityId={props.communityId}
@@ -663,11 +694,26 @@ const CommunityPostsList = (props) => {
                 isReportedPost={isReportedPost(post)}
                 openToast={props.openToast}
               />
-            ))}
-          </div>
+            ))
+          )}
+          {/* Other Posts */}
+          {sortedPosts.map((post) => (
+            <CommunityPost
+              key={post.id}
+              communityId={props.communityId}
+              post={post}
+              refreshPosts={refreshPosts}
+              userCommunityMemberDetails={props.userCommunityMemberDetails}
+              communityPostAuthorRoles={communityPostAuthorRoles}
+              isFriendPost={isFriendPost(post)}
+              isPinnedPost={isPinnedPost(post)}
+              isReportedPost={isReportedPost(post)}
+              openToast={props.openToast}
+            />
+          ))}
         </div>
-      );
-    }
+      </div>
+    );
   }
 };
 
@@ -730,7 +776,7 @@ const CommunityPost = (props) => {
     props.refreshPosts();
   };
 
-  /* This method handles pin post action by sending POST request to API server. */
+  /* This method handles pin post action by sending POST reaction request to API server. */
   const pinPost = async () => {
     let endpoint = `/post-reactions`;
     let body = {
@@ -746,7 +792,7 @@ const CommunityPost = (props) => {
         type: "error",
         message: (
           <span>
-            Uh oh, sorry you can't pin this post at the moment. Please contact{" "}
+            Uh oh, sorry you can't pin this post at the moment. Please contact
             <Link to="neil.html"> our developers</Link>
           </span>
         ),
@@ -760,7 +806,7 @@ const CommunityPost = (props) => {
     }
   };
 
-  /* This method handles unpin post action by sending DELETE request to API server.*/
+  /* This method handles unpin post action by sending DELETE reaction request to API server.*/
   const unpinPost = async () => {
     // Retrieve the pin post reaction
     let endpoint = `/post-reactions`;
@@ -1009,18 +1055,18 @@ const CommunityPost = (props) => {
       <div style={{position: "relative", marginLeft: "auto"}}>
         {/* Post Action Labels */}
         <div className={style["post-action-labels"]}>
+          {props.isReportedPost && (
+            <div
+              className={`${style["post-action-label"]} ${style["post-action-label__french-bistre"]}`}
+            >
+              <span>Under Review</span>
+            </div>
+          )}
           {props.isFriendPost && (
             <div
               className={`${style["post-action-label"]} ${style["post-action-label__yellow-apricot"]}`}
             >
               <span>Friend</span>
-            </div>
-          )}
-          {props.isReportedPost && (
-            <div
-              className={`${style["post-action-label"]} ${style["post-action-label__red-orange"]}`}
-            >
-              <span>Warning!</span>
             </div>
           )}
           {props.isPinnedPost && (
@@ -1098,6 +1144,15 @@ const PostControlTool = (props) => {
     setIsPostSortActive(isPostSortActive ? false : true);
   };
 
+  /* This method handles create post button */
+  const createButtonHandler = () => {
+    if (props.userCommunityMemberDetails == null) {
+      props.openToast({type: "info", message: "Join the community first to create a post!"});
+    } else {
+      openCreatePostPageModal();
+    }
+  }
+
   /* This method opens create post page modal */
   const openCreatePostPageModal = () => {
     setIsCreatePostModalOpen(true);
@@ -1108,6 +1163,9 @@ const PostControlTool = (props) => {
     props.refreshCommunityDetails();
     setIsCreatePostModalOpen(true);
   }
+
+  // Check current user's community role & member's community role
+  const isUserVisiter = props.userCommunityMemberDetails == null;
 
   return (
     <div className={style["content-control-tool"]}>
@@ -1132,7 +1190,7 @@ const PostControlTool = (props) => {
           </div>
           <button 
             className={`${style["button"]} ${style["button__outlined"]} ${style["button__filled"]}`}
-            onClick={openCreatePostPageModal} 
+            onClick={createButtonHandler} 
           >  
             Create Post
           </button>
@@ -1261,7 +1319,7 @@ const PostActionSidemenu = (props) => {
               onClick={reportActionHandler}
             >
               <span
-                className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}
+                className={`${style["square-icon"]} ${style["square-icon__french-bistre"]}`}
               ></span>
               <span className={style["active-text"]}>{reportOptionName}</span>
             </li>
@@ -1409,26 +1467,26 @@ const CommunityMembersList = (props) => {
     return <div>Error: {errorMessage}</div>;
   } else if (!isLoaded) {
     return <div>Loading...</div>;
+  } else if (!members.length) {
+    return <div>There're no members.</div>
   } else {
-    if (members) {
-      return (
-        <div>
-          {/* Member */}
-          <div className={style["community-members-list"]}>
-            {sortedMembers.map((member) => (
-              <CommunityMember
-                key={member.id}
-                member={member}
-                refreshMembers={refreshMembers}
-                userCommunityMemberDetails={props.userCommunityMemberDetails}
-                openToast={props.openToast}
-                isMemberFriend={isMemberFriend(member)}
-              />
-            ))}
-          </div>
+    return (
+      <div>
+        {/* Member */}
+        <div className={style["community-members-list"]}>
+          {sortedMembers.map((member) => (
+            <CommunityMember
+              key={member.id}
+              member={member}
+              refreshMembers={refreshMembers}
+              userCommunityMemberDetails={props.userCommunityMemberDetails}
+              openToast={props.openToast}
+              isMemberFriend={isMemberFriend(member)}
+            />
+          ))}
         </div>
-      );
-    }
+      </div>
+    );
   }
 };
 
@@ -1842,7 +1900,7 @@ const Pagination = (props) => {
 
       {/* Current Page Number */}
       <span className={style["page-number"]}>
-        {lastPage !== 1 ? currentPage : ""}
+        {props.contentsCount > props.contentTakeCount && currentPage}
       </span>
 
       {/* Next Button */}
