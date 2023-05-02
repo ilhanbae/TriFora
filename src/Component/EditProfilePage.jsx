@@ -168,11 +168,11 @@ const UserProfileForm = (prop) => {
       else if(userProfileFieldsErrorMessage=="Last Name can't be empty") {
         prop.openToast({type: "error", message: <span>Last Name can't be empty</span>})
       }
-      else if(userProfileFieldsErrorMessage=="First name should only contain alphabet characters") {
-        prop.openToast({type: "error", message: <span>First name should only contain alphabet characters</span>})
+      else if(userProfileFieldsErrorMessage=="First name should only contain alphanumeric characters") {
+        prop.openToast({type: "error", message: <span>First name should only contain alphanumeric characters</span>})
       }
-      else if(userProfileFieldsErrorMessage=="Last name should only contain alphabet characters") {
-        prop.openToast({type: "error", message: <span>Last name should only contain alphabet characters</span>})
+      else if(userProfileFieldsErrorMessage=="Last name should only contain alphanumeric characters") {
+        prop.openToast({type: "error", message: <span>Last name should only contain alphanumeric characters</span>})
       }
       else if(userProfileFieldsErrorMessage=="Username can't be empty") {
         prop.openToast({type: "error", message: <span>Username can't be empty</span>})
@@ -180,11 +180,11 @@ const UserProfileForm = (prop) => {
       else if(userProfileFieldsErrorMessage=="Description can't be empty") {
         prop.openToast({type: "error", message: <span>Description can't be empty</span>})
       }
-      else if(userProfileFieldsErrorMessage=="Username should only contain alphabet characters") {
-        prop.openToast({type: "error", message: <span>Username should only contain alphabet characters</span>})
+      else if(userProfileFieldsErrorMessage=="Username should only contain alphanumeric characters") {
+        prop.openToast({type: "error", message: <span>Username should only contain alphanumeric characters</span>})
       }
-      else if(userProfileFieldsErrorMessage=="Description should only contain alphabet characters") {
-        prop.openToast({type: "error", message: <span>Description should only contain alphabet characters</span>})
+      else if(userProfileFieldsErrorMessage=="Description should only contain alphanumeric characters") {
+        prop.openToast({type: "error", message: <span>Description should only contain alphanumeric characters</span>})
       }
       
     } else {
