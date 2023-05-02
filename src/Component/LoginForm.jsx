@@ -43,7 +43,7 @@ export default class LoginForm extends React.Component {
             emailInput.setCustomValidity("Email Missing")
             emailInput.reportValidity()
             event.preventDefault();
-        } else if (this.state.email.includes("@") === false || this.state.email.includes(".edu") === false || this.state.email.includes(".com") === false){
+        } else if (this.state.email.includes("@") === false){
             const emailInput = document.getElementById('email')
             console.log(this.state.email.value)
 
