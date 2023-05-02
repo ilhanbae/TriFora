@@ -130,7 +130,7 @@ const UserProfileForm = (prop) => {
     
     // Check for upload file error
     if(uploadFileErrorMessage) {
-      alert(uploadFileErrorMessage)
+      prop.openToast({type: "error", message: <span>File upload error</span>})
       return serverAvaterLink
     } else {
       // console.log(uploadedServerAvatarFile, uploadFileErrorMessage);
@@ -161,15 +161,40 @@ const UserProfileForm = (prop) => {
     // console.log(isUserProfileFieldsValid, userProfileFieldsErrorMessage)
     
     if(!isUserProfileFieldsValid) {
-      prop.openToast({type: "error", message: <span>Error!</span>})
+      console.log(userProfileFieldsErrorMessage)
+      if(userProfileFieldsErrorMessage=="First Name can't be empty"){
+        prop.openToast({type: "error", message: <span>First Name can't be empty</span>})
+      }
+      else if(userProfileFieldsErrorMessage=="Last Name can't be empty") {
+        prop.openToast({type: "error", message: <span>Last Name can't be empty</span>})
+      }
+      else if(userProfileFieldsErrorMessage=="First name should only contain alphabet characters") {
+        prop.openToast({type: "error", message: <span>First name should only contain alphabet characters</span>})
+      }
+      else if(userProfileFieldsErrorMessage=="Last name should only contain alphabet characters") {
+        prop.openToast({type: "error", message: <span>Last name should only contain alphabet characters</span>})
+      }
+      else if(userProfileFieldsErrorMessage=="Username can't be empty") {
+        prop.openToast({type: "error", message: <span>Username can't be empty</span>})
+      }
+      else if(userProfileFieldsErrorMessage=="Description can't be empty") {
+        prop.openToast({type: "error", message: <span>Description can't be empty</span>})
+      }
+      else if(userProfileFieldsErrorMessage=="Username should only contain alphabet characters") {
+        prop.openToast({type: "error", message: <span>Username should only contain alphabet characters</span>})
+      }
+      else if(userProfileFieldsErrorMessage=="Description should only contain alphabet characters") {
+        prop.openToast({type: "error", message: <span>Description should only contain alphabet characters</span>})
+      }
+      
     } else {
       const { data: updatedUser, errorMessage: updateUserErrorMessage} = await genericPatch(endpoint, body);
       
       // console.log(updatedUser, updateUserErrorMessage);
       if (updateUserErrorMessage) {
-        alert(updateUserErrorMessage)
+        prop.openToast({type: "error", message: <span>Could not update user</span>})
       } else {
-        alert("Profile edit successfully")
+        prop.openToast({type: "success", message: <span>Profile Edit Successful!</span>})
         prop.toggleProfile();
       }
     }
@@ -191,7 +216,7 @@ const UserProfileForm = (prop) => {
         setAvatarFile(selectedFile);
         setAvatarLink(imageBlob);
       } else {
-        alert(`${selectedFile.name} is not an image file. Please try again.`)
+        prop.openToast({type: "error", message: <span>Please upload a file that is an image</span>})
         // setAvatarLink("");
       }
     } catch(error) {

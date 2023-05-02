@@ -10,7 +10,7 @@ export default function validateUserProfileFields(userProfileFields) {
   let isValid = false;
   let errorMessage = "";
   const alphabet_pattern = /^[a-zA-Z]+$/
-  const {firstName, lastName } = userProfileFields.attributes.profile;
+  const {firstName, lastName, username, description } = userProfileFields.attributes.profile;
 
   /* 1. Name fields can't be empty. */
   if (!firstName) {
@@ -30,6 +30,26 @@ export default function validateUserProfileFields(userProfileFields) {
 
   if (!alphabet_pattern.test(lastName)) {
     errorMessage = "Last name should only contain alphabet characters"
+    return [isValid, errorMessage]
+  }
+
+  /*username and description error handling */
+  if (!username) {
+    errorMessage = "Username can't be empty"
+    return [isValid, errorMessage]
+  }
+  if (!description) {
+    errorMessage = "Description can't be empty"
+    return [isValid, errorMessage]
+  }
+
+  if (!alphabet_pattern.test(username)) {
+    errorMessage = "Username should only contain alphabet characters"
+    return [isValid, errorMessage]
+  }
+
+  if (!alphabet_pattern.test(description)) {
+    errorMessage = "Description should only contain alphabet characters"
     return [isValid, errorMessage]
   }
 
