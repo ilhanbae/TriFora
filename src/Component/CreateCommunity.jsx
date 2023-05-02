@@ -34,6 +34,7 @@ export default function CreateCommunity(props) {
 
     const submitHandler = async (e) => {
         e.preventDefault();
+        
         if (!imageSelected) {
             // toast for no image since required unable to show toast
             // this should work since text required prevents getting here, so only have to check for image
@@ -50,11 +51,9 @@ export default function CreateCommunity(props) {
                 // upload image
                 let communityImageLink = await uploadCommunityImage();
                 // create community
-                await createCommunity(communityImageLink);
+                let newCommunityId = await createCommunity(communityImageLink);
                 // set this user as admin
-
-                // close modal
-                // props.toggleModal();
+                await joinCreatedCommunity(newCommunityId);
             }
         }
     }
@@ -96,10 +95,32 @@ export default function CreateCommunity(props) {
             // this really should have been a modal
             props.openToast({ type: "error", message: <span>There was a server error when creating your community please contact support so we can work to fix the error</span> })
         } else {
-            // else continue to making admin
-            props.openToast({ type: "success", message: "Community successfully created!" });
-            // props.refreshCommunityAndUserMemberDetails();
-            props.toggleModaal();
+            // else return the id so that way can make admin
+            let newCommunityId = data.id
+            return newCommunityId
+        }
+    }
+
+    // This method adds user to community by sending POST request to the API server
+    const joinCreatedCommunity = async (newCommunityId) => {
+        let endpoint = '/group-members';
+        let body = {
+            userID: sessionStorage.getItem('user'),
+            groupID: newCommunityId,
+            attributes: {
+                role: 'admin'
+            }
+        };
+        const { data, errorMessage } = await genericPost(endpoint, body);
+        // console.log(data, errorMessage)
+        if (errorMessage) {
+            // this really should have been a modal
+            props.openToast({ type: "error", message: <span>There was a server error when add you to your community please contact support so we can work to fix the error</span> })
+        } else {
+            props.openToast({ type: "success", message: "Your community was successfully created!" });
+            // close modal
+            props.toggleModal();
+            // ideally would bring them to the new community from here
         }
     }
 
