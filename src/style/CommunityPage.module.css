@@ -21,6 +21,7 @@
   height: 15px;
   text-align: center;
   line-height: 15px;
+  font-size: 14px;
   font-family: 'Alfa Slab One', cursive;
   border-radius: 5px;
 }
@@ -35,6 +36,18 @@
   font-family: 'Alfa Slab One', cursive;
   border-radius: 5px;
   background-color: var(--yellow-apricot);
+}
+.meatballs-icon__inactive::before {
+  cursor: pointer;
+  content: '';
+  display: block;
+  width: 15px;
+  height: 15px;
+  text-align: center;
+  line-height: 15px;
+  font-size: 14px;
+  font-family: 'Alfa Slab One', cursive;
+  border-radius: 5px;
 }
 .square-icon::before {
   content: '';
@@ -139,8 +152,8 @@
   width: fit-content;
 }
 .action-sidemenu-option {
-  /* width: max-content; */
-  width: 100%;
+  /* width: 100%; */
+  width: max-content;
   border-radius: 5px;
   padding: 5px;
   cursor: pointer;
@@ -149,6 +162,16 @@
 }
 .action-sidemenu-option:hover {
   background-color: var(--yellow-apricot);
+}
+.action-sidemenu-option__disabled {
+  width: max-content;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  gap: 5px;
+  color: var(--light-yellow);
+  background-color: var(--french-bistre);
 }
 
 /* Images */
@@ -443,6 +466,10 @@
   background-color: var(--red-orange);
   color: var(--light-yellow);
 }
+.post-action-label__yellow-apricot {
+  background-color: var(--yellow-apricot);
+  color: var(--bistre);
+}
 
 /* Community members list*/
 .community-members-list {
@@ -492,6 +519,10 @@
   margin-top: -8px;
   padding: 5px;
   border-radius: 0px 0px 5px 5px;
+}
+.member-action-label__yellow-apricot {
+  background-color: var(--yellow-apricot);
+  color: var(--bistre);
 }
 
 /* Pagination */

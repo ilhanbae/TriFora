@@ -865,12 +865,6 @@ const CommunityPost = (props) => {
     setIsProfileModalOpen(false);
   };
 
-  // Check post author's role
-  const isAuthorUser = props.post.authorID === props.userCommunityMemberDetails?.user.id;
-  const isAuthorAdmin = props.communityPostAuthorRoles[props.post.authorID] === "admin";
-  const isAuthorMod = props.communityPostAuthorRoles[props.post.authorID] === "mod";
-  const isAuthorMember = props.communityPostAuthorRoles[props.post.authorID] === "member";
-
   // Check if the post has been reported by the user 
   const isPostReportedByUser = Boolean(
     props.post?.reactions.filter(
@@ -909,6 +903,15 @@ const CommunityPost = (props) => {
     );
   }
 
+  // Check current user's community role & post author's role
+  const isUserAdmin = props.userCommunityMemberDetails?.attributes.role === "admin";
+  const isUserMod = props.userCommunityMemberDetails?.attributes.role === "mod";
+  const isUserVisiter = props.userCommunityMemberDetails == null;
+  const isAuthorUser = props.post.authorID === props.userCommunityMemberDetails?.user.id;
+  const isAuthorAdmin = props.communityPostAuthorRoles[props.post.authorID] === "admin";
+  const isAuthorMod = props.communityPostAuthorRoles[props.post.authorID] === "mod";
+  const isAuthorMember = props.communityPostAuthorRoles[props.post.authorID] === "member";
+
   // Set post author role label
   const postAuthorRoleLabel = isAuthorUser
     ? "You"
@@ -920,10 +923,18 @@ const CommunityPost = (props) => {
     ? "Member"
     : "Departed";
 
+  // Set post action restrictions
+  const canPin = isUserAdmin || isUserMod;
+  const canReport = !isUserVisiter && (!isAuthorUser && !isAuthorAdmin && !isAuthorMod) && !isUserAdmin;
+  const canDelete = isAuthorUser || (isUserMod && !isAuthorAdmin && !isAuthorMod) || isUserAdmin;
+  const canPostAction = canPin || canReport || canDelete;
+
   // Set post action icon style
-  const postActionIconStyle = isPostActionActive
+  const postActionIconStyle = canPostAction 
+    ? style["meatballs-icon"]
+    : isPostActionActive
     ? style["meatballs-icon__active"]
-    : style["meatballs-icon"];
+    : style["meatballs-icon__inactive"];
 
   return (
     <div className={style["community-post"]} key={props.post.id}>
@@ -1000,7 +1011,7 @@ const CommunityPost = (props) => {
         <div className={style["post-action-labels"]}>
           {props.isFriendPost && (
             <div
-              className={`${style["post-action-label"]} ${style["post-action-label__french-bistre"]}`}
+              className={`${style["post-action-label"]} ${style["post-action-label__yellow-apricot"]}`}
             >
               <span>Friend</span>
             </div>
@@ -1197,7 +1208,6 @@ const PostActionSidemenu = (props) => {
       props.postActionOptionsHandler("pin");
     }
   };
-  let pinOptionName = props.isPostPinnedByUser ? "Unpin" : "Pin to top"; // update the pin option label based on the state
 
   const reportActionHandler = () => {
     if (props.isPostReportedByUser) {
@@ -1213,38 +1223,61 @@ const PostActionSidemenu = (props) => {
       props.postActionOptionsHandler("report");
     }
   };
-  let reportOptionName = props.isPostReportedByUser ? "Reported" : "Report"; // update the report option label based on the state
-
+  
   const deleteActionHandler = () => {
     props.postActionOptionsHandler("delete");
   };
-  let deleteOptionName = "Delete"; // delete option label should remain the same
+
+  // Set option names
+  let pinOptionName = props.isPostPinnedByUser ? "Unpin" : "Pin to top";
+  let reportOptionName = props.isPostReportedByUser ? "Reported" : "Report";
+  let deleteOptionName = "Delete";
+
+  // Set action restrictions
+  const canPin = isUserAdmin || isUserMod
+  const canReport = !isUserVisiter && (!isAuthorUser && !isAuthorAdmin && !isAuthorMod) && !isUserAdmin
+  const canDelete = isAuthorUser || (isUserMod && !isAuthorAdmin && !isAuthorMod) || isUserAdmin
 
   if (props.isActive) {
     return (
       <div className={style["action-sidemenu"]}>
         <ul className={style["action-sidemenu-option-list"]}>
           {/* Pin */}
-          {(isUserAdmin || isUserMod) &&
-            <li className={style["action-sidemenu-option"]} onClick={pinActionHandler}>
-              <span className={`${style["square-icon"]} ${style["square-icon__skobeloff"]}`}></span>
+          {canPin && (
+            <li
+              className={style["action-sidemenu-option"]}
+              onClick={pinActionHandler}
+            >
+              <span
+                className={`${style["square-icon"]} ${style["square-icon__skobeloff"]}`}
+              ></span>
               <span className={style["active-text"]}>{pinOptionName}</span>
             </li>
-          }
+          )}
           {/* Report */}
-          {!isUserVisiter && (!isAuthorUser && !isAuthorAdmin && !isAuthorMod) && (!isUserAdmin) &&
-            <li className={style["action-sidemenu-option"]} onClick={reportActionHandler}>
-              <span className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}></span>
+          {canReport && (
+            <li
+              className={style["action-sidemenu-option"]}
+              onClick={reportActionHandler}
+            >
+              <span
+                className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}
+              ></span>
               <span className={style["active-text"]}>{reportOptionName}</span>
             </li>
-          }
+          )}
           {/* Delete */}
-          {(isAuthorUser || (isUserMod && !isAuthorAdmin && !isAuthorMod) || isUserAdmin) && 
-            <li className={style["action-sidemenu-option"]} onClick={deleteActionHandler}>
-              <span className={`${style["square-icon"]} ${style["square-icon__red-orange"]}`}></span>
+          {canDelete && (
+            <li
+              className={style["action-sidemenu-option"]}
+              onClick={deleteActionHandler}
+            >
+              <span
+                className={`${style["square-icon"]} ${style["square-icon__red-orange"]}`}
+              ></span>
               <span className={style["active-text"]}>{deleteOptionName}</span>
             </li>
-          }
+          )}
         </ul>
       </div>
     );
@@ -1406,12 +1439,6 @@ const CommunityMember = (props) => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const memberActionSidemenuRef = useRef(null); // Create a ref for memver action sidemenu component
 
-  // Check if member is current user 
-  const isMemberUser = props.member?.userID === props.userCommunityMemberDetails?.userID;
-  const commmunityMemberStyle = isMemberUser
-    ? `${style["community-member"]} ${style["community-member__filled"]}`
-    : `${style["community-member"]}`;
-
   /* This hook check if mousedown DOM  event occurs outside a member action sidemenu.  */
   useEffect(() => {
     const outSideClickHandler = (event) => {
@@ -1473,8 +1500,30 @@ const CommunityMember = (props) => {
     props.refreshMembers();
   }
 
+  // Check current user's community role & member's community role
+  const isUserAdmin = props.userCommunityMemberDetails?.attributes.role === "admin";
+  const isUserMod = props.userCommunityMemberDetails?.attributes.role === "mod";
+  const isUserVisiter = props.userCommunityMemberDetails == null;
+  const isMemberUser = props.member.userID === props.userCommunityMemberDetails?.user.id;
+  const isMemberAdmin = props.member.attributes.role === "admin";
+  const isMemberMod = props.member.attributes.role === "mod";
+
+  // Set member action restrictions
+  const canAssignRole = isUserAdmin && !isMemberUser;
+  const canKick = ((isUserAdmin || isUserMod) && (!isMemberUser && !isMemberAdmin && !isMemberMod)) || (isUserAdmin && !isMemberUser);
+  const canMemberAction = canAssignRole || canKick;
+
   // Set member action icon style
-  const memberActionIconStyle = isMemberActionActive ? style["meatballs-icon__active"] : style["meatballs-icon"]
+  const memberActionIconStyle = canMemberAction 
+    ? style["meatballs-icon"]
+    : isMemberActionActive
+    ? style["meatballs-icon__active"]
+    : style["meatballs-icon__inactive"];
+
+  // Set community member style
+  const commmunityMemberStyle = isMemberUser
+    ? `${style["community-member"]} ${style["community-member__filled"]}`
+    : `${style["community-member"]}`;
 
   return (
     <div className={commmunityMemberStyle}>
@@ -1511,7 +1560,7 @@ const CommunityMember = (props) => {
         <div className={style["member-action-labels"]}>
           {props.isMemberFriend && (
             <div
-              className={`${style["member-action-label"]} ${style["post-action-label__french-bistre"]}`}
+              className={`${style["member-action-label"]} ${style["member-action-label__yellow-apricot"]}`}
             >
               <span>Friend</span>
             </div>
@@ -1638,6 +1687,15 @@ const MemberActionSidemenu = (props) => {
     }
   })
 
+  // These methods update the option labels and send the chosen action option to its parent component - CommunityMember.
+  const kickActionHandler = () => {
+    props.memberActionOptionsHandler("kick");
+  };
+
+  const assignRoleActionHandler = () => {
+    setIsAssignRole(isAssignRole ? false : true);
+    props.memberActionOptionsHandler("assign");
+  }
 
   // Check current user's community role & member's community role
   const isUserAdmin = props.userCommunityMemberDetails?.attributes.role === "admin";
@@ -1647,27 +1705,20 @@ const MemberActionSidemenu = (props) => {
   const isMemberAdmin = props.member.attributes.role === "admin";
   const isMemberMod = props.member.attributes.role === "mod";
 
-  // console.log(isUserVisiter)
-  // console.log(props.member.user.attributes.profile.username, isMemberUser)
-
-  // These methods update the option labels and send the chosen action option to its parent component - CommunityMember.
-  const kickActionHandler = () => {
-    props.memberActionOptionsHandler("kick"); // tell CommunityMember component that 'kick' option was chosen
-  };
+  // Set option names
   let kickOptionName = "Kick";
-
-  const assignRoleActionHandler = () => {
-    setIsAssignRole(isAssignRole ? false : true); // update the option status
-    props.memberActionOptionsHandler("assign"); // tell commmunityMember component that 'assign' option was chosen
-  }
   let assignOptionName = "Assign Role";
+
+  // Set member action restrictions
+  const canAssignRole = isUserAdmin && !isMemberUser;
+  const canKick = ((isUserAdmin || isUserMod) && (!isMemberUser && !isMemberAdmin && !isMemberMod)) || (isUserAdmin && !isMemberUser);
 
   if (props.isActive) {
     return (
       <div className={style["action-sidemenu"]}>
         <ul className={style["action-sidemenu-option-list"]}>
           {/* Assign Role */}
-          {(isUserAdmin && !isMemberUser) &&
+          {canAssignRole &&
             <div ref={assignRoleSidemenuRef}>
               <li className={style["action-sidemenu-option"]} onClick={assignRoleActionHandler}>
                 <span className={`${style["square-icon"]} ${style["square-icon__french-bistre"]}`}></span>
@@ -1681,7 +1732,7 @@ const MemberActionSidemenu = (props) => {
             </div>
           }
           {/* Kick */}
-          {(((isUserAdmin || isUserMod) && (!isMemberUser && !isMemberAdmin && !isMemberMod)) || (isUserAdmin && !isMemberUser)) &&
+          {canKick &&
             <li className={style["action-sidemenu-option"]} onClick={kickActionHandler}>
               <span className={`${style["square-icon"]} ${style["square-icon__red-orange"]}`}></span>
               <span className={style["active-text"]}>{kickOptionName}</span>
