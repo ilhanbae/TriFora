@@ -28,6 +28,7 @@
     box-sizing: border-box;
     margin: 10px;
     margin-left: 5%;
+    color: black;
 }
 
 .close-button{
@@ -175,6 +176,7 @@
     margin-left: 0;
     margin-right: 0;
     padding: 10px;
+    color: #000000;
 
     width: 90%;
     min-height: 80px;
@@ -182,6 +184,11 @@
     background-color: var(--light-yellow);
     border: 2px solid #000000;
     border-radius: 10px;
+}
+
+.notification-sender{
+    display: inline;
+    color: #127475;
 }
 
 .notification-action{
@@ -415,6 +422,7 @@
         justify-content: flex-start;
         margin: 10px;
         padding: 10px;
+        color: #000000;
     
         width: 100%;
         min-height: 80px;
@@ -422,6 +430,11 @@
         background-color: var(--light-yellow);
         border: 2px solid #000000;
         border-radius: 10px;
+    }
+
+    .notification-sender{
+        display: inline;
+        color: #127475;
     }
 }
 

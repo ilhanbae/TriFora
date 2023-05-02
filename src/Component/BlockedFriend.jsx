@@ -50,9 +50,11 @@ export default class BlockedFriend extends React.Component {
                             console.log(result)
                             this.props.load_friend(this.props.view_userID);
                             this.props.load_blocked_friend(this.props.view_userID);
+                            this.props.openToast({type: "success", message: <span>Unblock User Successfully!</span>})
                           },
                           error => {
                             //alert("error!");
+                            this.props.openToast({type: "error", message: <span>ERROR When Unblock User!</span>})
                             console.log("error!")
                           }
                         );
@@ -76,9 +78,11 @@ export default class BlockedFriend extends React.Component {
                             console.log(result)
                             this.props.load_friend(this.props.view_userID);
                             this.props.load_blocked_friend(this.props.view_userID);
+                            this.props.openToast({type: "success", message: <span>Unblock User Successfully!</span>})
                           },
                           error => {
                             //alert("error!");
+                            this.props.openToast({type: "error", message: <span>ERROR When Unblock User!</span>})
                             console.log("error!")
                           }
                         );
@@ -98,9 +102,11 @@ export default class BlockedFriend extends React.Component {
                             console.log(result)
                             this.props.load_friend(this.props.view_userID);
                             this.props.load_blocked_friend(this.props.view_userID);
+                            this.props.openToast({type: "success", message: <span>Unblock User Successfully!</span>})
                             },
                             error => {
                                 //alert("error!");
+                                this.props.openToast({type: "error", message: <span>ERROR When Unblock User!</span>})
                                 console.log("error!")
                             }
                         );
@@ -108,6 +114,7 @@ export default class BlockedFriend extends React.Component {
               },
               error => {
                 //alert("error!");
+                this.props.openToast({type: "error", message: <span>ERROR When Unblock User!</span>})
                 console.log("error!")
               }
             );
@@ -129,8 +136,10 @@ export default class BlockedFriend extends React.Component {
         return(
             <>
                 <div className = {ProfilePageCSS.friend_card}>
+                    <Link className={ProfilePageCSS['friend_link']} onClick={() => this.ClickProfile()}>
+                        <img className = {ProfilePageCSS.friend_avatar} src={this.props.blocked_friend.toUser.attributes.profile.profileImage} alt="show-user-profile"></img>
+                    </Link>
                     <Link onClick={() => this.ClickProfile()}>
-                        <img className = {ProfilePageCSS.friend_avatar} src={this.props.blocked_friend.toUser.attributes.profile.profileImage}></img>
                         <div className = {ProfilePageCSS.friend_name}>
                             <h4> {this.props.blocked_friend.toUser.attributes.profile.username} </h4>
                         </div>

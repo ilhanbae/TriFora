@@ -14,6 +14,10 @@ import CreatePost from "./Component/CreatePost";
 import Homepage from "./Component/Homepage";
 import Notification from "./Component/Notification";
 import ToastList from "./Component/ToastList";
+import AboutUs from "./Component/AboutUs";
+import Footer from "./Component/Footer";
+import MyCommunities from "./Component/MyCommunities";
+import OtherCommunitiesPage from "./Component/OtherCommunitiesPage";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -62,21 +66,25 @@ export default function App() {
       <div>
         <header>
           {/* Navigation */}
-          <NavAchiever logout={logout} navStyle={navStyle} />
+          <NavAchiever logout={logout} navStyle={navStyle} openToast={openToast} />
           
-          <div>
+          <div className="app-content">
             <Routes>
               {/* Pages */}
+              <Route path="/about" element={<AboutUs />} /> {/* shouldn't need login? */}
               <Route path="/register" element={<RegisterForm login={login} />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/login" element={<LoginOrProfile login={login} />} />
               <Route path="/edit-profile" element={<EditProfilePage />} />
               <Route path="/community/:communityId" element={<CommunityPage openToast={openToast} />} />
+              <Route path="/my-communities" element={<MyCommunities />} />
+              <Route path="/other-communities" element={<OtherCommunitiesPage />} />
               <Route path="/create-post" element={<CreatePost />} />
-              <Route path="/notification" element={<Notification />} />
+              <Route path="/notification" element={<Notification openToast={openToast}/>} />
               <Route path="/" element={<LoginOrProfile login={login} />} />
             </Routes>
           </div>
+          <Footer />
         </header>
         {/* Toast List */}
         <ToastList toastList={toastList} closeToast={closeToast}></ToastList>
@@ -97,7 +105,14 @@ const LoginOrProfile = (props) => {
   } else {
     console.log("Logged In");
     return (
+      // <>
+      //   {(props.radioValue === "server") && <Homepage />}
+      //   {(props.radioValue === "A") && <HomepageA />}
+      //   {(props.radioValue === "B") && <HomepageB />}
+      // </>
+      // <Homepage />
       <Homepage />
+      // <HomepageB />
       // <ProfilePage />
     );
   }

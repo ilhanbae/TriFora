@@ -44,6 +44,7 @@ export default function EditProfile(prop) {
           user={user} 
           render_user={prop.render_user} 
           toggleProfile={prop.toggleProfile}
+          openToast = {prop.openToast}
           />
         </div>
       );
@@ -57,7 +58,6 @@ const ProfileHeader = (prop) => {
   const saveActionHandler = () => {
     prop.userProfileFormSubmitHandler();
     prop.render_user(prop.user_id);
-    prop.toggleProfile();
   };
 
   return (
@@ -87,6 +87,7 @@ const ProfileMain = (prop) => {
       user={prop.user} 
       render_user={prop.render_user} 
       toggleProfile={prop.toggleProfile}
+      openToast = {prop.openToast}
       />
     </div>
   );
@@ -129,7 +130,7 @@ const UserProfileForm = (prop) => {
     
     // Check for upload file error
     if(uploadFileErrorMessage) {
-      alert(uploadFileErrorMessage)
+      prop.openToast({type: "error", message: <span>File upload error</span>})
       return serverAvaterLink
     } else {
       // console.log(uploadedServerAvatarFile, uploadFileErrorMessage);
@@ -160,15 +161,41 @@ const UserProfileForm = (prop) => {
     // console.log(isUserProfileFieldsValid, userProfileFieldsErrorMessage)
     
     if(!isUserProfileFieldsValid) {
-      alert(userProfileFieldsErrorMessage)
+      console.log(userProfileFieldsErrorMessage)
+      if(userProfileFieldsErrorMessage=="First Name can't be empty"){
+        prop.openToast({type: "error", message: <span>First Name can't be empty</span>})
+      }
+      else if(userProfileFieldsErrorMessage=="Last Name can't be empty") {
+        prop.openToast({type: "error", message: <span>Last Name can't be empty</span>})
+      }
+      else if(userProfileFieldsErrorMessage=="First name should only contain alphanumeric characters") {
+        prop.openToast({type: "error", message: <span>First name should only contain alphanumeric characters</span>})
+      }
+      else if(userProfileFieldsErrorMessage=="Last name should only contain alphanumeric characters") {
+        prop.openToast({type: "error", message: <span>Last name should only contain alphanumeric characters</span>})
+      }
+      else if(userProfileFieldsErrorMessage=="Username can't be empty") {
+        prop.openToast({type: "error", message: <span>Username can't be empty</span>})
+      }
+      else if(userProfileFieldsErrorMessage=="Description can't be empty") {
+        prop.openToast({type: "error", message: <span>Description can't be empty</span>})
+      }
+      else if(userProfileFieldsErrorMessage=="Username should only contain alphanumeric characters") {
+        prop.openToast({type: "error", message: <span>Username should only contain alphanumeric characters</span>})
+      }
+      else if(userProfileFieldsErrorMessage=="Description should only contain alphanumeric characters") {
+        prop.openToast({type: "error", message: <span>Description should only contain alphanumeric characters</span>})
+      }
+      
     } else {
       const { data: updatedUser, errorMessage: updateUserErrorMessage} = await genericPatch(endpoint, body);
       
       // console.log(updatedUser, updateUserErrorMessage);
       if (updateUserErrorMessage) {
-        alert(updateUserErrorMessage)
+        prop.openToast({type: "error", message: <span>Could not update user</span>})
       } else {
-        alert("Profile edit successfully")
+        prop.openToast({type: "success", message: <span>Profile Edit Successful!</span>})
+        prop.toggleProfile();
       }
     }
   }
@@ -189,7 +216,7 @@ const UserProfileForm = (prop) => {
         setAvatarFile(selectedFile);
         setAvatarLink(imageBlob);
       } else {
-        alert(`${selectedFile.name} is not an image file. Please try again.`)
+        prop.openToast({type: "error", message: <span>Please upload a file that is an image</span>})
         // setAvatarLink("");
       }
     } catch(error) {
@@ -236,7 +263,7 @@ const UserProfileForm = (prop) => {
       >
         {/* User profile avatar field */}
         <div className={style["user-profile-avatar"]}>
-          <img className={style["profile-avatar-preview"]} src={avatarLink} alt="" />
+          <img className={style["profile-avatar-preview"]} src={avatarLink} alt="profile-avatar-preview" />
           <input
             id={style["profile-avatar-upload-input"]}
             type="file"

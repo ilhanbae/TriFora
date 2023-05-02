@@ -36,6 +36,15 @@ body {
   font-family: 'Montserrat', sans-serif;
 }
 
+.app-content {
+  min-height: 84vh;
+}
+
+/* This should make it so each page will render to fill a page at the minimum since it should be the child of this div */
+.app-content > * {
+  min-height: 84vh;
+}
+
 /* Relative Font Size using Root Font Size (REM). On most browsers, 
 the default root font size is 16px. But depending on the user, the 
 root font size may vary. */

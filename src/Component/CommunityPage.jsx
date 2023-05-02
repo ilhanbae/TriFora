@@ -26,6 +26,7 @@ export default function CommunityPage(props) {
 
   // Fetch the community and user member details community page is loaded
   useEffect(() => {
+    document.title = "Community Page";
     loadCommunityAndUserMemberDetails();
   }, []);
 
@@ -565,9 +566,9 @@ const CommunityPostsList = (props) => {
         }
       }
       setFriends(friends_array);
-      // console.log(friends_array);
+      // //console.log(friends_array);
       setBlockedFriends(blocked_friends_array);
-      // console.log(blocked_friends_array);
+      // //console.log(blocked_friends_array);
     }
     setIsLoaded(true);
   };
@@ -631,6 +632,7 @@ const CommunityPostsList = (props) => {
   // component with skip and take query.
   const refreshPosts = () => {
     // console.log("refreshing posts");
+    loadFriends(); // Fetch the new Friend List and Blocked User List
     loadPosts(); // Fetch the posts again
     loadPinnedPosts(); // Fetch the pinned posts again
   };
@@ -657,8 +659,13 @@ const CommunityPostsList = (props) => {
     return false;
   }
 
-  // Filter posts that are pinned
-  const filteredPosts = posts.filter(post => !isPinnedPost(post))
+  /* This method checks whether the post is from blocked friend */
+  const isBlockedFriendPost = (post) => {
+    return blocked_friends.includes(post.authorID);
+  }
+
+  // Filter posts that are pinned & from blocked friend
+  const filteredPosts = posts.filter(post => !isPinnedPost(post) && !isBlockedFriendPost(post))
 
   // Sort posts by friend
   const sortedPosts = filteredPosts.sort(
@@ -1120,15 +1127,16 @@ const CommunityPost = (props) => {
         show={isProfileModalOpen}
         onClose={toggleProfile}
         modalStyle={{
-          width: "90%",
-          height: "90%",
+        width: "90%",
+        height: "90%",
         }}
       >
-        <ProfilePage
-          profile_id={props.post.author.id}
-          toggleProfile={toggleProfile}
-          closePostPageModal={closePostPageModal}
-        />
+          <ProfilePage 
+            profile_id={props.post.author.id}
+            toggleProfile={toggleProfile}
+            closePostPageModal={closePostPageModal}
+            openToast={props.openToast}
+          />
       </Modal>
     </div>
   );
@@ -1650,9 +1658,10 @@ const CommunityMember = (props) => {
           height: "90%",
         }}
       >
-        <ProfilePage
-          profile_id={props.member.user.id}
-          toggleProfile={toggleProfile}
+        <ProfilePage 
+            profile_id={props.member.user.id}
+            toggleProfile={toggleProfile}
+            openToast={props.openToast}
         />
       </Modal>
     </div>

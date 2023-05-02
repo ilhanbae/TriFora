@@ -22,6 +22,7 @@ export default class ProfilePage extends React.Component {
             lastName: "",
             description: "",
             profileImage: "",
+            render_user: false,
 
             // Community Infos
             community_list: [],
@@ -55,14 +56,11 @@ export default class ProfilePage extends React.Component {
         this.load_blocked_friend(this.state.user_id);
         this.check_user_connection(this.state.user_id);
         this.check_user_block_connection(this.state.user_id);
-        console.log("Profile ID: ", this.props.profile_id)
+        console.log("Profile ID: ", this.props.profile_id);
     }
 
     // pass a user ID into it, and returns all the infos of the user
     render_user = (user_id) => {
-        console.log("In profile");
-        console.log(sessionStorage);
-
         // if the user is not logged in, we don't want to try loading the user.
         if (sessionStorage.getItem("token")){
             // fetch the user data, and extract out the attributes to load and display
@@ -88,6 +86,7 @@ export default class ProfilePage extends React.Component {
                     lastName: result.attributes.profile.lastName || "",
                     description: result.attributes.profile.description || "",
                     profileImage: result.attributes.profile.profileImage || defaultProfileImage,
+                    render_user: true,
                     });
                     // Check if the profileImage is the default value, it is default value set to default image
                     if (result.attributes.profile.profileImage === ""){
@@ -100,12 +99,14 @@ export default class ProfilePage extends React.Component {
                 },
                 error => {
                 //alert("error!");
+                this.props.openToast({type: "error", message: <span>Error When Render the User!</span>})
                 console.log("error!")
                 }
             );
         }else{
             //If user is not logged in, show error message
             //alert("Not Logged In");
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Not Logged In");
         }
     }
@@ -137,13 +138,14 @@ export default class ProfilePage extends React.Component {
                 },
                 error => {
                     //alert("ERROR loading communities");
+                    this.props.openToast({type: "error", message: <span>Error When Loading Communities!</span>})
                     console.log("ERROR loading communities")
                 }
             );
         
         }else{
             //If user is not logged in, show error message
-            //alert("Not Logged In");
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Not Logged In");
         }
     }
@@ -176,6 +178,7 @@ export default class ProfilePage extends React.Component {
                 },
                 error => {
                     //alert("ERROR loading Friends");
+                    this.props.openToast({type: "error", message: <span>Error When Loading Friends!</span>})
                     console.log("ERROR loading Friends")
                 }
             );
@@ -183,11 +186,12 @@ export default class ProfilePage extends React.Component {
         } else {
             //If user is not logged in, show error message
             //alert("Not Logged In");
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Not Logged In");
         }
     }
 
-    // load_blocked_friend will load all the blocked friends
+    // load_blocked_friend will load all the blocked users
     load_blocked_friend = (user_id) => {
         // if the user is not logged in, we don't want to try loading blocked friends.
         if (sessionStorage.getItem("token")){
@@ -214,16 +218,17 @@ export default class ProfilePage extends React.Component {
                 },
                 error => {
                     //alert("ERROR loading Friends");
-                    console.log("ERROR loading Friends")
+                    this.props.openToast({type: "error", message: <span>Error When Loading Blocked Users!</span>})
+                    console.log("ERROR loading Blocked Users")
                 }
             );
 
         } else {
             //If user is not logged in, show error message
             //alert("Not Logged In");
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Not Logged In");
         }
-
     }
 
     // pass a user_id, check if the user_id have a connection with the user in sessionStorage 
@@ -275,6 +280,7 @@ export default class ProfilePage extends React.Component {
                                 },
                                 error => {
                                     //alert("ERROR loading Friends");
+                                    this.props.openToast({type: "error", message: <span>Error When Loading Friend Connection!</span>})
                                     console.log("ERROR loading Friends")
                                 }
                             );
@@ -320,6 +326,7 @@ export default class ProfilePage extends React.Component {
                         },
                         error => {
                             //alert("ERROR loading Friends");
+                            this.props.openToast({type: "error", message: <span>Error When Loading Friend Connection!</span>})
                             console.log("ERROR loading Friends")
                         }
                     );
@@ -327,6 +334,7 @@ export default class ProfilePage extends React.Component {
                 },
                 error => {
                     //alert("ERROR loading Friends");
+                    this.props.openToast({type: "error", message: <span>Error When Loading Friend Connection!</span>})
                     console.log("ERROR loading Friends")
                 }
             );
@@ -376,6 +384,7 @@ export default class ProfilePage extends React.Component {
                 },
                 error => {
                     //alert("ERROR loading Friends");
+                    this.props.openToast({type: "error", message: <span>Error When Loading Blocked User Connection!</span>})
                     console.log("ERROR loading Block user")
                 }
             );
@@ -407,10 +416,12 @@ export default class ProfilePage extends React.Component {
             .then(
                 result => {
                 console.log(result);
+                this.props.openToast({type: "success", message: <span>Friend Request Sent Successfully!</span>})
                 this.check_user_connection(user_id);
                 },
                 error => {
                     //alert("ERROR sending Friend Request");
+                    this.props.openToast({type: "error", message: <span>Error When Sending Friend Request!</span>})
                     console.log("ERROR loading Friend Request")
                 }
             );
@@ -418,6 +429,7 @@ export default class ProfilePage extends React.Component {
         } else {
             //If user is not logged in, show error message
             //alert("Not Logged In");
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Not Logged In");
         }
     }
@@ -440,10 +452,12 @@ export default class ProfilePage extends React.Component {
                 result => {
                     //alert("Undo Friend Request Successfully");
                     console.log("Undo Friend Request Successfully");
+                    this.props.openToast({type: "success", message: <span>Undo Friend Request Successfully!</span>})
                     this.check_user_connection(user_id);
                 },
                 error => {
                     //alert("ERROR when deleting Friend Request");
+                    this.props.openToast({type: "error", message: <span>Error When undo Friend Request!</span>})
                     console.log(error);
                     console.log("ERROR when deleting Friend Request");
                 }
@@ -452,6 +466,7 @@ export default class ProfilePage extends React.Component {
         }else{
             //If user is not logged in, show error message
             //alert("Not Logged In");
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Not Logged In");
         }
     }
@@ -474,10 +489,12 @@ export default class ProfilePage extends React.Component {
                 result => {
                     //alert("Delete Friend Request Successfully");
                     console.log("Delete Friend Request Successfully");
+                    this.props.openToast({type: "success", message: <span>Delete Friend Request Successfully!</span>})
                     this.check_user_connection(user_id);
                 },
                 error => {
                     //alert("ERROR when deleting Friend Request");
+                    this.props.openToast({type: "error", message: <span>Error When deleting Friend Connection!</span>})
                     console.log(error);
                     console.log("ERROR when deleting Friend Request");
                 }
@@ -499,6 +516,7 @@ export default class ProfilePage extends React.Component {
                 },
                 error => {
                     //alert("ERROR when deleting Friend Request");
+                    this.props.openToast({type: "error", message: <span>Error When deleting Friend Connection!</span>})
                     console.log(error);
                     console.log("ERROR when deleting Friend Request");
                 }
@@ -507,6 +525,7 @@ export default class ProfilePage extends React.Component {
         }else{
             //If user is not logged in, show error message
             //alert("Not Logged In");
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Not Logged In");
         }
     }
@@ -539,6 +558,7 @@ export default class ProfilePage extends React.Component {
                 },
                 error => {
                     //alert("ERROR updating Connection");
+                    this.props.openToast({type: "error", message: <span>Error When Accepting Friend Request!</span>})
                     console.log("ERROR updating Connection")
                 }
             );
@@ -566,16 +586,22 @@ export default class ProfilePage extends React.Component {
                     console.log(result);
                     console.log("Connection Created");
                     //alert("Connection Created");
+                    this.props.openToast({type: "success", message: <span>Friend Request Accepted!</span>})
                     this.check_user_connection(user_id);
                     this.load_friend(user_id);
+                    if (this.props.load_friend_notification){
+                        this.props.load_friend_notification();
+                    }
                 },
                 error => {
                     //alert("ERROR creating new Connection");
+                    this.props.openToast({type: "error", message: <span>Error When Accepting Friend Request!</span>})
                     console.log("ERROR creating new Connection")
                 }
             );
 
         }else{
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Please Login First!")
         }
     }
@@ -597,10 +623,15 @@ export default class ProfilePage extends React.Component {
                 result => {
                     //alert("Delete Friend Request Successfully");
                     console.log("Delete Connection Successfully");
+                    this.props.openToast({type: "success", message: <span>Friend Request Rejected!</span>})
                     this.check_user_connection(user_id);
+                    if (this.props.load_friend_notification){
+                        this.props.load_friend_notification();
+                    }
                 },
                 error => {
                     //alert("ERROR when deleting Connection");
+                    this.props.openToast({type: "error", message: <span>Error When Rejecting Friend Request!</span>})
                     console.log(error);
                     console.log("ERROR when deleting Connection");
                 }
@@ -608,6 +639,7 @@ export default class ProfilePage extends React.Component {
 
         // Check if user not logged in, Login First
         }else{
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Please Login First!")
         }
     }
@@ -653,11 +685,13 @@ export default class ProfilePage extends React.Component {
                             .then(
                               result => {
                                 console.log(result)
+                                this.props.openToast({type: "success", message: <span>User Blocked!</span>})
                                 this.check_user_connection(user_id);
                                 this.check_user_block_connection(user_id);
                               },
                               error => {
                                 //alert("error!");
+                                this.props.openToast({type: "error", message: <span>Error When Blocking a User!</span>})
                                 console.log("error!")
                               }
                             );
@@ -681,11 +715,13 @@ export default class ProfilePage extends React.Component {
                             .then(
                               result => {
                                 console.log(result)
+                                this.props.openToast({type: "success", message: <span>User Blocked!</span>})
                                 this.check_user_connection(user_id);
                                 this.check_user_block_connection(user_id);
                               },
                               error => {
                                 //alert("error!");
+                                this.props.openToast({type: "error", message: <span>Error When Blocking a User!</span>})
                                 console.log("error!")
                               }
                             );
@@ -713,11 +749,13 @@ export default class ProfilePage extends React.Component {
                     .then(
                         result => {
                         console.log(result);
+                        this.props.openToast({type: "success", message: <span>User Blocked!</span>})
                         this.check_user_connection(user_id);
                         this.check_user_block_connection(user_id);
                         },
                         error => {
                             //alert("ERROR sending Friend Request");
+                            this.props.openToast({type: "error", message: <span>Error When Blocking a User!</span>})
                             console.log("ERROR loading Friend Request")
                         }
                     );
@@ -725,12 +763,14 @@ export default class ProfilePage extends React.Component {
                 },
                 error => {
                     //alert("ERROR loading Friends");
+                    this.props.openToast({type: "error", message: <span>Error When Blocking a User!</span>})
                     console.log("ERROR loading Block user")
                 }
             );
 
         // Check if user not logged in, Login First
         } else {
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Please Login First!")
         }
     }
@@ -754,7 +794,11 @@ export default class ProfilePage extends React.Component {
     }
 
     render() {
-        if (this.state.user_block_connection === false){
+        if (this.state.render_user === false){
+            return (
+                <h1 className={ProfilePageCSS.loading}>Loading......</h1>
+            );
+        } else if (this.state.user_block_connection === false){
             return(
                 <div className = {ProfilePageCSS.profile_page}>
         
@@ -792,6 +836,7 @@ export default class ProfilePage extends React.Component {
                                 <EditProfile 
                                 render_user={this.render_user}
                                 toggleProfile={this.props.toggleProfile}
+                                openToast = {this.props.openToast}
                                 />
                             </Modal>
         
@@ -810,16 +855,13 @@ export default class ProfilePage extends React.Component {
                         <div className = {ProfilePageCSS.user_info}>
                             <div className = {ProfilePageCSS.username}>
                                 <h1> {this.state.username} </h1>
-                            </div>
-                            <div className = {ProfilePageCSS.first_name}>
-                                <h3> First Name: {this.state.firstName} </h3>
-                            </div>
-                            <div className = {ProfilePageCSS.last_name}>
-                                <h3> Last Name: {this.state.lastName} </h3>
+                                <h2 className = {ProfilePageCSS.first_name}> First Name: {this.state.firstName} </h2>
+                                <h2 className = {ProfilePageCSS.last_name}> Last Name: {this.state.lastName} </h2>
                             </div>
                         </div>
+
                         <div className = {ProfilePageCSS.description}>
-                            <h4> {this.state.description} </h4>
+                            <span> {this.state.description} </span>
                         </div>
                     </div>
         
@@ -854,8 +896,8 @@ export default class ProfilePage extends React.Component {
                         check_user_connection={this.check_user_connection}
                         load_friend={this.load_friend}
                         load_blocked_friend={this.load_blocked_friend}
+                        openToast={this.props.openToast}
                         />
-        
                     </div> 
         
                 </div>
@@ -863,7 +905,7 @@ export default class ProfilePage extends React.Component {
         } else {
             return(
                 <div className = {ProfilePageCSS.profile_page}>
-                    <h1>User has been blocked!</h1>
+                    <h1 className = {ProfilePageCSS.blocked_message}>User has been blocked!</h1>
                 </div>
             );
         }
@@ -921,7 +963,7 @@ const Render_Block_Button = (props) => {
 }
 
 const Render_FriendBar = (props) => {
-    if (props.state.user_id !== sessionStorage.getItem("user")){
+    if (props.state.user_id.toString() !== sessionStorage.getItem("user")){
         return(
             <>
             <div className = {ProfilePageCSS.friend_title_bar}>
@@ -943,6 +985,7 @@ const Render_FriendBar = (props) => {
                     view_userID={props.state.user_id}
                     check_user_connection={props.check_user_connection}
                     load_friend={props.load_friend}
+                    openToast={props.openToast}
                     />
                 ))}
             </div>
@@ -960,7 +1003,7 @@ const Render_FriendBar = (props) => {
                     <h3> &#40;{props.state.friend_list.length}&#41; </h3>
                 </div>
             </div>
-            <button className = {ProfilePageCSS['show_BlockedFriend']} onClick={() => props.swtich_friendbar()}>Show Blocked Friends</button>
+            <button className = {ProfilePageCSS['show_BlockedFriend']} onClick={() => props.swtich_friendbar()}>Show Blocked Users</button>
 
             <div className = {ProfilePageCSS.friend_card_bar}>
                 {props.state.friend_list.map(friend => (
@@ -973,6 +1016,7 @@ const Render_FriendBar = (props) => {
                     check_user_connection={props.check_user_connection}
                     load_friend={props.load_friend}
                     load_blocked_friend={props.load_blocked_friend}
+                    openToast={props.openToast}
                     />
                 ))}
             </div>
@@ -984,7 +1028,7 @@ const Render_FriendBar = (props) => {
             <>
             <div className = {ProfilePageCSS.friend_title_bar}>
                 <div className = {ProfilePageCSS.friend_title}>
-                    <h2> My Blocked Friends </h2>
+                    <h2> My Blocked Users </h2>
                 </div>
                 <div className = {ProfilePageCSS.friend_num}>
                     <h3> &#40;{props.state.blocked_friend_list.length}&#41; </h3>
@@ -1003,6 +1047,7 @@ const Render_FriendBar = (props) => {
                     check_user_connection={props.check_user_connection}
                     load_friend={props.load_friend}
                     load_blocked_friend={props.load_blocked_friend}
+                    openToast={props.openToast}
                     />
                 ))} 
             </div>

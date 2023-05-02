@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
+import React, { useRef } from 'react';
+
 import { Link } from "react-router-dom";
 // import "../style/ForgotPasswordPage.module.css";
 import validateEmail from "../helper/validateEmail";
@@ -7,6 +9,10 @@ import style from "../style/ForgotPasswordPage.module.css";
 export default function ForgotPasswordPage(props) {
   const [isTokenRequestSuccess, setIsTokenRequestSuccess] = useState(false);
   const [isResetRequestSuccess, setIsResetRequestSuccess] = useState(false);
+
+  useEffect(() => {
+    document.title = "Forgot Password Page";
+  }, []);
 
   // Send password reset token request
   const sendResetTokenRequest = async (email) => {
@@ -27,13 +33,12 @@ export default function ForgotPasswordPage(props) {
     if (response.status == "200") {
       setIsTokenRequestSuccess(true);
     }
-    else {
-      alert('Try again');
-    }
   };
 
   // Send password reset reqeuest
-  const sendResetPasswordRequest = async (password, token) => {
+  const sendResetPasswordRequest = async (password, token, event) => {
+    console.log("inside")
+
     // Set Base API Variables
     const method = "POST";
     const baseUrl = `${process.env.REACT_APP_API_PATH}`;
@@ -50,9 +55,11 @@ export default function ForgotPasswordPage(props) {
     // On success response, udpate token request state
     if (response.status == "200") {
       setIsResetRequestSuccess(true); // update reset request state
-    }
-    else {
-      alert('Try again');
+    } else {
+      const tokenInput = document.getElementById('token')
+      tokenInput.setCustomValidity("token is incorrect")
+      tokenInput.reportValidity();
+      event.preventDefault();
     }
   }
 
@@ -131,40 +138,49 @@ const TokenRequestForm = (props) => {
 
   // Handles form submission
   const formSubmitHandler = (e) => {
-    e.preventDefault(); // prevent default form action
     const [isValid, errorMessage] = validateEmail(email) // check if email is valid
     // Check input errors
+    e.preventDefault()
+
     if (!isValid) {
-      alert(errorMessage)
+      const emailInput = document.getElementById('email')
+      emailInput.setCustomValidity(errorMessage);
+      emailInput.reportValidity();
+      e.preventDefault();
     }
     else {
       setEmail(""); // clear the input text
       props.sendResetTokenRequest(email); // call POST API from ForgotPasswordPage
+      e.target.submit();
     }
 
   };
 
   return (
-    <form
-      className={style['form']}
-      onSubmit={formSubmitHandler}
-      autoComplete="off"
-    >
-      {/* Email Input Field*/}
-      <label>
-        <span className={style['active-text']}>Email:</span>
-        <input
-          className={style['data-input']}
-          type="text"
-          value={email}
-          onChange={emailInputHandler}
-        />
-      </label>
-      {/* Send Instruction button */}
-      <button className={style['send-instructions-button']}>Send Instructions</button>
-    </form>
+      <form
+          className={style['form']}
+          autoComplete="off"
+      >
+        {/* Email Input Field*/}
+        <label>
+          <span className={style['active-text']}>Email:</span>
+          <input
+              className={style['data-input']}
+              type="text"
+              id="email"
+              value={email}
+              onChange={emailInputHandler}
+          />
+        </label>
+        {/* Send Instruction button */}
+        <button
+            className={style['send-instructions-button']}
+            onClick={formSubmitHandler}>
+          Send Instructions</button>
+      </form>
   );
 };
+
 
 /* This component contains the Reset Password Form where user can type in their email address and
 the reset token from their email. The user can also navigate back to login page by clicking on Back to Login */
@@ -175,7 +191,7 @@ const ResetPasswordForm = (props) => {
   // Update email state on input change
   const passwordInputHandler = (e) => {
     setPassword(e.target.value);
-    console.log(e.target.value)
+    // console.log(e.target.value)
   };
 
   // Update token state on input change
@@ -187,41 +203,52 @@ const ResetPasswordForm = (props) => {
   const formSubmitHandler = (e) => {
     e.preventDefault(); // prevent default form action
     // setEmail(""); // clear the input text
+    const passLength = document.getElementById('password')
+    console.log("submitting now")
+    console.log(password.length)
     if (password.length < 6 || password.length > 20) {
-      alert('Password must be between 6-20 characters');
+      const passLength = document.getElementById('password')
+      console.log(passLength.value)
+      passLength.setCustomValidity("Password must be between 6 to 20 characters");
+      passLength.reportValidity();
+      e.preventDefault();
     } else {
+      console.log("here")
       props.sendResetPasswordRequest(password, token); // call POST API from ForgotPasswordPage
     }
   };
 
   return (
-    <form
-        className={style['form']}
-      onSubmit={formSubmitHandler}
-      autoComplete="off"
-    >
-      {/* Password Input Field*/}
-      <label>
-        <span className={style['active-text']}>New Password:</span>
-        <input
-            className={style['data-input'] + ' ' + style['password']}
-          type="password"
-          value={password}
-          onChange={passwordInputHandler}
-        />
-      </label>
-      {/* Password Input Field*/}
-      <label>
-        <span className={style['active-text']}>Reset Token:</span>
-        <input
-            className={style['data-input']}
-          type="text"
-          value={token}
-          onChange={tokenInputHandler}
-        />
-      </label>
-      {/* Reset Button */}
-      <button className={style['reset-password-button']}>Reset Password</button>
-    </form>
+      <form
+          className={style['form']}
+          autoComplete="off"
+      >
+        {/* Password Input Field*/}
+        <label>
+          <span className={style['active-text']}>New Password:</span>
+          <input
+              className={style['data-input'] + ' ' + style['password']}
+              type="password"
+              id='password'
+              value={password}
+              onChange={passwordInputHandler}
+          />
+        </label>
+        {/* Password Input Field*/}
+        <label>
+          <span className={style['active-text']}>Reset Token:</span>
+          <input
+              className={style['data-input']}
+              type="text"
+              id='token'
+              value={token}
+              onChange={tokenInputHandler}
+          />
+        </label>
+        {/* Reset Button */}
+        <button className={style['reset-password-button']}
+          onClick={formSubmitHandler}
+        >Reset Password</button>
+      </form>
   )
 }
