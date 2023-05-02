@@ -15,6 +15,10 @@ export default class LoginForm extends React.Component {
         this.refreshPostsFromLogin = this.refreshPostsFromLogin.bind(this);
     }
 
+    componentDidMount(){
+        document.title = "Login Page";
+    }
+
     refreshPostsFromLogin() {
         console.log("CALLING LOGIN IN LOGINFORM");
         this.props.login();
@@ -43,7 +47,7 @@ export default class LoginForm extends React.Component {
             emailInput.setCustomValidity("Email Missing")
             emailInput.reportValidity()
             event.preventDefault();
-        } else if (this.state.email.includes("@") === false || this.state.email.includes(".com") === false){
+        } else if (this.state.email.includes("@") === false){
             const emailInput = document.getElementById('email')
             console.log(this.state.email.value)
 

@@ -836,6 +836,7 @@ export default class ProfilePage extends React.Component {
                                 <EditProfile 
                                 render_user={this.render_user}
                                 toggleProfile={this.props.toggleProfile}
+                                openToast = {this.props.openToast}
                                 />
                             </Modal>
         
@@ -854,16 +855,13 @@ export default class ProfilePage extends React.Component {
                         <div className = {ProfilePageCSS.user_info}>
                             <div className = {ProfilePageCSS.username}>
                                 <h1> {this.state.username} </h1>
-                            </div>
-                            <div className = {ProfilePageCSS.first_name}>
-                                <h2> First Name: {this.state.firstName} </h2>
-                            </div>
-                            <div className = {ProfilePageCSS.last_name}>
-                                <h2> Last Name: {this.state.lastName} </h2>
+                                <h2 className = {ProfilePageCSS.first_name}> First Name: {this.state.firstName} </h2>
+                                <h2 className = {ProfilePageCSS.last_name}> Last Name: {this.state.lastName} </h2>
                             </div>
                         </div>
+
                         <div className = {ProfilePageCSS.description}>
-                            <h3> {this.state.description} </h3>
+                            <span> {this.state.description} </span>
                         </div>
                     </div>
         
@@ -1005,7 +1003,7 @@ const Render_FriendBar = (props) => {
                     <h3> &#40;{props.state.friend_list.length}&#41; </h3>
                 </div>
             </div>
-            <button className = {ProfilePageCSS['show_BlockedFriend']} onClick={() => props.swtich_friendbar()}>Show Blocked Friends</button>
+            <button className = {ProfilePageCSS['show_BlockedFriend']} onClick={() => props.swtich_friendbar()}>Show Blocked Users</button>
 
             <div className = {ProfilePageCSS.friend_card_bar}>
                 {props.state.friend_list.map(friend => (
@@ -1030,7 +1028,7 @@ const Render_FriendBar = (props) => {
             <>
             <div className = {ProfilePageCSS.friend_title_bar}>
                 <div className = {ProfilePageCSS.friend_title}>
-                    <h2> My Blocked Friends </h2>
+                    <h2> My Blocked Users </h2>
                 </div>
                 <div className = {ProfilePageCSS.friend_num}>
                     <h3> &#40;{props.state.blocked_friend_list.length}&#41; </h3>
