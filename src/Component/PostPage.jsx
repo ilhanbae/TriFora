@@ -206,7 +206,6 @@ export default class PostPage extends React.Component {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer '+sessionStorage.getItem("token")
             },
-        
             })
             .then(res => res.json())
             .then(
@@ -282,15 +281,18 @@ export default class PostPage extends React.Component {
                         //alert("Post Reaction was successful");
                         // once Post reaction is complete, reload the all reaction
                         this.loadPost_reaction();
+                        this.props.openToast({type: "success", message: <span>Like Successful!</span>})
                     },
                     error => {
                         //alert("ERROR when submit Reaction");
                         console.log("ERROR when submit Reaction");
+                        this.props.openToast({type: "error", message: <span>Error When Like the Post!</span>})
                     }
                 );
         }else{
             //If user is not logged in, show error message
             //alert("Not Logged In");
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Not Logged In");
         }
     }
@@ -327,22 +329,27 @@ export default class PostPage extends React.Component {
                             upvote_set: false,
                         });
                         this.loadPost_reaction();
+                        this.props.openToast({type: "success", message: <span>Undo Like Successful!</span>})
                     },
                     error => {
                         //alert("ERROR when deleting Like");
                         console.log(error);
                         console.log("ERROR when deleting Like");
+                        this.props.openToast({type: "error", message: <span>Error When Undo Like!</span>})
                     }
                 );
                 },
                 error => {
                     //alert("ERROR loading Reactions");
                     console.log("ERROR loading Reactions")
+                    this.props.openToast({type: "error", message: <span>Error When Loading Post Reactions!</span>})
+
                 }
             );
         }else{
             //If user is not logged in, show error message
             //alert("Not Logged In");
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Not Logged In");
         }
     }
@@ -386,18 +393,20 @@ export default class PostPage extends React.Component {
                             console.log(result);
                             // once a edit is complete, reload the all comments
                             this.loadPost();
-                            //alert("Post was successful");
                             console.log("Post was successful");
+                            this.props.openToast({type: "success", message: <span>Comment Submit Successful!</span>})
                         },
                         error => {
                             //alert("ERROR when submit comment");
                             console.log("ERROR when submit comment");
+                            this.props.openToast({type: "error", message: <span>Error when submit comment!</span>})
                         }
                     );
             }
         } else {
             //If user is not logged in, show error message
             //alert("Not Logged In");
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Not Logged In");
         }
     }
@@ -419,17 +428,20 @@ export default class PostPage extends React.Component {
                     //alert("Delete Successfully");
                     console.log("Delete Successfully");
                     this.props.closePostPageModal(); // close the post page modal
+                    this.props.openToast({type: "success", message: <span>Post Delete Successful!</span>})
                 },
                 error => {
                     //alert("ERROR when deleting post");
                     console.log(error);
                     console.log("ERROR when deleting post");
+                    this.props.openToast({type: "error", message: <span>Error when Deleting the Post!</span>})
                 }
             );
 
         }else{
             //If user is not logged in, show error message
             //alert("Not Logged In");
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Not Logged In");
         }
     }
@@ -479,30 +491,31 @@ export default class PostPage extends React.Component {
                                     <ProfilePage 
                                         profile_id={this.state.authorID}
                                         toggleProfile={this.toggleProfile}
+                                        openToast={this.props.openToast}
                                     />
                                 </Modal>
                                 <div className = {PostPageCSS['post-by']}>
-                                    <h5> Posted By </h5>
+                                    <span> Posted By </span>
                                     <div className = {PostPageCSS['post-username']} onClick={() => this.ClickProfile()}>
-                                        <h5> {this.state.username} </h5>
+                                        <span> {this.state.username} </span>
                                     </div>
                                 </div>
                                 <div className = {PostPageCSS['post-on']}>
-                                    <h5> Posted On </h5>
+                                    <span> Posted On </span>
                                     <div className = {PostPageCSS['post-date']}>
-                                        <h5> {this.state.post_date} </h5>
+                                        <span> {this.state.post_date} </span>
                                     </div>
                                 </div>
                             </div>
 
                         </div>
                         <div className = {PostPageCSS['post-title']}>
-                            <h5 className = {PostPageCSS['post-id']}> #{this.state.post_id} </h5>
+                            <span className = {PostPageCSS['post-id']}> #{this.state.post_id} </span>
                             <h1 className = {PostPageCSS['post-title-text']}> {this.state.title} </h1>
                         </div>
                         <div className = {PostPageCSS['post-content']}>
                             <div className = {PostPageCSS['post-content-text']}>
-                                <h5> {this.state.content} </h5>
+                                <span> {this.state.content} </span>
                             </div>
                         </div>
                         <Post_Image post_image_list={this.state.post_images} state={this.state}/>
@@ -512,7 +525,7 @@ export default class PostPage extends React.Component {
                         <Post_Buttons state={this.state} delete_post={this.DeletePostHandler} ClickDelete={() => this.ClickDeleteButton()} toggleModal={this.toggleModal}/>
                     </div>
                     <Comment_input comment_input={this.CommentHandler} submit={this.CommentSumbitHandler}/>
-                    <CommentList comment_list={this.state.comments} loadPost={this.loadPost} />
+                    <CommentList comment_list={this.state.comments} loadPost={this.loadPost} openToast={this.props.openToast}/>
                 </div>
 
             </div>
@@ -558,14 +571,14 @@ const Like_button = (props) => {
         return (
             <div className = {PostPageCSS['upvote']}>
                 <input className = {PostPageCSS['upvote-button-before']} type='image' onClick={() => props.click_like()}/>
-                <h5 className = {PostPageCSS['upvote-number-before']}>{props.state.likes}</h5>
+                <span className = {PostPageCSS['upvote-number-before']}>{props.state.likes}</span>
             </div>
         );
     } else if (props.state.upvote_set === true) {
         return (
             <div className = {PostPageCSS['upvote']}>
                 <input className = {PostPageCSS['upvote-button-after']} type='image' onClick={() => props.click_undo_like()}/>
-                <h5 className = {PostPageCSS['upvote-number-after']}>{props.state.likes}</h5>
+                <span className = {PostPageCSS['upvote-number-after']}>{props.state.likes}</span>
             </div>
         );
     }   
@@ -593,7 +606,7 @@ const Post_Buttons = (props) => {
 
                 <div className = {PostPageCSS['post-delete']}>
                     <button className = {PostPageCSS['post-delete-button']} onClick={props.ClickDelete}></button>
-                    <h5 className = {PostPageCSS['post-delete-text']}>Delete</h5>
+                    <span className = {PostPageCSS['post-delete-text']}>Delete</span>
                     <Modal show={props.state.openModal} onClose={props.toggleModal}>
                         <div>
                             <div className={PostPageCSS['delete-popup-title']}>Delete Your Post</div>
@@ -617,8 +630,12 @@ const Post_Buttons = (props) => {
 const Comment_input = (props) => {
     return(
         <form className = {PostPageCSS['send-comment']} onSubmit={props.submit}>
-            <input className= {PostPageCSS['comment-inputbox']} type='text' id='comment' name='comment' placeholder='Write Comment' onChange={props.comment_input}></input>
-            <input className= {PostPageCSS['send-button']} type='submit' value='Send'></input>
+            <label className= {PostPageCSS['comment-label']}>
+                <input className= {PostPageCSS['comment-inputbox']} type='text' id='comment' name='comment' placeholder='Write Comment' onChange={props.comment_input}></input>
+            </label>
+            <label className= {PostPageCSS['send-button-label']}>
+                <input className= {PostPageCSS['send-button']} type='submit' value='Send'></input>
+            </label>
         </form>
     );
 }

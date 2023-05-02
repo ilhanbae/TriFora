@@ -43,10 +43,12 @@ export default class Comment extends React.Component {
                     //alert("Delete Successfully");
                     console.log("Delete Successfully");
                     this.props.loadPost();
+                    this.props.openToast({type: "success", message: <span>Delete Comment Successful!</span>})
                 },
                 error => {
                     //alert("error!"+error);
                     console.log("error!"+error)
+                    this.props.openToast({type: "error", message: <span>Error When Deleting the Comment!</span>})
                 }
                 );
         }
@@ -95,10 +97,12 @@ export default class Comment extends React.Component {
                             edit_comment: false,
                         });
                         this.props.loadPost();
+                        this.props.openToast({type: "success", message: <span>Edit Comment Successful!</span>})
                       },
                       error => {
                         //alert("error!");
                         console.log("error!")
+                        this.props.openToast({type: "error", message: <span>Error When Editing the Comment!</span>})
                       }
                     );
             }
@@ -135,9 +139,9 @@ export default class Comment extends React.Component {
         return (
             <div className = {PostPageCSS['individual-comment']}>
                 <div className = {PostPageCSS['comment-user-info']}>
-                    <img className = {PostPageCSS['comment-user-avater']} src={this.state.comment_userimage} alt="Comment-img" onClick={() => this.ClickProfile()}></img>
+                    <img className = {PostPageCSS['comment-user-avater']} src={this.state.comment_userimage} alt="show-user-profile" onClick={() => this.ClickProfile()}></img>
                     <div className = {PostPageCSS['comment-user-username']} onClick={() => this.ClickProfile()}>
-                        <h4> {this.state.comment_username} </h4>
+                        <span> {this.state.comment_username} </span>
                     </div>
                     <Modal
                         show={this.state.openProfile}
@@ -150,10 +154,11 @@ export default class Comment extends React.Component {
                         <ProfilePage 
                             profile_id={this.props.post.author.id}
                             toggleProfile={this.toggleProfile}
+                            openToast={this.props.openToast}
                         />
                     </Modal>
                     <div className = {PostPageCSS['comment-user-date']}>
-                        <h6> {this.state.comment_date} </h6>
+                        <span> {this.state.comment_date} </span>
                     </div>
                 </div>
 
@@ -176,7 +181,7 @@ const Comment_interaction = (props) => {
             <div className = {PostPageCSS['comment-interaction']}>
                 <div className = {PostPageCSS['comment-delete']}>
                     <button className = {PostPageCSS['comment-delete-button']} onClick={props.ClickDelete}></button>
-                    <h6 className = {PostPageCSS['comment-delete-text']}>Delete</h6>
+                    <span className = {PostPageCSS['comment-delete-text']}>Delete</span>
                     <Modal show={props.openModal} onClose={props.toggleModal}>
                         <div>
                             <div className={PostPageCSS['delete-popup-title']}>Delete Your Comment</div>
@@ -189,7 +194,7 @@ const Comment_interaction = (props) => {
                 </div>
                 <div className = {PostPageCSS['comment-edit']}>
                     <button className = {PostPageCSS['comment-edit-button']} onClick={props.edit}></button>
-                    <h6 className = {PostPageCSS['comment-edit-text']}>Edit</h6>
+                    <span className = {PostPageCSS['comment-edit-text']}>Edit</span>
                 </div>
             </div>
         );
@@ -201,7 +206,7 @@ const Comment_text = (props) => {
     if (!props.edit_comment){
         return (
             <div className = {PostPageCSS['comment-text']}>
-                <h5> {props.comment_content} </h5>
+                <span> {props.comment_content} </span>
             </div>
         );
 
@@ -210,8 +215,12 @@ const Comment_text = (props) => {
         return (
             <div className = {PostPageCSS['comment-text']} onSubmit={props.submit}>
                 <form className = {PostPageCSS["edit-form"]}>
-                    <input className= {PostPageCSS['edit-inputbox']} type='text' id='comment' name='comment' placeholder='Edit Comment' onChange={props.edit_comment_handler}></input>
-                    <input className= {PostPageCSS['edit-button']} type='submit' value='Edit'></input>
+                    <label className= {PostPageCSS['edit-inputbox-label']}>
+                        <input className= {PostPageCSS['edit-inputbox']} type='text' id='comment' name='comment' placeholder='Edit Comment' onChange={props.edit_comment_handler}></input>
+                    </label>
+                    <label className= {PostPageCSS['edit-button-label']}>
+                        <input className= {PostPageCSS['edit-button']} type='submit' value='Edit'></input>
+                    </label>
                 </form>
             </div>
         );

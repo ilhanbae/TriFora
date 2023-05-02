@@ -8,26 +8,21 @@ import NavAchiever from "./Component/NavAchiever";
 import RegisterForm from "./Component/RegisterForm";
 import ForgotPasswordPage from "./Component/ForgotPasswordPage";
 import LoginForm from "./Component/LoginForm";
-import ProfilePage from "./Component/ProfilePage";
 import EditProfilePage from "./Component/EditProfilePage";
 import CommunityPage from "./Component/CommunityPage";
 import CreatePost from "./Component/CreatePost";
 import Homepage from "./Component/Homepage";
 import Notification from "./Component/Notification";
-import Toast from "./Component/Toast";
 import ToastList from "./Component/ToastList";
+import AboutUs from "./Component/AboutUs";
+import Footer from "./Component/Footer";
+import MyCommunities from "./Component/MyCommunities";
+import OtherCommunitiesPage from "./Component/OtherCommunitiesPage";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [navStyle, setNavStyle] = useState(2);
   const [toastList, setToastList] = useState([]);
 
-  /* This method changes nav style */
-  const navSwitch = (headerStyle) => {
-    if (headerStyle !== navStyle) {
-      setNavStyle(headerStyle)
-    }
-  }
 
   /* On logout, pull the session token and user from session storage and update the 
   user's logged in status. This can be called from the header component where the user can 
@@ -64,21 +59,25 @@ export default function App() {
       <div>
         <header>
           {/* Navigation */}
-          <NavAchiever logout={logout} navStyle={navStyle} />
+          <NavAchiever logout={logout} openToast={openToast} />
           
-          <div>
+          <div className="app-content">
             <Routes>
               {/* Pages */}
+              <Route path="/about" element={<AboutUs />} /> {/* shouldn't need login? */}
               <Route path="/register" element={<RegisterForm login={login} />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/login" element={<LoginOrProfile login={login} />} />
               <Route path="/edit-profile" element={<EditProfilePage />} />
               <Route path="/community/:communityId" element={<CommunityPage openToast={openToast} />} />
+              <Route path="/my-communities" element={<MyCommunities />} />
+              <Route path="/other-communities" element={<OtherCommunitiesPage />} />
               <Route path="/create-post" element={<CreatePost />} />
-              <Route path="/notification" element={<Notification />} />
+              <Route path="/notification" element={<Notification openToast={openToast}/>} />
               <Route path="/" element={<LoginOrProfile login={login} />} />
             </Routes>
           </div>
+          <Footer />
         </header>
         {/* Toast List */}
         <ToastList toastList={toastList} closeToast={closeToast}></ToastList>
@@ -99,7 +98,14 @@ const LoginOrProfile = (props) => {
   } else {
     console.log("Logged In");
     return (
+      // <>
+      //   {(props.radioValue === "server") && <Homepage />}
+      //   {(props.radioValue === "A") && <HomepageA />}
+      //   {(props.radioValue === "B") && <HomepageB />}
+      // </>
+      // <Homepage />
       <Homepage />
+      // <HomepageB />
       // <ProfilePage />
     );
   }

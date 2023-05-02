@@ -273,7 +273,9 @@ export default class CreatePost extends React.Component {
                         </div>
 
                         <br />
-                        <input className="post-button" type="submit" value="Post" />
+                        <label>
+                            <input className="post-button" type="submit" value="Post" />
+                        </label>
                         <br />
 
                         {/* not really sure what this is doing yet, but professor had it too to make posts */}

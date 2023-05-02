@@ -1,5 +1,5 @@
 import React from "react";
-import "../style/NavAchiever.css";
+import NavCSS from "../style/NavAchiever.module.css";
 import { Link } from "react-router-dom";
 import groupIcon from "../assets/group.png";
 import downIcon from "../assets/downIcon36.png";
@@ -17,16 +17,21 @@ class NavAchiever extends React.Component {
 
         this.state = {
             showDropMenu: false,
-            profile_icon: "",  /* ------ Add Component in Nav ------ */
+            profile_icon: "",
 
             openProfile: false,
             openNotification: false,
         };
     }
 
-    /* ------ Add Component in Nav ------ */
     componentDidMount() {
         this.render_user_icon();
+    }
+
+    componentDidUpdate(){
+        if (this.state.profile_icon === ""){
+            this.render_user_icon();
+        }
     }
 
     // This function will get the user image
@@ -47,14 +52,13 @@ class NavAchiever extends React.Component {
                     console.log(result);
                     if (result.attributes){
                         this.setState({
-                        // IMPORTANT!  You need to guard against any of these values being null.  If they are, it will
-                        // try and make the form component uncontrolled, which plays havoc with react
-                        profile_icon: result.attributes.profile.profileImage || "",
+                            // get the user profile icon
+                            profile_icon: result.attributes.profile.profileImage || "",
                         });
                     // Check if the profileImage is the default value, it is default value set to default image
                     if (result.attributes.profile.profileImage === ""){
                         this.setState({
-                            profile_icon: defaultProfileImage
+                            profile_icon: defaultProfileImage,
                         })
                     }
                 }
@@ -66,35 +70,40 @@ class NavAchiever extends React.Component {
             );
         }
     }
-    /* ------ Add Component in Nav ------ */
 
     menuSwitch = () => {
         this.setState(menuState => ({ showDropMenu: !menuState.showDropMenu }), () => this.render_user_icon());
     };
 
+    // Open Profile Page Pop up
     ClickProfile(){
         this.setState({
             openProfile: true,
         });
     }
 
+    // Close Profile Page pop up
     toggleProfile = () => {
         this.menuSwitch();
         this.setState({
             openProfile: !this.state.openProfile,
         });
+        // refresh the current page when user close the profile pop up
+        window.location.reload(); 
     };
 
     redirect_community(){
         this.toggleProfile();
     }
 
+    // Open Notification Page pop up
     ClickNotification(){
         this.setState({
             openNotification: true,
         });
     }
 
+    // Close Notification Page pop up
     toggleNotification = () => {
         this.menuSwitch();
         this.setState({
@@ -104,13 +113,12 @@ class NavAchiever extends React.Component {
 
     render() {
         return (
-            <div id="headerNav" className="headerNav">
+            <div id="headerNav" className={NavCSS["headerNav"]}>
                 {/* items that appear to the left side of the navbar */}
                 <ul id="leftItems">
-                    <li className="logo">
-                        {/* <Link to="/"> Logo </Link> */}
+                    <li className={NavCSS["logo"]}>
+                        <Link to="/"> Trifora </Link>
                         {/* Temporarily non clickable text since destination unknown */}
-                        <div> Trifora </div>
                     </li>
 
                     {/* commented out as lacking functionality for now */}
@@ -136,21 +144,21 @@ class NavAchiever extends React.Component {
                         /*  Making use of the way the boilerplate code handled login seems to work
                             if logged out show signup/login */
                         <>
-                            <li className="nav_text">
+                            <li className={NavCSS["nav_text"]}>
                                 <Link to="/register"> Sign up </Link>
                             </li>
-                            <li className="nav_text">
+                            <li className={NavCSS["nav_text"]}>
                                 <Link to="/login"> Login </Link>
                             </li>
                         </>}
                     {sessionStorage.getItem("token") &&
                         /* if logged in have a dropdown menu with the profile icon*/
                         // Icon/button needs to be changed, just using as a placeholder for testing
-                        <li className="pm admin">
+                        <li className={NavCSS["pm admin"]}>
                             {/* This icon is a placeholder until maybe profile icon */}
                             <img
-                                src={this.state.profile_icon}  /* ------ Add Component in Nav ------ */
-                                className="profile-icon"
+                                src={this.state.profile_icon}
+                                className={NavCSS["profile-icon"]}
                                 // onClick={this.menuSwitch}
                                 alt="profile icon will go here"
                                 title="profile icon will go here" />
@@ -158,7 +166,7 @@ class NavAchiever extends React.Component {
                             {this.state.showDropMenu ? (
                                 <img
                                     src={upIcon}
-                                    className="up-icon"
+                                    className={NavCSS["up-icon"]}
                                     onClick={this.menuSwitch}
                                     alt="hide menu"
                                     title="hide menu"
@@ -166,7 +174,7 @@ class NavAchiever extends React.Component {
                             ) : (
                                 <img
                                     src={downIcon}
-                                    className="down-icon"
+                                    className={NavCSS["down-icon"]}
                                     onClick={this.menuSwitch}
                                     alt="show menu"
                                     title="show menu"
@@ -176,7 +184,7 @@ class NavAchiever extends React.Component {
                             {/* DropMenu could now likely be switch to being it's own component, though a way to logout would
                                     have to be passed through */}
                             {/* the following line uses ternary statement to allow for the hiding/showing of the drop down via css */}
-                            <ul className={this.state.showDropMenu ? "showDrop" : "hideDrop"}>
+                            <ul className={this.state.showDropMenu ? NavCSS["showDrop"] : NavCSS["hideDrop"] }>
                                 <li>
                                     <Link onClick={() => this.ClickProfile()}> My Profile </Link>
                                     <Modal
@@ -191,6 +199,7 @@ class NavAchiever extends React.Component {
                                             profile_id={sessionStorage.getItem("user")}
                                             redirect_community={this.redirect_community}
                                             toggleProfile={this.toggleProfile}
+                                            openToast={this.props.openToast}
                                         />
                                     </Modal>
                                 </li>
@@ -204,7 +213,9 @@ class NavAchiever extends React.Component {
                                         height: "100%",
                                         }}
                                     >
-                                        <Notification />
+                                        <Notification 
+                                        openToast={this.props.openToast}
+                                        />
                                     </Modal>
                                 </li>
                                 <li>

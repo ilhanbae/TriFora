@@ -22,6 +22,7 @@ export default class Friend extends React.Component {
 
     componentDidMount() {
         this.load_toUser_fromUser_connection_id();
+        console.log(this.props.view_userID);
     }
 
 
@@ -46,6 +47,7 @@ export default class Friend extends React.Component {
             },
             error => {
                 //alert("ERROR loading Friends");
+                this.props.openToast({type: "error", message: <span>Error When loading Friend Connection!</span>})
                 console.log("ERROR loading Friends")
             }
         );
@@ -73,6 +75,7 @@ export default class Friend extends React.Component {
                 },
                 error => {
                     //alert("ERROR when deleting Frist Friend connection");
+                    this.props.openToast({type: "error", message: <span>ERROR When Deleting Friend Connection!</span>})
                     console.log(error);
                     console.log("ERROR when deleting First Friend 1 connection");
                 }
@@ -90,11 +93,13 @@ export default class Friend extends React.Component {
             .then(
                 result => {
                     //alert("Delete Friend Request Successfully");
+                    this.props.openToast({type: "success", message: <span>Delete Friend Successfully!</span>})
                     console.log("Delete Friend connection Successfully");
                     this.props.load_friend(this.props.view_userID);
                 },
                 error => {
                     //alert("ERROR when deleting Second Friend connection");
+                    this.props.openToast({type: "error", message: <span>ERROR When Deleting Friend Connection!</span>})
                     console.log(error);
                     console.log("ERROR when deleting Second Friend connection");
                 }
@@ -103,6 +108,7 @@ export default class Friend extends React.Component {
         }else{
             //If user is not logged in, show error message
             //alert("Not Logged In");
+            this.props.openToast({type: "error", message: <span>Please Login First!</span>})
             console.log("Not Logged In");
         }
     }
@@ -129,9 +135,11 @@ export default class Friend extends React.Component {
                 console.log(result)
                 this.props.load_friend(this.props.view_userID);
                 this.props.load_blocked_friend(this.props.view_userID);
+                this.props.openToast({type: "success", message: <span>Block User Successfully!</span>})
               },
               error => {
                 //alert("error!");
+                this.props.openToast({type: "error", message: <span>ERROR When Block Users!</span>})
                 console.log("error!")
               }
             );
@@ -151,12 +159,14 @@ export default class Friend extends React.Component {
 
     render() {
         // If view_userID != to the current logged in user, remove the "Remove" button
-        if (this.props.view_userID !== sessionStorage.getItem("user")){
+        if (this.props.view_userID.toString() !== sessionStorage.getItem("user")){
             return (
                 <>
                     <div className = {ProfilePageCSS.friend_card}>
+                        <Link className={ProfilePageCSS['friend_link']} onClick={() => this.ClickProfile()}>
+                            <img className = {ProfilePageCSS.friend_avatar} src={this.props.friend.toUser.attributes.profile.profileImage} alt="show-user-profile"></img>
+                        </Link>
                         <Link onClick={() => this.ClickProfile()}>
-                            <img className = {ProfilePageCSS.friend_avatar} src={this.props.friend.toUser.attributes.profile.profileImage}></img>
                             <div className = {ProfilePageCSS.friend_name}>
                                 <h4> {this.props.friend.toUser.attributes.profile.username} </h4>
                             </div>
@@ -183,8 +193,10 @@ export default class Friend extends React.Component {
             return(
                 <>
                     <div className = {ProfilePageCSS.friend_card}>
+                        <Link className={ProfilePageCSS['friend_link']} onClick={() => this.ClickProfile()}>
+                            <img className = {ProfilePageCSS.friend_avatar} src={this.props.friend.toUser.attributes.profile.profileImage} alt="show-user-profile"></img>
+                        </Link>
                         <Link onClick={() => this.ClickProfile()}>
-                            <img className = {ProfilePageCSS.friend_avatar} src={this.props.friend.toUser.attributes.profile.profileImage}></img>
                             <div className = {ProfilePageCSS.friend_name}>
                                 <h4> {this.props.friend.toUser.attributes.profile.username} </h4>
                             </div>

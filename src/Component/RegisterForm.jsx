@@ -20,6 +20,7 @@ export default class RegisterForm extends React.Component {
     }
 
     componentDidMount(){
+      document.title = "Register Page";
       this.get_defaultProfileImage_path()
     }
 
