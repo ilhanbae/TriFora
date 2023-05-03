@@ -86,7 +86,7 @@
     border-radius: 50%;
     width: 200px;
     height: 200px;
-    padding-block: 5px; /* space for hover effect to not block wording */
+    padding-block: 6px; /* space for hover effect to not block wording */
 }
 
 .homepage-community-image {
@@ -97,5 +97,5 @@
 }
 
 .homepage-community-image:hover {
-  box-shadow: 0 0 0 8px #864522;
+  box-shadow: 0 0 6px 6px #864522;
 }
