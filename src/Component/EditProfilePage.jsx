@@ -319,7 +319,9 @@ const UserProfileForm = (prop) => {
               type="text"
               value={description}
               onChange={descriptionInputHandler}
+              maxLength="255"
             />
+            <span className={style["active-text"] + " " + style["bold"]}>{description.length}/255</span>
           </label>
         </div>
 
