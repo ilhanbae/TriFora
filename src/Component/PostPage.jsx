@@ -372,7 +372,8 @@ export default class PostPage extends React.Component {
             //Check the length of the comment
             if (this.state.comment_input.length === 0){
                 //alert("Comment Can be empty!")
-                console.log("Comment Can be empty!");
+                console.log("Comment Can't be empty!");
+                this.props.openToast({type: "error", message: <span>Comment can't be empty!</span>})
             } else {
                 //make the api call to post
                 fetch(process.env.REACT_APP_API_PATH+"/posts", {
@@ -392,12 +393,13 @@ export default class PostPage extends React.Component {
                         result => {
                             console.log(result);
                             // once a edit is complete, reload the all comments
-                            this.loadPost();
                             console.log("Post was successful");
                             this.props.openToast({type: "success", message: <span>Comment Submit Successful!</span>})
+                            event.target.reset();
                             this.setState({
                                 comment_input: '',
                             })
+                            this.loadPost();
                         },
                         error => {
                             //alert("ERROR when submit comment");
@@ -517,9 +519,9 @@ export default class PostPage extends React.Component {
                             <h1 className = {PostPageCSS['post-title-text']}> {this.state.title} </h1>
                         </div>
                         <div className = {PostPageCSS['post-content']}>
-                            <div className = {PostPageCSS['post-content-text']}>
-                                <span> {this.state.content} </span>
-                            </div>
+                            <span className = {PostPageCSS['post-content-text']}>
+                                {this.state.content}
+                            </span>
                         </div>
                         <Post_Image post_image_list={this.state.post_images} state={this.state}/>
                     </div>
@@ -527,7 +529,7 @@ export default class PostPage extends React.Component {
                         <Like_button state={this.state} click_like={this.click_like} click_undo_like={this.click_undo_like}/>
                         <Post_Buttons state={this.state} delete_post={this.DeletePostHandler} ClickDelete={() => this.ClickDeleteButton()} toggleModal={this.toggleModal}/>
                     </div>
-                    <Comment_input comment_input={this.CommentHandler} submit={this.CommentSumbitHandler}/>
+                    <Comment_input comment_input={this.state.comment_input} commentHandler={this.CommentHandler} submit={this.CommentSumbitHandler}/>
                     <CommentList comment_list={this.state.comments} loadPost={this.loadPost} openToast={this.props.openToast}/>
                 </div>
 
@@ -635,7 +637,7 @@ const Comment_input = (props) => {
     return(
         <form className = {PostPageCSS['send-comment']} onSubmit={props.submit}>
             <label className= {PostPageCSS['comment-label']}>
-                <input className= {PostPageCSS['comment-inputbox']} type='text' id='comment' name='comment' placeholder='Write Comment' onChange={props.comment_input}></input>
+                <input className= {PostPageCSS['comment-inputbox']} type='text' id='comment' name='comment' placeholder='Write Comment' onChange={props.commentHandler}></input>
             </label>
             <label className= {PostPageCSS['send-button-label']}>
                 <input className= {PostPageCSS['send-button']} type='submit' value='Send'></input>

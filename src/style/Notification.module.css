@@ -58,6 +58,7 @@
 }
 
 .close-button:hover {
+    cursor: pointer;
     background-color: var(--bistre);
     color: white;
 }
@@ -167,6 +168,7 @@
 }
 
 .notification-image:hover{
+    cursor: pointer;
     box-shadow: 0 0 3px 3px #864522;
 }
 
@@ -240,6 +242,7 @@
 }
 
 .notification-accept:hover{
+    cursor: pointer;
     background-color: var(--bistre);
     color: white;
 }
@@ -277,6 +280,7 @@
 }
 
 .notification-reject:hover{
+    cursor: pointer;
     background-color: var(--bistre);
     color: white;
 }

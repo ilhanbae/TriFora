@@ -27,6 +27,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    cursor: default;
 
     width: 100%;
     height: 100%;
@@ -91,6 +92,7 @@
 }
 
 .edit_button:hover {
+    cursor: pointer;
     background-color: #3D211A;
     color: white;
 }
@@ -122,6 +124,7 @@
 }
 
 .addfriend_button:hover {
+    cursor: pointer;
     background-color: #3D211A;
     color: white;
 }
@@ -156,6 +159,7 @@
 }
 
 .accept_button:hover {
+    cursor: pointer;
     background-color: #3D211A;
     color: white;
 }
@@ -187,6 +191,7 @@
 }
 
 .removefriend_button:hover {
+    cursor: pointer;
     background-color: #3D211A;
     color: white;
 }
@@ -221,6 +226,7 @@
 }
 
 .reject_button:hover {
+    cursor: pointer;
     background-color: #3D211A;
     color: white;
 }
@@ -252,6 +258,7 @@
 }
 
 .RequestSent_button:hover {
+    cursor: pointer;
     background-color: #3D211A;
     color: white;
 }
@@ -308,6 +315,7 @@
 */
 
 .Block_button:hover {
+    cursor: pointer;
     background-color: #3D211A;
     color: white;
 }
@@ -682,6 +690,7 @@
 }
 
 .community_image:hover{
+    cursor: pointer;
     box-shadow: 0 0 6px 6px #864522;
 }
 
@@ -692,6 +701,7 @@
 }
 
 .community_title:hover{
+    cursor: pointer;
     color: #864522;
     text-decoration: underline;
 }
@@ -780,6 +790,7 @@
 }
 
 .show_BlockedFriend:hover{
+    cursor: pointer;
     background-color: #3D211A;
     color: white;
 }
@@ -809,6 +820,7 @@
 }
 
 .show_Friend:hover{
+    cursor: pointer;
     background-color: #3D211A;
     color: white;
 }
@@ -852,6 +864,7 @@
 }
 
 .friend_avatar:hover{
+    cursor: pointer;
     box-shadow: 0 0 6px 6px #864522;
 }
 
@@ -864,6 +877,7 @@
 }
 
 .friend_name:hover{
+    cursor: pointer;
     color:#864522;
     text-decoration: underline;
 }
@@ -897,6 +911,7 @@
 }
 
 .friend_remove:hover{
+    cursor: pointer;
     background-color: #3D211A;
     color: white;
 }
@@ -931,6 +946,7 @@
 }
 
 .friend_block:hover{
+    cursor: pointer;
     background-color: #3D211A;
     color: white;
 }
@@ -965,6 +981,7 @@
 }
 
 .friend_unblock:hover{
+    cursor: pointer;
     background-color: #3D211A;
     color: white;
 }

@@ -209,7 +209,7 @@ const Comment_text = (props) => {
     if (!props.edit_comment){
         return (
             <div className = {PostPageCSS['comment-text']}>
-                <span> {props.comment_content} </span>
+                <span className = {PostPageCSS['comment-text-content']}> {props.comment_content} </span>
             </div>
         );
 
