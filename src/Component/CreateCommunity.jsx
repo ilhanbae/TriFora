@@ -78,13 +78,16 @@ export default function CreateCommunity(props) {
     }
 
     const createCommunity = async (communityImageLink) => {
+        let currDate = new Date().toISOString();
+
         let endpoint = '/groups';
         let body = {
             name: communityName,
             attributes: {
                 design: {
                     bannerBackgroundColor: "#5da7b6",
-                    bannerProfileImage: communityImageLink
+                    bannerProfileImage: communityImageLink,
+                    dateCreated: currDate
                 }
             }
         };
