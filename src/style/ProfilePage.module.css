@@ -72,8 +72,6 @@
     box-sizing: border-box;
 
     margin: 10px;
-
-    width: 60px;
     height: 40px;
 
     font-family: 'Alfa Slab One';
@@ -82,7 +80,7 @@
     font-size: 20px;
     text-align: center;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     color: black;
     padding: 5px;
@@ -97,13 +95,19 @@
     color: white;
 }
 
+.edit_button_icon::before{
+    cursor: pointer;
+    content: "\270E";
+    font-weight: bold;
+    text-align: center;
+    font-size: 15px;
+    margin-right: 5px;
+}
+
 .addfriend_button{
     box-sizing: border-box;
 
     margin: 10px;
-
-    width: 150px;
-    height: 40px;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
@@ -122,12 +126,21 @@
     color: white;
 }
 
+.add_friend_icon::before{
+    cursor: pointer;
+    content: "\002B";
+    font-weight: bold;
+    text-align: center;
+    font-size: 20px;
+    margin-right: 5px;
+}
+
 .accept_button {
     box-sizing: border-box;
 
     margin: 10px;
 
-    width: 100px;
+    /* width: 100px; */
     height: 40px;
 
     font-family: 'Alfa Slab One';
@@ -147,13 +160,19 @@
     color: white;
 }
 
+.accept_friend_icon::before{
+    cursor: pointer;
+    content: "\2295";
+    font-weight: bold;
+    text-align: center;
+    font-size: 20px;
+    margin-right: 5px;
+}
+
 .removefriend_button{
     box-sizing: border-box;
 
     margin: 10px;
-
-    width: 180px;
-    height: 40px;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
@@ -172,12 +191,21 @@
     color: white;
 }
 
+.remove_friend_icon::before{
+    cursor: pointer;
+    content: "\2716";
+    font-weight: bold;
+    text-align: center;
+    font-size: 20px;
+    margin-right: 5px;
+}
+
 .reject_button{
     box-sizing: border-box;
 
     margin: 10px;
 
-    width: 100px;
+    /* width: 100px; */
     height: 40px;
 
     font-family: 'Alfa Slab One';
@@ -197,13 +225,19 @@
     color: white;
 }
 
+.reject_friend_icon::before{
+    cursor: pointer;
+    content: "\2296";
+    font-weight: bold;
+    text-align: center;
+    font-size: 20px;
+    margin-right: 5px;
+}
+
 .RequestSent_button{
     box-sizing: border-box;
 
     margin: 10px;
-
-    width: 160px;
-    height: 40px;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
@@ -222,82 +256,58 @@
     color: white;
 }
 
-.close_button{
-    box-sizing: border-box;
-
-    margin: 10px;
-    margin-right: 75px; 
-
-    width: 70px;
-    height: 40px;
-
-    font-family: 'Alfa Slab One';
-    font-style: normal;
-    font-weight: normal;
-    font-size: 20px;
-    display: flex;
+.request_sent_icon::before{
+    cursor: pointer;
+    content: "\21A5";
+    font-weight: bold;
     text-align: center;
-    flex-direction: column;
-    justify-content: center;
-    color: black;
-    padding: 5px;
-
-    background: #F3C26E;
-    border: 2px solid #000000;
-    border-radius: 10px;
-}
-
-.close_button:hover {
-    background-color: #3D211A;
-    color: white;
+    font-size: 20px;
+    margin-right: 5px;
 }
 
 .Block_button{
     box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 
     margin: 10px;
-
-    width: 100px;
+    /* width: 100px; */
     height: 40px;
+    padding: 5px;
 
     font-family: 'Alfa Slab One';
     font-style: normal;
     font-weight: normal;
     font-size: 20px;
     color: black;
-    padding: 5px;
 
     background: red;
     border: 2px solid #000000;
     border-radius: 10px;
 }
+
+.Block_button_icon::before{
+    cursor: pointer;
+    content: "\2298";
+    font-weight: bold;
+    text-align: center;
+    margin-right: 5px;
+    font-size: 25px;
+}
+
+/*
+.Block_button_text{
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    color: black;
+}
+*/
 
 .Block_button:hover {
-    background-color: #3D211A;
-    color: white;
-}
-
-.Unblock_button{
-    box-sizing: border-box;
-
-    margin: 10px;
-
-    width: 100px;
-    height: 40px;
-
-    font-family: 'Alfa Slab One';
-    font-style: normal;
-    font-weight: normal;
-    font-size: 20px;
-    color: black;
-    padding: 5px;
-
-    background: red;
-    border: 2px solid #000000;
-    border-radius: 10px;
-}
-
-.Unblock_button:hover {
     background-color: #3D211A;
     color: white;
 }
@@ -426,9 +436,6 @@
     .edit_button{
         box-sizing: border-box;
     
-        /* margin: 10px;
-        margin-left: auto; */
-    
         width: 60px;
         height: 40px;
     
@@ -523,6 +530,10 @@
 
 .description{
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
 
     width: 30%;
     margin: 10px;
@@ -532,6 +543,12 @@
     font-size: 20px;
 
     color:#000000;
+}
+
+.description_text{
+    font-family: 'Montserrat';
+    font-weight: bold;
+    font-size: 20px;
 }
 
 /* profile_info under 500px */
@@ -646,11 +663,10 @@
     margin: 10px;
     width: 200px;
     height: 200px;
-}
 
-.community_link:hover{
-    background-color: #8E6F52;
-    border-radius: 50%;
+    background: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
 }
 
 .community_image{
@@ -658,20 +674,25 @@
     width: 120px;
     height: 120px;
     margin: 10px;
+    margin-top: 0px;
 
     background: #F3C26E;
     border: 2px solid #000000;
     border-radius: 50%;
 }
 
+.community_image:hover{
+    box-shadow: 0 0 6px 6px #864522;
+}
+
 .community_title{
     text-align: center;
-    margin: 10px;;
+    margin: 10px;
     color: #000000;
 }
 
 .community_title:hover{
-    color: #F3C26E;
+    color: #864522;
     text-decoration: underline;
 }
 
@@ -819,11 +840,6 @@
     border-radius: 10px;
 }
 
-.friend_link:hover{
-    background-color: #8E6F52;
-    border-radius: 50px;
-}
-
 .friend_avatar{
     box-sizing: border-box;
     width: 80px;
@@ -835,6 +851,10 @@
     border-radius: 50%;
 }
 
+.friend_avatar:hover{
+    box-shadow: 0 0 6px 6px #864522;
+}
+
 .friend_name{
     margin: 10px;
     margin-top: 0;
@@ -844,15 +864,20 @@
 }
 
 .friend_name:hover{
-    color:#FEFEE2;
+    color:#864522;
     text-decoration: underline;
 }
 
 .friend_remove{
     box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 
-    width: 80px;
+    width: 100px;
     height: 30px;
+    padding: 5px;
 
     margin: 10px;
 
@@ -861,6 +886,14 @@
     background: #FF0000;
     border: 2px solid #000000;
     border-radius: 10px;
+}
+
+.friend_remove_icon::before{
+    cursor: pointer;
+    content: "\2716";
+    font-weight: bold;
+    text-align: center;
+    margin-right: 5px;
 }
 
 .friend_remove:hover{
@@ -870,9 +903,14 @@
 
 .friend_block{
     box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 
-    width: 80px;
+    width: 100px;
     height: 30px;
+    padding: 5px;
 
     margin: 10px;
 
@@ -883,7 +921,50 @@
     border-radius: 10px;
 }
 
+.friend_block_icon::before{
+    cursor: pointer;
+    content: "\2298";
+    font-weight: bold;
+    text-align: center;
+    margin-right: 5px;
+    font-size: 20px;
+}
+
 .friend_block:hover{
+    background-color: #3D211A;
+    color: white;
+}
+
+.friend_unblock{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    width: 100px;
+    height: 30px;
+    padding: 5px;
+
+    margin: 10px;
+
+    color: #000000;
+
+    background: #FF0000;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.friend_unblock_icon::before{
+    cursor: pointer;
+    content: "\1F513";
+    font-weight: bold;
+    text-align: center;
+    margin-right: 5px;
+    font-size: 15px;
+}
+
+.friend_unblock:hover{
     background-color: #3D211A;
     color: white;
 }

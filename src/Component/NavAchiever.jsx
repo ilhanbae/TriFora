@@ -191,8 +191,8 @@ class NavAchiever extends React.Component {
                                         show={this.state.openProfile}
                                         onClose={this.toggleProfile}
                                         modalStyle={{
-                                        width: "100%",
-                                        height: "100%",
+                                        width: "90%",
+                                        height: "90%",
                                         }}
                                     >
                                         <ProfilePage 
@@ -209,8 +209,8 @@ class NavAchiever extends React.Component {
                                         show={this.state.openNotification}
                                         onClose={this.toggleNotification}
                                         modalStyle={{
-                                        width: "100%",
-                                        height: "100%",
+                                        width: "90%",
+                                        height: "90%",
                                         }}
                                     >
                                         <Notification 

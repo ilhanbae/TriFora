@@ -425,12 +425,16 @@ body {
     border-radius: 50%;
 }
 
+.post-avater:hover{
+    box-shadow: 0 0 3px 3px #864522;
+}
+
 .post-by{
     box-sizing: border-box;
 
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
     margin: 20px;
     margin-top: 10px;
@@ -444,12 +448,15 @@ body {
 
 .post-username{
     margin: 10px;
-    font-family: 'Alfa Slab One';
+    margin-left: 0px; 
+    font-family: 'Montserrat';
+    font-weight: bold;
     font-size: 16px;
     color: #127475;
 }
 
 .post-username:hover{
+    color: #F3C26E;
     text-decoration: underline;
 }
 
@@ -458,7 +465,7 @@ body {
 
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
     margin: 20px;
     margin-top: 10px;
@@ -472,7 +479,9 @@ body {
 
 .post-date{
     margin: 10px;
-    font-family: 'Alfa Slab One';
+    margin-left: 0px;
+    font-family: 'Montserrat';
+    font-weight: bold;
     font-size: 16px;
     color: #000000;
 }
@@ -644,7 +653,8 @@ body {
         margin: 10px;
         margin-left: 0;
         margin-right: 0;
-        font-family: 'Alfa Slab One';
+        font-family: 'Montserrat';
+        font-weight: bold;
         font-size: 16px;
     
         color: #127475;
@@ -668,7 +678,8 @@ body {
         margin: 10px;
         margin-left: 0;
         margin-right: 0;
-        font-family: 'Alfa Slab One';
+        font-family: 'Montserrat';
+        font-weight: bold;
         font-size: 16px;
     
         color: #000000;
@@ -902,22 +913,22 @@ body {
     margin-left: 30px;
 }
 
-.upvote-button-before{
-    width: 0;
-	height: 0;
-    margin: 10px;
-	border-left: 20px solid transparent;
-	border-right: 20px solid transparent;
-	border-bottom: 30px solid #8E6F52;
+.upvote-button-before::before{
+    cursor: pointer;
+    content: "\2665";
+    font-weight: bold;
+    text-align: center;
+    font-size: 35px;
+    color: #8E6F52;
 }
 
-.upvote-button-after{
-    width: 0;
-	height: 0;
-    margin: 10px;
-	border-left: 20px solid transparent;
-	border-right: 20px solid transparent;
-	border-bottom: 30px solid #3D211A;
+.upvote-button-after::before{
+    cursor: pointer;
+    content: "\2665";
+    font-weight: bold;
+    text-align: center;
+    font-size: 35px;
+    color: #3D211A;
 }
 
 .upvote-number-before{
@@ -966,19 +977,24 @@ body {
     justify-content: flex-start;
     margin: 10px;
     margin-left: 30px;
+    background-color: red;
+    padding: 5px;
+    border: 2px solid #000000;
+    border-radius: 10px;
 }
 
-.post-delete-button{
-    width: 20px;
-    height: 20px;
-    margin: 5px;
-    background: red;
-    border: 2px solid black;
-    border-radius: 50%;
+.post-delete-button::before{
+    cursor: pointer;
+    content: "\1F5D1";
+    font-weight: bold;
+    text-align: center;
+    font-size: 20px;
+    margin-right: 5px;
 }
 
-.post-delete-button:hover{
-    background-color: #F3C26E;
+.post-delete:hover{
+    background-color: #3D211A;
+    color: white;
 }
 
 .post-delete-text{
@@ -1078,21 +1094,11 @@ body {
         align-items: center;
         justify-content: flex-start;
         margin: 10px;
-        margin-left: auto;
-        margin-right: 15px;
-    }
-    
-    .post-delete-button{
-        width: 20px;
-        height: 20px;
-        margin: 5px;
-        background: red;
-        border: 2px solid black;
-        border-radius: 50%;
-    }
-    
-    .post-delete-button:hover{
-        background-color: #F3C26E;
+        margin-left: 30px;
+        background-color: red;
+        padding: 5px;
+        border: 2px solid #000000;
+        border-radius: 10px;
     }
     
     .post-report{
@@ -1250,7 +1256,7 @@ input[type="submit"] {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
 
     width: 80%;
     left: 2%;
@@ -1291,21 +1297,30 @@ input[type="submit"] {
 .comment-user-avater{
     width: 54px;
     height: 54px;
+    margin: 10px;
 
     background: #FEFEE2;
     border: 3px solid #000000;
     border-radius: 50%;
 }
 
+.comment-user-avater:hover{
+    box-shadow: 0 0 3px 3px #864522;
+}
+
 .comment-user-username{
     display: flex;
     align-items: center;
     text-align: center;
-    margin: 10px;
     font-family: 'Alfa Slab One';
     font-size:16px;
 
     color: #000000;
+}
+
+.comment-user-username:hover{
+    color: #F3C26E;
+    text-decoration: underline;
 }
 
 .comment-user-date{
@@ -1345,7 +1360,6 @@ input[type="submit"] {
     color: #000;
     margin: 10px;
     padding: 10px;
-    width: 15%;
     height: 80%;
     left: 0%;
 
@@ -1356,24 +1370,29 @@ input[type="submit"] {
     box-sizing: border-box;
 
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    height: 40px;
     margin: 10px;
-    margin-bottom: 5px;
+    padding: 5px;
+    background-color: red;
+    border: 2px solid #000000;
+    border-radius: 10px;
 }
 
-.comment-delete-button{
-    width: 20px;
-    height: 20px;
-    margin: 5px;
-    background: red;
-    border: 2px solid black;
-    border-radius: 50%;
+.comment-delete-button::before{
+    cursor: pointer;
+    content: "\1F5D1";
+    font-weight: bold;
+    text-align: center;
+    font-size: 20px;
+    margin-right: 5px;
 }
 
-.comment-delete-button:hover{
-    background-color: #F3C26E;
+.comment-delete:hover{
+    background-color: #3D211A;
+    color: white;
 }
 
 .comment-delete-text{
@@ -1385,27 +1404,35 @@ input[type="submit"] {
     box-sizing: border-box;
 
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    width: 80px;
+    height: 40px;
     margin: 10px;
     margin-top: 5px;
-}
-
-.comment-edit-button{
-    width: 20px;
-    height: 20px;
-    margin: 5px;
-    background: black;
-    border: 2px solid black;
-    border-radius: 50%;
-}
-
-.comment-edit-button:hover{
+    padding: 5px;
     background-color: #F3C26E;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.comment-edit-button::before{
+    cursor: pointer;
+    content: "\270E";
+    font-weight: bold;
+    text-align: center;
+    font-size: 20px;
+    margin-right: 5px;
+}
+
+.comment-edit:hover{
+    background-color: #3D211A;
+    color: white;
 }
 
 .comment-edit-text{
+    margin-left: 5px;
     font-family: 'Alfa Slab One';
     font-size: 12px;
 }
@@ -1473,6 +1500,7 @@ input[type="submit"] {
     font-size: 40px;
     text-align: center;
     margin: 10px;
+    color:#000000;
 }
 
 .popup-buttons{
@@ -1608,13 +1636,18 @@ input[type="submit"] {
 
     .comment-edit{
         box-sizing: border-box;
-    
+
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
         justify-content: flex-start;
+        width: 80px;
+        height: 40px;
         margin: 10px;
-        margin-top: 15px;
+        padding: 5px;
+        background-color: #F3C26E;
+        border: 2px solid #000000;
+        border-radius: 10px;
     }
 }
 

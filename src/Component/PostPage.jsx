@@ -395,6 +395,9 @@ export default class PostPage extends React.Component {
                             this.loadPost();
                             console.log("Post was successful");
                             this.props.openToast({type: "success", message: <span>Comment Submit Successful!</span>})
+                            this.setState({
+                                comment_input: '',
+                            })
                         },
                         error => {
                             //alert("ERROR when submit comment");
@@ -570,14 +573,14 @@ const Like_button = (props) => {
     if (props.state.upvote_set === false) {
         return (
             <div className = {PostPageCSS['upvote']}>
-                <input className = {PostPageCSS['upvote-button-before']} type='image' onClick={() => props.click_like()}/>
+                <span className = {PostPageCSS['upvote-button-before']} onClick={() => props.click_like()}></span>
                 <span className = {PostPageCSS['upvote-number-before']}>{props.state.likes}</span>
             </div>
         );
     } else if (props.state.upvote_set === true) {
         return (
             <div className = {PostPageCSS['upvote']}>
-                <input className = {PostPageCSS['upvote-button-after']} type='image' onClick={() => props.click_undo_like()}/>
+                <span className = {PostPageCSS['upvote-button-after']} onClick={() => props.click_undo_like()}></span>
                 <span className = {PostPageCSS['upvote-number-after']}>{props.state.likes}</span>
             </div>
         );
@@ -604,19 +607,20 @@ const Post_Buttons = (props) => {
                 </div> 
                 */}
 
-                <div className = {PostPageCSS['post-delete']}>
-                    <button className = {PostPageCSS['post-delete-button']} onClick={props.ClickDelete}></button>
-                    <span className = {PostPageCSS['post-delete-text']}>Delete</span>
-                    <Modal show={props.state.openModal} onClose={props.toggleModal}>
-                        <div>
-                            <div className={PostPageCSS['delete-popup-title']}>Delete Your Post</div>
-                            <div className={PostPageCSS['popup-buttons']}>
-                                <button className={PostPageCSS['delete-button']} onClick={props.delete_post}>Delete</button>
-                                <button className={PostPageCSS['cancel-button']} onClick={props.toggleModal}>Cancel</button>
-                            </div>
-                        </div>
-                    </Modal>
+                <div className = {PostPageCSS['post-delete']} onClick={props.ClickDelete}>
+                        <span className = {PostPageCSS['post-delete-button']}></span>
+                        <span className = {PostPageCSS['post-delete-text']}>Delete</span>
                 </div>
+
+                <Modal show={props.state.openModal} onClose={props.toggleModal}>
+                    <div>
+                        <div className={PostPageCSS['delete-popup-title']}>Delete Your Post</div>
+                        <div className={PostPageCSS['popup-buttons']}>
+                            <button className={PostPageCSS['delete-button']} onClick={props.delete_post}>Delete</button>
+                            <button className={PostPageCSS['cancel-button']} onClick={props.toggleModal}>Cancel</button>
+                        </div>
+                    </div>
+                </Modal>
             </div>
         );
 

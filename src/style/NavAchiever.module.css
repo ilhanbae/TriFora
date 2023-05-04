@@ -19,8 +19,8 @@
     color: var(--french-bistre);
     text-decoration: none;
     height: 100%;
-    display: flex;
-    flex-direction: column;
+    /* display: flex; */
+    /* flex-direction: column; */
     align-items: center;
 }
 

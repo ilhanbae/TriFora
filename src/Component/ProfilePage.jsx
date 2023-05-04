@@ -855,13 +855,14 @@ export default class ProfilePage extends React.Component {
                         <div className = {ProfilePageCSS.user_info}>
                             <div className = {ProfilePageCSS.username}>
                                 <h1> {this.state.username} </h1>
-                                <h2 className = {ProfilePageCSS.first_name}> First Name: {this.state.firstName} </h2>
-                                <h2 className = {ProfilePageCSS.last_name}> Last Name: {this.state.lastName} </h2>
+                                {/* <h2 className = {ProfilePageCSS.first_name}> First Name: {this.state.firstName} </h2> */}
+                                {/* <h2 className = {ProfilePageCSS.last_name}> Last Name: {this.state.lastName} </h2> */}
                             </div>
                         </div>
 
                         <div className = {ProfilePageCSS.description}>
-                            <span> {this.state.description} </span>
+                            <h2>Bio:</h2>
+                            <span className={ProfilePageCSS.description_text}> {this.state.description} </span>
                         </div>
                     </div>
         
@@ -917,6 +918,7 @@ const Render_Buttons = (props) => {
     if (props.state.same_user_profile === true){
         return (
             <Link className = {ProfilePageCSS.edit_button} onClick={() => props.ClickEditProfile()}>
+                <span className = {ProfilePageCSS.edit_button_icon}></span>
                 Edit
             </Link>
         );
@@ -924,26 +926,41 @@ const Render_Buttons = (props) => {
     // If there is connection between two users, render "Remove Friend" button
     } else if (props.state.user_connection === true){
         return (
-            <button className={ProfilePageCSS.removefriend_button} onClick={() => props.delete_friend_connection(props.state.user_id)}>Remove Friend</button>
+            <button className={ProfilePageCSS.removefriend_button} onClick={() => props.delete_friend_connection(props.state.user_id)}>
+                <span className = {ProfilePageCSS.remove_friend_icon}></span>
+                Remove Friend
+            </button>
         );
 
     // If there is a one way connection between two users, render "Request Sent" button
     } else if (props.state.user_connection === "waiting-response"){
         return(
-            <button className={ProfilePageCSS.RequestSent_button} onClick={() => props.undo_friend_request(props.state.user_id)}>Request Sent</button>
+            <button className={ProfilePageCSS.RequestSent_button} onClick={() => props.undo_friend_request(props.state.user_id)}>
+                <span className = {ProfilePageCSS.request_sent_icon}></span>
+                Request Sent
+            </button>
         );
 
     // If there is no connection between two users, render "Add Friend" button
     } else if (props.state.user_connection === false){
         return (
-            <button className={ProfilePageCSS.addfriend_button} onClick={() => props.send_friend_request(props.state.user_id)}>Add Friend</button>
+            <button className={ProfilePageCSS.addfriend_button} onClick={() => props.send_friend_request(props.state.user_id)}>
+                <span className = {ProfilePageCSS.add_friend_icon}></span>
+                Add Friend
+            </button>
         );
 
     } else if (props.state.user_connection === "need-response"){
         return (
             <div>
-                <button className={ProfilePageCSS.accept_button} onClick={() => props.accept_friend(props.state.user_id)} >Accept</button>
-                <button className={ProfilePageCSS.reject_button} onClick={() => props.reject_friend(props.state.user_id)} >Reject</button>
+                <button className={ProfilePageCSS.accept_button} onClick={() => props.accept_friend(props.state.user_id)} >
+                    <span className = {ProfilePageCSS.accept_friend_icon}></span>
+                    Accept
+                </button>
+                <button className={ProfilePageCSS.reject_button} onClick={() => props.reject_friend(props.state.user_id)} >
+                    <span className = {ProfilePageCSS.reject_friend_icon}></span>
+                    Reject
+                </button>
             </div>
         );
     }
@@ -956,7 +973,10 @@ const Render_Block_Button = (props) => {
         );
     } else if (props.state.user_block_connection === false){
         return (
-            <button className={ProfilePageCSS.Block_button} onClick={() => props.block_user(props.state.user_id)} >Block</button>
+            <button className={ProfilePageCSS.Block_button} onClick={() => props.block_user(props.state.user_id)}>
+                <span className={ProfilePageCSS.Block_button_icon}></span>
+                Block
+            </button>
         );
 
     }
