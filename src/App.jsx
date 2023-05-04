@@ -67,7 +67,7 @@ export default function App() {
               <Route path="/about" element={<AboutUs />} /> {/* shouldn't need login? */}
               <Route path="/register" element={<RegisterForm login={login} />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-              <Route path="/login" element={<LoginOrProfile login={login} />} />
+              <Route path="/login" element={<LoginOrProfile login={login} openToast={openToast}/>} />
               <Route path="/edit-profile" element={<EditProfilePage />} />
               <Route path="/community/:communityId" element={<CommunityPage openToast={openToast} />} />
               <Route path="/my-communities" element={<MyCommunities />} />
@@ -92,7 +92,7 @@ const LoginOrProfile = (props) => {
     console.log("LOGGED OUT");
     return (
       <div>
-        <LoginForm login={props.login} />
+        <LoginForm login={props.login} openToast={props.openToast}/>
       </div>
     );
   } else {
