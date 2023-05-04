@@ -111,18 +111,20 @@ export default function NavAchiever(props) {
 
   /* This method handles logo navigation */
   const logoNavHandler = () => {
-    scrollToTop();
     navigate('/');
+    scrollToTop();
   }  
 
   /* This method handles register navigation */
   const registerNavHandler = () => {
     navigate('/register');
+    scrollToTop();
   }
 
   /* This method handles login navigation */
   const loginNavHandler = () => {
     navigate('/login');
+    scrollToTop();
   }
 
   /* This method handles logout navigation */
@@ -130,6 +132,7 @@ export default function NavAchiever(props) {
     toggleDropDownMenu();
     props.logout();
     navigate('/');
+    scrollToTop();
   }
 
   // Set drop down icon style
