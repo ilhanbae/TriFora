@@ -1,246 +1,257 @@
-import React from "react";
-import NavCSS from "../style/NavAchiever.module.css";
-import { Link } from "react-router-dom";
-import groupIcon from "../assets/group.png";
-import downIcon from "../assets/downIcon36.png";
-import upIcon from "../assets/upIcon36.png";
-// import DropMenu from "./DropMenu";
-import defaultProfileImage from "../assets/defaultProfileImage.png";
-import Modal from "./Modal";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import ProfilePage from "./ProfilePage";
 import Notification from "./Notification";
+import Modal from "./Modal";
+import genericFetch from "../helper/genericFetch";
+import style from "../style/NavAchiever.module.css";
+import defaultProfileImage from "../assets/defaultProfileImage.png";
 
-class NavAchiever extends React.Component {
+export default function NavAchiever(props) {
+  const [showDropDownMenu, setShowDropDownMenu] = useState(false);
+  const [openProfile, setOpenProfile] = useState(false);
+  const [openNotification, setOpenNotification] = useState(false);
+  const [userProfile, setUserProfile] = useState(null);
+  const [isRegisterNavActive, setIsRegisterNavActive] = useState(false);
+  const [isLoginNavActive, setIsLoginNavActive] = useState(false);
+  const location = useLocation(); // For current router location
+  const navigate = useNavigate(); // For navigation
+  const dropDownMenuRef = useRef(null); // Create a ref for dropdown menu
+  
+  /* This hook traces active navs using router location */
+  useEffect(() => {
+    traceActiveNavs(location);
+  }, [location]);
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            showDropMenu: false,
-            profile_icon: "",
-
-            openProfile: false,
-            openNotification: false,
-        };
+  /* This hook loads user profile whenever user token exists */
+  useEffect(() => {
+    if (sessionStorage.getItem("user")) {
+      loadUserProfile();
     }
+  }, [sessionStorage.getItem("user")])
 
-    componentDidMount() {
-        this.render_user_icon();
-    }
-
-    componentDidUpdate(){
-        if (this.state.profile_icon === ""){
-            this.render_user_icon();
-        }
-    }
-
-    // This function will get the user image
-    render_user_icon = () => {
-        if (sessionStorage.getItem("user")){
-            // fetch the user data, and extract out the attributes to load and display
-            fetch(process.env.REACT_APP_API_PATH + "/users/" + sessionStorage.getItem("user"), {
-            method: "get",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-            }
-            })
-            .then(res => res.json())
-            .then(
-                result => {
-                if (result) {
-                    console.log(result);
-                    if (result.attributes){
-                        this.setState({
-                            // get the user profile icon
-                            profile_icon: result.attributes.profile.profileImage || "",
-                        });
-                    // Check if the profileImage is the default value, it is default value set to default image
-                    if (result.attributes.profile.profileImage === ""){
-                        this.setState({
-                            profile_icon: defaultProfileImage,
-                        })
-                    }
-                }
-                }
-                },
-                error => {
-                //alert("error!");
-                }
-            );
-        }
-    }
-
-    menuSwitch = () => {
-        this.setState(menuState => ({ showDropMenu: !menuState.showDropMenu }), () => this.render_user_icon());
+  /* This hook check if mousedown DOM event occurs outside the dropdown menu. */
+  useEffect(() => {
+    const outSideClickHandler = (event) => {
+      if (
+        dropDownMenuRef.current &&
+        !dropDownMenuRef.current.contains(event.target)
+      ) {
+        setShowDropDownMenu(false);
+      }
     };
-
-    // Open Profile Page Pop up
-    ClickProfile(){
-        this.setState({
-            openProfile: true,
-        });
-    }
-
-    // Close Profile Page pop up
-    toggleProfile = () => {
-        this.menuSwitch();
-        this.setState({
-            openProfile: !this.state.openProfile,
-        });
-        // refresh the current page when user close the profile pop up
-        window.location.reload(); 
+    document.addEventListener("mousedown", outSideClickHandler);
+    return () => {
+      document.removeEventListener("mousedown", outSideClickHandler);
     };
+  });
 
-    redirect_community(){
-        this.toggleProfile();
+  /* This method loads user profile by sending API request */
+  const loadUserProfile = async () => {
+    let endpoint = `/users/${sessionStorage.getItem("user")}`;
+    let query = {};
+    const { data, errorMessage } = await genericFetch(endpoint, query);
+    // console.log(data, errorMessage);
+    if (errorMessage) {
+      // console.log(errorMessage)
+      props.openToast({ type: "error", message: "Profile" });
+    } else {
+      if (data.attributes.profile.profileImage === "") {
+        setUserProfile(defaultProfileImage);
+      } else {
+        setUserProfile(data.attributes.profile.profileImage);
+      }
     }
+  };
+  
+  /* This method toggles drop down menu */
+  const toggleDropDownMenu = () => {
+    setShowDropDownMenu(!showDropDownMenu);
+  };
 
-    // Open Notification Page pop up
-    ClickNotification(){
-        this.setState({
-            openNotification: true,
-        });
+  /* This method toggles profile modal */
+  const toggleProfileModal = () => {
+    setOpenProfile(!openProfile);
+  };
+
+  /* This method toggles notification modal */
+  const toggleNotificationModal = () => {
+    setOpenNotification(!openNotification);
+  };
+
+  /* This method scrolls the window to top */
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+  
+  /* This method updates active navs by using router location. */
+  const traceActiveNavs = (location) => {
+    // console.log(location);
+    switch(location.pathname) {
+      case "/":
+        setIsLoginNavActive(false);
+        setIsRegisterNavActive(false);
+        break;
+      case "/register":
+        setIsLoginNavActive(false);
+        setIsRegisterNavActive(true);
+        break;
+      case "/login":
+        setIsRegisterNavActive(false);
+        setIsLoginNavActive(true);
+        break;
+      default:
+        setIsRegisterNavActive(false);
+        setIsLoginNavActive(false);
     }
+  }
 
-    // Close Notification Page pop up
-    toggleNotification = () => {
-        this.menuSwitch();
-        this.setState({
-            openNotification: !this.state.openNotification,
-        });
-    };
+  /* This method handles logo navigation */
+  const logoNavHandler = () => {
+    navigate('/');
+    scrollToTop();
+  }  
 
-    render() {
-        return (
-            <div id="headerNav" className={NavCSS["headerNav"]}>
-                {/* items that appear to the left side of the navbar */}
-                <ul id="leftItems">
-                    <li className={NavCSS["logo"]}>
-                        <Link to="/"> Trifora </Link>
-                        {/* Temporarily non clickable text since destination unknown */}
-                    </li>
+  /* This method handles register navigation */
+  const registerNavHandler = () => {
+    navigate('/register');
+    scrollToTop();
+  }
 
-                    {/* commented out as lacking functionality for now */}
-                    {/* About/browse link will be changing depending on page, see search bar comment in next div */}
-                    {/* this.props.navStyle === 2 ? (about page link will go here):(browse link will go here) */}
-                    { /* browse may end up being a logged in only function? this comment was a part of the above browse link */}
+  /* This method handles login navigation */
+  const loginNavHandler = () => {
+    navigate('/login');
+    scrollToTop();
+  }
 
+  /* This method handles logout navigation */
+  const logoutNavHandler = () => {
+    toggleDropDownMenu();
+    props.logout();
+    navigate('/');
+    scrollToTop();
+  }
+
+  // Set drop down icon style
+  const dropDownIconStyle = showDropDownMenu ? "up-icon" : "down-icon";
+
+  // Set register nav style
+  const registerNavStyle = isRegisterNavActive ? "nav-item__active" : "nav-item"
+
+  // Set login nav style
+  const loginNavStyle = isLoginNavActive ? "nav-item__active" : "nav-item"
+
+  return (
+    <div className={style["headerNav"]}>
+      {/* Logo */}
+      <div className={style["left-items"]}>
+        <span 
+          className={style["logo"]}
+          onClick={logoNavHandler}  
+        >Trifora</span>
+      </div>
+
+      {/* Logged-Out Navigation */}
+      {!sessionStorage.getItem("token") && (
+        <div className={style["right-items"]}>
+          <ul className={style["nav-list"]}>
+            {/* Sign Up */}
+            <li 
+              className={style[registerNavStyle]}
+              onClick={registerNavHandler}  
+            >
+              <span>Sign up</span>
+            </li>
+            {/* Login */}
+            <li 
+              className={style[loginNavStyle]}
+              onClick={loginNavHandler}
+            >
+              <span>Login</span>
+            </li>
+          </ul>
+        </div>
+      )}
+
+      {/* Logged-In Navigation */}
+      {sessionStorage.getItem("token") && (
+        <div
+          className={style["profile-dropdown"]}
+          ref={dropDownMenuRef}
+        >
+          {/* Profile Icon */}
+          <img
+            src={userProfile}
+            className={style["profile-icon"]}
+            alt="profile icon"
+            onClick={toggleDropDownMenu}
+          />
+          <div>
+            {/* Drop Down Icon */}
+            <span
+              className={style[dropDownIconStyle]}
+              onClick={toggleDropDownMenu}
+            ></span>
+            {/* Drown Down Menu */}
+            {showDropDownMenu && (
+              <div style={{ position: "relative" }}>
+                <ul className={style["dropdown-menu"]}>
+                  <li
+                    className={style["dropdown-menu-item"]}
+                    onClick={toggleProfileModal}
+                  >
+                    <span>My Profile</span>
+                  </li>
+                  <li
+                    className={style["dropdown-menu-item"]}
+                    onClick={toggleNotificationModal}
+                  >
+                    <span>Notifications</span>
+                  </li>
+                  <li 
+                    className={style["dropdown-menu-item"]}
+                    onClick={logoutNavHandler}  
+                  >
+                    <span>Log Out</span>
+                  </li>
                 </ul>
-                
-                {/* commented out as lacking functionality for now */}
-                {/* {sessionStorage.getItem("token") && */}
-                {/* The middle item search bar only occurs while logged in and only on certain pages. There will exist a state variable
-                    in the main app that needs to potentially be updated whenever a page loads */}
-                {/* <div>
-                        {this.props.navStyle === 3 &&
-                            <input type="text" placeholder="search function" />}
-                    </div>
-                } */}
+              </div>
+            )}
 
-                {/* Items on the right side of the navbar are handled here, drop down included */}
-                <ul id="rightItems">
-                    {!sessionStorage.getItem("token") &&
-                        /*  Making use of the way the boilerplate code handled login seems to work
-                            if logged out show signup/login */
-                        <>
-                            <li className={NavCSS["nav_text"]}>
-                                <Link to="/register"> Sign up </Link>
-                            </li>
-                            <li className={NavCSS["nav_text"]}>
-                                <Link to="/login"> Login </Link>
-                            </li>
-                        </>}
-                    {sessionStorage.getItem("token") &&
-                        /* if logged in have a dropdown menu with the profile icon*/
-                        // Icon/button needs to be changed, just using as a placeholder for testing
-                        <li className={NavCSS["pm admin"]}>
-                            {/* This icon is a placeholder until maybe profile icon */}
-                            <img
-                                src={this.state.profile_icon}
-                                className={NavCSS["profile-icon"]}
-                                // onClick={this.menuSwitch}
-                                alt="profile icon will go here"
-                                title="profile icon will go here" />
-                            {/* Icon change based on menu state (starts false as menu is hidden) */}
-                            {this.state.showDropMenu ? (
-                                <img
-                                    src={upIcon}
-                                    className={NavCSS["up-icon"]}
-                                    onClick={this.menuSwitch}
-                                    alt="hide menu"
-                                    title="hide menu"
-                                    style={{cursor:"pointer"}} />
-                            ) : (
-                                <img
-                                    src={downIcon}
-                                    className={NavCSS["down-icon"]}
-                                    onClick={this.menuSwitch}
-                                    alt="show menu"
-                                    title="show menu"
-                                    style={{cursor:"pointer"}} />
-                            )}
-                            {/* <DropMenu /> */}
-                            {/* DropMenu could now likely be switch to being it's own component, though a way to logout would
-                                    have to be passed through */}
-                            {/* the following line uses ternary statement to allow for the hiding/showing of the drop down via css */}
-                            <ul className={this.state.showDropMenu ? NavCSS["showDrop"] : NavCSS["hideDrop"] }>
-                                <li>
-                                    <Link onClick={() => this.ClickProfile()}> My Profile </Link>
-                                    <Modal
-                                        show={this.state.openProfile}
-                                        onClose={this.toggleProfile}
-                                        modalStyle={{
-                                        width: "90%",
-                                        height: "90%",
-                                        }}
-                                    >
-                                        <ProfilePage 
-                                            profile_id={sessionStorage.getItem("user")}
-                                            redirect_community={this.redirect_community}
-                                            toggleProfile={this.toggleProfile}
-                                            openToast={this.props.openToast}
-                                        />
-                                    </Modal>
-                                </li>
-                                <li>
-                                    <Link onClick={() => this.ClickNotification()}> Notifications </Link>
-                                    <Modal
-                                        show={this.state.openNotification}
-                                        onClose={this.toggleNotification}
-                                        modalStyle={{
-                                        width: "90%",
-                                        height: "90%",
-                                        }}
-                                    >
-                                        <Notification 
-                                        openToast={this.props.openToast}
-                                        />
-                                    </Modal>
-                                </li>
-                                <li>
-                                    <Link to="/login" onClick={e => {
-                                        {/* this is the only way I could think to do this for logout */}
-                                        this.props.logout(e);
-                                        this.menuSwitch();
-                                    }}>
-                                        Logout
-                                    </Link>
-                                    {/* <div style={{cursor:"pointer"}} onClick={e => { */}
-                                        {/* this is the only way I could think to do this for logout */}
-                                        {/* this.props.logout(e);
-                                        this.menuSwitch();
-                                    }}>
-                                        Logout
-                                    </div> */}
-                                </li>
-                            </ul>
+            {/* Profile Modal */}
+            <Modal
+              show={openProfile}
+              onClose={toggleProfileModal}
+              modalStyle={{
+                width: "90%",
+                height: "90%",
+              }}
+            >
+              <ProfilePage
+                profile_id={sessionStorage.getItem("user")}
+                redirect_community={toggleProfileModal}
+                toggleProfile={toggleProfileModal}
+                openToast={props.openToast}
+              />
+            </Modal>
 
-                        </li>
-                    }
-                </ul>
-            </div>
-        );
-    }
+            {/* Notification Modal */}
+            <Modal
+              show={openNotification}
+              onClose={toggleNotificationModal}
+              modalStyle={{
+                width: "90%",
+                height: "90%",
+              }}
+            >
+              <Notification openToast={props.openToast} />
+            </Modal>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
-export default NavAchiever;

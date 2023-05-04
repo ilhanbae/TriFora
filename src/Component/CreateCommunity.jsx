@@ -34,7 +34,7 @@ export default function CreateCommunity(props) {
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        
+
         if (!imageSelected) {
             // toast for no image since required unable to show toast
             // this should work since text required prevents getting here, so only have to check for image
@@ -78,6 +78,8 @@ export default function CreateCommunity(props) {
     }
 
     const createCommunity = async (communityImageLink) => {
+        let currDate = new Date().toISOString();
+
         let endpoint = '/groups';
         let body = {
             name: communityName,
@@ -85,7 +87,8 @@ export default function CreateCommunity(props) {
                 design: {
                     bannerBackgroundColor: "#5da7b6",
                     bannerProfileImage: communityImageLink
-                }
+                },
+                dateCreated: currDate
             }
         };
         const { data, errorMessage } = await genericPost(endpoint, body);

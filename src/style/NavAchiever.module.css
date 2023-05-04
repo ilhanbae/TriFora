@@ -1,127 +1,128 @@
+/* Header Nav */
 .headerNav {
-    background-color: #F3C26E;
-    color: black;
-    display: flex;
-    justify-content: space-between;
-    /*padding: 1rem;*/
-    padding-inline: 3rem;
-    position: sticky;
-    top: 0;
-    right: 0;
-    left: 0;
-    align-items: center;
-    min-height: 8vh;
-    z-index: 5;
+  background-color: var(--yellow-apricot);
+  color: var(--bistre);
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 3rem;
+  position: sticky;
+  top: 0;
+  right: 0;
+  left: 0;
+  align-items: center;
+  min-height: 8vh;
+  z-index: 5;
+  box-shadow: 0 4px 5px 0 rgb(0 0 0 /50%);
 }
 
-/* using a instead of Link seems to be correct */
-.headerNav a {
-    color: var(--french-bistre);
-    text-decoration: none;
-    height: 100%;
-    /* display: flex; */
-    /* flex-direction: column; */
-    align-items: center;
-}
-
-.headerNav a:hover {
-    /* color: white; */
-    color: var(--bistre);
-}
-
-.headerNav ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    display: flex;
-    gap: 2rem;
-}
-
+/* Logo */
 .logo {
-    font-family: 'Alfa Slab One', cursive;
-    font-size: 3.5rem;
-    color: var(--french-bistre)
+  font-family: "Alfa Slab One", cursive;
+  font-size: 3rem;
+  color: var(--french-bistre);
 }
-.logo:focus,
 .logo:hover {
-    cursor: pointer;
-    color: var(--bistre)
+  cursor: pointer;
+  color: var(--bistre);
 }
 
-/* logo under 500px */
-@media (max-width: 500px){
-    .logo {
-        font-size: 2rem;
-        color: #3D211A;
-    }
+/* Nav List */
+.nav-list {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  font-size: 0.938rem;
+}
+.nav-item {
+  color: var(--french-bistre);
+  text-decoration: none;
+  padding: 10% 0;
+  border: 2px solid transparent;
+}
+.nav-item:focus,
+.nav-item:hover {
+  color: var(--bistre);
+  cursor: pointer;
+}
+.nav-item__active {
+  color: var(--bistre);
+  text-decoration: none;
+  padding: 10% 0;
+  border: 2px solid transparent;
+  border-bottom: 2px solid var(--french-bistre);
+}
+.nav-item__active:focus,
+.nav-item__active:hover {
+  cursor: pointer;
+  color: var(--bistre);
 }
 
-/* logo under 350px */
-@media (max-width: 350px){
-    .headerNav {
-        background-color: #F3C26E;
-        color: black;
-        display: flex;
-        justify-content: space-between;
-        /*padding: 1rem;*/
-        padding-inline: 1rem;
-        position: sticky;
-        top: 0;
-        right: 0;
-        left: 0;
-        align-items: center;
-    }
-
-    .headerNav ul {
-        padding: 0;
-        margin: 0;
-        list-style: none;
-        display: flex;
-        gap: 1rem;
-    }
+/* Profile Icon */
+.profile-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 3rem;
 }
 
-.nav_text {
-    color: #3D211A;
-    padding-top: 11%;
-    padding-bottom: 11%;
+/* Profile Dropdown */
+.profile-dropdown {
+  display: flex;
+  align-items: center;
+  /* background-color: red; */
+  text-align: center;
+}
+.profile-dropdown:hover {
+  cursor: pointer;
 }
 
-.nav_text:hover {
-    border-bottom: solid 3px #8E6F52;
+/* Dropdown Icon */
+.up-icon::before {
+  cursor: pointer;
+  content: "\23F6";
+  font-weight: bold;
+  font-size: 30px;
+  color: var(--bistre)
+}
+.down-icon::before {
+  cursor: pointer;
+  content: "\23F7";
+  font-weight: bold;
+  font-size: 30px;
+  color: var(--bistre)
 }
 
-.profile-icon{
-  width:40px;
-  height:40px;
+/* Dropdown Menu */
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--light-yellow);
+  outline: 2px solid var(--bistre);
+  border-radius: 10px;
+  list-style: none;
+  user-select: none;
+  font-size: 0.938rem;
+}
+.dropdown-menu-item {
+  padding: 5px;
+  border-radius: 5px;
+}
+.dropdown-menu-item:hover {
+  cursor: pointer;
+  background-color: var(--yellow-apricot);
 }
 
-.profile-holder {
-    padding: 0;
-    /* border-width: 0; */
+/* Responsive */
+@media (max-width: 500px) {
+  .headerNav {
+    padding-inline: 1rem;
+  }
 }
 
-ul.hideDrop {
-    display: none;
-}
-
-ul.showDrop {
-    position: absolute;
-    display: block;
-    background: #FEFEE2;
-    right: 0;
-    border: 1px solid #000000;
-    border-radius: 11px;
-}
-
-ul.showDrop li {
-    padding: 5px;
-    margin: 0;
-    color: black;
-    border-radius: 10px;
-}
-
-ul.showDrop li:hover {
-    background: #3D211A;
-    color: white;
+/* Prevent logo hover on touch screens */
+@media (hover: none) and (pointer: coarse) {
+  .logo:hover {
+    color: var(--french-bistre);
+  }
 }
