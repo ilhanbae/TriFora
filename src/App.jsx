@@ -76,8 +76,8 @@ export default function App() {
               <Route path="/notification" element={<Notification openToast={openToast}/>} />
               <Route path="/" element={<LoginOrProfile login={login} />} />
             </Routes>
-          </div>
           <Footer />
+          </div>
         </header>
         {/* Toast List */}
         <ToastList toastList={toastList} closeToast={closeToast}></ToastList>
