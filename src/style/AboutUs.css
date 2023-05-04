@@ -6,6 +6,11 @@
     font-size: 1.125rem;
 }
 
+.about-back-button {
+    align-self: start;
+    padding-inline-start: 20%;
+}
+
 .about-description-box {
     background-color: var(--yellow-apricot);
     padding-inline: 2rem;
