@@ -70,7 +70,7 @@
 /* Icons */
 .delete-icon::before {
   cursor: pointer;
-  content: "\2716";
+  content: "\1F5D1";
   font-weight: bold;
   text-align: center;
 }
