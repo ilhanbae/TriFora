@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import style from "../style/EditableColor.module.css";
 
 export default function EditableColor(props) {
@@ -7,8 +7,14 @@ export default function EditableColor(props) {
   const originalColor = originalColorDisplay.props.style.backgroundColor;
   const [newColor, setNewColor] = useState(originalColor);
   const [isEditColor, setIsEditColor] = useState(false);
-  
   const colorPickerRef = useRef(null); // Ref for color input
+
+  /* This hook toggles color input click */ 
+  useEffect(() => {
+    if (colorPickerRef.current) {
+      toggleImagePicker();
+    }
+  }, [isEditColor]);
 
   /* This method updates new color */
   const colorInputChangeHandler = (event) => {
@@ -65,8 +71,7 @@ export default function EditableColor(props) {
             type="color"
             value={newColor}
             onChange={colorInputChangeHandler}
-            style={{ visibility: "hidden", width: "0", height: "0", margin: "-3px" }}
-            // style={{ display: "none" }}
+            style={{ visibility: "hidden", position: "absolute", top: "0", width: "100%", height: "100%"}}
             ref={colorPickerRef}
           />
           {/* New Color Display */}

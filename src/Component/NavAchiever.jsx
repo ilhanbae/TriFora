@@ -25,15 +25,15 @@ export default function NavAchiever(props) {
 
   /* This hook loads user profile whenever user token exists */
   useEffect(() => {
-    if (props.isLoggedIn && sessionStorage.getItem("user")) {
+    if (sessionStorage.getItem("user")) {
       loadUserProfile();
     }
   });
 
-  /* This hook detects unexpected user & token session storage flushes when logged in. */
+  /* This hook detects unexpected user & token session storage flushes. */
   useEffect(() => {
     const sessionStorageFlushHandler = async (event) => {
-      if (props.isLoggedIn && (!sessionStorage.getItem("user") || !sessionStorage.getItem("token"))) {
+      if (!sessionStorage.getItem("user") || !sessionStorage.getItem("token")) {
         // console.log("-------FLUSH-------");
         await props.logout(); // Remove the user's id and password token from session storage & set App's isLoggedIn State to false
         props.openToast({type: "error", message: "Session expired unexpectedly. Please login again."});

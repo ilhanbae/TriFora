@@ -141,7 +141,7 @@ const CommunityBanner = (props) => {
     // Check if user is already a community member
     if (props.userCommunityMemberDetails) {
       if(isUserAdmin) {
-        props.openToast({type: "info", message: <span>You cannot leave the community as an admin. </span>});
+        props.openToast({type: "info", message: <span>You can't leave the community as an admin. </span>});
       } else {
         openCommunityLeaveModal();
       }
@@ -311,14 +311,15 @@ const CommunityBanner = (props) => {
         modalStyle={{
           width: "fit-content",
           blockSize: "fit-content",
-          // width: "50%",
-          // height: "60%",
+          minWidth: "30%"
         }}
       >
         <CommunityPageSetting
+          communityDetails={props.communityDetails}
           communityId={props.communityDetails.id}
           refreshCommunityDetails={props.refreshCommunityDetails}
           closeCommunityPageSettingModal={closeCommunityPageSettingModal}
+          openToast={props.openToast}
         />
       </Modal>
 

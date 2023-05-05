@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import style from "../style/EditableText.module.css";
 
 /* This component renderes an editable text field */
@@ -9,6 +9,14 @@ export default function EditableText(props) {
   const [newText, setNewText] = useState(originalText);
   const [isEditText, setIsEditText] = useState(false);
   const isTextTypeTextArea = props.children.type === "textarea";
+  const textAreaRef = useRef(null); // Ref for textarea input
+
+  /* This hook toggles text area input focus */ 
+  useEffect(() => {
+    if (textAreaRef.current) {
+      toggleTextArea();
+    }
+  }, [isEditText]);
 
   /* This method updates new text input. */
   const newTextInputHandler = (event) => {
@@ -18,6 +26,11 @@ export default function EditableText(props) {
   /* This method updates edit text state. */
   const editButtonHandler = () => {
     setIsEditText(true);
+  }
+
+  /* This method toggles text area input */
+  const toggleTextArea = () => {
+    textAreaRef.current.focus();
   }
 
   /* This method updates edit text state. */
@@ -56,6 +69,7 @@ export default function EditableText(props) {
               className={style["editable-textarea-text"]}
               value={newText}
               onChange={newTextInputHandler}
+              ref={textAreaRef}
             ></textarea>
           )}
           {/* New Text Display (Input Type) */}
@@ -64,6 +78,7 @@ export default function EditableText(props) {
               className={style["editable-input-text"]}
               value={newText}
               onChange={newTextInputHandler}
+              ref={textAreaRef}
             ></input>
           )}
           {/* Save Button */}
