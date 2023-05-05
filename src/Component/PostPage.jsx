@@ -282,7 +282,7 @@ export default class PostPage extends React.Component {
                         //alert("Post Reaction was successful");
                         // once Post reaction is complete, reload the all reaction
                         this.loadPost_reaction();
-                        this.props.openToast({type: "success", message: <span>Like Successful!</span>})
+                        //this.props.openToast({type: "success", message: <span>Like Successful!</span>})
                     },
                     error => {
                         //alert("ERROR when submit Reaction");
@@ -330,7 +330,7 @@ export default class PostPage extends React.Component {
                             upvote_set: false,
                         });
                         this.loadPost_reaction();
-                        this.props.openToast({type: "success", message: <span>Undo Like Successful!</span>})
+                        //this.props.openToast({type: "success", message: <span>Undo Like Successful!</span>})
                     },
                     error => {
                         //alert("ERROR when deleting Like");
@@ -375,6 +375,10 @@ export default class PostPage extends React.Component {
                 //alert("Comment Can be empty!")
                 console.log("Comment Can't be empty!");
                 this.props.openToast({type: "error", message: <span>Comment can't be empty!</span>})
+            } else if (this.state.comment_input.length > 255){
+                event.target.reset();
+                console.log("Comment Length need to be in 255 characters!");
+                this.props.openToast({type: "error", message: <span>Comment Length need to be in 255 characters!</span>})
             } else {
                 //make the api call to post
                 fetch(process.env.REACT_APP_API_PATH+"/posts", {
@@ -578,22 +582,6 @@ const Post_Buttons = (props) => {
     if (props.state.show_delete === true){
         return(
             <div className = {PostPageCSS['post-buttons']}>
-
-                {/*
-                <div className = {PostPageCSS['post-pin']}>
-                    <button className = {PostPageCSS['post-pin-button']}></button>
-                    <h5 className = {PostPageCSS['post-pin-text']}>Pin</h5>
-                </div> 
-                <div className = {PostPageCSS['post-hide']}>
-                    <button className = {PostPageCSS['post-hide-button']}></button>
-                    <h5 className = {PostPageCSS['post-hide-text']}>Hide</h5>
-                </div> 
-                <div className = {PostPageCSS['post-report']}>
-                    <button className = {PostPageCSS['post-report-button']}></button>
-                    <h5 className = {PostPageCSS['post-report-text']}>Report</h5>
-                </div> 
-                */}
-
                 <div className = {PostPageCSS['post-delete']} onClick={props.ClickDelete}>
                         <span className = {PostPageCSS['post-delete-button']}></span>
                         <span className = {PostPageCSS['post-delete-text']}>Delete</span>
@@ -619,22 +607,11 @@ const Post_Buttons = (props) => {
 }
 
 const Comment_input = (props) => {
-
-    const [comment, setComment] = useState("");
-
-    const commentInputHandler = (e) => {
-        setComment(e.target.value);
-    };
-    // const commentLength = this.state.comment_input.length;
-    // console.log(commentLength)
     return(
         <form className = {PostPageCSS['send-comment']} onSubmit={props.submit}>
             <label className= {PostPageCSS['comment-label']}>
-                <input className= {PostPageCSS['comment-inputbox']}
-                       type='text' maxLength='255' id='comment' name='comment' placeholder='Write Comment'
-                       onInput={commentInputHandler}
-                       onChange={props.comment_input}></input>
-                <span className={style["active-text"] + " " + style["bold"]}>{comment.length}/255</span>
+                <input className= {PostPageCSS['comment-inputbox']} type='text' id='comment' name='comment' placeholder='Write Comment' onChange={props.commentHandler}></input>
+                <span className={style["active-text"] + " " + style["bold"]}>{props.comment_input.length}/255</span>
             </label>
 
             <label className= {PostPageCSS['send-button-label']}>

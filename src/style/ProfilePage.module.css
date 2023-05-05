@@ -265,7 +265,7 @@
 
 .request_sent_icon::before{
     cursor: pointer;
-    content: "\21A5";
+    content: "\21D7";
     font-weight: bold;
     text-align: center;
     font-size: 20px;
