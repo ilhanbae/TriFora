@@ -9,6 +9,10 @@
 }
 .bold {
   font-weight: bold;
+  font-family: 'Alfa Slab One';
+  font-weight: normal;
+  font-size: 16px;
+  color:#000000;
 }
 
 /* Container */
@@ -18,13 +22,15 @@
   background-color: var(--light-yellow);
   display: flex;
   flex-direction: column;
+  border: 6px solid var(--bistre);
+  border-radius: 10px;
 }
 
 /* Profile Header */
 .profile-header {
   width: 100%;
   background: none;
-  border: 2px solid var(--bistre);
+  border-bottom: 3px solid var(--bistre);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,6 +57,10 @@
   border-radius: 10px;
   padding: 10px;
   cursor: pointer;
+  font-family: 'Alfa Slab One';
+  font-weight: normal;
+  font-size: 14px;
+  color:#000000;
 }
 .button:hover {
   background-color: var(--bistre);
@@ -70,11 +80,16 @@
   border: 2px solid var(--bistre);
   border-radius: 10px;
   cursor: pointer;
+  font-family: 'Alfa Slab One';
+  font-weight: normal;
+  font-size: 14px;
+  color:#000000;
 }
 .delete_account_button:hover{
   background-color: var(--bistre);
   color:white;
 }
+
 
 /* User Profile Form */
 .user-profile-form {
@@ -83,7 +98,7 @@
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
-  margin: 10px;
+  border-top: 3px solid var(--bistre);
 }
 .text-input {
   border: 2px solid var(--bistre);
