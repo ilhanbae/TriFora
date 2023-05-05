@@ -233,28 +233,6 @@ body {
     border-radius: 10px;
 }
 
-.post-image-2{
-    width: 200px;
-    height: 180px;
-    margin: 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-
-    border: 2px solid #000000;
-    border-radius: 10px;
-}
-
-.post-image-3{
-    width: 200px;
-    height: 180px;
-    margin: 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-
-    border: 2px solid #000000;
-    border-radius: 10px;
-}
-
 @media (max-width: 600px){
     .post-header{
         display: flex;
@@ -442,28 +420,6 @@ body {
     }
 
     .post-image-1{
-        width: 100px;
-        height: 90px;
-        margin: 20px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-
-        border: 2px solid #000000;
-        border-radius: 10px;
-    }
-    
-    .post-image-2{
-        width: 100px;
-        height: 90px;
-        margin: 20px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-
-        border: 2px solid #000000;
-        border-radius: 10px;
-    }
-    
-    .post-image-3{
         width: 100px;
         height: 90px;
         margin: 20px;

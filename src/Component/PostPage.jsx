@@ -523,7 +523,18 @@ export default class PostPage extends React.Component {
                                 {this.state.content}
                             </span>
                         </div>
-                        <Post_Image post_image_list={this.state.post_images} state={this.state}/>
+
+                        {this.state.post_images.length === 0 
+                        ? 
+                        <></> 
+                        : 
+                        <div className = {PostPageCSS['post-images']}>
+                            {this.state.post_images.map(image => (
+                                <Post_Images key={image} image={image} state={this.state}/>
+                            ))}
+                        </div>
+                        }
+
                     </div>
                     <div className = {PostPageCSS['post-bar']}>
                         <Like_button state={this.state} click_like={this.click_like} click_undo_like={this.click_undo_like}/>
@@ -538,37 +549,10 @@ export default class PostPage extends React.Component {
     }
 }
 
-const Post_Image = (props) => {
-    if (props.post_image_list.length === 3){
-        return (
-            <div className = {PostPageCSS['post-images']}>
-                <img className = {PostPageCSS['post-image-1']} src={props.state.post_images[0]} alt="Post-Image-1"/>
-                <img className = {PostPageCSS['post-image-2']} src={props.state.post_images[1]} alt="Post-Image-2"/>
-                <img className = {PostPageCSS['post-image-3']} src={props.state.post_images[2]} alt="Post-Image-3"/>
-            </div>
-        );
-
-    } else if (props.post_image_list.length === 2){
-        return (
-            <div className = {PostPageCSS['post-images']}>
-                <img className = {PostPageCSS['post-image-1']} src={props.state.post_images[0]} alt="Post-Image-1"/>
-                <img className = {PostPageCSS['post-image-2']} src={props.state.post_images[1]} alt="Post-Image-2"/>
-            </div>
-        );
-
-    } else if (props.post_image_list.length === 1){
-        return (
-            <div className = {PostPageCSS['post-images']}>
-                <img className = {PostPageCSS['post-image-1']} src={props.state.post_images[0]} alt="Post-Image-1"/>
-            </div>
-        );
-    } else{
-        return (
-            <div>
-            </div>
-        );
-    }
-
+const Post_Images = (props) => {
+    return (
+        <img className = {PostPageCSS['post-image-1']} src={props.image} alt="Post-Image"/>
+    )
 }
 
 const Like_button = (props) => {
