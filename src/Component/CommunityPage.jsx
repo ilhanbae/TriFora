@@ -165,8 +165,7 @@ const CommunityBanner = (props) => {
     const { data, errorMessage } = await genericPost(endpoint, body);
     // console.log(data, errorMessage)
     if (errorMessage) {
-      props.openToast({type: "error", message: <span>Uh oh, sorry you can't join our community at the moment. Please contact <Link to="neil.html"> our developers</Link></span>})
-      alert(errorMessage);
+      props.openToast({type: "error", message: <span>Uh oh, sorry you can't join our community at the moment. Please contact <Link to="about" style={{color: "var(--light-yellow", textDecoration: "underline"}}> our developers.</Link></span>});
     } else {
       props.openToast({type: "success", message: "Community joined successfully!"});
       props.refreshCommunityAndUserMemberDetails();
@@ -179,7 +178,7 @@ const CommunityBanner = (props) => {
     const { data, errorMessage } = await genericDelete(endpoint);
     // console.log(data, errorMessage)
     if (errorMessage) {
-      props.openToast({type: "error", message: <span>Uh oh, sorry you can't leave our community at the moment. Please contact <Link to="neil.html"> our developers</Link></span>})
+      props.openToast({type: "error", message: <span>Uh oh, sorry you can't leave our community at the moment. Please contact <Link to="about" style={{color: "var(--light-yellow", textDecoration: "underline"}}> our developers.</Link></span>});
     } else {
       props.openToast({type: "success", message: "Community left successfully!"});
       props.refreshCommunityAndUserMemberDetails();
@@ -206,6 +205,42 @@ const CommunityBanner = (props) => {
   const closeCommunityLeaveModal = () => {
     // props.refreshCommunityDetails();
     setIsCommunityLeaveModalOpen(false);
+  }
+
+  // This method formats date time into [Month] [DD], [YYYY] format
+  const formatCommunityCreatedDateTime = (dateTime) => {
+    const dateTimeObject = new Date(dateTime);
+    let dateTimeCalendarFormat = dateTimeObject.toLocaleString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      daySuffix: true
+    });
+    
+    // This method determines the day suffix
+    const getDaySuffix = (day) => {
+      switch (day) {
+        case 1:
+        case 21:
+        case 31:
+          return 'st';
+        case 2:
+        case 22:
+          return 'nd';
+        case 3:
+        case 23:
+          return 'rd';
+        default:
+          return 'th';
+      }
+    };
+
+    // Insert day suffix
+    const day = dateTimeObject.getDate();
+    const daySuffix = getDaySuffix(day);
+    const commaIndex = dateTimeCalendarFormat.indexOf(",")
+    const suffixedDateTimeCalendarFormat = dateTimeCalendarFormat.substring(0, commaIndex) + daySuffix + dateTimeCalendarFormat.substring(commaIndex)
+    return suffixedDateTimeCalendarFormat
   }
 
   return (
@@ -238,10 +273,10 @@ const CommunityBanner = (props) => {
           {/* Community Info */}
           <div className={style["community-info"]}>
             {/* Community Name */}
-            <h2 className={style["community-name"]}>{props.communityDetails.name}</h2>
+            <span className={style["community-name"]}>{props.communityDetails.name}</span>
             {/* Community Created Date */}
             <span className={style["inactive-text"]}>
-              Since February 19th, 2023
+              Since {formatCommunityCreatedDateTime(props.communityDetails.attributes.dateCreated)}            
             </span>
           </div>
         </div>
@@ -777,7 +812,7 @@ const CommunityPost = (props) => {
     );
     // console.log(data, errorMessage)
     if (errorMessage) {
-      alert(errorMessage);
+      props.openToast({type: "error", message: <span>Uh oh, sorry you can't delete the post at the moment. Please contact <Link to="about" style={{color: "var(--light-yellow", textDecoration: "underline"}}> our developers.</Link></span>});
     }
     props.openToast({ type: "success", message: "Post deleted successfully!" });
     props.refreshPosts();
@@ -795,15 +830,7 @@ const CommunityPost = (props) => {
     };
     const { data, errorMessage } = await genericPost(endpoint, body);
     if (errorMessage) {
-      props.openToast({
-        type: "error",
-        message: (
-          <span>
-            Uh oh, sorry you can't pin this post at the moment. Please contact
-            <Link to="neil.html"> our developers</Link>
-          </span>
-        ),
-      });
+      props.openToast({type: "error", message: <span>Uh oh, sorry you can't pin this post at the moment. Please contact <Link to="about" style={{color: "var(--light-yellow", textDecoration: "underline"}}> our developers.</Link></span>});
     } else {
       props.openToast({
         type: "success",
@@ -824,15 +851,7 @@ const CommunityPost = (props) => {
     };
     const { data, errorMessage } = await genericFetch(endpoint, query);
     if (errorMessage) {
-      props.openToast({
-        type: "error",
-        message: (
-          <span>
-            Uh oh, sorry you can't unpin this post at the moment. Please contact{" "}
-            <Link to="neil.html"> our developers</Link>
-          </span>
-        ),
-      });
+      props.openToast({type: "error", message: <span>Uh oh, sorry you can't unpin this post at the moment. Please contact <Link to="about" style={{color: "var(--light-yellow", textDecoration: "underline"}}> our developers.</Link></span>});
     } else {
       // Delete the pin post reaction
       let pinPostReactionId = data[0][0].id;
@@ -840,15 +859,7 @@ const CommunityPost = (props) => {
       const { data: deleteData, errorMessage: deleteErrorMessage } =
         await genericDelete(endpoint);
       if (deleteErrorMessage) {
-        props.openToast({
-          type: "error",
-          message: (
-            <span>
-              Uh oh, sorry you can't unpin this post at the moment. Please
-              contact <Link to="neil.html"> our developers</Link>
-            </span>
-          ),
-        });
+        props.openToast({type: "error", message: <span>Uh oh, sorry you can't unpin this post at the moment. Please contact <Link to="about" style={{color: "var(--light-yellow", textDecoration: "underline"}}> our developers.</Link></span>});
       } else {
         props.openToast({
           type: "success",
@@ -872,15 +883,7 @@ const CommunityPost = (props) => {
     const { data, errorMessage } = await genericPost(endpoint, body);
     // console.log(data, errorMessage);
     if (errorMessage) {
-      props.openToast({
-        type: "error",
-        message: (
-          <span>
-            Uh oh, sorry you can't report this post at the moment. Please
-            contact <Link to="neil.html"> our developers</Link>
-          </span>
-        ),
-      });
+      props.openToast({type: "error", message: <span>Uh oh, sorry you can't report this post at the moment. Please contact <Link to="about" style={{color: "var(--light-yellow", textDecoration: "underline"}}> our developers.</Link></span>});
     } else {
       props.openToast({
         type: "success",
@@ -1010,9 +1013,9 @@ const CommunityPost = (props) => {
           <div className={style["post-summary"]}>
             <div className={style["post-id-title"]}>
               <span className={style["inactive-text"]}>{props.post.id}</span>
-              <h5 className={style["active-text"]}>
+              <span className={`${style["active-text"]} ${style["post-title"]}`}>
                 {props.post.attributes.title}
-              </h5>
+              </span>
             </div>
 
             <div className={style["post-author-date"]}>
@@ -1181,6 +1184,7 @@ const PostControlTool = (props) => {
       <div className={style["left-control-box"]}>
         {/* Sort Posts Button */}
         <button
+          style={{visibility: "hidden"}}
           className={`${style["button"]} ${style["button__bordered"]} ${style["button__filled"]}`}
           onClick={sortButtonToggleHandler}
           disabled
@@ -1191,14 +1195,13 @@ const PostControlTool = (props) => {
       </div>
       {/* Right Control */}
       {props.userCommunityMemberDetails &&
-        <div className={style["right-control-box"]}>
+        <div className={style["right-control-box"]} onClick={createButtonHandler} >
           {/* Create Post Button */}
           <div className={`${style["right-control-button-label"]} ${style["inactive-text"]}`}>
             Tell us your story!
           </div>
           <button 
             className={`${style["button"]} ${style["button__outlined"]} ${style["button__filled"]}`}
-            onClick={createButtonHandler} 
           >  
             Create Post
           </button>
@@ -1548,7 +1551,7 @@ const CommunityMember = (props) => {
     );
     // console.log(data, errorMessage)
     if (errorMessage) {
-      alert(errorMessage);
+      props.openToast({type: "error", message: <span>Uh oh, sorry you can't remove a member at the moment. Please contact <Link to="about" style={{color: "var(--light-yellow", textDecoration: "underline"}}> our developers.</Link></span>});
     }
     props.openToast({ type: "success", message: "Member removed successfully!" });
     props.refreshMembers();
@@ -1646,6 +1649,7 @@ const CommunityMember = (props) => {
           member={props.member}
           userCommunityMemberDetails={props.userCommunityMemberDetails}
           refreshMembers={props.refreshMembers}
+          openToast={props.openToast}
         />
       </div>
 
@@ -1681,6 +1685,7 @@ const MemberControlTool = () => {
     <div className={style["content-control-tool"]}>
       <div className={style["left-control-box"]}>
         <button
+          style={{display: "none"}}
           className={`${style["button"]} ${style["button__bordered"]} ${style["button__filled"]}`}
           onClick={sortButtonToggleHandler}
           disabled
@@ -1689,7 +1694,10 @@ const MemberControlTool = () => {
         </button>
         <MemberSortDropdown isActive={isPostSortActive} />
       </div>
-      <div className={style["right-control-box"]}>
+      <div 
+        style={{display: "none"}}
+        className={style["right-control-box"]} 
+      >
         <div
           className={`${style["right-control-button-label"]} ${style["inactive-text"]}`}
         >
@@ -1795,6 +1803,7 @@ const MemberActionSidemenu = (props) => {
                 isActive={isAssignRole}
                 member={props.member}
                 refreshMembers={props.refreshMembers}
+                openToast={props.openToast}
               />
             </div>
           }
@@ -1830,9 +1839,9 @@ const AssignRoleSidemenu = (props) => {
     const { data, errorMessage } = await genericPatch(endpoint, body);
     // console.log(data, errorMessage)
     if (errorMessage) {
-      alert(errorMessage);
+      props.openToast({type: "error", message: <span>Uh oh, sorry you can't update member role at the moment. Please contact <Link to="about" style={{color: "var(--light-yellow", textDecoration: "underline"}}> our developers.</Link></span>});
     } else {
-      alert(`Successfully updated ${props.member.user.attributes.profile.username}'s role to ${newMemberRole}`)
+      props.openToast({type: "success", message: `Successfully updated ${props.member.user.attributes.profile.username}'s role to ${newMemberRole}`})
       props.refreshMembers();
     }
   };
@@ -1878,6 +1887,13 @@ It contains previous button, next button, and current page indicatior. */
 const Pagination = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
 
+  /* This method scrolls the window to top */
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0
+    });
+  }
+
   // Calculate last Page
   const lastPage = Math.ceil(props.contentsCount / props.contentTakeCount);
 
@@ -1885,6 +1901,7 @@ const Pagination = (props) => {
     // console.log(currentPage)
     setCurrentPage(currentPage > 1 ? currentPage - 1 : currentPage);
     props.updateContentSkipOffset(props.contentTakeCount * -1);
+    scrollToTop();
   };
 
   const handleNextPage = () => {
@@ -1893,6 +1910,7 @@ const Pagination = (props) => {
       currentPage < props.contentsCount ? currentPage + 1 : currentPage
     );
     props.updateContentSkipOffset(props.contentTakeCount);
+    scrollToTop();
   };
 
   return (
