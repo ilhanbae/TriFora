@@ -1,0 +1,31 @@
+.community-form-wrapper {
+    height: 100%;
+    width: 100%;
+}
+
+.community-name-input {
+    max-width: 90%; /* this is needed to not overlap scroll bar on certain mobiles */
+    padding: .5rem;
+    border-radius: 10px;
+}
+
+.create-community-inputs {
+    text-align: center;
+}
+
+.create-community-button {
+    max-width: 90%; /* same as above */
+    white-space: normal; /* Vertically expand if needed on mobile */
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    background: none;
+    border: 2px solid var(--bistre);
+    border-radius: 10px;
+    background-color: var(--yellow-apricot);
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.create-community-button:hover:not([disabled]) {
+    box-shadow: 0 4px 14px 0 rgb(0 0 0 /50%);
+}

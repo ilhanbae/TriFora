@@ -3,6 +3,7 @@ import group from "../assets/group.png";
 import uploadFile from "../helper/uploadFile";
 import genericPost from "../helper/genericPost";
 import genericPatch from "../helper/genericPatch";
+import "../style/CreateCommunity.css";
 
 export default function CreateCommunity(props) {
     const [communityName, setCommunityName] = useState();
@@ -128,62 +129,62 @@ export default function CreateCommunity(props) {
     }
 
     return (
-        <div>
-            <div>
-                <form onSubmit={submitHandler}>
-                    <div>
-                        <label>
-                            <h1>Name of your community:</h1>
-                            <input
-                                type="text"
-                                onChange={communityNameInput}
-                                autoFocus
-                                required
-                                // below is field check error message since required field
-                                onInvalid={e => e.target.setCustomValidity("Community requires a name")}
-                                onInput={e => e.target.setCustomValidity("")} // not sure if this is needed
-                            />
-                        </label>
-                    </div>
-                    <br />
-                    <div>
-                        <label>
-                            <h1>Community image:</h1>
-                            <input
-                                type="file"
-                                accept="image/png, image/jpg, image/jpeg"
-                                onChange={communityImageHandler}
-                                hidden
-                            //required // this is working, but am unsure how to show an error for it like above
-                            // will handle in form handler
+        <div className="community-form-wrapper">
+            <form onSubmit={submitHandler}>
+                <div className="create-community-inputs">
+                    <label>
+                        <h1>Community name:</h1>
+                        <input className="community-name-input"
+                            type="text"
+                            onChange={communityNameInput}
+                            autoFocus
+                            required
+                            // below is field check error message since required field
+                            onInvalid={e => e.target.setCustomValidity("Community requires a name")}
+                            onInput={e => e.target.setCustomValidity("")} // not sure if this is needed
+                        />
+                    </label>
+                </div>
+                <br />
+                <div className="create-community-inputs">
+                    <label>
+                        <h1>Community image:</h1>
+                        <input
+                            type="file"
+                            accept="image/png, image/jpg, image/jpeg"
+                            onChange={communityImageHandler}
+                            hidden
+                        //required // this is working, but am unsure how to show an error for it like above
+                        // will handle in form handler
 
-                            // onInvalid={e => e.target.setCustomValidity("Community requires an image")}
-                            // onInput={e => e.target.setCustomValidity("")} // not sure if this is needed
-                            // above doesn't work for image select
+                        // onInvalid={e => e.target.setCustomValidity("Community requires an image")}
+                        // onInput={e => e.target.setCustomValidity("")} // not sure if this is needed
+                        // above doesn't work for image select
+                        />
+                        {imageSelected ?
+                            <img
+                                src={URL.createObjectURL(communityImage)}
+                                className="upload-image"
+                                alt="Change community image"
+                                title="Change community image"
+                            /> :
+                            <img
+                                src={group}
+                                className="upload-image"
+                                alt="Upload Community image"
+                                title="Upload Community image"
                             />
-                            {imageSelected ?
-                                <img
-                                    src={URL.createObjectURL(communityImage)}
-                                    className="upload-image"
-                                    alt="Community image"
-                                    title="Community image"
-                                /> :
-                                <img
-                                    src={group}
-                                    className="upload-image"
-                                    alt="Community image"
-                                    title="Community image"
-                                />
-                            }
-                        </label>
-                    </div>
-                    <br />
+                        }
+                    </label>
+                </div>
+                <br />
+                <div className="create-community-inputs">
                     <label>
                         <input className="create-community-button" type="submit" value="Create community" />
                     </label>
-                    <br />
-                </form>
-            </div>
+                </div>
+                <br />
+            </form>
         </div>
     )
 }

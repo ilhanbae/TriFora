@@ -126,12 +126,13 @@ export default function OtherCommunitiesPage(props) {
                 ))}
                 <div className="homepage-row-intro">
                     <h1>Don't see a community you're interest in? Create it here:</h1>
-                    <button onClick={toggleModal}>Create Community</button>
+                    <button style={{marginInline: "5px"}} className="create-community-button" onClick={toggleModal}>Create Community</button>
                 </div>
                 {/* Create Community as modal */}
                 <Modal
                     show={isModalOpen}
                     onClose={toggleModal}
+                    modalTitle="Create a community"
                     modalStyle={{
                         width: "50%",
                         height: "50%",
