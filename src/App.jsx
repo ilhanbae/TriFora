@@ -1,7 +1,7 @@
 /* This is our starting point of our application. This is the level that will handle
 the routing of requests, and also the one that will manage communication between sibling
 components at a lower level. */
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import NavAchiever from "./Component/NavAchiever";
@@ -22,7 +22,6 @@ import OtherCommunitiesPage from "./Component/OtherCommunitiesPage";
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [toastList, setToastList] = useState([]);
-
 
   /* On logout, pull the session token and user from session storage and update the 
   user's logged in status. This can be called from the header component where the user can 
@@ -59,7 +58,7 @@ export default function App() {
       <div>
         <header>
           {/* Navigation */}
-          <NavAchiever logout={logout} openToast={openToast} />
+          <NavAchiever logout={logout} isLoggedIn={isLoggedIn} openToast={openToast} />
           
           <div className="app-content">
             <Routes>
