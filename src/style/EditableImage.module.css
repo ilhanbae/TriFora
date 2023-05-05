@@ -14,10 +14,11 @@
 
 /* Edit Image Preview */
 .edit-image-preview {
-  width: 50px;
-  height: 50px;
+  width: 70px;
+  height: 70px;
   border-radius: 10px;
-  /* border: 2px solid var(--french-bistre); */
+  object-fit: cover;
+  border: 2px solid var(--bistre);
 }
 .edit-image-preview:hover,
 .edit-image-preview:focus {

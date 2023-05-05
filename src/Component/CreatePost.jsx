@@ -28,10 +28,10 @@ export default class CreatePost extends React.Component {
         // make sure a submission isn't empty, currently we only consider title and description necessary
         // these checks might now be redundant since using required attribute
         if (this.state.postTitle.length < 1) {
-            alert("Post title cannot be empty")
+            this.props.openToast({type: "error", message: "Post title cannot be empty"});
             // the above needs to be changed somehow to not have alert box if not redundant
         } else if (this.state.postContent.length < 1) {
-            alert("Post description cannot be empty")
+            this.props.openToast({type: "error", message: "Post description cannot be empty"});
             // the above needs to be changed somehow to not have alert box if not redundant
         } else {
             // turn the image list into a url list for api
@@ -49,7 +49,7 @@ export default class CreatePost extends React.Component {
 
                     // Check for upload file error
                     if (uploadFileErrorMessage) {
-                        alert(uploadFileErrorMessage)
+                        this.props.openToast({type: "error", message: <span>Uh oh, sorry you can't upload the file at the moment. Please contact <Link to="about" style={{color: "var(--light-yellow", textDecoration: "underline"}}> our developers.</Link></span>});
                     } else {
                         // add to the url array if successful helper call
                         let postImageLink = `${process.env.REACT_APP_DOMAIN_PATH}${uploadedPostImageFile.path}` // Format server link with app domain
@@ -84,7 +84,8 @@ export default class CreatePost extends React.Component {
                         this.props.closeCreatePostPageModal();
                     },
                     error => {
-                        alert("error!");
+                        this.props.openToast({type: "error", message: <span>Uh oh, sorry you create the post at the moment. Please contact <Link to="about" style={{color: "var(--light-yellow", textDecoration: "underline"}}> our developers.</Link></span>});
+
                     }
                 );
         }
@@ -93,9 +94,20 @@ export default class CreatePost extends React.Component {
     /* method that will keep the current post up to date as you type it,
        so that the submit handler can read the information from the state. */
     myTitleChangeHandler = event => {
-        this.setState({
-            postTitle: event.target.value
-        });
+        const title = event.target.value;
+
+        if (title.length === 0) {
+            event.target.setCustomValidity("Post requires a title")
+        }
+        else if (title.length > 300) {
+            event.target.setCustomValidity("Title must be less than 300 characters.")
+        } else {
+            event.target.setCustomValidity("")
+            this.setState({
+                postTitle: title
+            });
+        }
+
     };
 
     myContentChangeHandler = event => {
@@ -144,12 +156,12 @@ export default class CreatePost extends React.Component {
                 });
             } else {
                 // if not alert to try again
-                alert("All files must be images. Please try again")
+                this.props.openToast({type: "info", message: "All files must be images. Please try again"});
                 // the above needs to be changed somehow to not have alert box
             }
         } else {
             // this is the scenario where the user uploads, and hits cancel after having already uploaded
-            alert("No files uploaded")
+            // alert("No files uploaded")
             // the above needs to be changed somehow to not have alert box
         }
     };
@@ -194,8 +206,8 @@ export default class CreatePost extends React.Component {
                                     autoFocus
                                     required
                                     // below is field check error message since required field
-                                    onInvalid={e => e.target.setCustomValidity("Post requires a title")}
-                                    onInput={e => e.target.setCustomValidity("")} // not sure if this is needed
+                                    // onInvalid={e => e.target.setCustomValidity("Post requires a title")}
+                                    // onInput={e => e.target.setCustomValidity("")} // not sure if this is needed
                                 />
                             </label>
                         </div>
@@ -246,8 +258,10 @@ export default class CreatePost extends React.Component {
                             </label>
                         </div>
 
+                        <br />
+
                         <div>
-                            <h1>Visibility</h1>
+                            <h1>Visibility:</h1>
                             <div style={{display: "flex", gap: "10px"}}>
                                 {/* Public */}
                                 <label>

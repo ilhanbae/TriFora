@@ -14,7 +14,7 @@ Read more about ISO 8601 Date Standard here: https://en.wikipedia.org/wiki/ISO_8
 export default function formatDateTime(dateTime) {
   const userLocale = navigator.language;
   const dateTimeObject = new Date(dateTime);
-  const dateTimeCalendarFormat = dateTimeObject.toLocaleString(userLocale, {
+  const dateTimeCalendarFormat = dateTimeObject.toLocaleString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
@@ -23,6 +23,5 @@ export default function formatDateTime(dateTime) {
     hour12: true,
   });
 
-  // console.log(dateTimeCalendarFormat)
   return(dateTimeCalendarFormat)
 }

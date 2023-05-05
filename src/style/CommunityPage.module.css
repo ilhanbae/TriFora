@@ -245,7 +245,8 @@
 .community-banner-content {
   background-color: var(--yellow-apricot);
   /* border: 1px solid var(--bistre); */
-  border-top: 2px solid var(--bistre);
+  /* border-top: 2px solid var(--bistre); */
+  /* box-shadow: 0 4px 14px 0 rgb(0 0 0 /50%); */
   display: flex;
   flex-direction: row;
   padding: 5px 5%;
@@ -268,6 +269,8 @@
   padding: 0 10px;
 }
 .community-name {
+  font-size: 1.5rem;
+  font-family: 'Alfa Slab One', cursive;
   line-height: 1em;
   /* white-space: nowrap; */
   overflow: hidden;
@@ -318,11 +321,11 @@
   height: 100%;
   cursor: pointer;
   border: 2px solid transparent;
-  border-bottom: 2px solid var(--skobeloff);
+  border-bottom: 2px solid var(--french-bistre);
 }
 
 .community-stats-tab:hover {
-  border-bottom: 2px solid var(--skobeloff);
+  border-bottom: 2px solid var(--french-bistre);
 }
 
 /* Content Control tool */
@@ -341,9 +344,15 @@
   border: 2px solid var(--bistre);
   border-radius: 10px;
 }
+.right-control-box:hover {
+  cursor: pointer;
+}
 .right-control-button-label {
   border-radius: 10px;
   padding: 10px;
+}
+.right-control-button-label:hover {
+  color: var(--bistre);
 }
 
 /* Community Post List */
@@ -371,7 +380,10 @@
   display: flex;
   width: 100%;
   /* background-color: red; */
-  gap: 10px
+  gap: 10px;
+  overflow: hidden;
+  /* white-space: nowrap; */
+  word-wrap: break-word;
 }
 
 /* Post Summary & Stat Labels Container */
@@ -379,6 +391,9 @@
   width: 100%;
   display: flex;
   flex-direction: row;
+  overflow: hidden;
+  /* white-space: nowrap; */
+  word-wrap: break-word;
 }
 
 /* Post Summary */
@@ -389,11 +404,16 @@
   flex-direction: column;
   justify-content: center;
   gap: 10px;
-  /* border: 1px solid var(--bistre); */
+  overflow: hidden;
+  /* white-space: nowrap; */
+  word-wrap: break-word;
 }
 .post-id-title {
   width: 100%; 
   /* border: 1px solid var(--bistre); */
+  overflow: hidden;
+  /* white-space: nowrap; */
+  word-wrap: break-word;
 }
 .post-author-date {
   width: 100%;
@@ -403,6 +423,18 @@
   gap: 30px;
   /* border: 1px solid var(--bistre); */
 }
+
+/* Post Title */
+.post-title {
+  width: 100%;
+  font-family: 'Alfa Slab One', cursive;
+  font-size: 0.938rem;
+  /* background-color: red; */
+  overflow: hidden;
+  /* white-space: nowrap; */
+  word-wrap: break-word;
+}
+
 /* .post-author {
   width: 100%;
   border: 1px solid var(--bistre);

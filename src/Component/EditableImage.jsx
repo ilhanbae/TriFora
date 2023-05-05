@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useState, useRef } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import style from "../style/EditableImage.module.css";
 
 export default function EditableImage(props) {
@@ -9,7 +10,6 @@ export default function EditableImage(props) {
   const [newImage, setNewImage] = useState(originalImage);
   const [newImageFile, setNewImageFile] = useState(null);
   const [isEditImage, setIsEditImage] = useState(false);
-  
   const imagePickerRef = useRef(null); // Ref for file input
 
   /* This method updates new image. */
@@ -24,16 +24,17 @@ export default function EditableImage(props) {
         setNewImage(imageBlob);
         setNewImageFile(selectedFile);
       } else {
-        alert(`${selectedFile.name} is not an image file. Please try again.`)
+        props.openToast({type: "error", message: `"${selectedFile.name}" is not an image file.`})
       }
     } catch(error) {
-      alert(error);
+      props.openToast({type: "error", message: <span>Uh oh, sorry you can't edit the community image at the moment. Please contact <Link to="about" style={{color: "var(--light-yellow", textDecoration: "underline"}}> our developers.</Link></span>});
     }
   }
 
   /* This method updates edit image state. */
   const editButtonHandler = () => {
     setIsEditImage(true);
+    toggleImagePicker();
   }
 
   /* This method toggles image picker */
@@ -67,7 +68,6 @@ export default function EditableImage(props) {
     <div className={style["container"]}>
       {/* Hidden Image Picker */}
       <input
-        className={style["color-picker"]}
         type="file"
         onChange={fileInputChangeHandler}
         style={{ display: "none"}}

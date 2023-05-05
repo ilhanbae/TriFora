@@ -27,7 +27,7 @@
 .delete-commmunity-section-body {
   gap: 30px;
   display: flex;
-  /* flex-direction: column; */
+  flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
 }
@@ -37,6 +37,23 @@
   font-family: 'Alfa Slab One', cursive;
   color: var(--french-bistre);
 }
+
+/* Community Delete Modal */
+.community-delete-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.community-delete-modal-headline {
+  color: var(--bistre);
+  font-family: 'Alfa Slab One', cursive;
+}
+.community-delete-modal-buttons {
+  display: flex;
+  gap: 10px;
+}
+
 
 /* Responsive */
 @media (max-width: 800px) {
@@ -53,7 +70,7 @@
 /* Icons */
 .delete-icon::before {
   cursor: pointer;
-  content: "\1F5D1";
+  content: "\2716";
   font-weight: bold;
   text-align: center;
 }

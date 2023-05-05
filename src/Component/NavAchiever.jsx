@@ -17,7 +17,7 @@ export default function NavAchiever(props) {
   const location = useLocation(); // For current router location
   const navigate = useNavigate(); // For navigation
   const dropDownMenuRef = useRef(null); // Create a ref for dropdown menu
-  
+
   /* This hook traces active navs using router location */
   useEffect(() => {
     traceActiveNavs(location);
@@ -28,9 +28,25 @@ export default function NavAchiever(props) {
     if (sessionStorage.getItem("user")) {
       loadUserProfile();
     }
-  }, [sessionStorage.getItem("user")])
+  });
 
-  /* This hook check if mousedown DOM event occurs outside the dropdown menu. */
+  /* This hook detects unexpected user & token session storage flushes. */
+  useEffect(() => {
+    const sessionStorageFlushHandler = async (event) => {
+      if (!sessionStorage.getItem("user") || !sessionStorage.getItem("token")) {
+        // console.log("-------FLUSH-------");
+        await props.logout(); // Remove the user's id and password token from session storage & set App's isLoggedIn State to false
+        props.openToast({type: "error", message: "Session expired unexpectedly. Please login again."});
+        navigate("/");
+      }
+    }
+    window.addEventListener("storage", sessionStorageFlushHandler);
+    return () => {
+      window.removeEventListener("storage", sessionStorageFlushHandler);
+    };
+  });
+
+  /* This hook checks if mousedown DOM event occurs outside the dropdown menu. */
   useEffect(() => {
     const outSideClickHandler = (event) => {
       if (
@@ -63,7 +79,7 @@ export default function NavAchiever(props) {
       }
     }
   };
-  
+
   /* This method toggles drop down menu */
   const toggleDropDownMenu = () => {
     setShowDropDownMenu(!showDropDownMenu);
@@ -83,14 +99,14 @@ export default function NavAchiever(props) {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
-  }
-  
+  };
+
   /* This method updates active navs by using router location. */
   const traceActiveNavs = (location) => {
     // console.log(location);
-    switch(location.pathname) {
+    switch (location.pathname) {
       case "/":
         setIsLoginNavActive(false);
         setIsRegisterNavActive(false);
@@ -107,51 +123,52 @@ export default function NavAchiever(props) {
         setIsRegisterNavActive(false);
         setIsLoginNavActive(false);
     }
-  }
+  };
 
   /* This method handles logo navigation */
   const logoNavHandler = () => {
-    navigate('/');
+    navigate("/");
     scrollToTop();
-  }  
+  };
 
   /* This method handles register navigation */
   const registerNavHandler = () => {
-    navigate('/register');
+    navigate("/register");
     scrollToTop();
-  }
+  };
 
   /* This method handles login navigation */
   const loginNavHandler = () => {
-    navigate('/login');
+    navigate("/login");
     scrollToTop();
-  }
+  };
 
   /* This method handles logout navigation */
   const logoutNavHandler = () => {
     toggleDropDownMenu();
     props.logout();
-    navigate('/');
+    navigate("/");
     scrollToTop();
-  }
+  };
 
   // Set drop down icon style
   const dropDownIconStyle = showDropDownMenu ? "up-icon" : "down-icon";
 
   // Set register nav style
-  const registerNavStyle = isRegisterNavActive ? "nav-item__active" : "nav-item"
+  const registerNavStyle = isRegisterNavActive
+    ? "nav-item__active"
+    : "nav-item";
 
   // Set login nav style
-  const loginNavStyle = isLoginNavActive ? "nav-item__active" : "nav-item"
+  const loginNavStyle = isLoginNavActive ? "nav-item__active" : "nav-item";
 
   return (
     <div className={style["headerNav"]}>
       {/* Logo */}
       <div className={style["left-items"]}>
-        <span 
-          className={style["logo"]}
-          onClick={logoNavHandler}  
-        >Trifora</span>
+        <span className={style["logo"]} onClick={logoNavHandler}>
+          Trifora
+        </span>
       </div>
 
       {/* Logged-Out Navigation */}
@@ -159,17 +176,14 @@ export default function NavAchiever(props) {
         <div className={style["right-items"]}>
           <ul className={style["nav-list"]}>
             {/* Sign Up */}
-            <li 
+            <li
               className={style[registerNavStyle]}
-              onClick={registerNavHandler}  
+              onClick={registerNavHandler}
             >
               <span>Sign up</span>
             </li>
             {/* Login */}
-            <li 
-              className={style[loginNavStyle]}
-              onClick={loginNavHandler}
-            >
+            <li className={style[loginNavStyle]} onClick={loginNavHandler}>
               <span>Login</span>
             </li>
           </ul>
@@ -178,10 +192,7 @@ export default function NavAchiever(props) {
 
       {/* Logged-In Navigation */}
       {sessionStorage.getItem("token") && (
-        <div
-          className={style["profile-dropdown"]}
-          ref={dropDownMenuRef}
-        >
+        <div className={style["profile-dropdown"]} ref={dropDownMenuRef}>
           {/* Profile Icon */}
           <img
             src={userProfile}
@@ -211,9 +222,9 @@ export default function NavAchiever(props) {
                   >
                     <span>Notifications</span>
                   </li>
-                  <li 
+                  <li
                     className={style["dropdown-menu-item"]}
-                    onClick={logoutNavHandler}  
+                    onClick={logoutNavHandler}
                   >
                     <span>Log Out</span>
                   </li>
