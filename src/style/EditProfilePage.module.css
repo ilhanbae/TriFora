@@ -66,11 +66,7 @@
   font-size: 14px;
   padding: 0 10px;
 }
-.text-input:disabled {
-  background-color: var(--french-bistre);
-  color: var(--light-yellow);
-  cursor: not-allowed;
-}
+
 .textarea-input {
   border: 2px solid var(--bistre);
   background-color: var(--yellow-apricot);
@@ -107,22 +103,12 @@
 
 /* User profile basic info field */
 .user-profile-basic-info {
-  flex-wrap: wrap;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  text-align: left;
-  /*flex-basis: 33%;*/
+  width: 100%
 }
 
 /* User profile detail info field */
 .user-profile-detail-info {
-  flex-basis: 33%;
-  /* margin-left: auto; */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  text-align: left;
+  width: 100%
 }
 
 @media (max-width: 1200px) {

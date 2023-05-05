@@ -39,7 +39,6 @@ export default function EditProfile(prop) {
     if (user) {
       return (
         <div className={style["container"]}>
-          {/* <ProfileHeader username={user.username} /> */}
           <ProfileMain 
           user={user} 
           render_user={prop.render_user} 
@@ -98,8 +97,6 @@ const UserProfileForm = (prop) => {
   const [avatarFile, setAvatarFile] = useState(prop.user.attributes.profile.profileImage);
   const [avatarLink, setAvatarLink] = useState(prop.user.attributes.profile.profileImage);
   const [username, setUsername] = useState(prop.user.attributes.profile.username);
-  const [firstname, setFirstname] = useState(prop.user.attributes.profile.firstName);
-  const [lastname, setLastname] = useState(prop.user.attributes.profile.lastName);
   const [description, setDescription] = useState(prop.user.attributes.profile.description);
 
   // Perform user profile form submission.
@@ -148,8 +145,6 @@ const UserProfileForm = (prop) => {
       attributes: {
         profile: {
           username: username,
-          firstName: firstname,
-          lastName: lastname,
           description: description,
           profileImage: serverAvatarLink,
         },
@@ -162,18 +157,7 @@ const UserProfileForm = (prop) => {
     
     if(!isUserProfileFieldsValid) {
       console.log(userProfileFieldsErrorMessage)
-      // if(userProfileFieldsErrorMessage=="First Name can't be empty"){
-      //   prop.openToast({type: "error", message: <span>First Name can't be empty</span>})
-      // }
-      // else if(userProfileFieldsErrorMessage=="Last Name can't be empty") {
-      //   prop.openToast({type: "error", message: <span>Last Name can't be empty</span>})
-      // }
-      // else if(userProfileFieldsErrorMessage=="First name should only contain alphanumeric characters") {
-      //   prop.openToast({type: "error", message: <span>First name should only contain alphanumeric characters</span>})
-      // }
-      // else if(userProfileFieldsErrorMessage=="Last name should only contain alphanumeric characters") {
-      //   prop.openToast({type: "error", message: <span>Last name should only contain alphanumeric characters</span>})
-      // }
+      
       if(userProfileFieldsErrorMessage=="Username can't be empty") {
         prop.openToast({type: "error", message: <span>Username can't be empty</span>})
       }
@@ -183,9 +167,6 @@ const UserProfileForm = (prop) => {
       else if(userProfileFieldsErrorMessage=="Username should only contain alphanumeric characters") {
         prop.openToast({type: "error", message: <span>Username should only contain alphanumeric characters</span>})
       }
-      // else if(userProfileFieldsErrorMessage=="Description should only contain alphanumeric characters") {
-      //   prop.openToast({type: "error", message: <span>Description should only contain alphanumeric characters</span>})
-      // }
       
     } else {
       const { data: updatedUser, errorMessage: updateUserErrorMessage} = await genericPatch(endpoint, body);
@@ -227,16 +208,6 @@ const UserProfileForm = (prop) => {
   // Update user name on input change
   const usernameInputHandler = (e) => {
     setUsername(e.target.value);
-  };
-
-  // Update first name on input change
-  const firstnameInputHandler = (e) => {
-    setFirstname(e.target.value);
-  };
-
-  // Update last name on input change
-  const lastnameInputHandler = (e) => {
-    setLastname(e.target.value);
   };
 
   // Update description on input change
@@ -284,28 +255,6 @@ const UserProfileForm = (prop) => {
               type="text"
               value={username}
               onChange={usernameInputHandler}
-            />
-          </label>
-          {/* Firstname Input Field*/}
-          <label>
-            <span className={style["active-text"] + " " + style["bold"]}>First Name:</span>
-            <input
-              className={style["text-input"]}
-              type="text"
-              value={firstname}
-              onChange={firstnameInputHandler}
-              /* disabled */
-            />
-          </label>
-          {/* Lastname Input Field*/}
-          <label>
-            <span className={style["active-text"] + " " + style["bold"]}>Last Name:</span>
-            <input
-              className={style["text-input"]}
-              type="text"
-              value={lastname}
-              onChange={lastnameInputHandler}
-              /* disabled */
             />
           </label>
         </div>
