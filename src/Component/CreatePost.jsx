@@ -3,6 +3,7 @@ import "../style/CreatePost.css";
 import imageUpload from "../assets/image_upload_icon.jpeg";
 import { Link, Navigate } from "react-router-dom";
 import uploadFile from "../helper/uploadFile";
+import style from "../style/EditProfilePage.module.css";
 
 export default class CreatePost extends React.Component {
 
@@ -208,7 +209,9 @@ export default class CreatePost extends React.Component {
                                     // below is field check error message since required field
                                     // onInvalid={e => e.target.setCustomValidity("Post requires a title")}
                                     // onInput={e => e.target.setCustomValidity("")} // not sure if this is needed
+                                    maxLength="55"
                                 />
+                                <span className={style["active-text"] + " " + style["bold"]}>{this.state.postTitle.length}/55</span>
                             </label>
                         </div>
 
@@ -225,7 +228,9 @@ export default class CreatePost extends React.Component {
                                     // below is field check error message since required field
                                     onInvalid={e => e.target.setCustomValidity("Post requires a description")}
                                     onInput={e => e.target.setCustomValidity("")} // not sure if this is needed
+                                    maxLength="255"
                                 />
+                                <span className={style["active-text"] + " " + style["bold"]}>{this.state.postContent.length}/255</span>
                             </label>
                         </div>
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import PostPageCSS from "../style/PostPage.module.css";
 import back from "../assets/back-button.jpeg";
 import CommentList from "./CommentList";
@@ -7,6 +7,7 @@ import Modal from "./Modal";
 import { Link } from "react-router-dom";
 import defaultProfileImage from "../assets/defaultProfileImage.png";
 import ProfilePage from "../Component/ProfilePage";
+import style from "../style/EditProfilePage.module.css";
 
 
 // Post Page will render a single post with all the related compontents (user, content, comments)
@@ -524,10 +525,10 @@ export default class PostPage extends React.Component {
                             </span>
                         </div>
 
-                        {this.state.post_images.length === 0 
-                        ? 
-                        <></> 
-                        : 
+                        {this.state.post_images.length === 0
+                        ?
+                        <></>
+                        :
                         <div className = {PostPageCSS['post-images']}>
                             {this.state.post_images.map(image => (
                                 <Post_Images key={image} image={image} state={this.state}/>
@@ -618,11 +619,24 @@ const Post_Buttons = (props) => {
 }
 
 const Comment_input = (props) => {
+
+    const [comment, setComment] = useState("");
+
+    const commentInputHandler = (e) => {
+        setComment(e.target.value);
+    };
+    // const commentLength = this.state.comment_input.length;
+    // console.log(commentLength)
     return(
         <form className = {PostPageCSS['send-comment']} onSubmit={props.submit}>
             <label className= {PostPageCSS['comment-label']}>
-                <input className= {PostPageCSS['comment-inputbox']} type='text' id='comment' name='comment' placeholder='Write Comment' onChange={props.commentHandler}></input>
+                <input className= {PostPageCSS['comment-inputbox']}
+                       type='text' maxLength='255' id='comment' name='comment' placeholder='Write Comment'
+                       onInput={commentInputHandler}
+                       onChange={props.comment_input}></input>
+                <span className={style["active-text"] + " " + style["bold"]}>{comment.length}/255</span>
             </label>
+
             <label className= {PostPageCSS['send-button-label']}>
                 <input className= {PostPageCSS['send-button']} type='submit' value='Send'></input>
             </label>
