@@ -113,6 +113,7 @@ export default function CommunityPage(props) {
             userCommunityMemberDetails={userCommunityMemberDetails}
             refreshCommunityDetails={refreshCommunityDetails}
             openToast={props.openToast}
+            inProfile={props.inProfile}
           />
         </div>
       </div>
@@ -432,6 +433,7 @@ const CommunityContentDisplay = (props) => {
             communityPostSkipOffset={communityPostSkipOffset}
             communityPostTakeCount={communityPostTakeCount}
             openToast={props.openToast}
+            inProfile={props.inProfile}
           />
           {/* Pagination */}
           <Pagination
@@ -558,7 +560,7 @@ const CommunityPostsList = (props) => {
   /* Refresh posts whenever the community post skip offset has changed. The offset is changed by the Pagination component. */
   useEffect(() => {
     refreshPosts();
-  }, [props.communityPostSkipOffset]);
+  }, [props.communityPostSkipOffset, props.inProfile]);
 
   /* This methods loads the community members using genericFetch & update the community members count stat */
   const loadMembers = async () => {
