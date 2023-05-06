@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import PostPageCSS from "../style/PostPage.module.css";
 import back from "../assets/back-button.jpeg";
 import CommentList from "./CommentList";
@@ -7,6 +7,7 @@ import Modal from "./Modal";
 import { Link } from "react-router-dom";
 import defaultProfileImage from "../assets/defaultProfileImage.png";
 import ProfilePage from "../Component/ProfilePage";
+import style from "../style/EditProfilePage.module.css";
 
 
 // Post Page will render a single post with all the related compontents (user, content, comments)
@@ -281,7 +282,7 @@ export default class PostPage extends React.Component {
                         //alert("Post Reaction was successful");
                         // once Post reaction is complete, reload the all reaction
                         this.loadPost_reaction();
-                        this.props.openToast({type: "success", message: <span>Like Successful!</span>})
+                        //this.props.openToast({type: "success", message: <span>Like Successful!</span>})
                     },
                     error => {
                         //alert("ERROR when submit Reaction");
@@ -329,7 +330,7 @@ export default class PostPage extends React.Component {
                             upvote_set: false,
                         });
                         this.loadPost_reaction();
-                        this.props.openToast({type: "success", message: <span>Undo Like Successful!</span>})
+                        //this.props.openToast({type: "success", message: <span>Undo Like Successful!</span>})
                     },
                     error => {
                         //alert("ERROR when deleting Like");
@@ -372,7 +373,12 @@ export default class PostPage extends React.Component {
             //Check the length of the comment
             if (this.state.comment_input.length === 0){
                 //alert("Comment Can be empty!")
-                console.log("Comment Can be empty!");
+                console.log("Comment Can't be empty!");
+                this.props.openToast({type: "error", message: <span>Comment can't be empty!</span>})
+            } else if (this.state.comment_input.length > 255){
+                event.target.reset();
+                console.log("Comment Length need to be in 255 characters!");
+                this.props.openToast({type: "error", message: <span>Comment Length need to be in 255 characters!</span>})
             } else {
                 //make the api call to post
                 fetch(process.env.REACT_APP_API_PATH+"/posts", {
@@ -392,9 +398,13 @@ export default class PostPage extends React.Component {
                         result => {
                             console.log(result);
                             // once a edit is complete, reload the all comments
-                            this.loadPost();
                             console.log("Post was successful");
                             this.props.openToast({type: "success", message: <span>Comment Submit Successful!</span>})
+                            event.target.reset();
+                            this.setState({
+                                comment_input: '',
+                            })
+                            this.loadPost();
                         },
                         error => {
                             //alert("ERROR when submit comment");
@@ -514,17 +524,28 @@ export default class PostPage extends React.Component {
                             <h1 className = {PostPageCSS['post-title-text']}> {this.state.title} </h1>
                         </div>
                         <div className = {PostPageCSS['post-content']}>
-                            <div className = {PostPageCSS['post-content-text']}>
-                                <span> {this.state.content} </span>
-                            </div>
+                            <span className = {PostPageCSS['post-content-text']}>
+                                {this.state.content}
+                            </span>
                         </div>
-                        <Post_Image post_image_list={this.state.post_images} state={this.state}/>
+
+                        {this.state.post_images.length === 0
+                        ?
+                        <></>
+                        :
+                        <div className = {PostPageCSS['post-images']}>
+                            {this.state.post_images.map(image => (
+                                <Post_Images key={image} image={image} state={this.state}/>
+                            ))}
+                        </div>
+                        }
+
                     </div>
                     <div className = {PostPageCSS['post-bar']}>
                         <Like_button state={this.state} click_like={this.click_like} click_undo_like={this.click_undo_like}/>
                         <Post_Buttons state={this.state} delete_post={this.DeletePostHandler} ClickDelete={() => this.ClickDeleteButton()} toggleModal={this.toggleModal}/>
                     </div>
-                    <Comment_input comment_input={this.CommentHandler} submit={this.CommentSumbitHandler}/>
+                    <Comment_input comment_input={this.state.comment_input} commentHandler={this.CommentHandler} submit={this.CommentSumbitHandler}/>
                     <CommentList comment_list={this.state.comments} loadPost={this.loadPost} openToast={this.props.openToast}/>
                 </div>
 
@@ -533,51 +554,24 @@ export default class PostPage extends React.Component {
     }
 }
 
-const Post_Image = (props) => {
-    if (props.post_image_list.length === 3){
-        return (
-            <div className = {PostPageCSS['post-images']}>
-                <img className = {PostPageCSS['post-image-1']} src={props.state.post_images[0]} alt="Post-Image-1"/>
-                <img className = {PostPageCSS['post-image-2']} src={props.state.post_images[1]} alt="Post-Image-2"/>
-                <img className = {PostPageCSS['post-image-3']} src={props.state.post_images[2]} alt="Post-Image-3"/>
-            </div>
-        );
-
-    } else if (props.post_image_list.length === 2){
-        return (
-            <div className = {PostPageCSS['post-images']}>
-                <img className = {PostPageCSS['post-image-1']} src={props.state.post_images[0]} alt="Post-Image-1"/>
-                <img className = {PostPageCSS['post-image-2']} src={props.state.post_images[1]} alt="Post-Image-2"/>
-            </div>
-        );
-
-    } else if (props.post_image_list.length === 1){
-        return (
-            <div className = {PostPageCSS['post-images']}>
-                <img className = {PostPageCSS['post-image-1']} src={props.state.post_images[0]} alt="Post-Image-1"/>
-            </div>
-        );
-    } else{
-        return (
-            <div>
-            </div>
-        );
-    }
-
+const Post_Images = (props) => {
+    return (
+        <img className = {PostPageCSS['post-image-1']} src={props.image} alt="Post-Image"/>
+    )
 }
 
 const Like_button = (props) => {
     if (props.state.upvote_set === false) {
         return (
             <div className = {PostPageCSS['upvote']}>
-                <input className = {PostPageCSS['upvote-button-before']} type='image' onClick={() => props.click_like()}/>
+                <span className = {PostPageCSS['upvote-button-before']} onClick={() => props.click_like()}></span>
                 <span className = {PostPageCSS['upvote-number-before']}>{props.state.likes}</span>
             </div>
         );
     } else if (props.state.upvote_set === true) {
         return (
             <div className = {PostPageCSS['upvote']}>
-                <input className = {PostPageCSS['upvote-button-after']} type='image' onClick={() => props.click_undo_like()}/>
+                <span className = {PostPageCSS['upvote-button-after']} onClick={() => props.click_undo_like()}></span>
                 <span className = {PostPageCSS['upvote-number-after']}>{props.state.likes}</span>
             </div>
         );
@@ -588,35 +582,20 @@ const Post_Buttons = (props) => {
     if (props.state.show_delete === true){
         return(
             <div className = {PostPageCSS['post-buttons']}>
-
-                {/*
-                <div className = {PostPageCSS['post-pin']}>
-                    <button className = {PostPageCSS['post-pin-button']}></button>
-                    <h5 className = {PostPageCSS['post-pin-text']}>Pin</h5>
-                </div> 
-                <div className = {PostPageCSS['post-hide']}>
-                    <button className = {PostPageCSS['post-hide-button']}></button>
-                    <h5 className = {PostPageCSS['post-hide-text']}>Hide</h5>
-                </div> 
-                <div className = {PostPageCSS['post-report']}>
-                    <button className = {PostPageCSS['post-report-button']}></button>
-                    <h5 className = {PostPageCSS['post-report-text']}>Report</h5>
-                </div> 
-                */}
-
-                <div className = {PostPageCSS['post-delete']}>
-                    <button className = {PostPageCSS['post-delete-button']} onClick={props.ClickDelete}></button>
-                    <span className = {PostPageCSS['post-delete-text']}>Delete</span>
-                    <Modal show={props.state.openModal} onClose={props.toggleModal}>
-                        <div>
-                            <div className={PostPageCSS['delete-popup-title']}>Delete Your Post</div>
-                            <div className={PostPageCSS['popup-buttons']}>
-                                <button className={PostPageCSS['delete-button']} onClick={props.delete_post}>Delete</button>
-                                <button className={PostPageCSS['cancel-button']} onClick={props.toggleModal}>Cancel</button>
-                            </div>
-                        </div>
-                    </Modal>
+                <div className = {PostPageCSS['post-delete']} onClick={props.ClickDelete}>
+                        <span className = {PostPageCSS['post-delete-button']}></span>
+                        <span className = {PostPageCSS['post-delete-text']}>Delete</span>
                 </div>
+
+                <Modal show={props.state.openModal} onClose={props.toggleModal}>
+                    <div>
+                        <div className={PostPageCSS['delete-popup-title']}>Delete Your Post</div>
+                        <div className={PostPageCSS['popup-buttons']}>
+                            <button className={PostPageCSS['delete-button']} onClick={props.delete_post}>Delete</button>
+                            <button className={PostPageCSS['cancel-button']} onClick={props.toggleModal}>Cancel</button>
+                        </div>
+                    </div>
+                </Modal>
             </div>
         );
 
@@ -631,8 +610,10 @@ const Comment_input = (props) => {
     return(
         <form className = {PostPageCSS['send-comment']} onSubmit={props.submit}>
             <label className= {PostPageCSS['comment-label']}>
-                <input className= {PostPageCSS['comment-inputbox']} type='text' id='comment' name='comment' placeholder='Write Comment' onChange={props.comment_input}></input>
+                <input className= {PostPageCSS['comment-inputbox']} type='text' id='comment' name='comment' placeholder='Write Comment' onChange={props.commentHandler}></input>
+                <span className={style["active-text"] + " " + style["bold"]}>{props.comment_input.length}/255</span>
             </label>
+
             <label className= {PostPageCSS['send-button-label']}>
                 <input className= {PostPageCSS['send-button']} type='submit' value='Send'></input>
             </label>

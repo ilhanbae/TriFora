@@ -193,18 +193,20 @@ export default class Friend extends React.Component {
             return(
                 <>
                     <div className = {ProfilePageCSS.friend_card}>
-                        <Link className={ProfilePageCSS['friend_link']} onClick={() => this.ClickProfile()}>
-                            <img className = {ProfilePageCSS.friend_avatar} src={this.props.friend.toUser.attributes.profile.profileImage} alt="show-user-profile"></img>
-                        </Link>
                         <Link onClick={() => this.ClickProfile()}>
                             <div className = {ProfilePageCSS.friend_name}>
                                 <h4> {this.props.friend.toUser.attributes.profile.username} </h4>
                             </div>
                         </Link>
+                        <Link className={ProfilePageCSS['friend_link']} onClick={() => this.ClickProfile()}>
+                            <img className = {ProfilePageCSS.friend_avatar} src={this.props.friend.toUser.attributes.profile.profileImage} alt="show-user-profile"></img>
+                        </Link>
                         <button className = {ProfilePageCSS.friend_remove} onClick={() => this.remove_friend_connection()}>
+                            <span className = {ProfilePageCSS.friend_remove_icon}></span>
                             <h5>Remove</h5>
                         </button>
                         <button className = {ProfilePageCSS.friend_block} onClick={() => this.block_friend()}>
+                            <span className = {ProfilePageCSS.friend_block_icon}></span>
                             <h5>Block</h5>
                         </button>
                     </div>

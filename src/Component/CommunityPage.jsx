@@ -113,6 +113,7 @@ export default function CommunityPage(props) {
             userCommunityMemberDetails={userCommunityMemberDetails}
             refreshCommunityDetails={refreshCommunityDetails}
             openToast={props.openToast}
+            inProfile={props.inProfile}
           />
         </div>
       </div>
@@ -379,7 +380,7 @@ const CommunityContentDisplay = (props) => {
     if (contentDisplayType === "posts") {
       loadCommunityPosts();
     }
-  }, [contentDisplayType])
+  }, [contentDisplayType, props.inProfile])
 
   /* This hook refresh posts whenever the community post sort option has changed. The offset is changed
   by the PostSortDropdown component */
@@ -629,6 +630,7 @@ const CommunityContentDisplay = (props) => {
             openToast={props.openToast}
             communityPostSortOption={communityPostSortOption}
             communityPostCustomSortOption={communityPostCustomSortOption}
+            inProfile={props.inProfile}
           />
           {/* Pagination */}
           <Pagination

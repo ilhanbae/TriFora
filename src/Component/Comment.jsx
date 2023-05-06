@@ -139,10 +139,10 @@ export default class Comment extends React.Component {
         return (
             <div className = {PostPageCSS['individual-comment']}>
                 <div className = {PostPageCSS['comment-user-info']}>
-                    <img className = {PostPageCSS['comment-user-avater']} src={this.state.comment_userimage} alt="show-user-profile" onClick={() => this.ClickProfile()}></img>
                     <div className = {PostPageCSS['comment-user-username']} onClick={() => this.ClickProfile()}>
                         <span> {this.state.comment_username} </span>
                     </div>
+                    <img className = {PostPageCSS['comment-user-avater']} src={this.state.comment_userimage} alt="show-user-profile" onClick={() => this.ClickProfile()}></img>
                     <Modal
                         show={this.state.openProfile}
                         onClose={this.toggleProfile}
@@ -178,25 +178,28 @@ const Comment_interaction = (props) => {
         );
     } else {
         return(
+            <>
             <div className = {PostPageCSS['comment-interaction']}>
-                <div className = {PostPageCSS['comment-delete']}>
-                    <button className = {PostPageCSS['comment-delete-button']} onClick={props.ClickDelete}></button>
+                <div className = {PostPageCSS['comment-delete']} onClick={props.ClickDelete}>
+                    <span className = {PostPageCSS['comment-delete-button']}></span>
                     <span className = {PostPageCSS['comment-delete-text']}>Delete</span>
-                    <Modal show={props.openModal} onClose={props.toggleModal}>
-                        <div>
-                            <div className={PostPageCSS['delete-popup-title']}>Delete Your Comment</div>
-                            <div className={PostPageCSS['popup-buttons']}>
-                                <button className={PostPageCSS['delete-button']} onClick={props.delete}>Delete</button>
-                                <button className={PostPageCSS['cancel-button']} onClick={props.toggleModal}>Cancel</button>
-                            </div>
-                        </div>
-                    </Modal>
                 </div>
-                <div className = {PostPageCSS['comment-edit']}>
-                    <button className = {PostPageCSS['comment-edit-button']} onClick={props.edit}></button>
+                <div className = {PostPageCSS['comment-edit']} onClick={props.edit}>
+                    <span className = {PostPageCSS['comment-edit-button']}></span>
                     <span className = {PostPageCSS['comment-edit-text']}>Edit</span>
                 </div>
             </div>
+
+            <Modal show={props.openModal} onClose={props.toggleModal}>
+                <div>
+                    <div className={PostPageCSS['delete-popup-title']}>Delete Your Comment</div>
+                    <div className={PostPageCSS['popup-buttons']}>
+                        <button className={PostPageCSS['delete-button']} onClick={props.delete}>Delete</button>
+                        <button className={PostPageCSS['cancel-button']} onClick={props.toggleModal}>Cancel</button>
+                    </div>
+                </div>
+            </Modal>
+            </>
         );
     }
 }
@@ -206,7 +209,7 @@ const Comment_text = (props) => {
     if (!props.edit_comment){
         return (
             <div className = {PostPageCSS['comment-text']}>
-                <span> {props.comment_content} </span>
+                <span className = {PostPageCSS['comment-text-content']}> {props.comment_content} </span>
             </div>
         );
 

@@ -2,6 +2,7 @@ import React from 'react';
 import "../style/RegisterForm.css";
 import { Link, useNavigate} from "react-router-dom";
 import defaultProfileImage from "../assets/defaultProfileImage.png";
+import BackButton from './BackButton';
 
 export default class RegisterForm extends React.Component {
     constructor(props) {
@@ -101,15 +102,15 @@ export default class RegisterForm extends React.Component {
     submitHandler = event => {
         if (this.state.email.length === 0) {
             const emailInput = document.getElementById('email')
-            emailInput.setCustomValidity("No Input Detected");
+            emailInput.setCustomValidity("Email cannot be blank");
             emailInput.reportValidity()
             event.preventDefault();
         } else if (this.state.email.includes("@") === false || this.state.email.includes(".edu") === false){
             const emailInputted = document.getElementById('email')
-            emailInputted.setCustomValidity("Incorrect format");
+            emailInputted.setCustomValidity("Invalid email, must be an @.edu email");
             emailInputted.reportValidity()
             event.preventDefault();
-        } else if (this.state.password.length < 5 || this.state.password.length > 20){
+        } else if (this.state.password.length < 6 || this.state.password.length > 20){
             const passwordLength = document.getElementById('password1')
             passwordLength.setCustomValidity("Password should be between 6 to 20 characters");
             passwordLength.reportValidity()
@@ -121,7 +122,7 @@ export default class RegisterForm extends React.Component {
             event.preventDefault();
         } else if (this.state.username.length < 3 || this.state.username.length > 20){
             const usernameInput = document.getElementById('username')
-            usernameInput.setCustomValidity("Username should be between 3 to 20 characters");
+            usernameInput.setCustomValidity("Username must be between 3 to 20 characters");
             usernameInput.reportValidity()
             event.preventDefault();
 
@@ -142,7 +143,7 @@ export default class RegisterForm extends React.Component {
                   username: this.state.username,
                   firstName: "",
                   lastName: "",
-                  description: "",
+                  description: "Hello",
                   profileImage: this.state.defaultProfileImage_path,
                   phone: ""
                 },
@@ -176,14 +177,19 @@ export default class RegisterForm extends React.Component {
     render() {
         return (
             <div className='wrapper'>
-                  <Link to='/login'>
+                  {/* <Link to='/login'>
                     <button className='base register-base-back'>
                       <b className='login-link'>&#8592; Go to Login</b>
                     </button>
-                  </Link>
+                  </Link> */}
+                  <div style={{margin: 10}}>
+                    <BackButton/> {/* altered since /login doesn't really exist and for hopeful consistency */}
+                  </div>
+
+
+                  <span className='h3-inner'>Create an Account</span>
                     {/*<p>Back to Login</p>*/}
                     <form className='signup-form'>
-                        <h3 className='h3-inner'>Create an Account</h3>
                         
                         {/*
                         <label className='pfp'>
@@ -192,7 +198,7 @@ export default class RegisterForm extends React.Component {
                         </label>
                         */}
 
-                        <label className='input'>
+                        <label className='input'> {/* could make type email to condense sanity checks if desired */}
                             <input id='email' type="text" placeholder='Email' className='input-stuff'
                                    onChange={this.emailHandler} required/>
                         </label>

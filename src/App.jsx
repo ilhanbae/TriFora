@@ -22,6 +22,7 @@ import OtherCommunitiesPage from "./Component/OtherCommunitiesPage";
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [toastList, setToastList] = useState([]);
+  const [inProfile, setInProfile] = useState(false);
 
   /* On logout, pull the session token and user from session storage and update the 
   user's logged in status. This can be called from the header component where the user can 
@@ -50,6 +51,10 @@ export default function App() {
     );
   }
 
+  const in_Nar_Profile = () => {
+    setInProfile(!inProfile);
+  }
+
   return (
     /* The app is wrapped in a router component, that will render the appropriate
     content based on the URL path. Since this is a single page app, it allows some
@@ -58,7 +63,7 @@ export default function App() {
       <div>
         <header>
           {/* Navigation */}
-          <NavAchiever logout={logout} isLoggedIn={isLoggedIn} openToast={openToast} />
+          <NavAchiever logout={logout} isLoggedIn={isLoggedIn} openToast={openToast} in_Nar_Profile={in_Nar_Profile}/>
           
           <div className="app-content">
             <Routes>
@@ -66,9 +71,9 @@ export default function App() {
               <Route path="/about" element={<AboutUs />} /> {/* shouldn't need login? */}
               <Route path="/register" element={<RegisterForm login={login} />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-              <Route path="/login" element={<LoginOrProfile login={login} />} />
+              <Route path="/login" element={<LoginOrProfile login={login} openToast={openToast}/>} />
               <Route path="/edit-profile" element={<EditProfilePage />} />
-              <Route path="/community/:communityId" element={<CommunityPage openToast={openToast} />} />
+              <Route path="/community/:communityId" element={<CommunityPage openToast={openToast} inProfile={inProfile} />} />
               <Route path="/my-communities" element={<MyCommunities />} />
               <Route path="/other-communities" element={<OtherCommunitiesPage openToast={openToast} />} />
               <Route path="/create-post" element={<CreatePost />} />
@@ -91,7 +96,7 @@ const LoginOrProfile = (props) => {
     console.log("LOGGED OUT");
     return (
       <div>
-        <LoginForm login={props.login} />
+        <LoginForm login={props.login} openToast={props.openToast}/>
       </div>
     );
   } else {

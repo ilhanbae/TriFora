@@ -38,22 +38,34 @@ export default class LoginForm extends React.Component {
         event.preventDefault();
 
         if (this.state.email.length === 0) {
-            console.log(this.state.email.value)
+            // console.log(this.state.email.value)
             const emailInput = document.getElementById('email')
-            emailInput.setCustomValidity("Email Missing")
+            emailInput.setCustomValidity("Email cannot be blank")
             emailInput.reportValidity()
             event.preventDefault();
-        } else if (this.state.email.includes("@") === false){
-            const emailInput = document.getElementById('email')
-            console.log(this.state.email.value)
-
-            emailInput.setCustomValidity("Check Email Formatting")
-            emailInput.reportValidity()
-            event.preventDefault();
-        } else if (this.state.password.length < 5 || this.state.password.length > 20) {
+        } else if (this.state.password.length === 0) {
             const passwordInput = document.getElementById('password')
-            passwordInput.setCustomValidity("Invalid Email and Password Combination")
+            passwordInput.setCustomValidity("Password cannot be blank")
             passwordInput.reportValidity()
+            event.preventDefault();
+        // } else if (this.state.email.includes("@") === false){
+        //     const emailInput = document.getElementById('email')
+        //     // console.log(this.state.email.value)
+
+        //     emailInput.setCustomValidity("Check Email Formatting")
+        //     emailInput.reportValidity()
+        //     event.preventDefault();
+
+        // the above is redundant since it would fail to match a user account regardless
+        } else if (this.state.password.length < 6 || this.state.password.length > 20) {
+            // const passwordInput = document.getElementById('password')
+            // passwordInput.setCustomValidity("Invalid Email and Password Combination")
+            // passwordInput.reportValidity()
+
+            // above should not point at password field, ideally would be a toast
+            const emailInput = document.getElementById('email')
+            emailInput.setCustomValidity("Invalid Email and Password Combination")
+            emailInput.reportValidity()
             event.preventDefault();
 
         } else {
@@ -95,13 +107,24 @@ export default class LoginForm extends React.Component {
                             this.setState({
                                 sessiontoken: "",
                             });
-                            console.log("Login Failed!")
+                            // console.log("Login Failed!")
+                            const emailInput = document.getElementById('email')
+                            emailInput.setCustomValidity("Invalid Email and Password Combination")
+                            emailInput.reportValidity()
+                            event.preventDefault();
                         }
                     },
                     error => {
-                        const passwordInput = document.getElementById('password')
-                        passwordInput.setCustomValidity("Invalid Email and Password Combination")
-                        passwordInput.reportValidity()
+                        // this.props.openToast({ type: "error", message: <span>Invalid Email and Password Combination</span> })
+                        // const passwordInput = document.getElementById('password')
+                        // passwordInput.setCustomValidity("Invalid Email and Password Combination")
+                        // passwordInput.reportValidity()
+
+                        // above should not point at password field, ideally would be a toast
+                        // also think it was not intended to go here, but instead meant to be in else clause of fetch
+                        const emailInput = document.getElementById('email')
+                        emailInput.setCustomValidity("Invalid Email and Password Combination")
+                        emailInput.reportValidity()
                         event.preventDefault();
                     }
                 );

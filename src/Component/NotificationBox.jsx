@@ -150,13 +150,19 @@ export default class NotificationBox extends React.Component {
                     </div>
                     <div className={NotificationCSS["notification-content"]}>
                         <h2>
-                            You Received a Friend Request from <h2 className={NotificationCSS["notification-sender"]}>{this.props.notification.fromUser.attributes.profile.username}</h2>
+                            You Received a Friend Request from <h2 className={NotificationCSS["notification-sender"]} onClick={() => this.ClickProfile()}>{this.props.notification.fromUser.attributes.profile.username}</h2>
                         </h2>
                     </div>
                 </div>
                 <div className={NotificationCSS["notification-action"]}>
-                    <button className={NotificationCSS["notification-accept"]} onClick={() => this.accept_friend()}>Accept</button>
-                    <button className={NotificationCSS["notification-reject"]} onClick={() => this.reject_friend()}>Reject</button>
+                    <button className={NotificationCSS["notification-accept"]} onClick={() => this.accept_friend()}>
+                        <span className = {NotificationCSS["accept_friend_icon"]}></span>
+                        Accept
+                    </button>
+                    <button className={NotificationCSS["notification-reject"]} onClick={() => this.reject_friend()}>
+                        <span className = {NotificationCSS["reject_friend_icon"]}></span>
+                        Reject
+                    </button>
                 </div>
             </div>
 

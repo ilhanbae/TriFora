@@ -9,27 +9,32 @@
 }
 .bold {
   font-weight: bold;
+  font-family: 'Alfa Slab One';
+  font-weight: normal;
+  font-size: 16px;
+  color:#000000;
 }
 
 /* Container */
 .container {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: var(--light-yellow);
   display: flex;
   flex-direction: column;
+  border: 6px solid var(--bistre);
+  border-radius: 10px;
 }
 
 /* Profile Header */
 .profile-header {
   width: 100%;
-  /*height: 85px;*/
   background: none;
-  /*border-bottom: 2px solid var(--bistre);*/
+  border-bottom: 3px solid var(--bistre);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 100px 300px;
+  padding: 30px 270px;
 }
 
 /* Page nav buttons */
@@ -38,23 +43,62 @@
   display: flex;
   gap: 50px;
 }
+.save_button_icon::before{
+  cursor: pointer;
+  content: "\1F4BE";
+  font-weight: bold;
+  text-align: center;
+  font-size: 15px;
+  margin-right: 5px;
+}
 .button {
   border: 2px solid var(--bistre);
   background-color: var(--yellow-apricot);
   border-radius: 10px;
   padding: 10px;
   cursor: pointer;
+  font-family: 'Alfa Slab One';
+  font-weight: normal;
+  font-size: 14px;
+  color:#000000;
 }
+.button:hover {
+  background-color: var(--bistre);
+  color:white;
+}
+.delete_account_icon::before{
+  cursor: pointer;
+  content: "\1F5D1";
+  font-weight: bold;
+  text-align: center;
+  font-size: 15px;
+  margin-right: 5px;
+}
+.delete_account_button{
+  padding: 10px;
+  background-color: var(--red-orange);
+  border: 2px solid var(--bistre);
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Alfa Slab One';
+  font-weight: normal;
+  font-size: 14px;
+  color:#000000;
+}
+.delete_account_button:hover{
+  background-color: var(--bistre);
+  color:white;
+}
+
 
 /* User Profile Form */
 .user-profile-form {
   flex-basis: 100%;
   display: flex;
+  flex-direction: row;
   justify-content: center;
-  gap: 50px;
-  /*border: 2px solid var(--bistre);*/
   flex-wrap: wrap;
-  /*flex-direction: column;*/
+  border-top: 3px solid var(--bistre);
 }
 .text-input {
   border: 2px solid var(--bistre);
@@ -66,11 +110,7 @@
   font-size: 14px;
   padding: 0 10px;
 }
-.text-input:disabled {
-  background-color: var(--french-bistre);
-  color: var(--light-yellow);
-  cursor: not-allowed;
-}
+
 .textarea-input {
   border: 2px solid var(--bistre);
   background-color: var(--yellow-apricot);
@@ -85,11 +125,13 @@
 /* User profile avatar field */
 .user-profile-avatar {
   /* margin-right: auto; */
+  /* flex-basis: 100%;*/
+  /* width: 100%; */
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  /*flex-basis: 33%;*/
+  padding: 20px;
 }
 .profile-avatar-preview {
   border: 2px solid var(--bistre);
@@ -101,54 +143,107 @@
   height: 200px;
   border-radius: 200px;
 }
+.profile-avatar-upload-icon::before{
+  cursor: pointer;
+  content: "\21A5";
+  font-weight: bold;
+  text-align: center;
+  font-size: 20px;
+  margin-right: 5px;
+}
 #profile-avatar-upload-input {
   display: none;
 }
 
 /* User profile basic info field */
 .user-profile-basic-info {
-  flex-wrap: wrap;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  text-align: left;
-  /*flex-basis: 33%;*/
+  /* width: 100%; */
+  padding: 20px;
+  margin: 20px;
+}
+
+/* Usr Profile username info field*/
+.user-profile-username{
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 /* User profile detail info field */
-.user-profile-detail-info {
-  flex-basis: 33%;
-  /* margin-left: auto; */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  text-align: left;
+.user-profile-bio {
+  width: 100%;
 }
 
+/* Delete Account Popup Window*/
+.delete_account_title{
+  display: flex;
+  text-align: center;
+  margin: 5px;
+}
+.delete_account_keyword{
+  color: var(--red-orange)
+}
+.delete_account_inputbox{
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  background: #F3C26E;
+  border: 2px solid #000000;
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.delete_account_confirm_button{
+  padding: 10px;
+  background-color: var(--red-orange);
+  border: 2px solid var(--bistre);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.delete_account_confirm_button:hover{
+  background-color: var(--bistre);
+  color:white;
+}
+
+
+ 
 @media (max-width: 1200px) {
   .profile-header {
-    padding: 100px 100px 0;
+    padding: 20px 100px;
   }
   .user-profile-avatar{
     width: 100%;
   }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 900px) {
   .profile-header{
-    padding-top: 100px;
+    padding: 30px 30px;
   }
   .user-profile-form{
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
   }
 }
 
-@media (max-width: 400px) {
-  .user-profile-form {
-    gap: 20px;
+@media (max-width: 750px) {
+  .profile-header {
+    width: 100%;
+    background: none;
+    border: 2px solid var(--bistre);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 270px;
   }
+
+  .page-nav-buttons{
+    margin-left: 0%;
+    display: flex;
+    gap: 50px;
+  }
+
   .text-input, .textarea-input{
     width: 300px;
   }

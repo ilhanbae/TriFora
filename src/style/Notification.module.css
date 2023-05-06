@@ -58,6 +58,7 @@
 }
 
 .close-button:hover {
+    cursor: pointer;
     background-color: var(--bistre);
     color: white;
 }
@@ -166,6 +167,11 @@
     border-radius: 50%;
 }
 
+.notification-image:hover{
+    cursor: pointer;
+    box-shadow: 0 0 3px 3px #864522;
+}
+
 .notification-content{
     box-sizing: border-box;
     display: flex;
@@ -191,6 +197,12 @@
     color: #127475;
 }
 
+.notification-sender:hover{
+    cursor: pointer;
+    color: #F3C26E;
+    text-decoration: underline;
+}
+
 .notification-action{
     box-sizing: border-box;
     display: flex;
@@ -199,7 +211,6 @@
     justify-content: flex-start;
     margin: 10px;
 
-    width: 10%;
     min-height: 80px;
 
     background-color: var(--light-yellow);
@@ -209,9 +220,13 @@
 
 .notification-accept{
     box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     margin: 10px;
 
-    width: 80px;
+    width: 100px;
     height: 40px;
 
     font-family: 'Alfa Slab One';
@@ -227,15 +242,29 @@
 }
 
 .notification-accept:hover{
+    cursor: pointer;
     background-color: var(--bistre);
     color: white;
 }
 
+.accept_friend_icon::before{
+    cursor: pointer;
+    content: "\2295";
+    font-weight: bold;
+    text-align: center;
+    font-size: 20px;
+    margin-right: 5px;
+}
+
 .notification-reject{
     box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     margin: 10px;
 
-    width: 80px;
+    width: 100px;
     height: 40px;
 
     font-family: 'Alfa Slab One';
@@ -251,8 +280,18 @@
 }
 
 .notification-reject:hover{
+    cursor: pointer;
     background-color: var(--bistre);
     color: white;
+}
+
+.reject_friend_icon::before{
+    cursor: pointer;
+    content: "\2296";
+    font-weight: bold;
+    text-align: center;
+    font-size: 20px;
+    margin-right: 5px;
 }
 
 /* notification-bodu under 1000px */
@@ -261,7 +300,7 @@
         box-sizing: border-box;
         margin: 10px;
     
-        width: 60px;
+        width: 80px;
         height: 40px;
     
         font-family: 'Alfa Slab One';
@@ -280,7 +319,7 @@
         box-sizing: border-box;
         margin: 10px;
     
-        width: 60px;
+        width: 80px;
         height: 40px;
     
         font-family: 'Alfa Slab One';
@@ -351,7 +390,7 @@
         box-sizing: border-box;
         margin: 10px;
     
-        width: 80px;
+        width: 90px;
         height: 40px;
     
         font-family: 'Alfa Slab One';
@@ -371,7 +410,7 @@
         margin: 10px;
         margin-left: auto;
     
-        width: 80px;
+        width: 90px;
         height: 40px;
     
         font-family: 'Alfa Slab One';

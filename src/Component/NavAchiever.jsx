@@ -105,11 +105,13 @@ export default function NavAchiever(props) {
   /* This method toggles profile modal */
   const toggleProfileModal = () => {
     setOpenProfile(!openProfile);
+    props.in_Nar_Profile();
   };
 
   /* This method toggles notification modal */
   const toggleNotificationModal = () => {
     setOpenNotification(!openNotification);
+    props.in_Nar_Profile();
   };
 
   /* This method toggles network offline modal */

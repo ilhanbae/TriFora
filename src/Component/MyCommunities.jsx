@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import genericFetch from "../helper/genericFetch";
 import "../style/Homepage.css"; // can just use the homepage formatting I think
+import BackButton from "./BackButton";
 
 export default function OtherCommunitiesPage() {
     const [joinedCommunities, setJoinedCommunities] = useState();
@@ -59,8 +60,15 @@ export default function OtherCommunitiesPage() {
         return (
             <div className="homepage-wrapper">
                 {/* Display communities randomly mapped from communities user is not part of */}
-                <div className="homepage-row-intro">
-                    <h1>Here are all the communities you are part of:</h1>
+                <div className="communities-top-banner-container">
+                    <div style={{ marginLeft: "10px" }}>
+                        <BackButton />
+                    </div>
+                    <div className="homepage-row-intro">
+                        <h1>Here are all the communities you are part of:</h1>
+                    </div>
+                    <div className="communities-alignment-button"><BackButton /></div>
+
                 </div>
                 {/* <select>
                     <option value="date created">Date created: oldest</option>
@@ -72,8 +80,10 @@ export default function OtherCommunitiesPage() {
                     <div className="homepage-communities-row">
                         {row.map(community => (
                             <div className="homepage-community-wrapper">
-                                <h2>{community.name}</h2>
-                                <Link to={`/community/${community.id}`}>
+                                <Link to={`/community/${community.id}`} className="homepage-community-name-link">
+                                    <h2>{community.name}</h2>
+                                </Link>
+                                <Link to={`/community/${community.id}`} className="homepage-community-image-link">
                                     <img
                                         src={community.attributes.design.bannerProfileImage}
                                         className="homepage-community-image"
@@ -85,6 +95,7 @@ export default function OtherCommunitiesPage() {
                         ))}
                     </div>
                 ))}
+                <Link className="hyperlink" to="/other-communities">Click here to see all the communities you can join</Link>
             </div>
         )
     }

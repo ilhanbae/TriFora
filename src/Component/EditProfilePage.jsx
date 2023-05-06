@@ -7,6 +7,7 @@ import genericPatch from "../helper/genericPatch";
 import validateUserProfileFields from "../helper/validateUserProfileFields";
 import style from "../style/EditProfilePage.module.css"
 import { isNonNullChain } from "typescript";
+import Modal from "./Modal";
 
 export default function EditProfile(prop) {
   const [errorMessage, setErrorMessage] = useState(null);
@@ -39,7 +40,6 @@ export default function EditProfile(prop) {
     if (user) {
       return (
         <div className={style["container"]}>
-          {/* <ProfileHeader username={user.username} /> */}
           <ProfileMain 
           user={user} 
           render_user={prop.render_user} 
@@ -50,6 +50,122 @@ export default function EditProfile(prop) {
       );
     }
   }
+}
+
+// Delete an Account
+const DeleteAccount = (prop) => {
+  const handleDeleteAccount = async () => {
+    const userID = (sessionStorage.getItem("user"))
+    console.log(sessionStorage)
+
+    const baseUrl = `${process.env.REACT_APP_API_PATH}`;
+
+    const endpoint = "/users/" + parseInt(userID, 10) + `?relatedObjectsAction=delete`;
+    const url = `${baseUrl}${endpoint}`;
+    const authToken = sessionStorage.getItem("token"); // Replace with your actual authentication token
+
+
+    const requestOptions = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`
+      }
+    };
+
+    // const response = await fetch(url, requestOptions);
+    fetch(url, requestOptions)
+        .then(response => {
+          if (response.status === 204) {
+            sessionStorage.clear();
+            prop.openToast({ type: "success", message: "Account Deleted Successfully!" });
+          } else {
+            prop.openToast({ type: "error", message: "Please Try Again!" });          
+          }
+        })
+        .catch(error => console.log(error));
+
+  }
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const captchaWord = 'delete';
+
+  const handleButtonClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setInputValue('');
+  };
+
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (inputValue === captchaWord) {
+      handleDeleteAccount();
+      // alert("You've successfully deleted your account");
+    } else {
+      //alert("Error! You typed the captcha word incorrectly.");
+      prop.openToast({ type: "error", message: "Error! You typed the captcha word incorrectly." });  
+      handleModalClose();
+      setInputValue('');
+    }
+  };
+
+  const modalStyles = {
+    overlay: {
+      backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    },
+    content: {
+      backgroundColor: '#f3c26e',
+      borderRadius: '10px',
+      padding: '10px'
+    }
+  };
+
+  return (
+      <>
+        <button className={style["delete_account_button"]} onClick={handleButtonClick}>
+          <span className={style["delete_account_icon"]}></span>
+          Delete Account
+        </button>
+        <Modal
+            show={isModalOpen}
+            onClose={handleModalClose}
+            modalStyle={{
+              width: "50%",
+              height: "50%",
+            }}
+        >
+          <form onSubmit={handleSubmit}>
+            <h1 className={style["delete_account_title"]}>Please type in the word</h1>
+            <h2 className={style["delete_account_keyword"]}>"{captchaWord}"</h2>
+            <label>
+              <input
+                  type="text"
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  className={style["delete_account_inputbox"]}
+              />
+            </label>
+            <label>
+              <input
+                  type="submit"
+                  value="Confirm"
+                  className={style["delete_account_confirm_button"]}
+                  onChange={handleInputChange}
+                  placeholder="Confirm"
+              />
+            </label>
+          </form>
+        </Modal>
+      </>
+    )
 }
 
 /* Profile Header. */
@@ -67,8 +183,12 @@ const ProfileHeader = (prop) => {
       </div>
       <div className={style["page-nav-buttons"]}>
         <button className={style["button"]} onClick={saveActionHandler}>
+          <span className={style["save_button_icon"]}></span>
           Save
         </button>
+        <DeleteAccount
+        openToast={prop.openToast}
+        />
         {/*
         <Link to={`/profile/${sessionStorage.getItem("user")}`}>
           <button className={style["button"]}>Close</button>
@@ -82,14 +202,12 @@ const ProfileHeader = (prop) => {
 /* Profile Main */
 const ProfileMain = (prop) => {
   return (
-    <div className={style["profile-main"]}>
       <UserProfileForm 
       user={prop.user} 
       render_user={prop.render_user} 
       toggleProfile={prop.toggleProfile}
       openToast = {prop.openToast}
       />
-    </div>
   );
 };
 
@@ -98,8 +216,6 @@ const UserProfileForm = (prop) => {
   const [avatarFile, setAvatarFile] = useState(prop.user.attributes.profile.profileImage);
   const [avatarLink, setAvatarLink] = useState(prop.user.attributes.profile.profileImage);
   const [username, setUsername] = useState(prop.user.attributes.profile.username);
-  const [firstname, setFirstname] = useState(prop.user.attributes.profile.firstName);
-  const [lastname, setLastname] = useState(prop.user.attributes.profile.lastName);
   const [description, setDescription] = useState(prop.user.attributes.profile.description);
 
   // Perform user profile form submission.
@@ -148,8 +264,6 @@ const UserProfileForm = (prop) => {
       attributes: {
         profile: {
           username: username,
-          firstName: firstname,
-          lastName: lastname,
           description: description,
           profileImage: serverAvatarLink,
         },
@@ -162,18 +276,7 @@ const UserProfileForm = (prop) => {
     
     if(!isUserProfileFieldsValid) {
       console.log(userProfileFieldsErrorMessage)
-      // if(userProfileFieldsErrorMessage=="First Name can't be empty"){
-      //   prop.openToast({type: "error", message: <span>First Name can't be empty</span>})
-      // }
-      // else if(userProfileFieldsErrorMessage=="Last Name can't be empty") {
-      //   prop.openToast({type: "error", message: <span>Last Name can't be empty</span>})
-      // }
-      // else if(userProfileFieldsErrorMessage=="First name should only contain alphanumeric characters") {
-      //   prop.openToast({type: "error", message: <span>First name should only contain alphanumeric characters</span>})
-      // }
-      // else if(userProfileFieldsErrorMessage=="Last name should only contain alphanumeric characters") {
-      //   prop.openToast({type: "error", message: <span>Last name should only contain alphanumeric characters</span>})
-      // }
+      
       if(userProfileFieldsErrorMessage=="Username can't be empty") {
         prop.openToast({type: "error", message: <span>Username can't be empty</span>})
       }
@@ -183,9 +286,6 @@ const UserProfileForm = (prop) => {
       else if(userProfileFieldsErrorMessage=="Username should only contain alphanumeric characters") {
         prop.openToast({type: "error", message: <span>Username should only contain alphanumeric characters</span>})
       }
-      // else if(userProfileFieldsErrorMessage=="Description should only contain alphanumeric characters") {
-      //   prop.openToast({type: "error", message: <span>Description should only contain alphanumeric characters</span>})
-      // }
       
     } else {
       const { data: updatedUser, errorMessage: updateUserErrorMessage} = await genericPatch(endpoint, body);
@@ -229,23 +329,13 @@ const UserProfileForm = (prop) => {
     setUsername(e.target.value);
   };
 
-  // Update first name on input change
-  const firstnameInputHandler = (e) => {
-    setFirstname(e.target.value);
-  };
-
-  // Update last name on input change
-  const lastnameInputHandler = (e) => {
-    setLastname(e.target.value);
-  };
-
   // Update description on input change
   const descriptionInputHandler = (e) => {
     setDescription(e.target.value);
   };
 
   return (
-    <div>
+    <>
       {/* Profile Header */}
       <ProfileHeader
         username={prop.user.attributes.profile.username}
@@ -253,6 +343,7 @@ const UserProfileForm = (prop) => {
         render_user={prop.render_user}
         user_id={prop.user.id}
         toggleProfile={prop.toggleProfile}
+        openToast={prop.openToast}
       />
 
       {/* Main Form */}
@@ -270,64 +361,50 @@ const UserProfileForm = (prop) => {
             onChange={avatarSelectHandler}
           />
           <label htmlFor={style["profile-avatar-upload-input"]} className={style["button"] + " " + style["bold"]}>
+            <span className={style["profile-avatar-upload-icon"]}></span>
             Upload
           </label>
         </div>
 
         {/* User basic info field */}
         <div className={style["user-profile-basic-info"]}>
+
           {/* Username Input Field*/}
-          <label>
-            <span className={style["active-text"] + " " + style["bold"]}>Username:</span>
-            <input
-              className={style["text-input"]}
-              type="text"
-              value={username}
-              onChange={usernameInputHandler}
-            />
-          </label>
-          {/* Firstname Input Field*/}
-          <label>
-            <span className={style["active-text"] + " " + style["bold"]}>First Name:</span>
-            <input
-              className={style["text-input"]}
-              type="text"
-              value={firstname}
-              onChange={firstnameInputHandler}
-              /* disabled */
-            />
-          </label>
-          {/* Lastname Input Field*/}
-          <label>
-            <span className={style["active-text"] + " " + style["bold"]}>Last Name:</span>
-            <input
-              className={style["text-input"]}
-              type="text"
-              value={lastname}
-              onChange={lastnameInputHandler}
-              /* disabled */
-            />
-          </label>
+          <div className={style["user-profile-username"]}>
+            <label>
+              <span className={style["active-text"] + " " + style["bold"]}>Username:</span>
+              <input
+                className={style["text-input"]}
+                type="text"
+                value={username}
+                onChange={usernameInputHandler}
+              />
+            </label>
+          </div>
+
+          {/* User detail info field*/}
+          <div className={style["user-profile-bio"]}>
+            <label>
+              <span className={style["active-text"] + " " + style["bold"]}>Description:</span>
+              <textarea
+                className={style["textarea-input"]}
+                type="text"
+                value={description}
+                onChange={descriptionInputHandler}
+                maxLength="255"
+              />
+              <span className={style["active-text"] + " " + style["bold"]}>{description.length}/255</span>
+            </label>
+          </div>
+          
         </div>
 
-        {/* User detail info field*/}
-        <div className={style["user-profile-detail-info"]}>
-          <label>
-            <span className={style["active-text"] + " " + style["bold"]}>Description:</span>
-            <textarea
-              className={style["textarea-input"]}
-              type="text"
-              value={description}
-              onChange={descriptionInputHandler}
-            />
-          </label>
-        </div>
-
+        
         {/* User Profile Avatar */}
-        <div className={style["user-profile-avatar"]}></div>
+        {/* <div className={style["user-profile-avatar"]}></div> */}
         {/* User Profile Identity  */}
-        <div className={style["usr-profile-identity"]}>{prop.username}</div>
+        {/* <div className={style["usr-profile-identity"]}>{prop.username}</div> */}
       </form>
-    </div>
+    </>
   );
 };

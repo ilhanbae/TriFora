@@ -9,7 +9,7 @@ const BackButton = () => {
         // display arrow
         // -1 in navigate means go back one
         <button className="base" onClick={() => navigate(-1)}>
-            ←
+            ← Back
         </button>
     )
 };
