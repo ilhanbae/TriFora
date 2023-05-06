@@ -102,8 +102,10 @@ export default function Homepage() {
         return (
             <div className="homepage-community-wrapper">
                 {/* <b>{props.nameText}</b> */}
-                <h3>{props.nameText}</h3>
-                <Link to={`/community/${props.communityId}`}>
+                <Link to={`/community/${props.communityId}`} className="homepage-community-name-link">
+                    <h3>{props.nameText}</h3>
+                </Link>
+                <Link to={`/community/${props.communityId}`} className="homepage-community-image-link">
                     <img
                         src={props.communityImage}
                         className="homepage-community-image"
