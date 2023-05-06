@@ -8,6 +8,8 @@ export default function OtherCommunitiesPage() {
     const [joinedCommunities, setJoinedCommunities] = useState();
     const [displayPerRow, setDisplayPerRow] = useState(3); // same as homepageA
     const [isLoaded, setIsLoaded] = useState(false);
+    const [sortedCommunities, setSortedCommunities] = useState();
+    const [sortCommunitiesDropDown, setSortCommunitiesDropdown] = useState("dateJoinedOldest");
 
     // Fetch unjoined communities
     useEffect(() => {
@@ -40,9 +42,35 @@ export default function OtherCommunitiesPage() {
             setJoinedCommunities(joined); // store the communities that the user is a part of
             // setNumUserCommunities(data[1]); // hold on to the number of communities they are a part of for quick referencing
             // setUserCommunitiesLoaded(true); // mark their communities as loaded so it renders
+
+            // the default display is sorted by time joined, so need to hold that info without making extra calls
+            setSortedCommunities(joined);
         }
     };
 
+    const sortCommunities = (selectedSort) => {
+        if (selectedSort.target.value === "dateJoinedOldest") {
+            setSortedCommunities([...joinedCommunities])
+        } else if (selectedSort.target.value === "dateJoinedNewest") {
+            setSortedCommunities([...joinedCommunities].reverse())
+            // }
+        } else {
+            const options = {
+                // "dateCreatedOldest": [...joinedCommunities].sort((a, b) => new Date(a.attributes.dateCreated) - new Date(b.attributes.dateCreated)),
+                // "dateCreatedNewest": [...joinedCommunities].sort((a, b) => new Date(b.attributes.dateCreated) - new Date(a.attributes.dateCreated)),
+                // wasted time with sorting by date, when id is always absolute on api
+                "dateCreatedOldest": [...joinedCommunities].sort((a, b) => (a.id - b.id)),
+                "dateCreatedNewest": [...joinedCommunities].sort((a, b) => (b.id - a.id)),
+                "a-z": [...joinedCommunities].sort((a, b) => (a.name < b.name ? -1 : 1)),
+                "z-a": [...joinedCommunities].sort((a, b) => (a.name < b.name ? 1 : -1))
+            }
+            setSortedCommunities(options[selectedSort.target.value]);
+        }
+    };
+
+    const changeDisplayPerRow = (selectedNumber) => {
+        setDisplayPerRow(parseInt(selectedNumber.target.value));
+    }
 
     if (!isLoaded) {
         return <div>Loading...</div>;
@@ -52,7 +80,7 @@ export default function OtherCommunitiesPage() {
         source for turning to matrix:
         https://stackoverflow.com/questions/62880615/how-do-i-map-for-every-two-elements-for-react
         */
-        const rows = joinedCommunities.reduce(function (rows, key, index) {
+        const rows = sortedCommunities.reduce(function (rows, key, index) {
             return (index % displayPerRow == 0 ? rows.push([key])
                 : rows[rows.length - 1].push(key)) && rows;
         }, []);
@@ -68,14 +96,31 @@ export default function OtherCommunitiesPage() {
                         <h1>Here are all the communities you are part of:</h1>
                     </div>
                     <div className="communities-alignment-button"><BackButton /></div>
-
                 </div>
-                {/* <select>
-                    <option value="date created">Date created: oldest</option>
-                    <option value="date created">Date created: newest</option>
-                    <option value="a-z">Alphabetical: A-Z</option>
-                    <option value="z-a">Alphabetical: Z-A</option>
-                </select> */}
+
+                <div className="display-communities-choices">
+                    <div className="communities-choices">
+                        <h2>Sort communites by:</h2>
+                        <select onChange={sortCommunities} className="communities-choice-box">
+                            <option value="dateJoinedOldest">Date joined: oldest</option>
+                            <option value="dateJoinedNewest">Date joined: newest</option>
+                            <option value="dateCreatedOldest">Date created: oldest</option>
+                            <option value="dateCreatedNewest">Date created: newest</option>
+                            <option value="a-z">Alphabetical: A-Z</option>
+                            <option value="z-a">Alphabetical: Z-A</option>
+                        </select>
+                    </div>
+
+                    <div className="communities-choices">
+                        <h2>Display per row:</h2>
+                        <select onChange={changeDisplayPerRow} className="sort-communities-choices">
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                </div>
+
                 {rows.map(row => (
                     <div className="homepage-communities-row">
                         {row.map(community => (
