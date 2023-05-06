@@ -46,27 +46,6 @@
     padding-block: 20px;
 }
 
-.hyperlink {
-  text-decoration: underline;
-  font-size: 1.125rem;
-}
-
-/* unvisited link */
-.hyperlink:link {
-  color: blue;
-}
-
-/* visited link */
-.hyperlink:visited {
-  color: purple;
-  text-decoration: underline;
-}
-
-/* mouse over link */
-.hyperlink:hover {
-  cursor: pointer;
-}
-
 .homepage-community-wrapper {
     /* margin-top: 30px; */
     /* margin-bottom: 30px; */
@@ -82,7 +61,19 @@
     /* padding-right: 20px; */
 }
 
-.homepage-community-wrapper a { /* cursor line up */
+.homepage-community-name-link {
+    text-align: center;
+    margin: 10px;
+    color: #000000;
+}
+
+.homepage-community-name-link:hover {
+    cursor: pointer;
+    color: #864522;
+    text-decoration: underline;
+}
+
+.homepage-community-image-link { /* cursor line up */
     border-radius: 50%;
     width: 200px;
     height: 200px;
@@ -102,6 +93,27 @@
 
 .communities-alignment-button {
   visibility: hidden;
+}
+
+.hyperlink {
+  text-decoration: underline;
+  font-size: 1.125rem;
+}
+
+/* unvisited link */
+.hyperlink:link {
+  color: blue;
+}
+
+/* visited link */
+.hyperlink:visited {
+  color: purple;
+  text-decoration: underline;
+}
+
+/* mouse over link */
+.hyperlink:hover {
+  cursor: pointer;
 }
 
 @media (max-width: 800px) {

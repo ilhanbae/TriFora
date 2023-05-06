@@ -104,7 +104,6 @@ export default function OtherCommunitiesPage(props) {
                         <BackButton />
                     </div>
                     <div className="homepage-row-intro">
-
                         <h1>Here are all the communities you can join:</h1>
                     </div>
                     <div className="communities-alignment-button"><BackButton /></div> {/* doing this to enable correct spacing */}
@@ -120,8 +119,10 @@ export default function OtherCommunitiesPage(props) {
                         <div className="homepage-communities-row">
                             {row.map(community => (
                                 <div className="homepage-community-wrapper">
-                                    <h2>{community.name}</h2>
-                                    <Link to={`/community/${community.id}`}>
+                                    <Link to={`/community/${community.id}`} className="homepage-community-name-link">
+                                        <h2>{community.name}</h2>
+                                    </Link>
+                                    <Link to={`/community/${community.id}`} className="homepage-community-image-link">
                                         <img
                                             src={community.attributes.design.bannerProfileImage}
                                             className="homepage-community-image"

@@ -65,7 +65,6 @@ export default function OtherCommunitiesPage() {
                         <BackButton />
                     </div>
                     <div className="homepage-row-intro">
-
                         <h1>Here are all the communities you are part of:</h1>
                     </div>
                     <div className="communities-alignment-button"><BackButton /></div>
@@ -81,8 +80,10 @@ export default function OtherCommunitiesPage() {
                     <div className="homepage-communities-row">
                         {row.map(community => (
                             <div className="homepage-community-wrapper">
-                                <h2>{community.name}</h2>
-                                <Link to={`/community/${community.id}`}>
+                                <Link to={`/community/${community.id}`} className="homepage-community-name-link">
+                                    <h2>{community.name}</h2>
+                                </Link>
+                                <Link to={`/community/${community.id}`} className="homepage-community-image-link">
                                     <img
                                         src={community.attributes.design.bannerProfileImage}
                                         className="homepage-community-image"
