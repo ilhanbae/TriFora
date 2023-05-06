@@ -68,6 +68,9 @@
 .square-icon__red-orange::before{
   background-color: var(--red-orange);
 }
+.square-icon__yellow-apricot::before{
+  background-color: var(--yellow-apricot);
+}
 
 /* Button */
 .button {
@@ -119,8 +122,23 @@
   border-radius: 5px;
   padding: 5px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
-.dropdown-option:hover{
+.dropdown-option:hover {
+  background-color: var(--yellow-apricot);
+}
+.dropdown-option__active {
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  outline: 2px solid var(--bistre);
+}
+.dropdown-option__active:hover {
   background-color: var(--yellow-apricot);
 }
 
@@ -152,8 +170,9 @@
   width: fit-content;
 }
 .action-sidemenu-option {
-  /* width: 100%; */
-  width: max-content;
+  width: 100%;
+  /* width: max-content; */
+  white-space: nowrap;
   border-radius: 5px;
   padding: 5px;
   cursor: pointer;
@@ -164,7 +183,8 @@
   background-color: var(--yellow-apricot);
 }
 .action-sidemenu-option__disabled {
-  width: max-content;
+  /* width: max-content; */
+  white-space: nowrap;
   border-radius: 5px;
   padding: 5px;
   cursor: pointer;

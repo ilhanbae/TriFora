@@ -11,6 +11,7 @@ export default function NavAchiever(props) {
   const [showDropDownMenu, setShowDropDownMenu] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const [openNotification, setOpenNotification] = useState(false);
+  const [openNetworkOfflineModal, setOpenNetworkOfflineModal] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
   const [isRegisterNavActive, setIsRegisterNavActive] = useState(false);
   const [isLoginNavActive, setIsLoginNavActive] = useState(false);
@@ -29,6 +30,22 @@ export default function NavAchiever(props) {
       loadUserProfile();
     }
   });
+
+  /* This hook detects online/offline network changes. */
+  // useEffect(() => {
+  //   const onlineNetworkHandler = async (event) => {
+  //     console.log("----Online----")
+  //   }
+  //   const offlineNetworkHandler = async (event) => {
+  //     console.log("----Offline----")
+  //   }
+  //   window.addEventListener("online", onlineNetworkHandler);
+  //   window.addEventListener("offline", offlineNetworkHandler);
+  //   return () => {
+  //     window.removeEventListener("online", onlineNetworkHandler);
+  //     window.removeEventListener("offline", offlineNetworkHandler);
+  //   };
+  // });
 
   /* This hook detects unexpected user & token session storage flushes. */
   useEffect(() => {
@@ -94,6 +111,11 @@ export default function NavAchiever(props) {
   const toggleNotificationModal = () => {
     setOpenNotification(!openNotification);
   };
+
+  /* This method toggles network offline modal */
+  const toggleNetworkOfflineModal = () => {
+    setOpenNetworkOfflineModal(!openNetworkOfflineModal)
+  }
 
   /* This method scrolls the window to top */
   const scrollToTop = () => {

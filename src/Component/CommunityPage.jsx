@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import Modal from "./Modal";
 import CommunityPageSetting from "./CommunityPageSetting";
 import PostPage from "./PostPage";
@@ -134,7 +134,6 @@ const CommunityBanner = (props) => {
   // Check current user's community role & joined state
   const isUserAdmin = props.userCommunityMemberDetails?.attributes.role === "admin";
   const isUserMod = props.userCommunityMemberDetails?.attributes.role === "mod";
-  const isUserJoined = props.userCommunityMemberDetails != null;
 
   // This method handles join button action.
   const joinButtonHandler = async () => {
@@ -360,44 +359,232 @@ const CommunityBanner = (props) => {
 The type of content to display is chosen by the community stats tab*/
 const CommunityContentDisplay = (props) => {
   const [contentDisplayType, setContentDisplayType] = useState("posts");
+  const [communityPostSortOption, setCommunitySortOption] = useState("newest");
+  const [communityPostCustomSortOption, setCommunityCustomSortOption] = useState(null);
   const [communityPostCounts, setCommunityPostCounts] = useState(0);
   const [communityMemberCounts, setCommunityMemberCounts] = useState(0);
   const [communityPostSkipOffset, setCommunityPostSkipOffset] = useState(0);
   const [communityPostTakeCount, setCommunityPostTakeCount] = useState(10);
   const [communityMemberSkipOffset, setCommunityMemberSkipOffset] = useState(0);
   const [communityMembersCount, setCommunityMembersTakeCount] = useState(15);
+  const [communityPosts, setCommunityPosts] = useState([]);
+  const [isCommunityPostsLoaded, setIsCommunityPostsLoaded] = useState(false);
+  const [friends, setFriends] = useState([]);
+  const [blockedFriends, setBlockedFriends] = useState([]);
+  const [isFriendsLoaded, setIsFriendsLoaded] = useState(false);
+  const [filteredCommunityPostCounts, setFilteredCommunityPostCounts] = useState(0);
 
-  // This method updates the current content display type as either posts or members.
-  // It's passed on to its child component - CommunityStats, where the options are selected.
-  // Then the CommunityContentDisplay component renders based on the display type (post list or members list)
-  const postContentDisplayHandler = (type) => {
-    setCommunityPostSkipOffset(null);
-    setCommunityMemberSkipOffset(null);
+  /* This hook loads content based on current display type */
+  useEffect(() => {
+    if (contentDisplayType === "posts") {
+      loadCommunityPosts();
+    }
+  }, [contentDisplayType])
+
+  /* This hook refresh posts whenever the community post sort option has changed. The offset is changed
+  by the PostSortDropdown component */
+  useEffect(() => {
+    refreshCommunityPosts();
+  }, [communityPostSortOption]);
+
+  /* This hook refresh posts whenever the community post custom sort option has changed. The offset is changed by the PostSortDropdown component */
+  useEffect(() => {
+    refreshCommunityPosts();
+  }, [communityPostCustomSortOption]);
+
+  /* This method updates the current content display type as either posts or members.
+  It's passed on to its child component - CommunityStats, where the options are selected.
+  Then the CommunityContentDisplay component renders based on the display type (post list or members list) */
+  const communityContentDisplayHandler = (type) => {
+    setCommunityPostSkipOffset(0);
+    setCommunityMemberSkipOffset(0);
     setContentDisplayType(type);
   };
 
-  // This method updates the community post counts
-  // It will be called whenever there's a change to the Community Posts List
+  /* This method updates the the community posts sort option (oldest/newest). 
+  It will be called by the Post Control Tool component via Sort Posts button */
+  const updateCommunityPostSortOption = (option) => {
+    setCommunityCustomSortOption(null);
+    setCommunityPostSkipOffset(0);
+    setCommunitySortOption(option);
+  }
+
+  /* This method updates the the community posts custom sort option (friend/other). 
+  It will be called by the Post Control Tool component via Sort Posts button */
+  const updateCommunityPostCustomSortOption = (option) => {
+    setCommunityPostSkipOffset(0);
+    setCommunityCustomSortOption(option);
+  }
+
+  /* This method loads the community posts using genericFetch & update the community posts count stat */
+  const loadCommunityPosts = async () => {
+    setIsFriendsLoaded(false);
+    setIsCommunityPostsLoaded(false);
+
+    // console.log(`------LOADING COMMUNITY POSTS (${communityPostSortOption} ${communityPostCustomSortOption})-------`)
+
+    /* This method loads all friends using genericFetch */
+    const loadFriends = async () => {
+      const _friends = [];
+      const _blockedFriends = [];
+      let endpoint = "/connections";
+      let query = {
+        fromUserID: sessionStorage.getItem("user"),
+      };
+      const { data, errorMessage } = await genericFetch(endpoint, query);
+      // console.log(data, errorMessage)
+      if (data)  {
+        for (let i = 0; i < data[0].length; i++) {
+          // Check if the friend connection is "active"
+          if (data[0][i].attributes.status === "active") {
+            _friends.push(data[0][i].toUserID);
+          // Check if the friend connection is "blocked"
+          } else if (data[0][i].attributes.status === "blocked") {
+            _blockedFriends.push(data[0][i].toUserID);
+          }
+        }
+      }
+      return {_friends, _blockedFriends}
+    }
+
+    /* This method loads all posts using genericFetch */
+    const loadPosts = async (_friends, _blockedFriends) => {
+      let _posts = []
+      let _postsCount = []
+      let endpoint = "/posts";
+      let query = {
+        sort: communityPostSortOption,
+        parentID: "",
+        recipientGroupID: props.communityId,
+      };
+      const { data, errorMessage } = await genericFetch(endpoint, query);
+      // console.log(data, errorMessage)
+      if (errorMessage) {
+        // setErrorMessage(errorMessage);
+      } else {
+        // console.log(data[0])
+        _posts = data[0]
+        _postsCount = data[1]
+        // let _communityPosts = data[0]
+        // let _filterdAndSortedCommunityPosts = await filterAndSortPosts(_communityPosts, communityPostCustomSortOption, _friends, _blockedFriends)
+       
+        // console.log(blockedFriends)
+        // console.log(friends)       
+        
+        // setCommunityPosts(_filterdAndSortedCommunityPosts);
+        // setCommunityPostCounts(_filterdAndSortedCommunityPosts.length)
+        // updateCommunityPostCounts(_filterdAndSortedCommunityPosts.length);
+      }
+      // setIsCommunityPostsLoaded(true);
+      // setCommunityPosts(data[0]);
+      // updateCommunityPostCounts(data[1]);
+      return {_posts, _postsCount}
+    }
+  
+    /* This method filters & sort the posts */
+    const filterAndSortPosts = async (posts, customSortOption, _friends, _blockedFriends) => {
+      // console.log("________sorting & filtering community posts_______");
+      const isUserVisiter = props.userCommunityMemberDetails == null;
+
+      /* This method checks whether the post is pinned or not */
+      const isPinnedPost = (post) => {
+        if (post?.reactions.filter((reaction) => reaction.name === "pin").length) {
+          return true;
+        }
+        return false;
+      };
+
+      /* This method checks whether the post is friend post or not */
+      const isFriendPost = (post, _friends) => {
+        // console.log(friends);
+        return _friends.includes(post.authorID);
+      };
+
+      /* This method checks whether the post is from blocked friend */
+      const isBlockedFriendPost = (post, _blockedFriends) => {
+        // console.log(blockedFriends)
+        return _blockedFriends.includes(post.authorID);
+      };
+
+      // Filter posts by user role & connection
+      let filteredPosts = posts;
+      // Filter out private posts for visiter
+      if (isUserVisiter) {
+        filteredPosts = await filteredPosts.filter((post) => post.attributes.public);
+      }
+      // Filter out blocked friend posts for all 
+      filteredPosts = await filteredPosts.filter((post) => !isBlockedFriendPost(post, _blockedFriends))
+
+      // Order posts by custom sort option: Pinned > sort Option
+      let sortedPosts = filteredPosts.slice();
+      // Pinned > Friend > Other
+      if (customSortOption === "friend") {
+        sortedPosts = await sortedPosts.sort(
+          (postA, postB) =>
+          isPinnedPost(postB) - isPinnedPost(postA) ||
+          isFriendPost(postB, _friends) - isFriendPost(postA, _friends)
+        )
+      } 
+      // Pinned > Other > Friend
+      else if (customSortOption === "other") {
+        sortedPosts = await sortedPosts.sort(
+          (postA, postB) =>
+          isPinnedPost(postB) - isPinnedPost(postA) ||
+          isFriendPost(postA, _friends) - isFriendPost(postB, _friends)
+        )
+      }
+      else {
+        sortedPosts = await sortedPosts.sort(
+          (postA, postB) =>
+          isPinnedPost(postB) - isPinnedPost(postA)
+        )
+      }
+      return sortedPosts;
+    }
+
+    // Unpack reponses
+    const {_friends, _blockedFriends} = await loadFriends();
+    const {_posts, _postsCount}  = await loadPosts(_friends, _blockedFriends);
+    const filteredAndSortedPosts = await filterAndSortPosts(_posts, communityPostCustomSortOption, _friends, _blockedFriends)
+
+    // Update states
+    setFriends(_friends);
+    setBlockedFriends(_blockedFriends)
+    setCommunityPosts(filteredAndSortedPosts);
+    setCommunityPostCounts(_postsCount)
+    setFilteredCommunityPostCounts(filteredAndSortedPosts.length)
+
+    setIsCommunityPostsLoaded(true);
+    setIsFriendsLoaded(true);
+  };
+
+  /* This method refresh the posts */
+  const refreshCommunityPosts = () => {
+    loadCommunityPosts();
+  }
+
+  /* This method updates the community post counts. It will be called whenever there's a 
+  change to the Community Posts List */
   const updateCommunityPostCounts = (newCount) => {
     setCommunityPostCounts(newCount);
   };
 
-  // This method updates the community members counts
-  // It will be called whenever there's a change to the Community Members List
+  /* This method updates the community members counts. It will be called whenever there's a 
+  change to the Community Members List */
   const updateCommunityMemberCounts = (newCount) => {
     setCommunityMemberCounts(newCount);
   };
 
-  // This method updates community member skip offset
-  // It will be called whenever the user interacts with pagination buttons on community members display view
+  /* This method updates community member skip offset. It will be called whenever the user 
+  interacts with pagination buttons on community members display view */
   const updateCommunityMemberSkipOffset = (offset) => {
     setCommunityMemberSkipOffset(
       communityMemberSkipOffset ? communityMemberSkipOffset + offset : offset
     );
   };
 
-  // This method updates community post skip offset
-  // It will be called whenever the user interacts with pagination buttons on community members display view
+  /* This method updates community post skip offset. It will be called whenever the user 
+  interacts with pagination buttons on community members display view */
   const updateCommunityPostSkipOffset = (offset) => {
     setCommunityPostSkipOffset(
       communityPostSkipOffset ? communityPostSkipOffset + offset : offset
@@ -408,12 +595,12 @@ const CommunityContentDisplay = (props) => {
     <div className={style["community-content-display"]}>
       {/* Community Stats */}
       <CommunityStats
-        postContentDisplayHandler={postContentDisplayHandler}
+        communityContentDisplayHandler={communityContentDisplayHandler}
         communityPostCounts={communityPostCounts}
         communityMemberCounts={communityMemberCounts}
       />
 
-      {contentDisplayType === "posts" && (
+      {contentDisplayType === "posts" && isCommunityPostsLoaded && isFriendsLoaded && (
         <div>
           {/* Post Control Tool */}
           <PostControlTool 
@@ -421,21 +608,32 @@ const CommunityContentDisplay = (props) => {
             refreshCommunityDetails={props.refreshCommunityDetails}
             communityId={props.communityId}
             openToast={props.openToast}
+            communityPostSortOption={communityPostSortOption}
+            communityPostCustomSortOption={communityPostCustomSortOption}
+            updateCommunityPostSortOption={updateCommunityPostSortOption}
+            updateCommunityPostCustomSortOption={updateCommunityPostCustomSortOption}
           />
           {/* Commmunity Posts List */}
           <CommunityPostsList
+            communityPosts={communityPosts}
+            refreshPosts={refreshCommunityPosts}
             communityDetails={props.communityDetails}
             communityId={props.communityId}
+            friends={friends}
+            blockedFriends={blockedFriends}
             userCommunityMemberDetails={props.userCommunityMemberDetails}
             updateCommunityPostCounts={updateCommunityPostCounts}
             updateCommunityMemberCounts={updateCommunityMemberCounts}
             communityPostSkipOffset={communityPostSkipOffset}
             communityPostTakeCount={communityPostTakeCount}
             openToast={props.openToast}
+            communityPostSortOption={communityPostSortOption}
+            communityPostCustomSortOption={communityPostCustomSortOption}
           />
           {/* Pagination */}
           <Pagination
-            contentsCount={communityPostCounts}
+            contentSkipOffset={communityPostSkipOffset}
+            contentsCount={filteredCommunityPostCounts}
             updateContentSkipOffset={updateCommunityPostSkipOffset}
             contentTakeCount={communityPostTakeCount}
           />
@@ -452,6 +650,8 @@ const CommunityContentDisplay = (props) => {
           {/* Comunity Members List */}
           <CommunityMembersList
             communityDetails={props.communityDetails}
+            friends={friends}
+            blockedFriends={blockedFriends}
             userCommunityMemberDetails={props.userCommunityMemberDetails}
             communityId={props.communityId}
             updateCommunityPostCounts={updateCommunityPostCounts}
@@ -462,6 +662,7 @@ const CommunityContentDisplay = (props) => {
           />
           {/* Pagination */}
           <Pagination
+            contentSkipOffset={communityMemberSkipOffset}
             contentsCount={communityMemberCounts}
             updateContentSkipOffset={updateCommunityMemberSkipOffset}
             contentTakeCount={communityMembersCount}
@@ -483,20 +684,22 @@ const CommunityStats = (props) => {
   const communityPostsTabHandler = () => {
     setIsCommunityMembersTabActive(false);
     setIsCommunityPostsTabActive(true);
-    props.postContentDisplayHandler("posts");
+    props.communityContentDisplayHandler("posts");
   }
-  // Change the style
-  const communityPostsTabStyle = isCommunityPostsTabActive
-    ? "community-stats-tab__active"
-    : "community-stats-tab"; 
-
+  
   /* This method handles members tab click action */
   const communityMembersTabHandler = () => {
     setIsCommunityPostsTabActive(false);
     setIsCommunityMembersTabActive(true);
-    props.postContentDisplayHandler("members");
+    props.communityContentDisplayHandler("members");
   }
-  // Change the style
+
+  // Change the posts tab style
+  const communityPostsTabStyle = isCommunityPostsTabActive
+    ? "community-stats-tab__active"
+    : "community-stats-tab"; 
+  
+    // Change the members tab style
   const communityMembersTabStyle = isCommunityMembersTabActive
     ? "community-stats-tab__active"
     : "community-stats-tab"; 
@@ -533,12 +736,9 @@ reporting the post, and removing the post. This component also include post cont
 and pagination */
 const CommunityPostsList = (props) => {
   const [posts, setPosts] = useState([]);
-  const [pinnedPosts, setPinnedPosts] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [communityPostAuthorRoles, setCommunityPostAuthorRoles] = useState({});
-  const [friends, setFriends] = useState([]);
-  const [blocked_friends, setBlockedFriends] = useState([]);
 
   // Check current user's community role & post author's role
   const isUserAdmin = props.userCommunityMemberDetails?.attributes.role === "admin";
@@ -548,19 +748,18 @@ const CommunityPostsList = (props) => {
   // Fetch both posts and members when the component is loaded.
   useEffect(() => {
     setIsLoaded(false);
-    loadFriends();
-    loadPosts();
-    loadPinnedPosts();
+    slicePosts();
     loadMembers();
     setIsLoaded(true);
+    console.log(props.blockedFriends)
   }, []);
 
-  /* Refresh posts whenever the community post skip offset has changed. The offset is changed by the Pagination component. */
+  /* This hook slices posts whenever the community post skip offset has changed. The offset is changed by the Pagination component. */
   useEffect(() => {
-    refreshPosts();
+    slicePosts();
   }, [props.communityPostSkipOffset]);
 
-  /* This methods loads the community members using genericFetch & update the community members count stat */
+  /* This method loads the community members using genericFetch & update the community members count stat */
   const loadMembers = async () => {
     setIsLoaded(false);
     let endpoint = `/group-members`;
@@ -578,99 +777,20 @@ const CommunityPostsList = (props) => {
     setIsLoaded(true);
   };
 
-  /* This method will load all the Friends */
-  const loadFriends = async () => {
+  /* This methods updates current post display based on pagination offset */
+  const slicePosts = async () => {
+    // console.log("________slicing community posts_______");
     setIsLoaded(false);
-    const friends_array = [];
-    const blocked_friends_array = [];
-    let endpoint = "/connections";
-    let query = {
-      fromUserID: sessionStorage.getItem("user"),
-    };
-    const { data, errorMessage } = await genericFetch(endpoint, query);
-    // console.log(data, errorMessage)
-    if (errorMessage) {
-      setErrorMessage(errorMessage);
-    } else {
-      // console.log(data[0]);
-      for (let i = 0; i < data[0].length; i++) {
-        // Check if the friend connection is "active"
-        if (data[0][i].attributes.status === "active") {
-          friends_array.push(data[0][i].toUserID);
-        } else if (data[0][i].attributes.status === "blocked") {
-          blocked_friends_array.push(data[0][i].toUserID);
-        }
-      }
-      setFriends(friends_array);
-      // //console.log(friends_array);
-      setBlockedFriends(blocked_friends_array);
-      // //console.log(blocked_friends_array);
-    }
-    setIsLoaded(true);
-  };
 
-  /* This methods loads the community posts using genericFetch & update the community posts count stat */
-  const loadPosts = async () => {
-    setIsLoaded(false);
-    let endpoint = "/posts";
-    let query = {
-      sort: "newest",
-      parentID: "",
-      recipientGroupID: props.communityId,
-      ...(props.communityPostSkipOffset && {
-        skip: props.communityPostSkipOffset,
-      }),
-      ...(props.communityPostTakeCount && {
-        take: props.communityPostTakeCount,
-      }),
-    };
-    const { data, errorMessage } = await genericFetch(endpoint, query);
-    // console.log(data, errorMessage)
-    if (errorMessage) {
-      setErrorMessage(errorMessage);
-    } else {
-      // console.log(data[0])
-      if (isUserVisiter) {
-        // Only show public posts
-        // props.openToast({type: "info", message: "Hello there! Join the community to view other posts."});
-        setPosts(data[0].filter((post) => post.attributes.public));
-      } else {
-        // Show both public + private posts
-        setPosts(data[0]);
-      }
-      props.updateCommunityPostCounts(data[1]);
-    }
-    setIsLoaded(true);
-  };
+    // Slice the posts with pagination indices
+    const slicedPosts = await props.communityPosts.slice(
+      props.communityPostSkipOffset, 
+      props.communityPostSkipOffset + props.communityPostTakeCount
+    );
 
-  /* This method loads all pinned posts */
-  const loadPinnedPosts = async () => {
-    setIsLoaded(false);
-    let endpoint = "/posts";
-    let query = {
-      sort: "newest",
-      parentID: "",
-      recipientGroupID: props.communityId
-    }
-    const { data, errorMessage } = await genericFetch(endpoint, query);
-    // console.log(data, errorMessage)
-    if (data) {
-      let pinnedPosts = data[0].filter(post => isPinnedPost(post))
-      // console.log(data[0])
-      setPinnedPosts(pinnedPosts)
-    }
+    // console.log(slicedPosts)    
+    setPosts(slicedPosts) 
     setIsLoaded(true);
-  }
-
-  // This method refresh the posts by sending the request to API again using genricFetch.
-  // It can be passed on to each CommunityPost component to handle changes,
-  // such as pinning, hiding, reporting, or deleting. It can also be passed on to Pagination
-  // component with skip and take query.
-  const refreshPosts = () => {
-    // console.log("refreshing posts");
-    loadFriends(); // Fetch the new Friend List and Blocked User List
-    loadPosts(); // Fetch the posts again
-    loadPinnedPosts(); // Fetch the pinned posts again
   };
 
   /* This method checks whether the post is pinned or not */
@@ -683,32 +803,25 @@ const CommunityPostsList = (props) => {
 
   /* This method checks whether the post is friend post or not */
   const isFriendPost = (post) => {
-    return friends.includes(post.authorID);
+    return props.friends.includes(post.authorID);
   };
 
   /* This method checks whether the post has been reported n times or not */
   const isReportedPost = (post) => {
     const reportThreshold = 3;
-    if (post?.reactions.filter((reaction) => reaction.name === "report").length >= reportThreshold) {
+    if (
+      post?.reactions.filter((reaction) => reaction.name === "report").length >=
+      reportThreshold
+    ) {
       return true;
     }
     return false;
-  }
+  };
 
   /* This method checks whether the post is from blocked friend */
   const isBlockedFriendPost = (post) => {
-    return blocked_friends.includes(post.authorID);
-  }
-
-  // Filter posts that are pinned & from blocked friend
-  const filteredPosts = posts.filter(post => !isPinnedPost(post) && !isBlockedFriendPost(post))
-
-  // Sort posts by friend
-  const sortedPosts = filteredPosts.sort(
-    (postA, postB) =>
-    // isPinnedPost(postB) - isPinnedPost(postA) ||
-    isFriendPost(postB) - isFriendPost(postA)
-  );
+    return props.blockedFriends.includes(post.authorID);
+  };
 
   // Render
   if (errorMessage) {
@@ -716,36 +829,18 @@ const CommunityPostsList = (props) => {
   } else if (!isLoaded) {
     return <div>Loading...</div>;
   } else if (!posts.length) {
-    return <div>There're no posts.</div>
+    return <div>There're no posts.</div>;
   } else {
     return (
       <div>
         {/* Posts */}
         <div className={style["community-post-list"]}>
-          {/* Pinned Posts */}
-          {pinnedPosts.length > props.communityPostSkipOffset && (
-            pinnedPosts.map((post) => (
-              <CommunityPost
-                key={post.id}
-                communityId={props.communityId}
-                post={post}
-                refreshPosts={refreshPosts}
-                userCommunityMemberDetails={props.userCommunityMemberDetails}
-                communityPostAuthorRoles={communityPostAuthorRoles}
-                isFriendPost={isFriendPost(post)}
-                isPinnedPost={isPinnedPost(post)}
-                isReportedPost={isReportedPost(post)}
-                openToast={props.openToast}
-              />
-            ))
-          )}
-          {/* Other Posts */}
-          {sortedPosts.map((post) => (
+          {posts.map((post => (
             <CommunityPost
               key={post.id}
               communityId={props.communityId}
               post={post}
-              refreshPosts={refreshPosts}
+              refreshPosts={props.refreshPosts}
               userCommunityMemberDetails={props.userCommunityMemberDetails}
               communityPostAuthorRoles={communityPostAuthorRoles}
               isFriendPost={isFriendPost(post)}
@@ -753,7 +848,7 @@ const CommunityPostsList = (props) => {
               isReportedPost={isReportedPost(post)}
               openToast={props.openToast}
             />
-          ))}
+          )))}
         </div>
       </div>
     );
@@ -888,7 +983,7 @@ const CommunityPost = (props) => {
     } else {
       props.openToast({
         type: "success",
-        message: "Post reported successfully!",
+        message: "Post reported successfully! The moderators will take actions soon.",
       });
       props.refreshPosts();
     }
@@ -987,10 +1082,10 @@ const CommunityPost = (props) => {
   const canPostAction = canPin || canReport || canDelete;
 
   // Set post action icon style
-  const postActionIconStyle = canPostAction 
-    ? style["meatballs-icon"]
-    : isPostActionActive
+  const postActionIconStyle = isPostActionActive 
     ? style["meatballs-icon__active"]
+    : canPostAction
+    ? style["meatballs-icon"]
     : style["meatballs-icon__inactive"];
 
   return (
@@ -1150,6 +1245,21 @@ const CommunityPost = (props) => {
 const PostControlTool = (props) => {
   const [isPostSortActive, setIsPostSortActive] = useState(false);
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
+  const postSortDropDownRef = useRef(null); // Create a ref for post sort dropdwon
+
+  /* This hook check if mousedown DOM event occurs outside of assign post sort dropdown.  */
+  useEffect(() => {
+    const outSideClickHandler = (event) => {
+      if(postSortDropDownRef.current && !postSortDropDownRef.current.contains(event.target)) {
+        setIsPostSortActive(false);
+      }
+    }
+    document.addEventListener('mousedown', outSideClickHandler);
+
+    return () => {
+      document.removeEventListener('mousedown', outSideClickHandler)
+    }
+  })
 
   // Toggles between post sort active and inactive
   const sortButtonToggleHandler = () => {
@@ -1182,17 +1292,23 @@ const PostControlTool = (props) => {
   return (
     <div className={style["content-control-tool"]}>
       {/* Left Control */}
-      <div className={style["left-control-box"]}>
+      <div className={style["left-control-box"]} ref={postSortDropDownRef}>
         {/* Sort Posts Button */}
         <button
-          style={{visibility: "hidden"}}
           className={`${style["button"]} ${style["button__bordered"]} ${style["button__filled"]}`}
           onClick={sortButtonToggleHandler}
-          disabled
         >
           Sort Posts
         </button>
-        <PostSortDropdown isActive={isPostSortActive} />
+        {/* Sort Dropdown */}
+        <PostSortDropdown 
+          isActive={isPostSortActive}
+          sortButtonToggleHandler={sortButtonToggleHandler} 
+          communityPostSortOption={props.communityPostSortOption}
+          communityPostCustomSortOption={props.communityPostCustomSortOption}
+          updateCommunityPostSortOption={props.updateCommunityPostSortOption}
+          updateCommunityPostCustomSortOption={props.updateCommunityPostCustomSortOption}
+        />
       </div>
       {/* Right Control */}
       {props.userCommunityMemberDetails &&
@@ -1231,26 +1347,91 @@ const PostControlTool = (props) => {
 /* [TODO] This component will render a dropdown menu that lists options like By Posted Date, 
 By Likes, and By Comments. This will be triggered when the user clicks on SortPosts button. */
 const PostSortDropdown = (props) => {
+  const [isSortByNewestToOldest, setIsSortByNewestToOldest] = useState(props.communityPostSortOption === "newest");
+  const [isSortByOldestToNewest, setIsSortByOldestToNewest] = useState(props.communityPostSortOption === "oldest");
+  const [isSortByFriendToOther, setIsSortByFriendToOther] = useState(props.communityPostCustomSortOption === "friend");
+  const [isSortByOtherToFriend, setIsSortByOtherToFriend] = useState(props.communityPostCustomSortOption === "other");
+
+  /* This method handles sort by newest to oldest posted date option selection. */
+  const sortByNewestToOldest = () => {
+    props.updateCommunityPostSortOption("newest");
+    props.sortButtonToggleHandler();
+  }
+
+  /* This method handles sort by oldest to newest posted date option selection.*/
+  const sortByOldestToNewest = () => {
+    props.updateCommunityPostSortOption("oldest");
+    props.sortButtonToggleHandler();
+  }
+
+  /* This method handles sort by friend to other connection option selection.*/
+  const sortByFriendToOther = () => {
+    props.updateCommunityPostCustomSortOption("friend");
+    props.sortButtonToggleHandler();
+  }
+
+  /* This method handles sort by other to friend connnection option selection.*/
+  const sortByOtherToFriend = () => {
+    props.updateCommunityPostCustomSortOption("other");
+    props.sortButtonToggleHandler();
+  }
+
+  // Set sort option styles
+  const sortByNewestToOldestOptionStyle = isSortByNewestToOldest && (!isSortByFriendToOther && !isSortByOtherToFriend)
+    ? style["dropdown-option__active"]
+    : style["dropdown-option"];
+  const sortByOldestToNewestOptionStyle = isSortByOldestToNewest && (!isSortByFriendToOther && !isSortByOtherToFriend)
+    ? style["dropdown-option__active"]
+    : style["dropdown-option"];
+  const sortByFriendToOtherOptionStyle = isSortByFriendToOther 
+    ? style["dropdown-option__active"]
+    : style["dropdown-option"];
+  const sortByOtherToFriendOptionStyle = isSortByOtherToFriend 
+    ? style["dropdown-option__active"]
+    : style["dropdown-option"];
+
+  // Render
   if (props.isActive) {
     return (
       <div className={style["dropdown"]}>
         <ul className={style["dropdown-option-list"]}>
-          {/* By Posted Date */}
-          <li className={style["dropdown-option"]}>
-            <span className={style["active-text"]}>By Posted Date</span>
-            <span className={style["inactive-text"]}>Newest to Oldest</span>
+          {/* By Posted Date: Newest to Oldest */}
+          <li className={sortByNewestToOldestOptionStyle} onClick={sortByNewestToOldest}>
+            <span className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}></span>
+            <div>
+              <span className={style["active-text"]}>By Posted Date</span>
+              <span className={style["inactive-text"]}>Newest to Oldest</span>
+            </div>
           </li>
-          {/* By Likes */}
-          <li className={style["dropdown-option"]}>
-            <span className={style["active-text"]}>By Likes</span>
-            <span className={style["inactive-text"]}>Most to Least</span>
+          {/* By Posted Date: Oldest to Newest */}
+          <li className={sortByOldestToNewestOptionStyle} onClick={sortByOldestToNewest}>
+            <span className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}></span>
+            <div>
+              <span className={style["active-text"]}>By Posted Date</span>
+              <span className={style["inactive-text"]}>Oldest to Newest</span>
+            </div>
           </li>
-          {/* By Comments */}
-          <li className={style["dropdown-option"]}>
-            <span className={style["active-text"]}>By Comments</span>
-            <span className={style["inactive-text"]}>Most to Least</span>
+          {/* By Connection: Friend to Other */}
+          <li className={sortByFriendToOtherOptionStyle} onClick={sortByFriendToOther}>
+            <span className={`${style["square-icon"]} ${style["square-icon__yellow-apricot"]}`}></span>
+            <div>
+              <span className={style["active-text"]}>By Connection</span>
+              <span className={style["inactive-text"]}>Friend to Other</span>
+            </div>
+          </li>
+          {/* By Connection: Other to Friend */}
+          <li className={sortByOtherToFriendOptionStyle} onClick={sortByOtherToFriend}>
+            <span className={`${style["square-icon"]} ${style["square-icon__yellow-apricot"]}`}></span>
+            <div>
+              <span className={style["active-text"]}>By Connection</span>
+              <span className={style["inactive-text"]}>Other to Friend</span>
+            </div>
           </li>
         </ul>
+        {/* Show Friend Post on Top? */}
+        {/* <div className={style["dropdown-option"]}>
+          <span>Friend posts on Top?</span>
+        </div> */}
       </div>
     );
   }
@@ -1258,7 +1439,6 @@ const PostSortDropdown = (props) => {
 
 /* [TODO] This component will render a post action sidemenu that lists options like pin to top, 
 hide, report, and delete. This component will be triggered when the user clicks on '...' icon on each post. 
-
 * Pin & Hide are user-specific actions, and they should persist to only user's post list.
 * Report & Delete are global actions, and they should persist to all users' post lists. */
 const PostActionSidemenu = (props) => {
@@ -1366,7 +1546,6 @@ const CommunityMembersList = (props) => {
     setIsLoaded(false);
     loadMembers();
     loadPosts();
-    loadFriends();
     setIsLoaded(true);
   }, []);
 
@@ -1416,30 +1595,6 @@ const CommunityMembersList = (props) => {
     setIsLoaded(true);
   };
 
-  /* This method loads al the friends using genricFetch */
-  const loadFriends = async () => {
-    setIsLoaded(false);
-    const friends_array = [];
-    let endpoint = "/connections";
-    let query = {
-      fromUserID: sessionStorage.getItem("user")
-    }
-    const { data, errorMessage } = await genericFetch(endpoint, query);
-    if (errorMessage) {
-      setErrorMessage(errorMessage);
-    } else {
-      for (let i = 0; i < data[0].length; i++) {
-        // Check if the friend connection is "active"
-        if (data[0][i].attributes.status === "active") {
-          friends_array.push(data[0][i].toUserID);
-        }
-      }
-      // console.log(friends_array);
-      setFriends(friends_array);
-    }
-    setIsLoaded(true);
-  }
-
   // This method refresh the members by sending the request to API again using genricFetch.
   const refreshMembers = () => {
     // console.log("refreshing members");
@@ -1463,7 +1618,7 @@ const CommunityMembersList = (props) => {
 
   /* This method checks whether the member is friend or not */
   const isMemberFriend = (member) => {
-    return friends.includes(member.userID)
+    return props.friends.includes(member.userID)
   }
 
   // Sort members by following order: User > Admin > Mod > Friend > Other
@@ -1584,10 +1739,10 @@ const CommunityMember = (props) => {
   const canMemberAction = canAssignRole || canKick;
 
   // Set member action icon style
-  const memberActionIconStyle = canMemberAction 
-    ? style["meatballs-icon"]
-    : isMemberActionActive
+  const memberActionIconStyle = isMemberActionActive
     ? style["meatballs-icon__active"]
+    : canMemberAction
+    ? style["meatballs-icon"]
     : style["meatballs-icon__inactive"];
 
   // Set community member style
@@ -1886,7 +2041,18 @@ const AssignRoleSidemenu = (props) => {
 /* This component will render a pagination for communityPostList and CommunityMemberList. 
 It contains previous button, next button, and current page indicatior. */
 const Pagination = (props) => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState((props.contentSkipOffset / props.contentTakeCount) + 1);
+
+  useEffect(() => {
+    updateCurrentPage();
+    // console.log("Pagination Change:", (props.contentSkipOffset / props.contentTakeCount) + 1);
+  }, [props.contentSkipOffset])
+
+
+  /* This method updates pagination's current page based on current content skip offset */
+  const updateCurrentPage = () => {
+    setCurrentPage((props.contentSkipOffset / props.contentTakeCount) + 1)
+  }
 
   /* This method scrolls the window to top */
   const scrollToTop = () => {
@@ -1897,19 +2063,18 @@ const Pagination = (props) => {
 
   // Calculate last Page
   const lastPage = Math.ceil(props.contentsCount / props.contentTakeCount);
+  // console.log(currentPage, lastPage)
 
   const handlePreviousPage = () => {
     // console.log(currentPage)
-    setCurrentPage(currentPage > 1 ? currentPage - 1 : currentPage);
+    // setCurrentPage(currentPage > 1 ? currentPage - 1 : currentPage);
     props.updateContentSkipOffset(props.contentTakeCount * -1);
     scrollToTop();
   };
 
   const handleNextPage = () => {
     // console.log(currentPage);
-    setCurrentPage(
-      currentPage < props.contentsCount ? currentPage + 1 : currentPage
-    );
+    // setCurrentPage(currentPage < props.contentsCount ? currentPage + 1 : currentPage);
     props.updateContentSkipOffset(props.contentTakeCount);
     scrollToTop();
   };

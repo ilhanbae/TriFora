@@ -19,11 +19,11 @@
 .logo {
   font-family: "Alfa Slab One", cursive;
   font-size: 3rem;
-  color: var(--french-bistre);
+  color: var(--bistre);
 }
 .logo:hover {
   cursor: pointer;
-  color: var(--bistre);
+  color: var(--french-bistre);
 }
 
 /* Nav List */
@@ -34,14 +34,14 @@
   font-size: 0.938rem;
 }
 .nav-item {
-  color: var(--french-bistre);
+  color: var(--bistre);
   text-decoration: none;
   padding: 10% 0;
   border: 2px solid transparent;
 }
 .nav-item:focus,
 .nav-item:hover {
-  color: var(--bistre);
+  color: var(--french-bistre);
   cursor: pointer;
 }
 .nav-item__active {
