@@ -50,6 +50,18 @@
   display: flex;
 }
 
+.communities-choices > * {
+  margin-inline: 5px;
+}
+
+.communities-choices select {
+  background-color: var(--yellow-apricot);
+  min-width: 7rem;
+  text-align: center;
+  border-radius: 10px;
+  border-width: 2px;
+}
+
 .homepage-communities-row {
     display: flex;
     justify-content: space-evenly;
@@ -137,6 +149,10 @@
 
   .homepage-row-intro {
     width: 95%;
+  }
+  
+  .display-communities-choices {
+    flex-direction: column;
   }
 
   .homepage-community-wrapper {
