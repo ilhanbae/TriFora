@@ -60,12 +60,7 @@ export default function OtherCommunitiesPage() {
         return (
             <div className="homepage-wrapper">
                 {/* Display communities randomly mapped from communities user is not part of */}
-                <div style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    width: "100%"
-                }}>
+                <div className="communities-top-banner-container">
                     <div style={{ marginLeft: "10px" }}>
                         <BackButton />
                     </div>
@@ -73,7 +68,7 @@ export default function OtherCommunitiesPage() {
 
                         <h1>Here are all the communities you are part of:</h1>
                     </div>
-                    <div style={{ visibility: "hidden" }}><BackButton /></div>
+                    <div className="communities-alignment-button"><BackButton /></div>
 
                 </div>
                 {/* <select>
