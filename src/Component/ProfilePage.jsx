@@ -94,6 +94,12 @@ export default class ProfilePage extends React.Component {
                             profileImage: defaultProfileImage,
                         })
                     }
+                    // Check if the description is empty
+                    if (result.attributes.profile.description === ""){
+                        this.setState({
+                            description: "Hello",
+                        })
+                    }
                 }
                 }
                 },

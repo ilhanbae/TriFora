@@ -143,7 +143,7 @@ export default class RegisterForm extends React.Component {
                   username: this.state.username,
                   firstName: "",
                   lastName: "",
-                  description: "",
+                  description: "Hello",
                   profileImage: this.state.defaultProfileImage_path,
                   phone: ""
                 },
@@ -185,10 +185,11 @@ export default class RegisterForm extends React.Component {
                   <div style={{margin: 10}}>
                     <BackButton/> {/* altered since /login doesn't really exist and for hopeful consistency */}
                   </div>
-                  
+
+
+                  <span className='h3-inner'>Create an Account</span>
                     {/*<p>Back to Login</p>*/}
                     <form className='signup-form'>
-                        <h3 className='h3-inner'>Create an Account</h3>
                         
                         {/*
                         <label className='pfp'>
