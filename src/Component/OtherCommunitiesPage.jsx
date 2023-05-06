@@ -99,12 +99,7 @@ export default function OtherCommunitiesPage(props) {
         return (
             <div className="homepage-wrapper">
                 {/* Display communities randomly mapped from communities user is not part of */}
-                <div style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    width: "100%"
-                }}>
+                <div className="communities-top-banner-container">
                     <div style={{ marginLeft: "10px" }}>
                         <BackButton />
                     </div>
@@ -112,7 +107,7 @@ export default function OtherCommunitiesPage(props) {
 
                         <h1>Here are all the communities you can join:</h1>
                     </div>
-                    <div style={{ visibility: "hidden" }}><BackButton /></div> {/* doing this to enable correct spacing */}
+                    <div className="communities-alignment-button"><BackButton /></div> {/* doing this to enable correct spacing */}
                 </div>
                 {/* <select>
                         <option value="date created">Date created: oldest</option>
