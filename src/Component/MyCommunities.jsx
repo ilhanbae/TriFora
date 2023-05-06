@@ -49,8 +49,6 @@ export default function OtherCommunitiesPage() {
     };
 
     const sortCommunities = (selectedSort) => {
-        // console.log(joinedCommunities[0].attributes.dateCreated)
-        // console.log(joinedCommunities.attributes.dateCreated)
         if (selectedSort.target.value === "dateJoinedOldest") {
             setSortedCommunities([...joinedCommunities])
         } else if (selectedSort.target.value === "dateJoinedNewest") {
@@ -70,16 +68,9 @@ export default function OtherCommunitiesPage() {
         }
     };
 
-    // const CommunitySortingDropDown = () => (
-    //     <select onChange={sortCommunities}>
-    //         <option value="dateJoinedOldest">Date joined: oldest</option>
-    //         <option value="dateJoinedNewest">Date joined: newest</option>
-    //         {/* <option value="date created oldest">Date created: oldest</option>
-    //                 <option value="date created newest">Date created: newest</option> */}
-    //         <option value="a-z">Alphabetical: A-Z</option>
-    //         <option value="z-a">Alphabetical: Z-A</option>
-    //     </select>
-    // );
+    const changeDisplayPerRow = (selectedNumber) => {
+        setDisplayPerRow(parseInt(selectedNumber.target.value));
+    }
 
     if (!isLoaded) {
         return <div>Loading...</div>;
@@ -105,17 +96,31 @@ export default function OtherCommunitiesPage() {
                         <h1>Here are all the communities you are part of:</h1>
                     </div>
                     <div className="communities-alignment-button"><BackButton /></div>
-
                 </div>
-                {/* <CommunitySortingDropDown /> */}
-                <select onChange={sortCommunities}>
-                    <option value="dateJoinedOldest">Date joined: oldest</option>
-                    <option value="dateJoinedNewest">Date joined: newest</option>
-                    <option value="dateCreatedOldest">Date created: oldest</option>
-                    <option value="dateCreatedNewest">Date created: newest</option>
-                    <option value="a-z">Alphabetical: A-Z</option>
-                    <option value="z-a">Alphabetical: Z-A</option>
-                </select>
+
+                <div className="display-communities-choices">
+                    <div className="communities-choices">
+                        <h2>Sort communites by:</h2>
+                        <select onChange={sortCommunities} className="communities-choice-box">
+                            <option value="dateJoinedOldest">Date joined: oldest</option>
+                            <option value="dateJoinedNewest">Date joined: newest</option>
+                            <option value="dateCreatedOldest">Date created: oldest</option>
+                            <option value="dateCreatedNewest">Date created: newest</option>
+                            <option value="a-z">Alphabetical: A-Z</option>
+                            <option value="z-a">Alphabetical: Z-A</option>
+                        </select>
+                    </div>
+
+                    <div className="communities-choices">
+                        <h2>Display per row:</h2>
+                        <select onChange={changeDisplayPerRow} className="sort-communities-choices">
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                </div>
+
                 {rows.map(row => (
                     <div className="homepage-communities-row">
                         {row.map(community => (

@@ -39,6 +39,17 @@
   color: var(--yellow-apricot);
 }
 
+.display-communities-choices {
+  padding-block: 10px;
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.communities-choices {
+  display: flex;
+}
+
 .homepage-communities-row {
     display: flex;
     justify-content: space-evenly;
