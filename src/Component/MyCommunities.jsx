@@ -58,8 +58,11 @@ export default function OtherCommunitiesPage() {
             // }
         } else {
             const options = {
-                "dateJoinedOldest": [...joinedCommunities].sort((a, b) => new Date(a.attributes.dateCreated) - new Date(b.attributes.dateCreated)),
-                "dateJoinedNewest": [...joinedCommunities].sort((a, b) => new Date(b.attributes.dateCreated) - new Date(a.attributes.dateCreated)),
+                // "dateCreatedOldest": [...joinedCommunities].sort((a, b) => new Date(a.attributes.dateCreated) - new Date(b.attributes.dateCreated)),
+                // "dateCreatedNewest": [...joinedCommunities].sort((a, b) => new Date(b.attributes.dateCreated) - new Date(a.attributes.dateCreated)),
+                // wasted time with sorting by date, when id is always absolute on api
+                "dateCreatedOldest": [...joinedCommunities].sort((a, b) => (a.id - b.id)),
+                "dateCreatedNewest": [...joinedCommunities].sort((a, b) => (b.id - a.id)),
                 "a-z": [...joinedCommunities].sort((a, b) => (a.name < b.name ? -1 : 1)),
                 "z-a": [...joinedCommunities].sort((a, b) => (a.name < b.name ? 1 : -1))
             }
@@ -108,8 +111,8 @@ export default function OtherCommunitiesPage() {
                 <select onChange={sortCommunities}>
                     <option value="dateJoinedOldest">Date joined: oldest</option>
                     <option value="dateJoinedNewest">Date joined: newest</option>
-                    <option value="date created oldest">Date created: oldest</option>
-                    <option value="date created newest">Date created: newest</option>
+                    <option value="dateCreatedOldest">Date created: oldest</option>
+                    <option value="dateCreatedNewest">Date created: newest</option>
                     <option value="a-z">Alphabetical: A-Z</option>
                     <option value="z-a">Alphabetical: Z-A</option>
                 </select>
