@@ -78,7 +78,6 @@ const DeleteAccount = (prop) => {
         .then(response => {
           if (response.status === 204) {
             sessionStorage.clear();
-            window.location.href = "/hci/teams/underachievers/login";
             prop.openToast({ type: "success", message: "Account Deleted Successfully!" });
           } else {
             prop.openToast({ type: "error", message: "Please Try Again!" });          
