@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import genericFetch from "../helper/genericFetch";
 import "../style/Homepage.css"; // can just use the homepage formatting I think
+import BackButton from "./BackButton";
 import CreateCommunity from "./CreateCommunity";
 import Modal from "./Modal";
 
@@ -80,7 +81,7 @@ export default function OtherCommunitiesPage(props) {
             (community) => !joinedIds.includes(community.id)
         );
         // The above is currently sorted by date created
-        
+
         // map names for create community modal
         const communityNames = allCommunities.map((community) => community.name.toLowerCase());
         // console.log(communityNames);
@@ -98,35 +99,49 @@ export default function OtherCommunitiesPage(props) {
         return (
             <div className="homepage-wrapper">
                 {/* Display communities randomly mapped from communities user is not part of */}
-                <div className="homepage-row-intro">
-                    <h1>Here are all the communities you can join:</h1>
+                <div style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    width: "100%"
+                }}>
+                    <div style={{marginLeft: "10px"}}>
+                        <BackButton />
+                    </div>
+                    <div className="homepage-row-intro">
+
+                        <h1>Here are all the communities you can join:</h1>
+                    </div>
+                    <div style={{ visibility: "hidden" }}><BackButton /></div>
+
                 </div>
                 {/* <select>
-                    <option value="date created">Date created: oldest</option>
-                    <option value="date created">Date created: newest</option>
-                    <option value="a-z">Alphabetical: A-Z</option>
-                    <option value="z-a">Alphabetical: Z-A</option>
-                </select> */}
-                {rows.map(row => (
-                    <div className="homepage-communities-row">
-                        {row.map(community => (
-                            <div className="homepage-community-wrapper">
-                                <h2>{community.name}</h2>
-                                <Link to={`/community/${community.id}`}>
-                                    <img
-                                        src={community.attributes.design.bannerProfileImage}
-                                        className="homepage-community-image"
-                                        alt={community.name}
-                                        title={community.name}
-                                    />
-                                </Link>
-                            </div>
-                        ))}
-                    </div>
-                ))}
+                        <option value="date created">Date created: oldest</option>
+                        <option value="date created">Date created: newest</option>
+                        <option value="a-z">Alphabetical: A-Z</option>
+                        <option value="z-a">Alphabetical: Z-A</option>
+                    </select> */}
+                {
+                    rows.map(row => (
+                        <div className="homepage-communities-row">
+                            {row.map(community => (
+                                <div className="homepage-community-wrapper">
+                                    <h2>{community.name}</h2>
+                                    <Link to={`/community/${community.id}`}>
+                                        <img
+                                            src={community.attributes.design.bannerProfileImage}
+                                            className="homepage-community-image"
+                                            alt={community.name}
+                                            title={community.name} />
+                                    </Link>
+                                </div>
+                            ))}
+                        </div>
+                    ))
+                }
                 <div className="homepage-row-intro">
                     <h1>Don't see a community you're interest in? Create it here:</h1>
-                    <button style={{marginInline: "5px"}} className="create-community-button" onClick={toggleModal}>Create Community</button>
+                    <button style={{ marginInline: "5px" }} className="create-community-button" onClick={toggleModal}>Create Community</button>
                 </div>
                 {/* Create Community as modal */}
                 <Modal
@@ -141,10 +156,9 @@ export default function OtherCommunitiesPage(props) {
                     <CreateCommunity
                         toggleModal={toggleModal}
                         openToast={props.openToast}
-                        listOfCommunityNames={communityNames}
-                    />
+                        listOfCommunityNames={communityNames} />
                 </Modal>
-            </div>
+            </div >
         )
     }
 }

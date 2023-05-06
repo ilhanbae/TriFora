@@ -23,6 +23,13 @@
   margin-bottom: 5%;
 } */
 
+.testing {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
 .homepage-row-intro {
   display: flex;
   padding: 10px;
