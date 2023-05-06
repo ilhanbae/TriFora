@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import group from "../assets/group.png";
 import uploadFile from "../helper/uploadFile";
 import genericPost from "../helper/genericPost";
@@ -9,6 +10,7 @@ export default function CreateCommunity(props) {
     const [communityName, setCommunityName] = useState();
     const [communityImage, setCommunityImage] = useState();
     const [imageSelected, setImageSelected] = useState(false);
+    const navigate = useNavigate();
 
     // Update community name from input
     const communityNameInput = (e) => {
@@ -125,6 +127,7 @@ export default function CreateCommunity(props) {
             // close modal
             props.toggleModal();
             // ideally would bring them to the new community from here
+            navigate(`/community/${newCommunityId}`);
         }
     }
 

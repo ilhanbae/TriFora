@@ -105,15 +105,14 @@ export default function OtherCommunitiesPage(props) {
                     alignItems: "center",
                     width: "100%"
                 }}>
-                    <div style={{marginLeft: "10px"}}>
+                    <div style={{ marginLeft: "10px" }}>
                         <BackButton />
                     </div>
                     <div className="homepage-row-intro">
 
                         <h1>Here are all the communities you can join:</h1>
                     </div>
-                    <div style={{ visibility: "hidden" }}><BackButton /></div>
-
+                    <div style={{ visibility: "hidden" }}><BackButton /></div> {/* doing this to enable correct spacing */}
                 </div>
                 {/* <select>
                         <option value="date created">Date created: oldest</option>
