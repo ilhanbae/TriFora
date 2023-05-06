@@ -99,6 +99,7 @@ export default function OtherCommunitiesPage() {
                         ))}
                     </div>
                 ))}
+                <Link className="hyperlink" to="/other-communities">Click here to see all the communities you can join</Link>
             </div>
         )
     }
