@@ -1409,7 +1409,7 @@ const PostSortDropdown = (props) => {
           <li className={sortByOldestToNewestOptionStyle} onClick={sortByOldestToNewest}>
             <span className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}></span>
             <div>
-              <span className={style["inative-text"]}>By Posted Date</span>
+              <span className={style["inactive-text"]}>By Posted Date</span>
               <span className={style["active-text"]}>Oldest to Newest</span>
             </div>
           </li>
