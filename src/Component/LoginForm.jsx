@@ -3,6 +3,7 @@ import "../style/LoginForm.css";
 import {
     Link, useNavigate
 } from 'react-router-dom';
+import Tagline from "../assets/Tagline.png";
 
 export default class LoginForm extends React.Component {
     constructor(props) {
@@ -135,6 +136,12 @@ export default class LoginForm extends React.Component {
         return (
             <div className='wrapper1 background'>
                 <div className='inner1'>
+                    <img
+                        className='trifora-tagline'
+                        src={Tagline}
+                        alt="Trifora tagline: Find, connect, and Build"
+                    >
+                    </img>
                     <form className='form-class'>
                         {/* <Link to='/register'>
                             <label>
