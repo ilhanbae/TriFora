@@ -61,8 +61,8 @@ export default function OtherCommunitiesPage() {
                 // wasted time with sorting by date, when id is always absolute on api
                 "dateCreatedOldest": [...joinedCommunities].sort((a, b) => (a.id - b.id)),
                 "dateCreatedNewest": [...joinedCommunities].sort((a, b) => (b.id - a.id)),
-                "a-z": [...joinedCommunities].sort((a, b) => (a.name < b.name ? -1 : 1)),
-                "z-a": [...joinedCommunities].sort((a, b) => (a.name < b.name ? 1 : -1))
+                "a-z": [...joinedCommunities].sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)),
+                "z-a": [...joinedCommunities].sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? 1 : -1))
             }
             setSortedCommunities(options[selectedSort.target.value]);
         }
