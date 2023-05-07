@@ -1,11 +1,22 @@
+/* Trifora Tagline */
+.trifora-tagline {
+    /* border: 2px solid var(--bistre); */
+    /* border-radius: 5px; */
+    max-width: 100%;
+    max-height: 100%;
+    background-color: var(--yellow-apricot);
+}
+
 .background {
     background-color: #FEFEE2;
 }
 
 .wrapper1 {
     display: flex;
+    /* flex-direction: column; */
     align-items: center;
     justify-content: center;
+    /* height: 100%; */
     height: 100vh;
 }
 
@@ -14,6 +25,7 @@
     text-align: center;
     padding: 27px 20px 37px;
 }
+
 
 /* Base Button Design */
 
@@ -63,6 +75,7 @@
 }
 
 .input1-stuff {
+    padding: 10px;
     border: 2px solid #000000;
     border-radius: 10px;
     display: block;

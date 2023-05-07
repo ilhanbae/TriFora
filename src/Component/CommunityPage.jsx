@@ -1401,32 +1401,32 @@ const PostSortDropdown = (props) => {
           <li className={sortByNewestToOldestOptionStyle} onClick={sortByNewestToOldest}>
             <span className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}></span>
             <div>
-              <span className={style["active-text"]}>By Posted Date</span>
-              <span className={style["inactive-text"]}>Newest to Oldest</span>
+              <span className={style["inactive-text"]}>By Posted Date</span>
+              <span className={style["active-text"]}>Newest to Oldest</span>
             </div>
           </li>
           {/* By Posted Date: Oldest to Newest */}
           <li className={sortByOldestToNewestOptionStyle} onClick={sortByOldestToNewest}>
             <span className={`${style["square-icon"]} ${style["square-icon__bistre"]}`}></span>
             <div>
-              <span className={style["active-text"]}>By Posted Date</span>
-              <span className={style["inactive-text"]}>Oldest to Newest</span>
+              <span className={style["inative-text"]}>By Posted Date</span>
+              <span className={style["active-text"]}>Oldest to Newest</span>
             </div>
           </li>
           {/* By Connection: Friend to Other */}
           <li className={sortByFriendToOtherOptionStyle} onClick={sortByFriendToOther}>
             <span className={`${style["square-icon"]} ${style["square-icon__yellow-apricot"]}`}></span>
             <div>
-              <span className={style["active-text"]}>By Connection</span>
-              <span className={style["inactive-text"]}>Friend to Other</span>
+              <span className={style["inactive-text"]}>By Connection</span>
+              <span className={style["active-text"]}>Friend to Other</span>
             </div>
           </li>
           {/* By Connection: Other to Friend */}
           <li className={sortByOtherToFriendOptionStyle} onClick={sortByOtherToFriend}>
             <span className={`${style["square-icon"]} ${style["square-icon__yellow-apricot"]}`}></span>
             <div>
-              <span className={style["active-text"]}>By Connection</span>
-              <span className={style["inactive-text"]}>Other to Friend</span>
+              <span className={style["inactive-text"]}>By Connection</span>
+              <span className={style["active-text"]}>Other to Friend</span>
             </div>
           </li>
         </ul>
